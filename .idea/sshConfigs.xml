@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="ec2-35-176-161-39.eu-west-2.compute.amazonaws.com" id="8129237f-7134-4766-a7b8-0c2c0d673f14" keyPath="$USER_HOME$/omg-test-key-pair.ppk" port="22" nameFormat="DESCRIPTIVE" username="ec2-user" />
+    </configs>
+  </component>
+</project>
