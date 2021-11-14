@@ -14,8 +14,10 @@ development:
   <<: *default
   host: localhost
   database: omg_development
-  username: omg
-  password: omgmod
+#  username: <%# ENV['POSTGRES_DB_USER'] %>
+#  password: <%# ENV['POSTGRES_DB_PASS'] %>
+  username: mma
+  password: password
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
