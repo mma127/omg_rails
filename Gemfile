@@ -9,6 +9,8 @@ gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
 gem 'pg', '~> 1.2.3'
 # Create data migrations to migrate db content
 gem 'rails-data-migrations'
+# Allow active record to import in bulk
+gem 'activerecord-import'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
 # Use SCSS for stylesheets
@@ -28,6 +30,13 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 gem 'thor'
+
+# Pretty printing
+gem 'pry'
+gem 'pry-rails'
+gem 'pry-doc'
+gem 'pry-awesome_print'
+gem 'awesome_print'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false

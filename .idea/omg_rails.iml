@@ -42,6 +42,7 @@
     <orderEntry type="library" scope="PROVIDED" name="activesupport (v6.1.4.1, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="addressable (v2.8.0, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="annotate (v3.1.1, rbenv: 2.7.4) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="awesome_print (v1.9.2, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bindex (v0.8.1, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="bootsnap (v1.9.1, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="builder (v3.2.4, rbenv: 2.7.4) [gem]" level="application" />
@@ -49,6 +50,7 @@
     <orderEntry type="library" scope="PROVIDED" name="byebug (v11.1.3, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="capybara (v3.36.0, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="childprocess (v4.1.0, rbenv: 2.7.4) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="coderay (v1.1.3, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="concurrent-ruby (v1.1.9, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="crass (v1.0.6, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="erubi (v1.10.0, rbenv: 2.7.4) [gem]" level="application" />
@@ -69,6 +71,10 @@
     <orderEntry type="library" scope="PROVIDED" name="nio4r (v2.5.8, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="nokogiri (v1.12.5, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pg (v1.2.3, rbenv: 2.7.4) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="pry (v0.14.1, rbenv: 2.7.4) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="pry-awesome_print (v9.6.11, rbenv: 2.7.4) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="pry-doc (v1.2.0, rbenv: 2.7.4) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="pry-rails (v0.3.9, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="public_suffix (v4.0.6, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="puma (v5.5.2, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="racc (v1.6.0, rbenv: 2.7.4) [gem]" level="application" />
@@ -106,6 +112,7 @@
     <orderEntry type="library" scope="PROVIDED" name="websocket-driver (v0.7.5, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket-extensions (v0.1.5, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="xpath (v3.2.0, rbenv: 2.7.4) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="yard (v0.9.26, rbenv: 2.7.4) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="zeitwerk (v2.5.1, rbenv: 2.7.4) [gem]" level="application" />
   </component>
   <component name="RModuleSettingsStorage">
