@@ -10,10 +10,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_14_224157) do
+ActiveRecord::Schema.define(version: 2021_11_20_233644) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "companies", force: :cascade do |t|
+    t.string "name", comment: "Company name"
+    t.bigint "player_id"
+    t.bigint "doctrine_id"
+    t.bigint "faction_id"
+    t.integer "vps_earned", comment: "VPs earned by this company"
+    t.integer "man", comment: "Manpower available to this company"
+    t.integer "mun", comment: "Munitions available to this company"
+    t.integer "fuel", comment: "Fuel available to this company"
+    t.integer "pop", comment: "Population cost of this company"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["doctrine_id"], name: "index_companies_on_doctrine_id"
+    t.index ["faction_id"], name: "index_companies_on_faction_id"
+    t.index ["player_id"], name: "index_companies_on_player_id"
+  end
+
+  create_table "company_offmaps", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "offmap_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_company_offmaps_on_company_id"
+    t.index ["offmap_id"], name: "index_company_offmaps_on_offmap_id"
+  end
+
+  create_table "company_resource_bonuses", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "resource_bonus_id"
+    t.integer "level", comment: "Number of this bonus taken"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_company_resource_bonuses_on_company_id"
+    t.index ["resource_bonus_id"], name: "index_company_resource_bonuses_on_resource_bonus_id"
+  end
+
+  create_table "company_unlocks", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "unlock_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_company_unlocks_on_company_id"
+    t.index ["unlock_id"], name: "index_company_unlocks_on_unlock_id"
+  end
 
   create_table "doctrine_unlocks", comment: "Associates doctrines to unlocks", force: :cascade do |t|
     t.bigint "doctrine_id"
@@ -50,6 +95,17 @@ ActiveRecord::Schema.define(version: 2021_11_14_224157) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "offmaps", force: :cascade do |t|
+    t.string "name", comment: "Offmap name"
+    t.string "const_name", comment: "Offmap const name for battlefile"
+    t.bigint "restriction_id"
+    t.integer "mun", comment: "Munitions cost"
+    t.integer "max", comment: "Maximum number purchasable"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["restriction_id"], name: "index_offmaps_on_restriction_id"
+  end
+
   create_table "players", comment: "Player record", force: :cascade do |t|
     t.string "name", comment: "Player screen name"
     t.text "open_id", comment: "Player open id token"
@@ -57,6 +113,28 @@ ActiveRecord::Schema.define(version: 2021_11_14_224157) do
     t.datetime "last_active_at", comment: "Last active timestamp"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "resource_bonuses", force: :cascade do |t|
+    t.string "name", comment: "Resource bonus name"
+    t.string "type", comment: "Resource type"
+    t.integer "value", comment: "Bonus amount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "restrictions", force: :cascade do |t|
+    t.string "name", comment: "Restriction name"
+    t.text "description", comment: "Restriction description"
+    t.bigint "faction_id"
+    t.bigint "doctrine_id"
+    t.bigint "unlock_id"
+    t.integer "vet_requirement", comment: "Minimum veterancy requirement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["doctrine_id"], name: "index_restrictions_on_doctrine_id"
+    t.index ["faction_id"], name: "index_restrictions_on_faction_id"
+    t.index ["unlock_id"], name: "index_restrictions_on_unlock_id"
   end
 
   create_table "unit_modifications", comment: "Changes unit attributes from faction, doctrine, unlock", force: :cascade do |t|
@@ -114,9 +192,22 @@ ActiveRecord::Schema.define(version: 2021_11_14_224157) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "companies", "doctrines"
+  add_foreign_key "companies", "factions"
+  add_foreign_key "companies", "players"
+  add_foreign_key "company_offmaps", "companies"
+  add_foreign_key "company_offmaps", "offmaps"
+  add_foreign_key "company_resource_bonuses", "companies"
+  add_foreign_key "company_resource_bonuses", "resource_bonuses"
+  add_foreign_key "company_unlocks", "companies"
+  add_foreign_key "company_unlocks", "unlocks"
   add_foreign_key "doctrine_unlocks", "doctrines"
   add_foreign_key "doctrine_unlocks", "unlocks"
   add_foreign_key "doctrines", "factions"
+  add_foreign_key "offmaps", "restrictions"
+  add_foreign_key "restrictions", "doctrines"
+  add_foreign_key "restrictions", "factions"
+  add_foreign_key "restrictions", "unlocks"
   add_foreign_key "unit_modifications", "doctrines"
   add_foreign_key "unit_modifications", "factions"
   add_foreign_key "unit_modifications", "units"

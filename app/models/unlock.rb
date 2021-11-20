@@ -12,4 +12,5 @@
 class Unlock < ApplicationRecord
   has_many :doctrine_unlocks
   has_many :doctrines, through: :doctrine_unlocks
+  has_many :restrictions
 end
