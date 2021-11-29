@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_29_004742) do
+ActiveRecord::Schema.define(version: 2021_11_29_010232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,13 +54,11 @@ ActiveRecord::Schema.define(version: 2021_11_29_004742) do
   end
 
   create_table "callin_modifiers", force: :cascade do |t|
-    t.bigint "restriction_id"
     t.decimal "modifier", comment: "Modifies callin time"
     t.string "type", comment: "Type of modification"
     t.integer "priority", comment: "Priority in which the modifier is applied, from 1 -> 100"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["restriction_id"], name: "index_callin_modifiers_on_restriction_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -152,12 +150,10 @@ ActiveRecord::Schema.define(version: 2021_11_29_004742) do
   create_table "offmaps", force: :cascade do |t|
     t.string "name", comment: "Offmap name"
     t.string "const_name", comment: "Offmap const name for battlefile"
-    t.bigint "restriction_id"
     t.integer "mun", comment: "Munitions cost"
     t.integer "max", comment: "Maximum number purchasable"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["restriction_id"], name: "index_offmaps_on_restriction_id"
   end
 
   create_table "players", comment: "Player record", force: :cascade do |t|
@@ -175,6 +171,33 @@ ActiveRecord::Schema.define(version: 2021_11_29_004742) do
     t.integer "value", comment: "Bonus amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "restriction_callin_modifiers", comment: "Association of Restriction to CallinModifier", force: :cascade do |t|
+    t.bigint "restriction_id"
+    t.bigint "callin_modifier_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["callin_modifier_id"], name: "index_restriction_callin_modifiers_on_callin_modifier_id"
+    t.index ["restriction_id"], name: "index_restriction_callin_modifiers_on_restriction_id"
+  end
+
+  create_table "restriction_offmaps", comment: "Association of Restriction to Offmap", force: :cascade do |t|
+    t.bigint "restriction_id"
+    t.bigint "offmap_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["offmap_id"], name: "index_restriction_offmaps_on_offmap_id"
+    t.index ["restriction_id"], name: "index_restriction_offmaps_on_restriction_id"
+  end
+
+  create_table "restriction_units", comment: "Association of Restriction to Unit", force: :cascade do |t|
+    t.bigint "restriction_id"
+    t.bigint "unit_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["restriction_id"], name: "index_restriction_units_on_restriction_id"
+    t.index ["unit_id"], name: "index_restriction_units_on_unit_id"
   end
 
   create_table "restrictions", force: :cascade do |t|
@@ -330,7 +353,6 @@ ActiveRecord::Schema.define(version: 2021_11_29_004742) do
   add_foreign_key "callin_modifier_allowed_units", "units"
   add_foreign_key "callin_modifier_required_units", "callin_modifiers"
   add_foreign_key "callin_modifier_required_units", "units"
-  add_foreign_key "callin_modifiers", "restrictions"
   add_foreign_key "companies", "doctrines"
   add_foreign_key "companies", "factions"
   add_foreign_key "companies", "players"
@@ -343,7 +365,12 @@ ActiveRecord::Schema.define(version: 2021_11_29_004742) do
   add_foreign_key "doctrine_unlocks", "doctrines"
   add_foreign_key "doctrine_unlocks", "unlocks"
   add_foreign_key "doctrines", "factions"
-  add_foreign_key "offmaps", "restrictions"
+  add_foreign_key "restriction_callin_modifiers", "callin_modifiers"
+  add_foreign_key "restriction_callin_modifiers", "restrictions"
+  add_foreign_key "restriction_offmaps", "offmaps"
+  add_foreign_key "restriction_offmaps", "restrictions"
+  add_foreign_key "restriction_units", "restrictions"
+  add_foreign_key "restriction_units", "units"
   add_foreign_key "restrictions", "doctrines"
   add_foreign_key "restrictions", "factions"
   add_foreign_key "restrictions", "unlocks"

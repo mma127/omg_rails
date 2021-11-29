@@ -8,18 +8,8 @@
 #  type(Type of modification)                                         :string
 #  created_at                                                         :datetime         not null
 #  updated_at                                                         :datetime         not null
-#  restriction_id                                                     :bigint
-#
-# Indexes
-#
-#  index_callin_modifiers_on_restriction_id  (restriction_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (restriction_id => restrictions.id)
 #
 class CallinModifier < ApplicationRecord
-  belongs_to :restriction
 
   has_many :callin_modifier_required_units
   has_many :required_units, through: :callin_modifier_required_units, class_name: "Unit"

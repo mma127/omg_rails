@@ -31,5 +31,10 @@ class Restriction < ApplicationRecord
 
   has_many :unit_modifications
   has_many :upgrade_modifications
-  has_many :callin_modifiers
+  has_many :restriction_units
+  has_many :units, through: :restriction_units
+  has_many :restriction_offmaps
+  has_many :offmaps, through: :restriction_offmaps
+  has_many :restriction_callin_modifiers
+  has_many :callin_modifiers, through: :restriction_callin_modifiers
 end
