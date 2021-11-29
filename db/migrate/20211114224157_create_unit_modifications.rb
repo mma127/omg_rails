@@ -5,6 +5,7 @@ class CreateUnitModifications < ActiveRecord::Migration[6.1]
       t.references :faction, index: true, foreign_key: true
       t.references :doctrine, index: true, foreign_key: true
       t.references :unlock, index: true, foreign_key: true
+      t.references :restriction, index: true, foreign_key: true
       t.string :const_name, comment: "Replacement const name for the unit used by the battle file"
       t.integer :pop, comment: "Modified population cost"
       t.integer :man, comment: "Modified manpower cost"

@@ -29,6 +29,7 @@ class Restriction < ApplicationRecord
   belongs_to :doctrine, optional: true
   belongs_to :unlock, optional: true
 
+  has_many :unit_modifications
   has_many :upgrade_modifications
   has_many :callin_modifiers
 end

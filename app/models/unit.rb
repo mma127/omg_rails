@@ -20,8 +20,18 @@
 #  upgrade_slots(Slots used for per model weapon upgrades)                               :integer
 #  created_at                                                                            :datetime         not null
 #  updated_at                                                                            :datetime         not null
+#  restriction_id                                                                        :bigint
+#
+# Indexes
+#
+#  index_units_on_restriction_id  (restriction_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (restriction_id => restrictions.id)
 #
 class Unit < ApplicationRecord
+  belongs_to :restriction, optional: true
 
   has_many :unit_modifications
   has_many :unit_games

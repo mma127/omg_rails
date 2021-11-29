@@ -4,6 +4,7 @@ class CreateUnits < ActiveRecord::Migration[6.1]
       t.string :const_name, comment: "Const name of the unit for the battle file"
       t.string :display_name, comment: "Display name"
       t.text :description, comment: "Display description of the unit"
+      t.references :restriction, index: true, foreign_key: true
       t.integer :pop, comment: "Population cost"
       t.integer :man, comment: "Manpower cost"
       t.integer :mun, comment: "Munition cost"

@@ -228,6 +228,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_004742) do
     t.bigint "faction_id"
     t.bigint "doctrine_id"
     t.bigint "unlock_id"
+    t.bigint "restriction_id"
     t.string "const_name", comment: "Replacement const name for the unit used by the battle file"
     t.integer "pop", comment: "Modified population cost"
     t.integer "man", comment: "Modified manpower cost"
@@ -246,6 +247,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_004742) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["doctrine_id"], name: "index_unit_modifications_on_doctrine_id"
     t.index ["faction_id"], name: "index_unit_modifications_on_faction_id"
+    t.index ["restriction_id"], name: "index_unit_modifications_on_restriction_id"
     t.index ["unit_id"], name: "index_unit_modifications_on_unit_id"
     t.index ["unlock_id"], name: "index_unit_modifications_on_unlock_id"
   end
@@ -254,6 +256,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_004742) do
     t.string "const_name", comment: "Const name of the unit for the battle file"
     t.string "display_name", comment: "Display name"
     t.text "description", comment: "Display description of the unit"
+    t.bigint "restriction_id"
     t.integer "pop", comment: "Population cost"
     t.integer "man", comment: "Manpower cost"
     t.integer "mun", comment: "Munition cost"
@@ -268,6 +271,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_004742) do
     t.string "retreat_name", comment: "Name for retreating unit"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["restriction_id"], name: "index_units_on_restriction_id"
   end
 
   create_table "unlocks", comment: "Metadata for a generic doctrine ability", force: :cascade do |t|
@@ -351,8 +355,10 @@ ActiveRecord::Schema.define(version: 2021_11_29_004742) do
   add_foreign_key "unit_games", "units"
   add_foreign_key "unit_modifications", "doctrines"
   add_foreign_key "unit_modifications", "factions"
+  add_foreign_key "unit_modifications", "restrictions"
   add_foreign_key "unit_modifications", "units"
   add_foreign_key "unit_modifications", "unlocks"
+  add_foreign_key "units", "restrictions"
   add_foreign_key "upgrade_modifications", "restrictions"
   add_foreign_key "upgrade_modifications", "unlocks"
   add_foreign_key "upgrade_modifications", "upgrades"
