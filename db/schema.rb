@@ -10,10 +10,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_29_002158) do
+ActiveRecord::Schema.define(version: 2021_11_29_004742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "available_units", comment: "Unit availability per company", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "unit_id"
+    t.integer "available", comment: "Number of this unit available to purchase for the company"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_available_units_on_company_id"
+    t.index ["unit_id"], name: "index_available_units_on_unit_id"
+  end
+
+  create_table "available_upgrades", comment: "Upgrade availability per company", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "unit_id"
+    t.integer "available", comment: "Number of this upgrade available to purchase for the company"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_available_upgrades_on_company_id"
+    t.index ["unit_id"], name: "index_available_upgrades_on_unit_id"
+  end
 
   create_table "callin_modifier_allowed_units", comment: "Units allowed in a callin for a callin modifier to take effect", force: :cascade do |t|
     t.bigint "callin_modifier_id"
@@ -298,6 +318,10 @@ ActiveRecord::Schema.define(version: 2021_11_29_002158) do
     t.index ["restriction_id"], name: "index_upgrades_on_restriction_id"
   end
 
+  add_foreign_key "available_units", "companies"
+  add_foreign_key "available_units", "units"
+  add_foreign_key "available_upgrades", "companies"
+  add_foreign_key "available_upgrades", "units"
   add_foreign_key "callin_modifier_allowed_units", "callin_modifiers"
   add_foreign_key "callin_modifier_allowed_units", "units"
   add_foreign_key "callin_modifier_required_units", "callin_modifiers"
