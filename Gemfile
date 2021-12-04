@@ -34,6 +34,8 @@ gem 'devise'
 gem 'omniauth-steam'
 gem 'omniauth-rails_csrf_protection'
 
+gem 'rack-cors'
+
 gem 'thor'
 
 # Pretty printing

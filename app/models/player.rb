@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: players
+# Table name: player
 #
 #  id                          :bigint           not null, primary key
 #  avatar(Player avatar url)   :text
@@ -16,11 +16,10 @@
 #  updated_at                  :datetime         not null
 #
 class Player < ApplicationRecord
+  include ActiveModel::Serializers::JSON
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :trackable, :timeoutable
-
-  devise :omniauthable, omniauth_providers: %i[steam]
+  devise :trackable, :timeoutable, :omniauthable, omniauth_providers: %i[steam]
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create! do |player|
@@ -28,5 +27,6 @@ class Player < ApplicationRecord
       player.avatar = auth.info.image
     end
   end
+
 
 end
