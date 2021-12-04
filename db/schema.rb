@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_04_025910) do
+ActiveRecord::Schema.define(version: 2021_12_04_203245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_025910) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "player", comment: "Player record", force: :cascade do |t|
+  create_table "players", comment: "Player record", force: :cascade do |t|
     t.string "name", comment: "Player screen name"
     t.text "avatar", comment: "Player avatar url"
     t.datetime "created_at", precision: 6, null: false
@@ -168,6 +168,8 @@ ActiveRecord::Schema.define(version: 2021_12_04_025910) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.string "jti", null: false
+    t.index ["jti"], name: "index_players_on_jti", unique: true
   end
 
   create_table "resource_bonuses", force: :cascade do |t|
@@ -360,7 +362,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_025910) do
   add_foreign_key "callin_modifier_required_units", "units"
   add_foreign_key "companies", "doctrines"
   add_foreign_key "companies", "factions"
-  add_foreign_key "companies", "player"
+  add_foreign_key "companies", "players"
   add_foreign_key "company_offmaps", "companies"
   add_foreign_key "company_offmaps", "offmaps"
   add_foreign_key "company_resource_bonuses", "companies"
