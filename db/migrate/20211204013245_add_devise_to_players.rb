@@ -37,9 +37,9 @@ class AddDeviseToPlayers < ActiveRecord::Migration[6.1]
       # t.timestamps null: false
     end
 
-    # add_index :players, :email,                unique: true
-    # add_index :players, :reset_password_token, unique: true
-    # add_index :players, :confirmation_token,   unique: true
-    # add_index :players, :unlock_token,         unique: true
+    # add_index :player, :email,                unique: true
+    # add_index :player, :reset_password_token, unique: true
+    # add_index :player, :confirmation_token,   unique: true
+    # add_index :player, :unlock_token,         unique: true
   end
 end

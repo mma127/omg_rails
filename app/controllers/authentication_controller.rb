@@ -10,6 +10,6 @@ class AuthenticationController < Devise::OmniauthCallbacksController
   end
 
   def failure
-    redirect_to root_path
+    render status: :unauthorized, json: { error: "You are not authorized to access this resource." }
   end
 end
