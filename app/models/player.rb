@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: player
+# Table name: players
 #
 #  id                          :bigint           not null, primary key
 #  avatar(Player avatar url)   :text
@@ -16,7 +16,9 @@
 #  updated_at                  :datetime         not null
 #
 class Player < ApplicationRecord
+  include DeviseTokenAuth::Concerns::User
   include ActiveModel::Serializers::JSON
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :trackable, :timeoutable, :omniauthable, omniauth_providers: %i[steam]

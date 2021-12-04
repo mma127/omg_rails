@@ -6,6 +6,14 @@ Rails.application.routes.draw do
     delete 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
+  namespace :api, defaults: { format: 'json' } do
+    namespace :v1 do
+      mount_devise_token_auth_for 'Player', at: 'auth', controllers: { omniauth_callbacks: 'steam' }
+      resources :player, only: [:index]
+
+    end
+  end
+
   resources :player, only: [:index]
 
   resources :doctrines, only: [:index, :show]
