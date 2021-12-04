@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_29_010232) do
+ActiveRecord::Schema.define(version: 2021_12_04_025910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,11 +158,16 @@ ActiveRecord::Schema.define(version: 2021_11_29_010232) do
 
   create_table "players", comment: "Player record", force: :cascade do |t|
     t.string "name", comment: "Player screen name"
-    t.text "open_id", comment: "Player open id token"
-    t.text "avatar_url", comment: "Player avatar url"
-    t.datetime "last_active_at", comment: "Last active timestamp"
+    t.text "avatar", comment: "Player avatar url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "provider", comment: "Omniauth provider"
+    t.string "uid", comment: "Omniauth uid"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
   end
 
   create_table "resource_bonuses", force: :cascade do |t|
