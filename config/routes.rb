@@ -6,9 +6,6 @@ Rails.application.routes.draw do
     delete 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
-  # get "/auth/steam" => "authentication#new"
-  # match "/auth/steam/callback", to: "authentication#callback", via: [:get, :post]
-
   resources :doctrines, only: [:index, :show]
 
   resources :companies, only: [:index, :show]
