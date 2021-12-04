@@ -107,6 +107,7 @@ GEM
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
       activesupport (>= 5.0.0)
+    jwt (2.3.0)
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -256,6 +257,9 @@ GEM
       sprockets (>= 3.0.0)
     thor (1.1.0)
     tilt (2.0.10)
+    tokenable-ruby (0.3.0)
+      jwt (~> 2.2, < 3)
+      rails (~> 6.0, < 6.2)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -317,6 +321,7 @@ DEPENDENCIES
   selenium-webdriver
   spring
   thor
+  tokenable-ruby
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 4.1.0)

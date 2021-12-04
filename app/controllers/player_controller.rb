@@ -1,7 +1,8 @@
 class PlayerController < ApplicationController
-  before_action :authenticate_player!
+  include Tokenable::Authable
+  before_action :require_tokenable_user!
 
   def index
-  render json: current_player.serializable_hash(only: [:id, :name, :avatar])
+  render json: current_user.serializable_hash(only: [:id, :name, :avatar])
   end
 end

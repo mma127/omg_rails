@@ -1,5 +1,6 @@
 # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
+  mount Tokenable::Engine => '/api/auth'
   devise_for :players, controllers: { omniauth_callbacks: 'authentication' }
 
   devise_scope :user do

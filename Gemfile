@@ -31,6 +31,7 @@ gem 'jbuilder', '~> 2.7'
 
 # Openid
 gem 'devise'
+gem 'tokenable-ruby'
 gem 'omniauth-steam'
 gem 'omniauth-rails_csrf_protection'
 

@@ -16,6 +16,7 @@
 #  updated_at                  :datetime         not null
 #
 class Player < ApplicationRecord
+  include Tokenable::Strategies::Devise
   include ActiveModel::Serializers::JSON
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
