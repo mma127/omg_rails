@@ -29,6 +29,11 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+# Openid
+gem 'devise'
+gem 'omniauth-steam'
+gem 'omniauth-rails_csrf_protection'
+
 gem 'thor'
 
 # Pretty printing
@@ -46,6 +51,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec'
   gem 'rspec-rails'
+  gem 'dotenv-rails'
 end
 
 group :development do
