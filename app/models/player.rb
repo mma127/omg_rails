@@ -28,5 +28,5 @@ class Player < ApplicationRecord
     end
   end
 
-
+  has_many :companies
 end
