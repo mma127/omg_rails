@@ -6,7 +6,6 @@ class AuthenticationController < Devise::OmniauthCallbacksController
     @player = Player.from_omniauth(request.env["omniauth.auth"])
 
     sign_in_and_redirect @player
-
   end
 
   def failure
