@@ -6,11 +6,13 @@ Rails.application.routes.draw do
     delete 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
-  resources :player, only: [:index]
+  namespace :api, defaults: { format: :json } do
+    resources :player, only: [:index]
 
-  resources :doctrines, only: [:index, :show]
+    resources :doctrines, only: [:index, :show]
 
-  resources :companies, only: [:index, :show]
+    resources :companies, only: [:index, :create]
+  end
 
   root "main#index"
 end

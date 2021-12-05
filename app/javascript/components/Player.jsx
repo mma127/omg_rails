@@ -6,7 +6,7 @@ export default function Player() {
     const [player, setPlayer] = useState(null)
 
     useEffect(() => {
-        axios.get('/player')
+        axios.get('/api/player')
             .then(response => setPlayer(response.data))
             .catch(error => console.log(error))
     }, [axios]);
