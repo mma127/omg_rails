@@ -4,11 +4,16 @@ import { render } from "react-dom";
 import axios from "axios";
 import DoctrineList from "../components/DoctrineList";
 import CompanyForm from "../components/CompanyForm";
+import Login from "../components/Login";
 
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 const App = () => (
     <div>
+
+        STEAM
+        <Login />
+
         OMGMOD
         <Player />
 
