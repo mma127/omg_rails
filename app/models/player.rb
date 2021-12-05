@@ -29,4 +29,6 @@ class Player < ApplicationRecord
   end
 
   has_many :companies
+  has_many :doctrines, through: :companies
+  has_many :factions, through: :companies
 end
