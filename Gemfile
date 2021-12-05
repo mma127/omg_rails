@@ -67,6 +67,8 @@ group :development do
   gem 'spring'
   # Annotate models
   gem 'annotate'
+
+  gem 'foreman'
 end
 
 group :test do
