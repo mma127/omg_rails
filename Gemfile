@@ -31,6 +31,10 @@ gem 'jbuilder', '~> 2.7'
 
 gem 'thor'
 
+gem 'omniauth'
+gem 'omniauth-steam'
+gem 'omniauth-rails_csrf_protection'
+
 # Pretty printing
 gem 'pry'
 gem 'pry-rails'
