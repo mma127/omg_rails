@@ -14,12 +14,16 @@ export const PlayerAuthStatus = () => {
   let content
   if (isAuthed) {
     content = (
-      <Box sx={{ display: 'flex', marginLeft: 'auto'}}>
-        <Avatar src={player.avatar} alt={player.name}  sx={{ width: 56, height: 56 }} />
+      <Box sx={{ display: 'flex', marginLeft: 'auto' }}>
+        <Avatar src={player.avatar} alt={player.name} sx={{ width: 56, height: 56 }} />
       </Box>
     )
   } else {
-    content = <SteamLoginButton />
+    content = (
+      <Box sx={{ display: 'flex', marginLeft: 'auto' }}>
+        <SteamLoginButton />
+      </Box>
+    )
   }
 
   return content

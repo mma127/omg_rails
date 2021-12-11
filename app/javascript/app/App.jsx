@@ -18,8 +18,10 @@ export const App = () => (
         <Router>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Lobby />} />
-            <Route path="companies" element={<Companies />} />
+            <Route path="/">
+              <Route index element={<Lobby />} />
+              <Route path="companies" element={<Companies />} />
+            </Route>
           </Routes>
         </Router>
       </Container>
