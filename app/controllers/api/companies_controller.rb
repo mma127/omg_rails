@@ -3,12 +3,8 @@ module Api
     before_action :authenticate_player!
 
     def index
-      player_id = params[:id]
-      if player_id.present?
-        companies = Company.where(player_id: player_id)
-      else
-        companies = Company.all
-      end
+      player_id = current_player.id
+      companies = Company.where(player_id: player_id)
       render json: companies
     end
 

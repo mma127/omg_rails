@@ -16,7 +16,7 @@ export default function DoctrineList() {
     for (let doc of doctrines) {
         doctrinesElement.push(
             <div key={doc.id}>
-                <h7>{doc.display_name}</h7>
+                <h6>{doc.display_name}</h6>
             </div>
         )
     }
