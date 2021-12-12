@@ -30,7 +30,9 @@ import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
-    padding: "10px 5px"
+    '& .MuiOutlinedInput-input': {
+      padding: "10px 5px"
+    }
   },
   optionImage: {
     height: '120px',
@@ -133,7 +135,7 @@ export const CompanyForm = ({ side, back, company, companyCallback }) => {
           <label>Company Name</label>
           <Controller
             name="name" control={control} rules={{ required: true }} defaultValue=""
-            render={({ field }) => <TextField {...field} />} />
+            render={({ field }) => <TextField className={classes.textInput} {...field} />} />
           <Typography>{errors.name?.message}</Typography>
         </Box>
         <Box>
