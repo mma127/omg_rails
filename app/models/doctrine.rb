@@ -20,6 +20,8 @@
 #  fk_rails_...  (faction_id => factions.id)
 #
 class Doctrine < ApplicationRecord
+  include ActiveModel::Serializers::JSON
+
   belongs_to :faction, inverse_of: :doctrines
   has_many :doctrine_unlocks
   has_many :unlocks, through: :doctrine_unlocks

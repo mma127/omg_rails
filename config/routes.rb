@@ -11,8 +11,9 @@ Rails.application.routes.draw do
 
     resources :doctrines, only: [:index, :show]
 
-    resources :companies, only: [:index, :create]
+    resources :companies, only: [:index, :create, :destroy]
   end
 
   root "main#index"
+  get '*path' => redirect('/')
 end

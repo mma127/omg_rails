@@ -1,13 +1,13 @@
 module Api
   class DoctrinesController < ApiController
     def index
-      render json: Doctrine.all
+      render json: DoctrineSerializer.new(Doctrine.all).serializable_hash
     end
 
     def show
       doctrine_id = params[:id]
 
-      render json: Doctrine.find(doctrine_id)
+      render json: DoctrineSerializer.new(Doctrine.find(doctrine_id)).serializable_hash
     end
   end
 end

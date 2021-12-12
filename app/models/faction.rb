@@ -16,7 +16,7 @@ class Faction < ApplicationRecord
   has_many :restrictions
 
   enum side: {
-    allied: "allies",
+    allies: "allies",
     axis: "axis"
   }
 end

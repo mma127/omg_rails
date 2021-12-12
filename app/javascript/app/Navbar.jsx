@@ -36,7 +36,7 @@ export const Navbar = () => {
           <Box>
             <img src={logo} alt="Operation Market Garden mod" />
           </Box>
-          <Tabs value={currentTab}>
+          <Tabs value={currentTab} sx={{marginTop: 'auto'}}>
             <Tab label="Lobby" value="/" component={Link} to="/" />
             <Tab label="Companies" value="/companies" component={Link} to="/companies" />
           </Tabs>
