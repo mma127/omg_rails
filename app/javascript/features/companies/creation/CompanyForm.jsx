@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import { Box, Button, Card, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup"
@@ -138,41 +138,44 @@ export const CompanyForm = ({ side, back, company, single = false, companyCallba
   // Radios have a 9px padding left, decided to add to other elements so they are aligned vertically
   return (
     <Box m={5} sx={{ maxWidth: '535px' }} justifyContent="center">
-      <Typography variant={"h5"} pl={"9px"} gutterBottom>New {sideTitle} Company</Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Box pl={"9px"} pb={2}>
-          <Controller
-            name="name" control={control} rules={{ required: true }} defaultValue=""
-            render={({ field }) => (
-              <TextField
-                variant="standard"
-                label="Company Name"
-                color="secondary"
-                error={Boolean(errors.name)}
-                helperText={errors.name?.message}
-                className={classes.textInput} {...field}
-              />)}
-          />
-        </Box>
-        <Box pt={2} pb={2}>
-          <Typography pl={"9px"}>Select Doctrine</Typography>
-          <Controller
-            name="doctrine" control={control} rules={{ required: true }} defaultValue={company.doctrine}
-            render={({ field }) => (
-              <RadioGroup {...field}>
-                {doctrineContent}
-              </RadioGroup>
-            )}
-          />
-          <ErrorTypography pl={"9px"}>{errors.doctrine?.message}</ErrorTypography>
-        </Box>
-        <Grid container pt={4}>
-          {backButton}
-          <Grid item xs={2} container justifyContent="flex-end">
-            <Button variant="contained" type="submit" color="secondary" size="small" sx={{marginRight: '9px'}}>{single ? "Save" : "Next"}</Button>
+      <Card elevation={3}>
+        <Typography variant={"h5"} pl={"9px"} gutterBottom>New {sideTitle} Company</Typography>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box pl={"9px"} pb={2}>
+            <Controller
+              name="name" control={control} rules={{ required: true }} defaultValue=""
+              render={({ field }) => (
+                <TextField
+                  variant="standard"
+                  label="Company Name"
+                  color="secondary"
+                  error={Boolean(errors.name)}
+                  helperText={errors.name?.message}
+                  className={classes.textInput} {...field}
+                />)}
+            />
+          </Box>
+          <Box pt={2} pb={2}>
+            <Typography pl={"9px"}>Select Doctrine</Typography>
+            <Controller
+              name="doctrine" control={control} rules={{ required: true }} defaultValue={company.doctrine}
+              render={({ field }) => (
+                <RadioGroup {...field}>
+                  {doctrineContent}
+                </RadioGroup>
+              )}
+            />
+            <ErrorTypography pl={"9px"}>{errors.doctrine?.message}</ErrorTypography>
+          </Box>
+          <Grid container pt={4}>
+            {backButton}
+            <Grid item xs={2} container justifyContent="flex-end">
+              <Button variant="contained" type="submit" color="secondary" size="small"
+                      sx={{ marginRight: '9px' }}>{single ? "Save" : "Next"}</Button>
+            </Grid>
           </Grid>
-        </Grid>
-      </form>
+        </form>
+      </Card>
     </Box>
   )
 }
