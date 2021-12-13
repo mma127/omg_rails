@@ -4,14 +4,6 @@ import { PlayerAuthStatus } from "../features/player/PlayerAuthStatus";
 import { AppBar, Box, Button, createTheme, Tab, Tabs, ThemeProvider, Toolbar, Typography } from "@mui/material";
 import logo from "../../assets/images/omg-logo.png"
 
-const customTheme = createTheme({
-  palette: {
-    secondary: {
-      main: "#333333",
-      contrastText: "#EEEEEE"
-    }
-  }
-})
 function useRouteMatch(patterns) {
   const { pathname } = useLocation();
 
@@ -30,20 +22,18 @@ export const Navbar = () => {
   const routeMatch = useRouteMatch(["/companies", "/"]);
   const currentTab = routeMatch?.pattern?.path;
   return (
-    <ThemeProvider theme={customTheme}>
-      <AppBar position="static" color={"secondary"}>
-        <Toolbar>
-          <Box>
-            <img src={logo} alt="Operation Market Garden mod" />
-          </Box>
-          <Tabs value={currentTab} sx={{marginTop: 'auto'}}>
-            <Tab label="Lobby" value="/" component={Link} to="/" />
-            <Tab label="Companies" value="/companies" component={Link} to="/companies" />
-          </Tabs>
-          <PlayerAuthStatus />
-        </Toolbar>
-      </AppBar>
-    </ThemeProvider>
+    <AppBar position="static">
+      <Toolbar>
+        <Box>
+          <img src={logo} alt="Operation Market Garden mod" />
+        </Box>
+        <Tabs value={currentTab} sx={{ marginTop: 'auto' }}>
+          <Tab label="Lobby" value="/" component={Link} to="/" />
+          <Tab label="Companies" value="/companies" component={Link} to="/companies" />
+        </Tabs>
+        <PlayerAuthStatus />
+      </Toolbar>
+    </AppBar>
 
   )
 }

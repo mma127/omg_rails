@@ -14,8 +14,8 @@ export const fetchCompanies = createAsyncThunk("companies/fetchCompanies", async
   return response.data
 })
 
-export const createCompanies = createAsyncThunk("companies/createCompanies", async ({ alliedCompany, axisCompany }) => {
-  const response = await axios.post("/api/companies", { allies: alliedCompany, axis: axisCompany })
+export const createCompany = createAsyncThunk("companies/createCompany", async ({ name, doctrineId }) => {
+  const response = await axios.post("/api/companies", { name, doctrineId })
   return response.data
 })
 
@@ -33,14 +33,14 @@ const companiesSlice = createSlice({
       .addCase(fetchCompanies.fulfilled, (state, action) => {
         companiesAdapter.setAll(state, action.payload.data)
       })
-      .addCase(createCompanies.pending, (state) => {
+      .addCase(createCompany.pending, (state) => {
         state.creatingStatus = "pending"
       })
-      .addCase(createCompanies.fulfilled, (state, action) => {
+      .addCase(createCompany.fulfilled, (state, action) => {
         state.creatingStatus = "fulfilled"
-        companiesAdapter.upsertMany(state, action.payload.data)
+        companiesAdapter.setOne(state, action.payload.data)
       })
-      .addCase(createCompanies.rejected, (state, action) => {
+      .addCase(createCompany.rejected, (state, action) => {
         state.creatingStatus = "rejected"
         state.creatingError = action.error.message
       })

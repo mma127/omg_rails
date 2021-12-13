@@ -37,4 +37,8 @@ class Company < ApplicationRecord
   has_many :company_offmaps
   has_many :offmaps, through: :company_offmaps
   has_many :company_resource_bonuses
+
+  def side
+    faction.side
+  end
 end

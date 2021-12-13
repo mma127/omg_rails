@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Box, Button,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  InputLabel,
-  Radio,
-  RadioGroup, TextField,
-  Typography
-} from "@mui/material";
+import { Box, Button, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -27,6 +18,7 @@ import scorched_earth from '../../../../assets/images/doctrine_banners/scorched_
 import tank_hunters from '../../../../assets/images/doctrine_banners/tank_hunters.png'
 import terror from '../../../../assets/images/doctrine_banners/terror.png'
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
+import { ErrorTypography } from "../../../components/ErrorTypography";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
@@ -35,19 +27,17 @@ const useStyles = makeStyles(theme => ({
     }
   },
   optionImage: {
-    height: '120px',
-    width: '240px'
+    height: '80px'
   }
-
 }))
 
 const schema = yup.object().shape({
-  name: yup.string().required(),
-  doctrine: yup.string().required()
+  name: yup.string().required("Company name is required"),
+  doctrine: yup.string().required("Doctrine is required")
 })
 
-export const CompanyForm = ({ side, back, company, companyCallback }) => {
-  // Depending on whether the side is axis or allies, show the corresponding list of doctrine options as radio buttons
+export const CompanyForm = ({ side, back, company, single = false, companyCallback }) => {
+  // Depending on whether the side is axis or allied, show the corresponding list of doctrine options as radio buttons
   // And expose company name field
   const [selectedDoctrine, setSelectedDoctrine] = useState("")
 
@@ -128,18 +118,44 @@ export const CompanyForm = ({ side, back, company, companyCallback }) => {
     doctrineContent = <Typography>Invalid side</Typography>
   }
 
+  let backButton
+  if (side === AXIS_SIDE && !single) {
+    backButton = (
+      <>
+        <Grid item xs={2}>
+          <Button variant="outlined" color="secondary" size="small" sx={{ marginRight: "10px" }}
+                  onClick={back}>Back</Button>
+        </Grid>
+        <Grid item xs={8} />
+      </>
+    )
+  } else {
+    backButton = (
+      <Grid item xs={10} />
+    )
+  }
+
+  // Radios have a 9px padding left, decided to add to other elements so they are aligned vertically
   return (
-    <Box sx={{ maxWidth: '800px' }} justifyContent="center">
+    <Box m={5} sx={{ maxWidth: '535px' }} justifyContent="center">
+      <Typography variant={"h5"} pl={"9px"} gutterBottom>New {sideTitle} Company</Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box>
-          <label>Company Name</label>
+        <Box pl={"9px"} pb={2}>
           <Controller
             name="name" control={control} rules={{ required: true }} defaultValue=""
-            render={({ field }) => <TextField className={classes.textInput} {...field} />} />
-          <Typography>{errors.name?.message}</Typography>
+            render={({ field }) => (
+              <TextField
+                variant="standard"
+                label="Company Name"
+                color="secondary"
+                error={Boolean(errors.name)}
+                helperText={errors.name?.message}
+                className={classes.textInput} {...field}
+              />)}
+          />
         </Box>
-        <Box>
-          <label>Select {sideTitle} Doctrine</label>
+        <Box pt={2} pb={2}>
+          <Typography pl={"9px"}>Select Doctrine</Typography>
           <Controller
             name="doctrine" control={control} rules={{ required: true }} defaultValue={company.doctrine}
             render={({ field }) => (
@@ -148,11 +164,14 @@ export const CompanyForm = ({ side, back, company, companyCallback }) => {
               </RadioGroup>
             )}
           />
-          <Typography>{errors.doctrine?.message}</Typography>
+          <ErrorTypography pl={"9px"}>{errors.doctrine?.message}</ErrorTypography>
         </Box>
-
-        {side === AXIS_SIDE ? <Button variant="contained" onClick={back}>Back</Button> : ''}
-        <Button variant="contained" type="submit">Submit</Button>
+        <Grid container pt={4}>
+          {backButton}
+          <Grid item xs={2} container justifyContent="flex-end">
+            <Button variant="contained" type="submit" color="secondary" size="small" sx={{marginRight: '9px'}}>{single ? "Save" : "Next"}</Button>
+          </Grid>
+        </Grid>
       </form>
     </Box>
   )

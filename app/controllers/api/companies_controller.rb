@@ -9,29 +9,19 @@ module Api
     end
 
     def create
-      # For allies, get doctrine, validate is an allied doctrine
-      allies = create_params[:allies]
-      allied_doctrine = Doctrine.find(allies[:doctrineId])
-      if allied_doctrine.faction.side != Faction.sides[:allies]
-        render json: "Invalid doctrine #{allied_doctrine.name} for an allied company", status: :bad_request
+      if create_params[:doctrineId].blank?
+        render json: "Doctrine id is required", status: :bad_request
       end
-      axis = create_params[:axis]
-      axis_doctrine = Doctrine.find(axis[:doctrineId])
-      if axis_doctrine.faction.side != Faction.sides[:axis]
-        render json: "Invalid doctrine #{axis_doctrine.name} for an axis company", status: :bad_request
+      doctrine = Doctrine.find_by(id: create_params[:doctrineId])
+      if doctrine.blank?
+        render json: "Invalid doctrine with id #{create_params[:doctrineId]}", status: :bad_request
       end
 
-
-      new_allied = Company.create!(name: allies[:name],
-                       player: current_player,
-                       doctrine: allied_doctrine,
-                       faction: allied_doctrine.faction)
-
-      new_axis = Company.create!(name: axis[:name],
-                       player: current_player,
-                       doctrine: axis_doctrine,
-                       faction: axis_doctrine.faction)
-      render json: CompanySerializer.new([new_allied, new_axis]).serializable_hash, status: :created, serializer: ApplicationSerializer
+      new_company = Company.create!(name: create_params[:name],
+                                     player: current_player,
+                                     doctrine: doctrine,
+                                     faction: doctrine.faction)
+      render json: CompanySerializer.new(new_company).serializable_hash, status: :created, serializer: ApplicationSerializer
     end
 
     def destroy
@@ -47,7 +37,7 @@ module Api
     private
 
     def create_params
-      params.permit(allies: [:name, :doctrineId], axis: [:name, :doctrineId])
+      params.permit(:name, :doctrineId)
     end
   end
 end

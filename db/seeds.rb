@@ -6,8 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-americans = Faction.create!(name: "americans", display_name: "Americans", const_name: "ALLY", internal_name: "Factions.Allies",side: "allies")
-british = Faction.create!(name: "british", display_name: "British", const_name: "CMW", internal_name: "Factions.British2ndArmy",side: "allies")
+americans = Faction.create!(name: "americans", display_name: "Americans", const_name: "ALLY", internal_name: "Factions.Allies",side: "allied")
+british = Faction.create!(name: "british", display_name: "British", const_name: "CMW", internal_name: "Factions.British2ndArmy",side: "allied")
 wehr = Faction.create!(name: "wehrmacht", display_name: "Wehrmacht", const_name: "AXIS", internal_name: "Factions.Axis",side: "axis")
 pe = Faction.create!(name: "panzer_elite", display_name: "Panzer Elite", const_name: "PE", internal_name: "Factions.PanzerElite",side: "axis")
 

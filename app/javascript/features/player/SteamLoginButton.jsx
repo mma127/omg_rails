@@ -8,7 +8,7 @@ export const SteamLoginButton = () => {
    */
   const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
   return (
-    <form method="post" action="/players/auth/steam">
+    <form method="post" action="/players/auth/steam" style={{height: '66px'}}>
       <input type="image" src="https://community.akamai.steamstatic.com/public/images/signinthroughsteam/sits_02.png"
              alt="Log in to Steam" />
       <input type="hidden" name="authenticity_token" value={csrfToken} />
