@@ -17,6 +17,7 @@ import { doctrineImgMapping } from "../../../constants/doctrines";
 import { makeStyles } from "@mui/styles";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { deleteCompanyById } from "../companiesSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   optionImage: {
@@ -31,32 +32,40 @@ const useStyles = makeStyles(theme => ({
 export const CompanySummary = ({ company }) => {
   const dispatch = useDispatch()
   const classes = useStyles()
+  let navigate = useNavigate()
+
   const doctrine = useSelector(state => selectDoctrineById(state, company.attributes.doctrineId))
 
   const deleteCompany = () => {
     dispatch(deleteCompanyById({ companyId: company.id }))
   }
 
+  const managementLink = `/companies/${company.id}`
+
+  const manageCompany = () => {
+    navigate(managementLink)
+  }
+
   return (
     <Box m={4} sx={{ maxWidth: '600px' }} justifyContent="center">
       <Card elevation={3}>
-        <CardActionArea>
-          <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>
-            <img src={doctrineImgMapping[doctrine.attributes.name]} alt={doctrine.attributes.displayName}
-                 className={classes.optionImage} />
-          </Box>
-          <CardContent>
-            <Typography variant="h6">{company.attributes.name}</Typography>
-            <Typography variant="body2">Company Stats Here</Typography>
-            <Typography variant="body2">Company Stats Here</Typography>
-            <Typography variant="body2">Company Stats Here</Typography>
-            <Typography variant="body2">Company Stats Here</Typography>
-          </CardContent>
-        </CardActionArea>
+          <CardActionArea onClick={manageCompany}>
+            <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>
+              <img src={doctrineImgMapping[doctrine.attributes.name]} alt={doctrine.attributes.displayName}
+                   className={classes.optionImage} />
+            </Box>
+            <CardContent>
+              <Typography variant="h6">{company.attributes.name}</Typography>
+              <Typography variant="body2">Company Stats Here</Typography>
+              <Typography variant="body2">Company Stats Here</Typography>
+              <Typography variant="body2">Company Stats Here</Typography>
+              <Typography variant="body2">Company Stats Here</Typography>
+            </CardContent>
+          </CardActionArea>
         <CardActions>
           <Grid container>
             <Grid item xs={11}>
-              <Button variant="contained" color="secondary">Manage Company</Button>
+              <Button variant="contained" to={`/companies/${company.id}`} component={Link} color="secondary">Manage Company</Button>
             </Grid>
             <Grid item xs={1}>
               <DeleteOutlineIcon onClick={deleteCompany} className={classes.deleteIcon} color="error" />

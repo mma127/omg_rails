@@ -1,33 +1,21 @@
 import React from 'react'
-import { Link, useLocation, matchPath } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { PlayerAuthStatus } from "../features/player/PlayerAuthStatus";
-import { AppBar, Box, Button, createTheme, Tab, Tabs, ThemeProvider, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Tab, Tabs, Toolbar } from "@mui/material";
 import logo from "../../assets/images/omg-logo.png"
 
-function useRouteMatch(patterns) {
-  const { pathname } = useLocation();
-
-  for (let i = 0; i < patterns.length; i += 1) {
-    const pattern = patterns[i];
-    const possibleMatch = matchPath(pattern, pathname);
-    if (possibleMatch !== null) {
-      return possibleMatch;
-    }
-  }
-
-  return null;
-}
-
 export const Navbar = () => {
-  const routeMatch = useRouteMatch(["/companies", "/"]);
-  const currentTab = routeMatch?.pattern?.path;
+  // https://stackoverflow.com/questions/70121657/react-material-ui-handle-nav-tabs-when-no-children-match-the-provided-value/70149889
+  const location = useLocation();
+  const [[, currentRoot]] = location.pathname.matchAll(/^(\/[^/]*)/g);
+
   return (
     <AppBar position="static">
       <Toolbar>
         <Box>
           <img src={logo} alt="Operation Market Garden mod" />
         </Box>
-        <Tabs value={currentTab} sx={{ marginTop: 'auto' }}>
+        <Tabs value={currentRoot} sx={{ marginTop: 'auto' }}>
           <Tab label="Lobby" value="/" component={Link} to="/" />
           <Tab label="Companies" value="/companies" component={Link} to="/companies" />
         </Tabs>

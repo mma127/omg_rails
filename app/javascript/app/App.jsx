@@ -10,6 +10,7 @@ import { Navbar } from "./Navbar";
 import { Container, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { Lobby } from "../features/lobby/Lobby";
 import { Companies } from "../features/companies/Companies";
+import { CompanyManager } from "../features/companies/manage/CompanyManager";
 
 const theme = createTheme({
   palette: {
@@ -55,6 +56,7 @@ export const App = () => (
             <Route path="/">
               <Route index element={<Lobby />} />
               <Route path="companies" element={<Companies />} />
+              <Route path="companies/:companyId" element={<CompanyManager />} />
             </Route>
           </Routes>
         </Router>
