@@ -1,11 +1,17 @@
-import React, { useRef } from 'react'
-import { Card, CardMedia, Container, Grid, Paper, Typography } from "@mui/material";
+import React, { useRef, useState } from 'react'
+import { Container, Grid, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
-import { DragDropContainer } from 'react-drag-drop-container';
+
+import { CompanyGridDropTarget } from "./CompanyGridDropTarget";
+import { CompanyGridTabs } from "./CompanyGridTabs";
+import { UnitCardDroppable } from "./UnitCardDroppable";
+
+import { CORE } from "../../../constants/company";
+import { RIFLEMEN, SHERMAN } from "../../../constants/units/americans";
 
 import riflemen from '../../../../assets/images/doctrines/americans/riflemen.png'
-import { PlaceableGridSquare } from "./PlaceableGridSquare";
+import sherman from '../../../../assets/images/doctrines/americans/sherman.png'
 
 const useStyles = makeStyles(theme => ({
   placementBox: {
@@ -14,18 +20,30 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
+const defaultTab = CORE
 export const CompanyManager = () => {
+  const [currentTab, setCurrentTab] = useState(defaultTab)
+
   const classes = useStyles()
 
   let params = useParams()
   const companyId = params.companyId
-  console.log(companyId)
 
   // TODO use this to constrain the drag area
   const constraintsRef = useRef(null)
 
   const onDrop = () => {
-    console.log("dropped the unit card")
+    // console.log("dropped the unit card")
+    // TODO REMOVE IF NOT NEEDED
+  }
+
+  const onTabChange = (newTab) => {
+    console.log(`Manager changed to new tab ${newTab}`)
+    setCurrentTab(newTab)
+  }
+
+  const onUnitDrop = (unit, index) => {
+    console.log(`Added ${unit} to category ${currentTab} position ${index}`)
   }
 
   return (
@@ -35,39 +53,41 @@ export const CompanyManager = () => {
       <Grid container spacing={2}>
         <Grid item container spacing={2}>
           <Grid item xs={1}>
-            <DragDropContainer targetKey="unit" onDrop={onDrop}>
-              <Card sx={{ width: 64 }}>
-                <CardMedia component="img" height="64" image={riflemen} alt="Riflemen" />
-              </Card>
-            </DragDropContainer>
+            {/*TODO read available units for this company from backend */}
+            {/*TODO maybe populate by type, alphabetically or cost ASC */}
+            <UnitCardDroppable label={RIFLEMEN} image={riflemen} onDrop={onDrop} />
+            <UnitCardDroppable label={SHERMAN} image={sherman} onDrop={onDrop} />
           </Grid>
         </Grid>
-        <Grid item container spacing={2} >
+        <Grid item>
+          <CompanyGridTabs selectedTab={currentTab} changeCallback={onTabChange} />
+        </Grid>
+        <Grid item container spacing={2}>
           <Grid item xs={3}>
-            <PlaceableGridSquare index={1} />
+            <CompanyGridDropTarget index={0} onHitCallback={onUnitDrop} />
           </Grid>
           <Grid item xs={3}>
-            <PlaceableGridSquare index={2} />
+            <CompanyGridDropTarget index={1} onHitCallback={onUnitDrop} />
           </Grid>
           <Grid item xs={3}>
-            <PlaceableGridSquare index={3} />
+            <CompanyGridDropTarget index={2} onHitCallback={onUnitDrop} />
           </Grid>
           <Grid item xs={3}>
-            <PlaceableGridSquare index={4} />
+            <CompanyGridDropTarget index={3} onHitCallback={onUnitDrop} />
           </Grid>
         </Grid>
-        <Grid item container spacing={2} >
+        <Grid item container spacing={2}>
           <Grid item xs={3}>
-            <PlaceableGridSquare index={5} />
+            <CompanyGridDropTarget index={4} onHitCallback={onUnitDrop} />
           </Grid>
           <Grid item xs={3}>
-            <PlaceableGridSquare index={6} />
+            <CompanyGridDropTarget index={5} onHitCallback={onUnitDrop} />
           </Grid>
           <Grid item xs={3}>
-            <PlaceableGridSquare index={7} />
+            <CompanyGridDropTarget index={6} onHitCallback={onUnitDrop} />
           </Grid>
           <Grid item xs={3}>
-            <PlaceableGridSquare index={8} />
+            <CompanyGridDropTarget index={7} onHitCallback={onUnitDrop} />
           </Grid>
         </Grid>
       </Grid>

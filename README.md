@@ -81,7 +81,10 @@ development:
 ### Start the server
 `bundle exec rails server`
 
-### Start both the server and webpack
-Webpack serves the react dev server
+### Start the webpack dev server
+`./bin/webpack-dev-server`
 
+This allows webpack to recompile assets continually, rather than on page reload.
+
+### Start both the server and webpack
 `bundle exec foreman start`
