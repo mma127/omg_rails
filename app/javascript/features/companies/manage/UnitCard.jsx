@@ -13,12 +13,14 @@ const useStyles = makeStyles(() => ({
  * Display component to show an unit image
  * @param label: image label
  * @param image
+ * @param onUnitClick
  */
-export const UnitCard = ({ label, image }) => {
+export const UnitCard = ({ label, image, onUnitClick }) => {
   const classes = useStyles()
 
+  /** TODO onUnitClick needs to be squad aware */
   return (
-    <Card className={classes.unitCard}>
+    <Card className={classes.unitCard} onClick={() => onUnitClick(label)}>
       <CardMedia component="img" height="45" image={image} alt={label} />
     </Card>
   )

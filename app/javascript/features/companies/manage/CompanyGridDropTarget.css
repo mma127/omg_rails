@@ -1,0 +1,4 @@
+/* Don't have direct access to the element with the .highlighted class */
+.highlighted .MuiPaper-root {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15));
+}

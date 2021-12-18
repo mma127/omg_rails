@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Paper, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
@@ -17,12 +17,16 @@ const useStyles = makeStyles(theme => ({
   placementBox: {
     minHeight: '10rem',
     minWidth: '4rem'
+  },
+  statsBox: {
+    minHeight: '10rem'
   }
 }))
 
 const defaultTab = CORE
 export const CompanyManager = () => {
   const [currentTab, setCurrentTab] = useState(defaultTab)
+  const [selectedUnit, setSelectedUnit] = useState("")
 
   const classes = useStyles()
 
@@ -42,6 +46,13 @@ export const CompanyManager = () => {
     setCurrentTab(newTab)
   }
 
+  const onUnitSelect = (unit) => {
+    /** Called when a unit is selected. Populates the unit stats box with relevant data
+     * TODO if a squad is clicked, should take upgrades into account
+     */
+    setSelectedUnit(unit)
+  }
+
   const onUnitDrop = (unit, index) => {
     console.log(`Added ${unit} to category ${currentTab} position ${index}`)
   }
@@ -52,11 +63,17 @@ export const CompanyManager = () => {
 
       <Grid container spacing={2}>
         <Grid item container spacing={2}>
-          <Grid item xs={1}>
+          <Grid item md={6}>
             {/*TODO read available units for this company from backend */}
             {/*TODO maybe populate by type, alphabetically or cost ASC */}
-            <UnitCardDroppable label={RIFLEMEN} image={riflemen} onDrop={onDrop} />
-            <UnitCardDroppable label={SHERMAN} image={sherman} onDrop={onDrop} />
+            <UnitCardDroppable label={RIFLEMEN} image={riflemen} onDrop={onDrop} onUnitClick={onUnitSelect} />
+            <UnitCardDroppable label={SHERMAN} image={sherman} onDrop={onDrop} onUnitClick={onUnitSelect} />
+          </Grid>
+          <Grid item md={6}>
+            <Paper key='statsBox' className={classes.statsBox} >
+              {/*TODO connect selectedUnit to stats*/}
+              {selectedUnit}
+            </Paper>
           </Grid>
         </Grid>
         <Grid item>
@@ -64,30 +81,30 @@ export const CompanyManager = () => {
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={0} onHitCallback={onUnitDrop} />
+            <CompanyGridDropTarget index={0} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={1} onHitCallback={onUnitDrop} />
+            <CompanyGridDropTarget index={1} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={2} onHitCallback={onUnitDrop} />
+            <CompanyGridDropTarget index={2} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={3} onHitCallback={onUnitDrop} />
+            <CompanyGridDropTarget index={3} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} />
           </Grid>
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={4} onHitCallback={onUnitDrop} />
+            <CompanyGridDropTarget index={4} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={5} onHitCallback={onUnitDrop} />
+            <CompanyGridDropTarget index={5} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={6} onHitCallback={onUnitDrop} />
+            <CompanyGridDropTarget index={6} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={7} onHitCallback={onUnitDrop} />
+            <CompanyGridDropTarget index={7} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} />
           </Grid>
         </Grid>
       </Grid>

@@ -5,6 +5,7 @@ import { Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 import { UnitCard } from "./UnitCard";
+import './CompanyGridDropTarget.css'
 
 const useStyles = makeStyles(() => ({
   placementBox: {
@@ -25,8 +26,9 @@ const useStyles = makeStyles(() => ({
  *
  * @param index: position of the box within the Company builder grid of drop targets
  * @param onHitCallback: Callback fired when this company grid drop target receives a hit and has an unit dropped in
+ * @param onUnitClick: Callback fired when the unit icon is clicked. Expect to pass squad identifier
  */
-export const CompanyGridDropTarget = ({ index, onHitCallback }) => {
+export const CompanyGridDropTarget = ({ index, onHitCallback, onUnitClick }) => {
   const classes = useStyles()
 
   const [content, setContent] = useState([])
@@ -35,14 +37,14 @@ export const CompanyGridDropTarget = ({ index, onHitCallback }) => {
     const dragData = e.dragData
     console.log(`${dragData.label} dropped into target ${index}`)
     const existing = content.slice()
-    existing.push(<UnitCard key={nanoid()} label={dragData.label} image={dragData.image} />)
+    existing.push(<UnitCard key={nanoid()} label={dragData.label} image={dragData.image} onUnitClick={onUnitClick} />)
     setContent(existing)
 
     onHitCallback(dragData.label, index)
   }
 
   return (
-    <DropTarget targetKey="unit" onHit={onHit}>
+    <DropTarget targetKey="unit" onHit={onHit} >
       <Paper key={index} className={classes.placementBox}>
         {index}
         {content}
