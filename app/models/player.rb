@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: player
+# Table name: players
 #
 #  id                          :bigint           not null, primary key
 #  avatar(Player avatar url)   :text

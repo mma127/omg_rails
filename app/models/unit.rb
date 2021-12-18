@@ -36,4 +36,6 @@ class Unit < ApplicationRecord
   has_many :unit_modifications
   has_many :unit_games
   has_many :games, through: :unit_games
+
+
 end

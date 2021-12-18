@@ -39,6 +39,7 @@ gem 'omniauth-rails_csrf_protection'
 gem 'rack-cors'
 
 gem 'thor'
+gem "seedbank"
 
 # Pretty printing
 gem 'pry'

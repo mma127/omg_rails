@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_04_025910) do
+ActiveRecord::Schema.define(version: 2021_12_18_194131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,12 +27,12 @@ ActiveRecord::Schema.define(version: 2021_12_04_025910) do
 
   create_table "available_upgrades", comment: "Upgrade availability per company", force: :cascade do |t|
     t.bigint "company_id"
-    t.bigint "unit_id"
     t.integer "available", comment: "Number of this upgrade available to purchase for the company"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "upgrade_id"
     t.index ["company_id"], name: "index_available_upgrades_on_company_id"
-    t.index ["unit_id"], name: "index_available_upgrades_on_unit_id"
+    t.index ["upgrade_id"], name: "index_available_upgrades_on_upgrade_id"
   end
 
   create_table "callin_modifier_allowed_units", comment: "Units allowed in a callin for a callin modifier to take effect", force: :cascade do |t|
@@ -121,24 +121,28 @@ ActiveRecord::Schema.define(version: 2021_12_04_025910) do
   end
 
   create_table "doctrines", comment: "Faction doctrines", force: :cascade do |t|
-    t.string "name", comment: "Raw name"
-    t.string "display_name", comment: "Display name"
-    t.string "const_name", comment: "Doctrine CONST name for battlefile"
+    t.string "name", null: false, comment: "Raw name"
+    t.string "display_name", null: false, comment: "Display name"
+    t.string "const_name", null: false, comment: "Doctrine CONST name for battlefile"
     t.string "internal_name", comment: "Name for internal code use, may not be needed"
-    t.bigint "faction_id"
+    t.bigint "faction_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["const_name"], name: "index_doctrines_on_const_name", unique: true
     t.index ["faction_id"], name: "index_doctrines_on_faction_id"
+    t.index ["name"], name: "index_doctrines_on_name", unique: true
   end
 
   create_table "factions", comment: "Game factions", force: :cascade do |t|
-    t.string "name", comment: "Raw name"
-    t.string "display_name", comment: "Display name"
-    t.string "const_name", comment: "Faction CONST name for battlefile"
+    t.string "name", null: false, comment: "Raw name"
+    t.string "display_name", null: false, comment: "Display name"
+    t.string "const_name", null: false, comment: "Faction CONST name for battlefile"
     t.string "internal_name", comment: "Name for internal code use, may not be needed"
-    t.string "side", comment: "Allied or Axis side"
+    t.string "side", null: false, comment: "Allied or Axis side"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["const_name"], name: "index_factions_on_const_name", unique: true
+    t.index ["name"], name: "index_factions_on_name", unique: true
   end
 
   create_table "games", comment: "Metadata for CoH games, including alpha", force: :cascade do |t|
@@ -156,7 +160,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_025910) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "player", comment: "Player record", force: :cascade do |t|
+  create_table "players", comment: "Player record", force: :cascade do |t|
     t.string "name", comment: "Player screen name"
     t.text "avatar", comment: "Player avatar url"
     t.datetime "created_at", precision: 6, null: false
@@ -201,6 +205,7 @@ ActiveRecord::Schema.define(version: 2021_12_04_025910) do
     t.bigint "unit_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "type", null: false, comment: "What effect this restriction has on the unit"
     t.index ["restriction_id"], name: "index_restriction_units_on_restriction_id"
     t.index ["unit_id"], name: "index_restriction_units_on_unit_id"
   end
@@ -353,14 +358,14 @@ ActiveRecord::Schema.define(version: 2021_12_04_025910) do
   add_foreign_key "available_units", "companies"
   add_foreign_key "available_units", "units"
   add_foreign_key "available_upgrades", "companies"
-  add_foreign_key "available_upgrades", "units"
+  add_foreign_key "available_upgrades", "upgrades"
   add_foreign_key "callin_modifier_allowed_units", "callin_modifiers"
   add_foreign_key "callin_modifier_allowed_units", "units"
   add_foreign_key "callin_modifier_required_units", "callin_modifiers"
   add_foreign_key "callin_modifier_required_units", "units"
   add_foreign_key "companies", "doctrines"
   add_foreign_key "companies", "factions"
-  add_foreign_key "companies", "player"
+  add_foreign_key "companies", "players"
   add_foreign_key "company_offmaps", "companies"
   add_foreign_key "company_offmaps", "offmaps"
   add_foreign_key "company_resource_bonuses", "companies"

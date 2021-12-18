@@ -25,7 +25,7 @@
 #
 #  fk_rails_...  (doctrine_id => doctrines.id)
 #  fk_rails_...  (faction_id => factions.id)
-#  fk_rails_...  (player_id => player.id)
+#  fk_rails_...  (player_id => players.id)
 #
 class Company < ApplicationRecord
   belongs_to :player
