@@ -20,17 +20,6 @@
 #
 #  index_units_on_name  (name)
 #
-class Unit < ApplicationRecord
-  belongs_to :restriction, optional: true
+class Tank < Unit
 
-  has_many :unit_modifications
-  has_many :unit_games
-  has_many :games, through: :unit_games
-
-  validates_presence_of :name
-  validates_presence_of :const_name
-  validates_presence_of :display_name
-  validates_uniqueness_of :name
-  validates_numericality_of :unitwide_upgrade_slots
-  validates_numericality_of :upgrade_slots
 end

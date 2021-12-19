@@ -29,12 +29,13 @@
 #  fk_rails_...  (restriction_id => restrictions.id)
 #  fk_rails_...  (unit_id => units.id)
 #
-class RestrictionUnit < ApplicationRecord
-  belongs_to :restriction
-  belongs_to :unit
+class BaseRestrictionUnit < RestrictionUnit
 
-  enum types: {
-    allow: "allow",
-    disallow: "disallow"
-  }
+  before_save :generate_description
+
+  private
+
+  def generate_description
+    self.description = "#{restriction.name} - #{unit.display_name}"
+  end
 end
