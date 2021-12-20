@@ -3,17 +3,17 @@
 # Table name: companies
 #
 #  id                                       :bigint           not null, primary key
-#  fuel(Fuel available to this company)     :integer
-#  man(Manpower available to this company)  :integer
-#  mun(Munitions available to this company) :integer
+#  fuel(Fuel available to this company)     :integer          default(0)
+#  man(Manpower available to this company)  :integer          default(0)
+#  mun(Munitions available to this company) :integer          default(0)
 #  name(Company name)                       :string
-#  pop(Population cost of this company)     :integer
-#  vps_earned(VPs earned by this company)   :integer
+#  pop(Population cost of this company)     :integer          default(0)
+#  vps_earned(VPs earned by this company)   :integer          default(0)
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
-#  doctrine_id                              :bigint
-#  faction_id                               :bigint
-#  player_id                                :bigint
+#  doctrine_id                              :bigint           not null
+#  faction_id                               :bigint           not null
+#  player_id                                :bigint           not null
 #
 # Indexes
 #
@@ -32,11 +32,16 @@ class Company < ApplicationRecord
   belongs_to :doctrine
   belongs_to :faction
 
+  has_many :available_units
   has_many :company_unlocks
   has_many :unlocks, through: :company_unlocks
   has_many :company_offmaps
   has_many :offmaps, through: :company_offmaps
   has_many :company_resource_bonuses
+
+  validates_presence_of :faction
+  validates_presence_of :doctrine
+  validates_presence_of :player
 
   def side
     faction.side

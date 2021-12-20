@@ -11,7 +11,11 @@ Rails.application.routes.draw do
 
     resources :doctrines, only: [:index, :show]
 
-    resources :companies, only: [:index, :create, :destroy]
+    resources :companies, only: [:index, :create, :destroy] do
+      member do
+        get 'available_units'
+      end
+    end
   end
 
   root "main#index"

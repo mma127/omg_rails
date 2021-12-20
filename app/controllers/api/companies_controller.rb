@@ -17,11 +17,22 @@ module Api
         render json: "Invalid doctrine with id #{create_params[:doctrineId]}", status: :bad_request
       end
 
-      new_company = Company.create!(name: create_params[:name],
-                                     player: current_player,
-                                     doctrine: doctrine,
-                                     faction: doctrine.faction)
-      render json: CompanySerializer.new(new_company).serializable_hash, status: :created, serializer: ApplicationSerializer
+      begin
+        company_service = CompanyService.new(current_player)
+        new_company = company_service.create_company(doctrine, create_params[:name])
+
+        render json: CompanySerializer.new(new_company).serializable_hash, status: :created, serializer: ApplicationSerializer
+      rescue StandardError => e
+        Rails.logger.warn("Failed to create company for Player #{current_player.id} with params #{create_params}: #{e.message}")
+        render json: e.message, status: :bad_request
+      end
+    end
+
+    def available_units
+      company = Company.find(params[:id])
+      available_units = company.available_units
+
+      render json: AvailableUnitsSerializer.new(available_units).serializable_hash
     end
 
     def destroy

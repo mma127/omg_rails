@@ -21,8 +21,9 @@
 #
 # Indexes
 #
-#  index_restriction_units_on_restriction_id  (restriction_id)
-#  index_restriction_units_on_unit_id         (unit_id)
+#  index_restriction_units_on_restriction_id              (restriction_id)
+#  index_restriction_units_on_restriction_id_and_unit_id  (restriction_id,unit_id) UNIQUE
+#  index_restriction_units_on_unit_id                     (unit_id)
 #
 # Foreign Keys
 #

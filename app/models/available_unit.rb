@@ -22,4 +22,8 @@
 class AvailableUnit < ApplicationRecord
   belongs_to :company
   belongs_to :unit
+
+  def unit_name
+    unit.name
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_18_224856) do
+ActiveRecord::Schema.define(version: 2021_12_20_020052) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,14 +63,14 @@ ActiveRecord::Schema.define(version: 2021_12_18_224856) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name", comment: "Company name"
-    t.bigint "player_id"
-    t.bigint "doctrine_id"
-    t.bigint "faction_id"
-    t.integer "vps_earned", comment: "VPs earned by this company"
-    t.integer "man", comment: "Manpower available to this company"
-    t.integer "mun", comment: "Munitions available to this company"
-    t.integer "fuel", comment: "Fuel available to this company"
-    t.integer "pop", comment: "Population cost of this company"
+    t.bigint "player_id", null: false
+    t.bigint "doctrine_id", null: false
+    t.bigint "faction_id", null: false
+    t.integer "vps_earned", default: 0, comment: "VPs earned by this company"
+    t.integer "man", default: 0, comment: "Manpower available to this company"
+    t.integer "mun", default: 0, comment: "Munitions available to this company"
+    t.integer "fuel", default: 0, comment: "Fuel available to this company"
+    t.integer "pop", default: 0, comment: "Population cost of this company"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["doctrine_id"], name: "index_companies_on_doctrine_id"
@@ -216,6 +216,7 @@ ActiveRecord::Schema.define(version: 2021_12_18_224856) do
     t.decimal "callin_modifier", default: "1.0", comment: "Base callin modifier, default is 1"
     t.integer "priority", comment: "Priority order to apply the modification from 1 -> 100"
     t.string "description", comment: "What does this RestrictionUnit do?"
+    t.index ["restriction_id", "unit_id"], name: "index_restriction_units_on_restriction_id_and_unit_id", unique: true
     t.index ["restriction_id"], name: "index_restriction_units_on_restriction_id"
     t.index ["unit_id"], name: "index_restriction_units_on_unit_id"
   end

@@ -21,8 +21,9 @@
 #
 # Indexes
 #
-#  index_restriction_units_on_restriction_id  (restriction_id)
-#  index_restriction_units_on_unit_id         (unit_id)
+#  index_restriction_units_on_restriction_id              (restriction_id)
+#  index_restriction_units_on_restriction_id_and_unit_id  (restriction_id,unit_id) UNIQUE
+#  index_restriction_units_on_unit_id                     (unit_id)
 #
 # Foreign Keys
 #
@@ -37,4 +38,6 @@ class RestrictionUnit < ApplicationRecord
     allow: "allow",
     disallow: "disallow"
   }
+
+  validates_uniqueness_of :unit_id, scope: :restriction_id
 end
