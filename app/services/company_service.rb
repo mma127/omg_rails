@@ -1,5 +1,6 @@
 class CompanyService
   class CompanyCreationValidationError < StandardError; end
+  class CompanyDeletionValidationError < StandardError; end
 
   MAX_COMPANIES_PER_SIDE = 2.freeze
 
@@ -25,6 +26,14 @@ class CompanyService
     new_company
   end
 
+  def delete_company(company, override=false)
+    unless can_delete_company(company, override)
+      raise CompanyDeletionValidationError("Player #{@player.id} cannot delete Company #{company.id}")
+    end
+
+    company.destroy!
+  end
+
   private
 
   # A company can be created for a player if they have fewer than the limit of companies for the doctrine's side
@@ -33,5 +42,9 @@ class CompanyService
     factions_for_side = Faction.where(side: side)
 
     @player.companies.where(faction: factions_for_side).size < MAX_COMPANIES_PER_SIDE
+  end
+
+  def can_delete_company(company, override)
+    company.player == @player || override
   end
 end

@@ -34,7 +34,7 @@ export const CompanySummary = ({ company }) => {
   const classes = useStyles()
   let navigate = useNavigate()
 
-  const doctrine = useSelector(state => selectDoctrineById(state, company.attributes.doctrineId))
+  const doctrine = useSelector(state => selectDoctrineById(state, company.doctrineId))
 
   const deleteCompany = () => {
     dispatch(deleteCompanyById({ companyId: company.id }))
@@ -51,11 +51,11 @@ export const CompanySummary = ({ company }) => {
       <Card elevation={3}>
           <CardActionArea onClick={manageCompany}>
             <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>
-              <img src={doctrineImgMapping[doctrine.attributes.name]} alt={doctrine.attributes.displayName}
+              <img src={doctrineImgMapping[doctrine.name]} alt={doctrine.displayName}
                    className={classes.optionImage} />
             </Box>
             <CardContent>
-              <Typography variant="h6">{company.attributes.name}</Typography>
+              <Typography variant="h6">{company.name}</Typography>
               <Typography variant="body2">Company Stats Here</Typography>
               <Typography variant="body2">Company Stats Here</Typography>
               <Typography variant="body2">Company Stats Here</Typography>

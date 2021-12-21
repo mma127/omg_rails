@@ -88,3 +88,27 @@ This allows webpack to recompile assets continually, rather than on page reload.
 
 ### Start both the server and webpack
 `bundle exec foreman start`
+
+## Development
+
+### Endpoints
+We are using the `grape` gem to manage the API framework. Within this API, there are multiple API classes in 
+`/app/api/omg` which each should correspond to a particular subpath. A new endpoint class
+must be mounted in the base API class `api.rb`
+
+To transform response entities, we use `grape-entity` to add a simple DSL on top
+of ActiveRecord models. For any model we want to transform in an API response, we should add
+the following in the class:
+```ruby
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :name
+    expose :player_id, as: :playerId
+  end
+```
+Each exposed attribute is one on the model, and we should also use the `as` option to alias any
+attribute names with underscores to camel case.

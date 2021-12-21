@@ -53,8 +53,8 @@ export const CreateCompaniesForm = () => {
 
   const onSubmit = () => {
     // Get doctrine id for doctrine name
-    const alliedDoctrine = doctrines.find(d => d.attributes.name === alliedCompany.doctrine)
-    const axisDoctrine = doctrines.find(d => d.attributes.name === axisCompany.doctrine)
+    const alliedDoctrine = doctrines.find(d => d.name === alliedCompany.doctrine)
+    const axisDoctrine = doctrines.find(d => d.name === axisCompany.doctrine)
     dispatch(createCompany({
       name: alliedCompany.name,
       doctrine: alliedCompany.doctrine,

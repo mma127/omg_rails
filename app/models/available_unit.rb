@@ -26,4 +26,16 @@ class AvailableUnit < ApplicationRecord
   def unit_name
     unit.name
   end
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :company_id, as: :companyId
+    expose :unit_id, as: :unit_id
+    expose :available
+    expose :unit_name, as: :unitName
+  end
 end

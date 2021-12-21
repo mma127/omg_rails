@@ -1,5 +1,5 @@
-module Api
-  class DoctrinesController < ApiController
+module API
+  class DoctrinesController < APIController
     def index
       render json: DoctrineSerializer.new(Doctrine.all).serializable_hash
     end

@@ -1,5 +1,5 @@
-module Api
-  class CompaniesController < ApiController
+module API
+  class CompaniesController < APIController
     before_action :authenticate_player!
 
     def index

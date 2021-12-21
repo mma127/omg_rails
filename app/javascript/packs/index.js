@@ -10,6 +10,7 @@ import { fetchCompanies } from "../features/companies/companiesSlice";
 import { fetchDoctrines } from "../features/doctrines/doctrinesSlice";
 
 axios.defaults.headers.common['Accept'] = 'application/json';
+axios.defaults.baseURL = "/api"
 
 store.dispatch(fetchPlayer())
 store.dispatch(fetchCompanies())

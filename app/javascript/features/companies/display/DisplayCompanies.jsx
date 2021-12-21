@@ -43,11 +43,11 @@ export const DisplayCompanies = () => {
 
   const deletingError = useSelector(state => state.companies.deletingError)
 
-  const alliedCompanies = companies.filter(c => c.attributes.side === ALLIED_SIDE)
-  const axisCompanies = companies.filter(c => c.attributes.side === AXIS_SIDE)
+  const alliedCompanies = companies.filter(c => c.side === ALLIED_SIDE)
+  const axisCompanies = companies.filter(c => c.side === AXIS_SIDE)
 
   const createNewCompany = (company) => {
-    const doctrine = doctrines.find(d => d.attributes.name === company.doctrine)
+    const doctrine = doctrines.find(d => d.name === company.doctrine)
     const companyPayload = {
       name: company.name,
       doctrine: company.doctrine,

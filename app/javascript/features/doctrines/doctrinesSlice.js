@@ -6,7 +6,7 @@ const doctrinesAdapter = createEntityAdapter()
 const initialState = doctrinesAdapter.getInitialState()
 
 export const fetchDoctrines = createAsyncThunk("doctrines/fetchDoctrines", async () => {
-  const response = await axios.get("/api/doctrines")
+  const response = await axios.get("/doctrines")
   return response.data
 })
 
@@ -16,7 +16,7 @@ const doctrinesSlice = createSlice({
   reducers:{},
   extraReducers(builder) {
     builder.addCase(fetchDoctrines.fulfilled, (state, action) => {
-      doctrinesAdapter.setAll(state, action.payload.data)
+      doctrinesAdapter.setAll(state, action.payload)
     })
   }
 })

@@ -31,4 +31,14 @@ class Player < ApplicationRecord
   has_many :companies
   has_many :doctrines, through: :companies
   has_many :factions, through: :companies
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :name
+    expose :avatar
+  end
 end

@@ -1,5 +1,5 @@
-module Api
-  class PlayerController < ApiController
+module API
+  class PlayerController < APIController
     before_action :authenticate_player!
 
     def index
