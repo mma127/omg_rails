@@ -121,7 +121,7 @@ after :restrictions do
   BaseRestrictionUnit.create!(restriction: armor_restriction, unit: mech_inf,
                               man: 240, mun: 0, fuel: 0, pop: 4, resupply: 4, resupply_max: 8, company_max: 10, priority: 1)
 
-  sherman_105 = Tank.find_by_name("105_sherman")
+  sherman_105 = Tank.find_by_name("sherman_105")
   BaseRestrictionUnit.create!(restriction: armor_restriction, unit: sherman_105,
                               man: 340, mun: 0, fuel: 280, pop: 9, resupply: 1, resupply_max: 2, company_max: 3, priority: 1)
   calliope = Tank.find_by_name("calliope")

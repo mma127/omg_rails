@@ -43,6 +43,10 @@ class Company < ApplicationRecord
   validates_presence_of :doctrine
   validates_presence_of :player
 
+  def faction_name
+    faction.name
+  end
+
   def side
     faction.side
   end
@@ -60,5 +64,6 @@ class Company < ApplicationRecord
     expose :man, :mun, :fuel, :pop
     expose :vps_earned, as: :vpsEarned
     expose :side
+    expose :faction_name, as: :factionName
   end
 end
