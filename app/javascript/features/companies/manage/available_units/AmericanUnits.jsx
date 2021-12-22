@@ -4,6 +4,22 @@ import { useSelector } from "react-redux";
 import { selectAvailableUnits, selectCompanyById } from "../../companiesSlice";
 import { UnitCardDroppable } from "../UnitCardDroppable";
 import * as americanUnits from "../../../../constants/units/americans";
+import { Tooltip, tooltipClasses, Typography } from "@mui/material";
+import { styled } from "@mui/styles";
+
+
+// const HtmlTooltip = styled(({ className, ...props }) => (
+//   <Tooltip {...props} classes={{ popper: className }} />
+// ))(({ theme }) => ({
+//   [`& .${tooltipClasses.tooltip}`]: {
+//     backgroundColor: '#f5f5f9',
+//     color: 'rgba(0, 0, 0, 0.87)',
+//     maxWidth: 220,
+//     fontSize: theme.typography.pxToRem(12),
+//     border: '1px solid #dadde9',
+//   },
+// }));
+
 
 /**
  * Show all available American units for the given company. Take into account availability
@@ -19,11 +35,15 @@ export const AmericanUnits = ({ companyId, onDrop, onUnitSelect }) => {
     <>
       {
         availableUnits.map(au => (
-          <UnitCardDroppable key={au.unitName}
-                             label={au.unitName}
-                             image={americanUnits.unitImageMapping[au.unitName]}
-                             onDrop={onDrop}
-                             onUnitClick={onUnitSelect}
+          <UnitCardDroppable
+            key={au.unitName}
+            label={au.unitName}
+            image={americanUnits.unitImageMapping[au.unitName]}
+            available={au.available}
+            resupply={au.resupply}
+            companyMax={au.companyMax}
+            onDrop={onDrop}
+            onUnitClick={onUnitSelect}
           />
         ))
       }
