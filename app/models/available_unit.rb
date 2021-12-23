@@ -2,12 +2,15 @@
 #
 # Table name: available_units
 #
-#  id                                                                   :bigint           not null, primary key
-#  available(Number of this unit available to purchase for the company) :integer
-#  created_at                                                           :datetime         not null
-#  updated_at                                                           :datetime         not null
-#  company_id                                                           :bigint
-#  unit_id                                                              :bigint
+#  id                                                                                   :bigint           not null, primary key
+#  available(Number of this unit available to purchase for the company)                 :integer
+#  company_max(Maximum number of the unit a company can hold)                           :integer          not null
+#  resupply(Per game resupply)                                                          :integer          not null
+#  resupply_max(How much resupply is available from saved up resupplies, <= company ma) :integer          not null
+#  created_at                                                                           :datetime         not null
+#  updated_at                                                                           :datetime         not null
+#  company_id                                                                           :bigint
+#  unit_id                                                                              :bigint
 #
 # Indexes
 #
@@ -37,5 +40,8 @@ class AvailableUnit < ApplicationRecord
     expose :unit_id, as: :unit_id
     expose :available
     expose :unit_name, as: :unitName
+    expose :resupply
+    expose :resupply_max, as: :resupplyMax
+    expose :company_max, as: :companyMax
   end
 end

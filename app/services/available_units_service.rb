@@ -8,7 +8,7 @@ class AvailableUnitsService
     @doctrine = company.doctrine
   end
 
-  # Given a company, determine the available units for that company
+  # Given a new company, determine the available units for that company
   # Taking into account:
   #   Faction units
   #   Doctrine units
@@ -54,7 +54,9 @@ class AvailableUnitsService
 
     available_units = []
     unit_hashes.values.map do |unit_data|
-      available_units << AvailableUnit.new(unit: unit_data.unit, company: @company, available: unit_data.resupply_max)
+      available_units << AvailableUnit.new(unit: unit_data.unit, company: @company, available: unit_data.resupply_max,
+                                           resupply: unit_data.resupply, resupply_max: unit_data.resupply_max,
+                                           company_max: unit_data.company_max)
     end
     AvailableUnit.import!(available_units)
   end

@@ -46,7 +46,7 @@ after :doctrines do
   ## Armor
   Infantry.create!(name: "mech_inf", const_name: "ALLY.MECH_INFANTRY", display_name: "Mechanized Infantry", unitwide_upgrade_slots: 1, upgrade_slots: 1)
 
-  Tank.create!(name: "105_sherman", const_name: "ALLY.HOWITZER_SHERMAN", display_name: "105mm Sherman", upgrade_slots: 2)
+  Tank.create!(name: "sherman_105", const_name: "ALLY.HOWITZER_SHERMAN", display_name: "105mm Sherman", upgrade_slots: 2)
   Tank.create!(name: "calliope", const_name: "ALLY.CALLIOPE", display_name: "Sherman Calliope", upgrade_slots: 2)
   Tank.create!(name: "easy_eight", const_name: "ALLY.EASY_EIGHTY", display_name: "M4A3E8 Sherman Easy Eight", upgrade_slots: 2)
   Tank.create!(name: "jackson", const_name: "ALLY.JACKSON", display_name: "M36 Jackson", upgrade_slots: 0)
