@@ -112,3 +112,13 @@ the following in the class:
 ```
 Each exposed attribute is one on the model, and we should also use the `as` option to alias any
 attribute names with underscores to camel case.
+
+## Deployment
+### Heroku
+
+#### Reset the DB
+Typically need to reset the DB if the seeds change and the entire DB needs to be reseeded.
+
+1. `heroku pg:reset` - resets the pg DB
+2. `heroku run rake db:migrate`
+3. `heroku run rake db:seed`
