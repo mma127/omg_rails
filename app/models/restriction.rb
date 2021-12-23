@@ -37,4 +37,19 @@ class Restriction < ApplicationRecord
   has_many :offmaps, through: :restriction_offmaps
   has_many :restriction_callin_modifiers
   has_many :callin_modifiers, through: :restriction_callin_modifiers
+
+  validates_presence_of :name
+  validate :only_one_of_faction_doctrine_unlock
+
+  def only_one_of_faction_doctrine_unlock
+    if faction_id.present? && (doctrine_id.present? || unlock_id.present?)
+      errors.add(:faction_id, "Can only have one of faction_id, doctrine_id, or unlock_id present")
+    end
+    if doctrine_id.present? && (faction_id.present? || unlock_id.present?)
+      errors.add(:doctrine_id, "Can only have one of faction_id, doctrine_id, or unlock_id present")
+    end
+    if unlock_id.present? && (faction_id.present? || doctrine_id.present?)
+      errors.add(:unlock_id, "Can only have one of faction_id, doctrine_id, or unlock_id present")
+    end
+  end
 end

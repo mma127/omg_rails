@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_18_194131) do
+ActiveRecord::Schema.define(version: 2021_12_22_020407) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(version: 2021_12_18_194131) do
     t.integer "available", comment: "Number of this unit available to purchase for the company"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "resupply", null: false, comment: "Per game resupply"
+    t.integer "resupply_max", null: false, comment: "How much resupply is available from saved up resupplies, <= company ma"
+    t.integer "company_max", null: false, comment: "Maximum number of the unit a company can hold"
     t.index ["company_id"], name: "index_available_units_on_company_id"
     t.index ["unit_id"], name: "index_available_units_on_unit_id"
   end
@@ -63,14 +66,14 @@ ActiveRecord::Schema.define(version: 2021_12_18_194131) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name", comment: "Company name"
-    t.bigint "player_id"
-    t.bigint "doctrine_id"
-    t.bigint "faction_id"
-    t.integer "vps_earned", comment: "VPs earned by this company"
-    t.integer "man", comment: "Manpower available to this company"
-    t.integer "mun", comment: "Munitions available to this company"
-    t.integer "fuel", comment: "Fuel available to this company"
-    t.integer "pop", comment: "Population cost of this company"
+    t.bigint "player_id", null: false
+    t.bigint "doctrine_id", null: false
+    t.bigint "faction_id", null: false
+    t.integer "vps_earned", default: 0, comment: "VPs earned by this company"
+    t.integer "man", default: 0, comment: "Manpower available to this company"
+    t.integer "mun", default: 0, comment: "Munitions available to this company"
+    t.integer "fuel", default: 0, comment: "Fuel available to this company"
+    t.integer "pop", default: 0, comment: "Population cost of this company"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["doctrine_id"], name: "index_companies_on_doctrine_id"
@@ -206,6 +209,17 @@ ActiveRecord::Schema.define(version: 2021_12_18_194131) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "type", null: false, comment: "What effect this restriction has on the unit"
+    t.decimal "pop", comment: "Population cost"
+    t.integer "man", comment: "Manpower cost"
+    t.integer "mun", comment: "Munition cost"
+    t.integer "fuel", comment: "Fuel cost"
+    t.integer "resupply", comment: "Per game resupply"
+    t.integer "resupply_max", comment: "How much resupply is available from saved up resupplies, <= company max"
+    t.integer "company_max", comment: "Maximum number of the unit a company can hold"
+    t.decimal "callin_modifier", default: "1.0", comment: "Base callin modifier, default is 1"
+    t.integer "priority", comment: "Priority order to apply the modification from 1 -> 100"
+    t.string "description", comment: "What does this RestrictionUnit do?"
+    t.index ["restriction_id", "unit_id"], name: "index_restriction_units_on_restriction_id_and_unit_id", unique: true
     t.index ["restriction_id"], name: "index_restriction_units_on_restriction_id"
     t.index ["unit_id"], name: "index_restriction_units_on_unit_id"
   end
@@ -222,6 +236,7 @@ ActiveRecord::Schema.define(version: 2021_12_18_194131) do
     t.index ["doctrine_id"], name: "index_restrictions_on_doctrine_id"
     t.index ["faction_id"], name: "index_restrictions_on_faction_id"
     t.index ["unlock_id"], name: "index_restrictions_on_unlock_id"
+    t.check_constraint "num_nonnulls(faction_id, doctrine_id, unlock_id) = 1", name: "chk_only_one_is_not_null"
   end
 
   create_table "squad_upgrades", comment: "Upgrades purchased for squad", force: :cascade do |t|
@@ -286,25 +301,19 @@ ActiveRecord::Schema.define(version: 2021_12_18_194131) do
   end
 
   create_table "units", comment: "Metadata for a unit", force: :cascade do |t|
-    t.string "const_name", comment: "Const name of the unit for the battle file"
-    t.string "display_name", comment: "Display name"
+    t.string "const_name", null: false, comment: "Const name of the unit for the battle file"
+    t.string "display_name", null: false, comment: "Display name"
     t.text "description", comment: "Display description of the unit"
-    t.bigint "restriction_id"
-    t.integer "pop", comment: "Population cost"
-    t.integer "man", comment: "Manpower cost"
-    t.integer "mun", comment: "Munition cost"
-    t.integer "fuel", comment: "Fuel cost"
-    t.integer "resupply", comment: "Per game resupply"
-    t.integer "resupply_max", comment: "How much resupply is available from saved up resupplies, <= company max"
-    t.integer "company_max", comment: "Maximum number of the unit a company can hold"
-    t.integer "upgrade_slots", comment: "Slots used for per model weapon upgrades"
-    t.integer "unitwide_upgrade_slots", comment: "Unit wide weapon replacement slot"
-    t.boolean "is_airdrop", comment: "Is this unit airdroppable?"
-    t.boolean "is_infiltrate", comment: "Is this unit able to infiltrate?"
+    t.integer "upgrade_slots", default: 0, null: false, comment: "Slots used for per model weapon upgrades"
+    t.integer "unitwide_upgrade_slots", default: 0, null: false, comment: "Unit wide weapon replacement slot"
+    t.boolean "is_airdrop", default: false, null: false, comment: "Is this unit airdroppable?"
+    t.boolean "is_infiltrate", default: false, null: false, comment: "Is this unit able to infiltrate?"
     t.string "retreat_name", comment: "Name for retreating unit"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["restriction_id"], name: "index_units_on_restriction_id"
+    t.string "name", null: false, comment: "Unique unit name"
+    t.string "type", null: false, comment: "Unit type"
+    t.index ["name"], name: "index_units_on_name"
   end
 
   create_table "unlocks", comment: "Metadata for a generic doctrine ability", force: :cascade do |t|
@@ -395,7 +404,6 @@ ActiveRecord::Schema.define(version: 2021_12_18_194131) do
   add_foreign_key "unit_modifications", "restrictions"
   add_foreign_key "unit_modifications", "units"
   add_foreign_key "unit_modifications", "unlocks"
-  add_foreign_key "units", "restrictions"
   add_foreign_key "upgrade_modifications", "restrictions"
   add_foreign_key "upgrade_modifications", "unlocks"
   add_foreign_key "upgrade_modifications", "upgrades"

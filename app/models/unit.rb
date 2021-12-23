@@ -2,33 +2,23 @@
 #
 # Table name: units
 #
-#  id                                                                                    :bigint           not null, primary key
-#  company_max(Maximum number of the unit a company can hold)                            :integer
-#  const_name(Const name of the unit for the battle file)                                :string
-#  description(Display description of the unit)                                          :text
-#  display_name(Display name)                                                            :string
-#  fuel(Fuel cost)                                                                       :integer
-#  is_airdrop(Is this unit airdroppable?)                                                :boolean
-#  is_infiltrate(Is this unit able to infiltrate?)                                       :boolean
-#  man(Manpower cost)                                                                    :integer
-#  mun(Munition cost)                                                                    :integer
-#  pop(Population cost)                                                                  :integer
-#  resupply(Per game resupply)                                                           :integer
-#  resupply_max(How much resupply is available from saved up resupplies, <= company max) :integer
-#  retreat_name(Name for retreating unit)                                                :string
-#  unitwide_upgrade_slots(Unit wide weapon replacement slot)                             :integer
-#  upgrade_slots(Slots used for per model weapon upgrades)                               :integer
-#  created_at                                                                            :datetime         not null
-#  updated_at                                                                            :datetime         not null
-#  restriction_id                                                                        :bigint
+#  id                                                        :bigint           not null, primary key
+#  const_name(Const name of the unit for the battle file)    :string           not null
+#  description(Display description of the unit)              :text
+#  display_name(Display name)                                :string           not null
+#  is_airdrop(Is this unit airdroppable?)                    :boolean          default(FALSE), not null
+#  is_infiltrate(Is this unit able to infiltrate?)           :boolean          default(FALSE), not null
+#  name(Unique unit name)                                    :string           not null
+#  retreat_name(Name for retreating unit)                    :string
+#  type(Unit type)                                           :string           not null
+#  unitwide_upgrade_slots(Unit wide weapon replacement slot) :integer          default(0), not null
+#  upgrade_slots(Slots used for per model weapon upgrades)   :integer          default(0), not null
+#  created_at                                                :datetime         not null
+#  updated_at                                                :datetime         not null
 #
 # Indexes
 #
-#  index_units_on_restriction_id  (restriction_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (restriction_id => restrictions.id)
+#  index_units_on_name  (name)
 #
 class Unit < ApplicationRecord
   belongs_to :restriction, optional: true
@@ -37,5 +27,10 @@ class Unit < ApplicationRecord
   has_many :unit_games
   has_many :games, through: :unit_games
 
-
+  validates_presence_of :name
+  validates_presence_of :const_name
+  validates_presence_of :display_name
+  validates_uniqueness_of :name
+  validates_numericality_of :unitwide_upgrade_slots
+  validates_numericality_of :upgrade_slots
 end

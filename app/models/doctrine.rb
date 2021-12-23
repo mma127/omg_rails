@@ -35,4 +35,15 @@ class Doctrine < ApplicationRecord
   validates_presence_of :faction
   validates_uniqueness_of :name
   validates_uniqueness_of :const_name
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :name
+    expose :display_name, as: :displayName
+    expose :faction_id, as: :factionId
+  end
 end

@@ -7,7 +7,7 @@ const initialState = {
 }
 
 export const fetchPlayer = createAsyncThunk("player/fetchPlayer", async () => {
-  const response = await axios.get('/api/player')
+  const response = await axios.get('/player')
   return response.data
 })
 
