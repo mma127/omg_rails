@@ -32,18 +32,38 @@ class Company < ApplicationRecord
   belongs_to :doctrine
   belongs_to :faction
 
-  has_many :available_units
-  has_many :company_unlocks
+  has_many :available_units, dependent: :destroy
+  has_many :company_unlocks, dependent: :destroy
   has_many :unlocks, through: :company_unlocks
-  has_many :company_offmaps
+  has_many :company_offmaps, dependent: :destroy
   has_many :offmaps, through: :company_offmaps
-  has_many :company_resource_bonuses
+  has_many :company_resource_bonuses, dependent: :destroy
 
   validates_presence_of :faction
   validates_presence_of :doctrine
   validates_presence_of :player
 
+  def faction_name
+    faction.name
+  end
+
   def side
     faction.side
+  end
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :name
+    expose :player_id, as: :playerId
+    expose :doctrine_id, as: :doctrineId
+    expose :faction_id, as: :faction_id
+    expose :man, :mun, :fuel, :pop
+    expose :vps_earned, as: :vpsEarned
+    expose :side
+    expose :faction_name, as: :factionName
   end
 end

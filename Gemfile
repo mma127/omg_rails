@@ -31,6 +31,9 @@ gem 'jbuilder', '~> 2.7'
 
 gem 'jsonapi-serializer'
 
+gem 'grape'
+gem 'grape-entity'
+
 # Openid
 gem 'devise'
 gem 'omniauth-steam'

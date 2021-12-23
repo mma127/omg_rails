@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 
@@ -10,6 +10,7 @@ import { fetchCompanies } from "../features/companies/companiesSlice";
 import { fetchDoctrines } from "../features/doctrines/doctrinesSlice";
 
 axios.defaults.headers.common['Accept'] = 'application/json';
+axios.defaults.baseURL = "/api"
 
 store.dispatch(fetchPlayer())
 store.dispatch(fetchCompanies())
