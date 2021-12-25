@@ -1,7 +1,8 @@
 import React from 'react'
 import { useSelector } from "react-redux";
 
-import { selectAvailableUnits, selectCompanyById } from "../../companiesSlice";
+import { selectCompanyById } from "../../companiesSlice";
+import { selectAllAvailableUnits } from "../../../units/availableUnitsSlice";
 import { UnitCardDroppable } from "../UnitCardDroppable";
 import * as americanUnits from "../../../../constants/units/americans";
 import { Tooltip, tooltipClasses, Typography } from "@mui/material";
@@ -29,15 +30,18 @@ import { styled } from "@mui/styles";
  */
 export const AmericanUnits = ({ companyId, onDrop, onUnitSelect }) => {
   const company = useSelector(state => selectCompanyById(state, companyId))
-  const availableUnits = useSelector(selectAvailableUnits)
+  const availableUnits = useSelector(selectAllAvailableUnits)
 
   return (
     <>
       {
         availableUnits.map(au => (
           <UnitCardDroppable
-            key={au.unitName}
-            label={au.unitName}
+            key={au.unitId}
+            unitId={au.unitId}
+            unitName={au.unitName}
+            availableUnit={au}
+            label={au.unitDisplayName}
             image={americanUnits.unitImageMapping[au.unitName]}
             available={au.available}
             resupply={au.resupply}

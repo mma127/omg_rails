@@ -33,4 +33,20 @@ class Unit < ApplicationRecord
   validates_uniqueness_of :name
   validates_numericality_of :unitwide_upgrade_slots
   validates_numericality_of :upgrade_slots
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :name
+    expose :display_name, as: :displayName
+    expose :description
+    expose :type
+    expose :is_airdrop, as: :isAirdrop
+    expose :is_infiltrate, as: :isInfiltrate
+    expose :upgrade_slots, as: :upgradeSlots
+    expose :unitwide_upgrade_slots, as: :unitwideUpgradeSlots
+  end
 end

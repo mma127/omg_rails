@@ -3,6 +3,7 @@ import playerSlice from "../features/player/playerSlice";
 import companiesSlice from "../features/companies/companiesSlice";
 import doctrinesSlice from "../features/doctrines/doctrinesSlice";
 import unitsSlice from "../features/units/unitsSlice";
+import availableUnitsSlice from "../features/units/availableUnitsSlice";
 
 
 export default configureStore({
@@ -10,6 +11,7 @@ export default configureStore({
     player: playerSlice,
     companies: companiesSlice,
     doctrines: doctrinesSlice,
-    units: unitsSlice
+    units: unitsSlice,
+    availableUnits: availableUnitsSlice
   },
 })

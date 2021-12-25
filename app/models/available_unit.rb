@@ -30,6 +30,34 @@ class AvailableUnit < ApplicationRecord
     unit.name
   end
 
+  def unit_display_name
+    unit.display_name
+  end
+  #
+  # def unit_description
+  #   unit.description
+  # end
+  #
+  # def unit_type
+  #   unit.type
+  # end
+  #
+  # def unit_upgrade_slots
+  #   unit.upgrade_slots
+  # end
+  #
+  # def unit_unitwide_upgrade_slots
+  #   unit.unitwide_upgrade_slots
+  # end
+  #
+  # def unit_is_airdrop
+  #   unit.is_airdrop
+  # end
+  #
+  # def unit_is_infiltrate
+  #   unit.is_infiltrate
+  # end
+
   def entity
     Entity.new(self)
   end
@@ -37,11 +65,23 @@ class AvailableUnit < ApplicationRecord
   class Entity < Grape::Entity
     expose :id
     expose :company_id, as: :companyId
-    expose :unit_id, as: :unit_id
-    expose :available
+    expose :unit_id, as: :unitId
     expose :unit_name, as: :unitName
+    expose :unit_display_name, as: :unitDisplayName
+    # expose :unit_description, as: :unitDescription
+    # expose :unit_type, as: :unitType
+    # expose :unit_upgrade_slots, as: :unitUpgradeSlots
+    # expose :unit_unitwide_upgrade_slots, as: :unitUnitwideUpgradeSlots
+    # expose :unit_is_airdrop, as: :unitIsAirdrop
+    # expose :unit_is_infiltrate, as: :unitIsInfiltrate
+    expose :available
     expose :resupply
     expose :resupply_max, as: :resupplyMax
     expose :company_max, as: :companyMax
+    expose :pop
+    expose :man
+    expose :mun
+    expose :fuel
+    expose :callin_modifier, as: :callinModifier
   end
 end

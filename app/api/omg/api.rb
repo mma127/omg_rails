@@ -20,6 +20,7 @@ module OMG
     mount Players
     mount Doctrines
     mount Companies
+    mount Units
 
     route :any, '*path' do
       error! "Not implemented", 404

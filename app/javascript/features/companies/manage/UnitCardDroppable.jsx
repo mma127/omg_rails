@@ -9,6 +9,9 @@ const useStyles = makeStyles(() => ({
   dragDropContainer: {
     padding: '2px',
     display: 'inline-block'
+  },
+  tooltipHeader: {
+    fontWeight: 'bold'
   }
 }))
 
@@ -20,18 +23,31 @@ const useStyles = makeStyles(() => ({
  * @param onDrop: callback fired when the drag drop container is dropped into a drop target
  * @param onClick: callback fired when the unit card is clicked
  */
-export const UnitCardDroppable = ({ label, image, onDrop, onUnitClick, available, resupply, companyMax }) => {
+export const UnitCardDroppable = ({ unitId, unitName, label, availableUnit, image, onDrop, onUnitClick, available, resupply, companyMax }) => {
   const classes = useStyles()
+
+  let cost = ""
+  if (availableUnit.man > 0) {
+    cost += `${availableUnit.man}MP `
+  }
+  if (availableUnit.mun > 0) {
+    cost += `${availableUnit.mun}MU `
+  }
+  if (availableUnit.fuel > 0) {
+    cost += `${availableUnit.fuel}FU`
+  }
+
   return (
     <Tooltip
-      key={label}
+      key={unitId}
       title={
         <>
           {/*TODO use unit display name */}
-          <Typography variant="h6">{label}</Typography>
+          <Typography variant="subtitle2" className={classes.tooltipHeader}>{label}</Typography>
+          <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
+          <Box><Typography variant="body"><b>Pop:</b> {parseFloat(availableUnit.pop)}</Typography></Box>
           <Box><Typography variant="body"><b>Available:</b> {available}</Typography></Box>
           <Box><Typography variant="body"><b>Resupply:</b> {resupply}</Typography></Box>
-          <Box><Typography variant="body"><b>Company Max:</b> {companyMax}</Typography></Box>
         </>
       }
       // TransitionComponent={Zoom}
@@ -40,8 +56,8 @@ export const UnitCardDroppable = ({ label, image, onDrop, onUnitClick, available
       arrow
     >
       <Box className={classes.dragDropContainer}>
-        <DragDropContainer targetKey="unit" onDrop={onDrop} dragData={{ label: label, image: image }}>
-          <UnitCard label={label} image={image} onUnitClick={onUnitClick} />
+        <DragDropContainer targetKey="unit" onDrop={onDrop} dragData={{ unitId: unitId, unitName: unitName, image: image }}>
+          <UnitCard unitId={unitId} label={label} image={image} onUnitClick={onUnitClick} />
         </DragDropContainer>
       </Box>
     </Tooltip>

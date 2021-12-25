@@ -43,6 +43,7 @@ class AvailableUnitsService
   end
 
   def merge_allowed_units(existing_units_hash, restricted_units_hash)
+    # TODO This only works for BaseRestrictionUnit where more specific ones replace the more general one
     if restricted_units_hash.present?
       existing_units_hash = existing_units_hash.merge(restricted_units_hash)
     end
@@ -56,7 +57,9 @@ class AvailableUnitsService
     unit_hashes.values.map do |unit_data|
       available_units << AvailableUnit.new(unit: unit_data.unit, company: @company, available: unit_data.resupply_max,
                                            resupply: unit_data.resupply, resupply_max: unit_data.resupply_max,
-                                           company_max: unit_data.company_max)
+                                           company_max: unit_data.company_max, pop: unit_data.pop,
+                                           man: unit_data.man, mun: unit_data.mun, fuel: unit_data.fuel,
+                                           callin_modifier: unit_data.callin_modifier)
     end
     AvailableUnit.import!(available_units)
   end

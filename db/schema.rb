@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_22_020407) do
+ActiveRecord::Schema.define(version: 2021_12_24_153933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,11 @@ ActiveRecord::Schema.define(version: 2021_12_22_020407) do
     t.integer "resupply", null: false, comment: "Per game resupply"
     t.integer "resupply_max", null: false, comment: "How much resupply is available from saved up resupplies, <= company ma"
     t.integer "company_max", null: false, comment: "Maximum number of the unit a company can hold"
+    t.decimal "pop", null: false, comment: "Calculated pop cost of this unit for the company"
+    t.integer "man", null: false, comment: "Calculated man cost of this unit for the company"
+    t.integer "mun", null: false, comment: "Calculated mun cost of this unit for the company"
+    t.integer "fuel", null: false, comment: "Calculated fuel cost of this unit for the company"
+    t.decimal "callin_modifier", null: false, comment: "Calculated base callin modifier of this unit for the company"
     t.index ["company_id"], name: "index_available_units_on_company_id"
     t.index ["unit_id"], name: "index_available_units_on_unit_id"
   end

@@ -35,12 +35,13 @@ export const CompanyGridDropTarget = ({ index, onHitCallback, onUnitClick }) => 
 
   const onHit = (e) => {
     const dragData = e.dragData
-    console.log(`${dragData.label} dropped into target ${index}`)
+    console.log(`${dragData.unitName} dropped into target ${index}`)
     const existing = content.slice()
-    existing.push(<UnitCard key={nanoid()} label={dragData.label} image={dragData.image} onUnitClick={onUnitClick} />)
+    existing.push(<UnitCard key={nanoid()} unitId={dragData.unitId} label={dragData.unitName}
+                            image={dragData.image} onUnitClick={onUnitClick} />)
     setContent(existing)
 
-    onHitCallback(dragData.label, index)
+    onHitCallback(dragData.unitName, index)
   }
 
   return (

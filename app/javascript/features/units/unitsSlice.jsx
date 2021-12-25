@@ -5,8 +5,8 @@ const unitsAdapter = createEntityAdapter()
 
 const initialState = unitsAdapter.getInitialState({})
 
-export const fetchUnitsByDoctrineId = createAsyncThunk("units/fetchUnitsByDoctrineId", async ({doctrineId}) => {
-  const response = await axios.get(`/doctrines/${doctrineId}/units`)
+export const fetchUnitById = createAsyncThunk("units/fetchUnitById", async ({unitId}) => {
+  const response = await axios.get(`/units/${unitId}`)
   return response.data
 })
 
@@ -16,8 +16,8 @@ const unitsSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(fetchUnitsByDoctrineId.fulfilled, (state, action) => {
-        unitsAdapter.upsertMany(state, action.payload)
+      .addCase(fetchUnitById.fulfilled, (state, action) => {
+        unitsAdapter.upsertOne(state, action.payload)
       })
   }
 })

@@ -13,28 +13,27 @@ import { RIFLEMEN, SHERMAN } from "../../../constants/units/americans";
 
 import riflemen from '../../../../assets/images/doctrines/americans/units/riflemen.png'
 import sherman from '../../../../assets/images/doctrines/americans/units/sherman.png'
+import { selectCompanyById } from "../companiesSlice";
 import {
   fetchCompanyAvailableUnits,
-  selectAvailableUnits,
-  selectAvailableUnitsStatus,
-  selectCompanyById
-} from "../companiesSlice";
+  selectAllAvailableUnits,
+  selectAvailableUnitsStatus
+} from "../../units/availableUnitsSlice"
 import { AmericanUnits } from "./available_units/AmericanUnits";
+import { selectUnitById } from "../../units/unitsSlice";
+import { UnitDetails } from "./UnitDetails";
 
 const useStyles = makeStyles(theme => ({
   placementBox: {
     minHeight: '10rem',
     minWidth: '4rem'
-  },
-  statsBox: {
-    minHeight: '10rem'
   }
 }))
 
 const defaultTab = CORE
 export const CompanyManager = () => {
   const [currentTab, setCurrentTab] = useState(defaultTab)
-  const [selectedUnit, setSelectedUnit] = useState("")
+  const [SelectedUnitId, setSelectedUnitId] = useState(null)
 
   const classes = useStyles()
 
@@ -61,11 +60,11 @@ export const CompanyManager = () => {
     setCurrentTab(newTab)
   }
 
-  const onUnitSelect = (unit) => {
+  const onUnitSelect = (unitId, unitName) => {
     /** Called when a unit is selected. Populates the unit stats box with relevant data
      * TODO if a squad is clicked, should take upgrades into account
      */
-    setSelectedUnit(unit)
+    setSelectedUnitId(unitId)
   }
 
   const onUnitDrop = (unit, index) => {
@@ -73,7 +72,7 @@ export const CompanyManager = () => {
   }
 
   const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
-  const availableUnits = useSelector(selectAvailableUnits)
+  const availableUnits = useSelector(selectAllAvailableUnits)
   let availableUnitsContent
   if (availableUnitsStatus === "pending") {
     console.log("Loading available units")
@@ -95,11 +94,8 @@ export const CompanyManager = () => {
             {/*TODO read available units for this company from backend */}
             {/*TODO maybe populate by type, alphabetically or cost ASC */}
           </Grid>
-          <Grid item md={6}>
-            <Paper key='statsBox' className={classes.statsBox}>
-              {/*TODO connect selectedUnit to stats*/}
-              {selectedUnit}
-            </Paper>
+          <Grid item md={6} xs={12}>
+            <UnitDetails unitId={SelectedUnitId} />
           </Grid>
         </Grid>
         <Grid item>
