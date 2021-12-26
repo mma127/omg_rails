@@ -1,8 +1,11 @@
 class CompanyService
   class CompanyCreationValidationError < StandardError; end
+
   class CompanyDeletionValidationError < StandardError; end
 
   MAX_COMPANIES_PER_SIDE = 2.freeze
+
+  WAR_RULESET = "war".freeze
 
   def initialize(player)
     @player = player
@@ -13,11 +16,20 @@ class CompanyService
       raise CompanyCreationValidationError("Player #{@player.id} has too many #{doctrine.faction.side} companies, cannot create another one.")
     end
 
+    # Get ruleset
+    ruleset = Ruleset.find_by_name(WAR_RULESET)
+
     # Create Company entity
     new_company = Company.create!(name: name,
                                   player: @player,
                                   doctrine: doctrine,
-                                  faction: doctrine.faction)
+                                  faction: doctrine.faction,
+                                  vps_earned: 0,
+                                  man: ruleset.starting_man,
+                                  mun: ruleset.starting_mun,
+                                  fuel: ruleset.starting_fuel,
+                                  pop: 0
+    )
 
     # Create AvailableUnits for Company
     available_units_service = AvailableUnitsService.new(new_company)
@@ -26,7 +38,7 @@ class CompanyService
     new_company
   end
 
-  def delete_company(company, override=false)
+  def delete_company(company, override = false)
     unless can_delete_company(company, override)
       raise CompanyDeletionValidationError("Player #{@player.id} cannot delete Company #{company.id}")
     end

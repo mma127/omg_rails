@@ -4,13 +4,27 @@ import axios from "axios"
 const companiesAdapter = createEntityAdapter()
 
 const initialState = companiesAdapter.getInitialState({
+  loadingCompanyStatus: "idle",
+  loadingCompanyError: null,
   creatingStatus: "idle",
   creatingError: null,
   deletingError: null
 })
 
+/**
+ * Fetch all companies for the player. High level data only for company selection
+ */
 export const fetchCompanies = createAsyncThunk("companies/fetchCompanies", async () => {
   const response = await axios.get("/companies")
+  return response.data
+})
+
+/**
+ * Fetch data for a specific company for the player.
+ * Includes available units, squads, unlocks to populate company manager
+ */
+export const fetchCompanyById = createAsyncThunk("companies/fetchCompanyById", async ({ companyId }) => {
+  const response = await axios.get(`/companies/${companyId}`)
   return response.data
 })
 
@@ -32,6 +46,19 @@ const companiesSlice = createSlice({
     builder
       .addCase(fetchCompanies.fulfilled, (state, action) => {
         companiesAdapter.setAll(state, action.payload)
+      })
+
+      .addCase(fetchCompanyById.pending, (state) => {
+        state.loadingCompanyStatus = "pending"
+        state.loadingCompanyError = null
+      })
+      .addCase(fetchCompanyById.fulfilled, (state, action) => {
+        state.loadingCompanyStatus = "fulfilled"
+        companiesAdapter.upsertOne(state, action.payload)
+      })
+      .addCase(fetchCompanyById.rejected, (state, action) => {
+        state.loadingCompanyStatus = "rejected"
+        state.loadingCompanyError = action.error.message
       })
 
       .addCase(createCompany.pending, (state) => {

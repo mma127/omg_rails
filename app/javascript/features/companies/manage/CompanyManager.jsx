@@ -13,7 +13,7 @@ import { RIFLEMEN, SHERMAN } from "../../../constants/units/americans";
 
 import riflemen from '../../../../assets/images/doctrines/americans/units/riflemen.png'
 import sherman from '../../../../assets/images/doctrines/americans/units/sherman.png'
-import { selectCompanyById } from "../companiesSlice";
+import { fetchCompanyById, selectCompanyById } from "../companiesSlice";
 import {
   fetchCompanyAvailableUnits,
   selectAllAvailableUnits,
@@ -27,6 +27,9 @@ const useStyles = makeStyles(theme => ({
   placementBox: {
     minHeight: '10rem',
     minWidth: '4rem'
+  },
+  detailTitle: {
+    fontWeight: 'bold'
   }
 }))
 
@@ -44,7 +47,7 @@ export const CompanyManager = () => {
 
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchCompanyAvailableUnits({ companyId }))
+    dispatch(fetchCompanyById({ companyId }))
   }, [companyId])
 
   // TODO use this to constrain the drag area
@@ -96,6 +99,24 @@ export const CompanyManager = () => {
           </Grid>
           <Grid item md={6} xs={12}>
             <UnitDetails unitId={SelectedUnitId} />
+          </Grid>
+        </Grid>
+        <Grid item container spacing={2}>
+          <Grid item xs={2} md={1}>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle} pr={1}>Population</Typography>
+            <Typography variant="body2" gutterBottom>{company.pop}</Typography>
+          </Grid>
+          <Grid item xs={2} md={1}>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle} pr={1}>Manpower</Typography>
+            <Typography variant="body2" gutterBottom>{company.man}</Typography>
+          </Grid>
+          <Grid item xs={2} md={1}>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle} pr={1}>Munitions</Typography>
+            <Typography variant="body2" gutterBottom>{company.mun}</Typography>
+          </Grid>
+          <Grid item xs={2} md={1}>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle} pr={1}>Fuel</Typography>
+            <Typography variant="body2" gutterBottom>{company.fuel}</Typography>
           </Grid>
         </Grid>
         <Grid item>

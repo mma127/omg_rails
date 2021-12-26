@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_24_153933) do
+ActiveRecord::Schema.define(version: 2021_12_25_234147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -242,6 +242,16 @@ ActiveRecord::Schema.define(version: 2021_12_24_153933) do
     t.index ["faction_id"], name: "index_restrictions_on_faction_id"
     t.index ["unlock_id"], name: "index_restrictions_on_unlock_id"
     t.check_constraint "num_nonnulls(faction_id, doctrine_id, unlock_id) = 1", name: "chk_only_one_is_not_null"
+  end
+
+  create_table "rulesets", force: :cascade do |t|
+    t.string "name", null: false, comment: "Ruleset name"
+    t.string "description", comment: "Description"
+    t.integer "starting_man", null: false, comment: "Company starting manpower"
+    t.integer "starting_mun", null: false, comment: "Company starting muntions"
+    t.integer "starting_fuel", null: false, comment: "Company starting fuel"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "squad_upgrades", comment: "Upgrades purchased for squad", force: :cascade do |t|

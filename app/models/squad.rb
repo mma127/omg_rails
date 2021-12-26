@@ -28,4 +28,18 @@ class Squad < ApplicationRecord
   belongs_to :unit
   has_many :squad_upgrades
   has_many :upgrades, through: :squad_upgrades
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :name
+    expose :vet
+    expose :tab_category, as: :tab
+    expose :category_position, as: :position
+    expose :company_id, as: :companyId
+    expose :unit_id, as: :unitId
+  end
 end

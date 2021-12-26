@@ -1,5 +1,6 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
+import { fetchCompanyById } from "../companies/companiesSlice";
 
 const availableUnitsAdapter = createEntityAdapter()
 
@@ -12,10 +13,10 @@ const initialState = availableUnitsAdapter.getInitialState({
   deletingError: null
 })
 
-export const fetchCompanyAvailableUnits = createAsyncThunk("companies/fetchCompanyAvailableUnits", async ({ companyId }) => {
-  const response = await axios.get(`/companies/${companyId}/available_units`)
-  return response.data
-})
+// export const fetchCompanyAvailableUnits = createAsyncThunk("companies/fetchCompanyAvailableUnits", async ({ companyId }) => {
+//   const response = await axios.get(`/companies/${companyId}/available_units`)
+//   return response.data
+// })
 
 // export const createCompany = createAsyncThunk("companies/createCompany", async ({ name, doctrineId }) => {
 //   const response = await axios.post("/companies", { name, doctrineId })
@@ -44,15 +45,15 @@ const availableUnitsSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(fetchCompanyAvailableUnits.pending, (state, action) => {
+      .addCase(fetchCompanyById.pending, (state, action) => {
         state.availableUnitsStatus = "pending"
         state.loadingAvailableUnitsError = null
       })
-      .addCase(fetchCompanyAvailableUnits.fulfilled, (state, action) => {
-        availableUnitsAdapter.setAll(state, renormalizeAvailableUnits(action.payload))
+      .addCase(fetchCompanyById.fulfilled, (state, action) => {
+        availableUnitsAdapter.setAll(state, renormalizeAvailableUnits(action.payload.availableUnits))
         state.availableUnitsStatus = "idle"
       })
-      .addCase(fetchCompanyAvailableUnits.rejected, (state, action) => {
+      .addCase(fetchCompanyById.rejected, (state, action) => {
         state.availableUnitsStatus = "idle"
         state.loadingAvailableUnitsError = action.error.message
       })

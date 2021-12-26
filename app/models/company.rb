@@ -33,6 +33,7 @@ class Company < ApplicationRecord
   belongs_to :faction
 
   has_many :available_units, dependent: :destroy
+  has_many :squads, dependent: :destroy
   has_many :company_unlocks, dependent: :destroy
   has_many :unlocks, through: :company_unlocks
   has_many :company_offmaps, dependent: :destroy
@@ -65,5 +66,9 @@ class Company < ApplicationRecord
     expose :vps_earned, as: :vpsEarned
     expose :side
     expose :faction_name, as: :factionName
+
+    expose :available_units, as: :availableUnits, using: AvailableUnit::Entity, if: { type: :full }
+    expose :squads, using: Squad::Entity, if: { type: :full }
+    # TODO Squads, unlocks
   end
 end
