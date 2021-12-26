@@ -4,9 +4,7 @@ import { useSelector } from "react-redux";
 import { selectCompanyById } from "../../companiesSlice";
 import { selectAllAvailableUnits } from "../../../units/availableUnitsSlice";
 import { UnitCardDroppable } from "../UnitCardDroppable";
-import * as americanUnits from "../../../../constants/units/americans";
-import { Tooltip, tooltipClasses, Typography } from "@mui/material";
-import { styled } from "@mui/styles";
+import { unitImageMapping } from "../../../../constants/units/all_factions";
 
 
 // const HtmlTooltip = styled(({ className, ...props }) => (
@@ -23,12 +21,12 @@ import { styled } from "@mui/styles";
 
 
 /**
- * Show all available American units for the given company. Take into account availability
+ * Show all available units for the given company. Take into account availability
  * @param companyId: company id for which we should display available units
  * @param onDrop
  * @param onUnitSelect
  */
-export const AmericanUnits = ({ companyId, onDrop, onUnitSelect }) => {
+export const AvailableUnits = ({ companyId, onDrop, onUnitSelect }) => {
   const company = useSelector(state => selectCompanyById(state, companyId))
   const availableUnits = useSelector(selectAllAvailableUnits)
 
@@ -42,7 +40,7 @@ export const AmericanUnits = ({ companyId, onDrop, onUnitSelect }) => {
             unitName={au.unitName}
             availableUnit={au}
             label={au.unitDisplayName}
-            image={americanUnits.unitImageMapping[au.unitName]}
+            image={unitImageMapping[au.unitName]}
             available={au.available}
             resupply={au.resupply}
             companyMax={au.companyMax}

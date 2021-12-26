@@ -41,7 +41,7 @@ export const CompanyGridDropTarget = ({ index, onHitCallback, onUnitClick }) => 
                             image={dragData.image} onUnitClick={onUnitClick} />)
     setContent(existing)
 
-    onHitCallback(dragData.unitName, index)
+    onHitCallback(dragData.unitName, dragData.image, index)
   }
 
   return (

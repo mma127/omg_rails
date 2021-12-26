@@ -9,7 +9,7 @@ import {
   selectAllAvailableUnits,
   selectAvailableUnitsStatus
 } from "../../units/availableUnitsSlice";
-import { AmericanUnits } from "./available_units/AmericanUnits";
+import { unitImageMapping } from "../../../constants/units/all_factions";
 
 
 const useStyles = makeStyles(theme => ({
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const UnitDetails = ({ unitId }) => {
+export const UnitDetails = ({ unitId, unitImage }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
@@ -57,10 +57,13 @@ export const UnitDetails = ({ unitId }) => {
       <Box p={2}>
         <Grid container spacing={2}>
           <Grid item container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={10}>
               <Typography variant="h5" gutterBottom className={classes.detailTitle}>
                 {selectedUnitDetails.displayName}
               </Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <img src={unitImageMapping[selectedUnitDetails.name]} alt={selectedUnitDetails.name} />
             </Grid>
           </Grid>
           <Grid item container spacing={2}>

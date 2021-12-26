@@ -19,7 +19,7 @@ import {
   selectAllAvailableUnits,
   selectAvailableUnitsStatus
 } from "../../units/availableUnitsSlice"
-import { AmericanUnits } from "./available_units/AmericanUnits";
+import { AvailableUnits } from "./available_units/AvailableUnits";
 import { selectUnitById } from "../../units/unitsSlice";
 import { UnitDetails } from "./UnitDetails";
 
@@ -36,7 +36,9 @@ const useStyles = makeStyles(theme => ({
 const defaultTab = CORE
 export const CompanyManager = () => {
   const [currentTab, setCurrentTab] = useState(defaultTab)
-  const [SelectedUnitId, setSelectedUnitId] = useState(null)
+  const [selectedUnitId, setSelectedUnitId] = useState(null)
+  const [selectedUnitImage, setSelectedUnitImage] = useState(null)
+  const [selectedUnitName, setSelectedUnitName] = useState(null)
 
   const classes = useStyles()
 
@@ -63,11 +65,13 @@ export const CompanyManager = () => {
     setCurrentTab(newTab)
   }
 
-  const onUnitSelect = (unitId, unitName) => {
+  const onUnitSelect = (unitId, unitImage, unitName) => {
     /** Called when a unit is selected. Populates the unit stats box with relevant data
      * TODO if a squad is clicked, should take upgrades into account
      */
     setSelectedUnitId(unitId)
+    setSelectedUnitImage(unitImage)
+    setSelectedUnitName(unitName)
   }
 
   const onUnitDrop = (unit, index) => {
@@ -83,12 +87,12 @@ export const CompanyManager = () => {
   } else {
     console.log("Selected available units")
     console.log(availableUnits)
-    availableUnitsContent = <AmericanUnits companyId={companyId} onDrop={onDrop} onUnitSelect={onUnitSelect} />
+    availableUnitsContent = <AvailableUnits companyId={companyId} onDrop={onDrop} onUnitSelect={onUnitSelect} />
   }
 
   return (
-    <Container maxWidth="xl" ref={constraintsRef}>
-      <Typography variant="h5">Company {companyId}</Typography>
+    <Container maxWidth="xl" ref={constraintsRef} sx={{paddingTop: '1rem'}}>
+      <Typography variant="h5" gutterBottom>{company.name}</Typography>
 
       <Grid container spacing={2}>
         <Grid item container spacing={2}>
@@ -98,7 +102,7 @@ export const CompanyManager = () => {
             {/*TODO maybe populate by type, alphabetically or cost ASC */}
           </Grid>
           <Grid item md={6} xs={12}>
-            <UnitDetails unitId={SelectedUnitId} />
+            <UnitDetails unitId={selectedUnitId} unitImage={selectedUnitImage} />
           </Grid>
         </Grid>
         <Grid item container spacing={2}>
