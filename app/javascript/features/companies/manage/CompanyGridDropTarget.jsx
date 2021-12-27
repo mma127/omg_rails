@@ -73,6 +73,7 @@ export const CompanyGridDropTarget = ({ index, onHitCallback, onUnitClick, onSqu
 
   const onDestroyClick = (uuid, squadId, unitPop, manCost, munCost, fuelCost) => {
     console.log(`Destroy squad: ${uuid}, ${squadId}, ${unitPop} with costs ${manCost}, ${munCost}, ${fuelCost}`)
+    setPop(pop - parseFloat(unitPop))
     const filteredSquads = squads.filter(item => item.id !== uuid)
     setSquads(filteredSquads)
     onSquadDestroy(squadId, unitPop, manCost, munCost, fuelCost)
