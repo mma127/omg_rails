@@ -5,6 +5,7 @@ import { Box, Tooltip, Typography, Zoom } from "@mui/material";
 
 import { UnitCard } from "./UnitCard";
 import { formatResourceCost } from "../../../utils/company";
+import { nanoid } from "@reduxjs/toolkit";
 
 const useStyles = makeStyles(() => ({
   dragDropContainer: {
@@ -61,7 +62,7 @@ export const UnitCardDroppable = ({
       <Box className={classes.dragDropContainer}>
         <DragDropContainer targetKey="unit" onDrop={onDrop}
                            dragData={{
-                             unitId: unitId, unitName: unitName, image: image, unitPop: availableUnit.pop,
+                             id: nanoid(),squadId: null, unitId: unitId, unitName: unitName, image: image, unitPop: availableUnit.pop,
                              man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel
                            }}>
           <UnitCard unitId={unitId} label={label} image={image} onUnitClick={onUnitClick} />

@@ -108,7 +108,7 @@ export const CompanyManager = () => {
   }
 
   return (
-    <Container maxWidth="xl" ref={constraintsRef} sx={{paddingTop: '1rem'}}>
+    <Container maxWidth="xl" ref={constraintsRef} sx={{ paddingTop: '1rem' }}>
       <Typography variant="h5" gutterBottom>{company.name}</Typography>
 
       <Grid container spacing={2}>
@@ -124,19 +124,23 @@ export const CompanyManager = () => {
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={2} md={1}>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle} pr={1}>Population</Typography>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                        pr={1}>Population</Typography>
             <Typography variant="body2" gutterBottom>{companyPop}</Typography>
           </Grid>
           <Grid item xs={2} md={1}>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle} pr={1}>Manpower</Typography>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                        pr={1}>Manpower</Typography>
             <Typography variant="body2" gutterBottom>{availableMan}</Typography>
           </Grid>
           <Grid item xs={2} md={1}>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle} pr={1}>Munitions</Typography>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                        pr={1}>Munitions</Typography>
             <Typography variant="body2" gutterBottom>{availableMun}</Typography>
           </Grid>
           <Grid item xs={2} md={1}>
-            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle} pr={1}>Fuel</Typography>
+            <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                        pr={1}>Fuel</Typography>
             <Typography variant="body2" gutterBottom>{availableFuel}</Typography>
           </Grid>
         </Grid>
@@ -145,30 +149,38 @@ export const CompanyManager = () => {
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={0} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
+            <CompanyGridDropTarget index={0} currentTab={currentTab} onHitCallback={onUnitDrop}
+                                   onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={1} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
+            <CompanyGridDropTarget index={1} currentTab={currentTab} onHitCallback={onUnitDrop}
+                                   onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={2} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
+            <CompanyGridDropTarget index={2} currentTab={currentTab} onHitCallback={onUnitDrop}
+                                   onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={3} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
+            <CompanyGridDropTarget index={3} currentTab={currentTab} onHitCallback={onUnitDrop}
+                                   onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
           </Grid>
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={4} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
+            <CompanyGridDropTarget index={4} currentTab={currentTab} onHitCallback={onUnitDrop}
+                                   onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={5} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
+            <CompanyGridDropTarget index={5} currentTab={currentTab} onHitCallback={onUnitDrop}
+                                   onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={6} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
+            <CompanyGridDropTarget index={6} currentTab={currentTab} onHitCallback={onUnitDrop}
+                                   onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={7} onHitCallback={onUnitDrop} onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
+            <CompanyGridDropTarget index={7} currentTab={currentTab} onHitCallback={onUnitDrop}
+                                   onUnitClick={onUnitSelect} onSquadDestroy={onSquadDestroy} />
           </Grid>
         </Grid>
       </Grid>

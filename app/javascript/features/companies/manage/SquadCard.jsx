@@ -4,6 +4,7 @@ import { Box, Card } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { nanoid } from "@reduxjs/toolkit";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { DragDropContainer } from "react-drag-drop-container";
 
 const useStyles = makeStyles(() => ({
   squadCard: {
@@ -33,10 +34,24 @@ const useStyles = makeStyles(() => ({
  * @param fuel
  * @param image: unit image
  * @param onUnitClick: callback fired when the squad card is clicked anywhere except the destroy icon
+ * @param onDrop
  * @param onDestroyClick: callback fired when the destroy icon is clicked
  * @constructor
  */
-export const SquadCard = ({ id, squadId, unitId, unitName, unitPop, man, mun, fuel, image, onUnitClick, onDestroyClick }) => {
+export const SquadCard = ({
+                            id,
+                            squadId,
+                            unitId,
+                            unitName,
+                            unitPop,
+                            man,
+                            mun,
+                            fuel,
+                            image,
+                            onUnitClick,
+                            onDrop,
+                            onDestroyClick
+                          }) => {
   const classes = useStyles()
 
   // Total costs for this squad including upgrades
@@ -46,12 +61,18 @@ export const SquadCard = ({ id, squadId, unitId, unitName, unitPop, man, mun, fu
 
   return (
     <Card className={classes.squadCard}>
-      <Box sx={{ p: 1 }} className={classes.squadCardItems}>
-        <UnitCard unitId={unitId} label={unitName} image={image} onUnitClick={onUnitClick} />
-        <DeleteOutlineIcon onClick={() => onDestroyClick(id, squadId, unitPop, manCost, munCost, fuelCost)}
-                           className={classes.deleteIcon}
-                           color="error" />
-      </Box>
+      <DragDropContainer targetKey="unit" onDragStart={() => onUnitClick(unitId, unitName)} onDrop={onDrop}
+                         dragData={{
+                           id: id, unitId: unitId, squadId: squadId, unitName: unitName, image: image,
+                           unitPop: unitPop, man: man, mun: mun, fuel: fuel
+                         }}>
+        <Box sx={{ p: 1 }} className={classes.squadCardItems}>
+          <UnitCard unitId={unitId} label={unitName} image={image} onUnitClick={onUnitClick} />
+          <DeleteOutlineIcon onClick={() => onDestroyClick(id, squadId, unitPop, manCost, munCost, fuelCost)}
+                             className={classes.deleteIcon}
+                             color="error" />
+        </Box>
+      </DragDropContainer>
     </Card>
   )
 }
