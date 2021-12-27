@@ -21,7 +21,6 @@ const useStyles = makeStyles(() => ({
  *
  * @param label: unit label
  * @param image: unit image
- * @param onDrop: callback fired when the drag drop container is dropped into a drop target
  * @param onClick: callback fired when the unit card is clicked
  */
 export const UnitCardDroppable = ({
@@ -30,7 +29,6 @@ export const UnitCardDroppable = ({
                                     label,
                                     availableUnit,
                                     image,
-                                    onDrop,
                                     onUnitClick,
                                     available,
                                     resupply,
@@ -59,7 +57,7 @@ export const UnitCardDroppable = ({
       arrow
     >
       <Box className={classes.dragDropContainer}>
-        <DragDropContainer targetKey="unit" onDrop={onDrop}
+        <DragDropContainer targetKey="unit"
                            dragData={{
                              unitId: unitId, unitName: unitName, image: image, unitPop: availableUnit.pop,
                              man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel
