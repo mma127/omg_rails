@@ -5,7 +5,8 @@ import { Card, CardMedia } from "@mui/material";
 const useStyles = makeStyles(() => ({
   unitCard: {
     width: '45px',
-    height: '45px'
+    height: '45px',
+    display: 'inline-flex'
   }
 }))
 

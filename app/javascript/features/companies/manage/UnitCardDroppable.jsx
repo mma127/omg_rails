@@ -4,6 +4,7 @@ import { makeStyles } from "@mui/styles";
 import { Box, Tooltip, Typography, Zoom } from "@mui/material";
 
 import { UnitCard } from "./UnitCard";
+import { formatResourceCost } from "../../../utils/company";
 
 const useStyles = makeStyles(() => ({
   dragDropContainer: {
@@ -23,19 +24,21 @@ const useStyles = makeStyles(() => ({
  * @param onDrop: callback fired when the drag drop container is dropped into a drop target
  * @param onClick: callback fired when the unit card is clicked
  */
-export const UnitCardDroppable = ({ unitId, unitName, label, availableUnit, image, onDrop, onUnitClick, available, resupply, companyMax }) => {
+export const UnitCardDroppable = ({
+                                    unitId,
+                                    unitName,
+                                    label,
+                                    availableUnit,
+                                    image,
+                                    onDrop,
+                                    onUnitClick,
+                                    available,
+                                    resupply,
+                                    companyMax
+                                  }) => {
   const classes = useStyles()
 
-  let cost = ""
-  if (availableUnit.man > 0) {
-    cost += `${availableUnit.man}MP `
-  }
-  if (availableUnit.mun > 0) {
-    cost += `${availableUnit.mun}MU `
-  }
-  if (availableUnit.fuel > 0) {
-    cost += `${availableUnit.fuel}FU`
-  }
+  const cost = formatResourceCost({ man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel })
 
   return (
     <Tooltip
@@ -56,7 +59,11 @@ export const UnitCardDroppable = ({ unitId, unitName, label, availableUnit, imag
       arrow
     >
       <Box className={classes.dragDropContainer}>
-        <DragDropContainer targetKey="unit" onDrop={onDrop} dragData={{ unitId: unitId, unitName: unitName, image: image }}>
+        <DragDropContainer targetKey="unit" onDrop={onDrop}
+                           dragData={{
+                             unitId: unitId, unitName: unitName, image: image, unitPop: availableUnit.pop,
+                             man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel
+                           }}>
           <UnitCard unitId={unitId} label={label} image={image} onUnitClick={onUnitClick} />
         </DragDropContainer>
       </Box>
