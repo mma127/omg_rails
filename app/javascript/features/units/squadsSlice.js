@@ -8,6 +8,10 @@ const squadsAdapter = createEntityAdapter()
 const initialState = squadsAdapter.getInitialState({
   squadsStatus: "idle",
   squadsError: null,
+  pop: 0,
+  man: 0,
+  mun: 0,
+  fuel: 0,
   [CORE]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
   [ASSAULT]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
   [INFANTRY]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
@@ -26,17 +30,17 @@ const squadsSlice = createSlice({
   initialState,
   reducers: {
     addSquad(state, action) {
-      const { index, tab, squad } = action.payload
+      const { uuid, index, tab } = action.payload
       const platoon = state[tab][index]
-      if (!Object.keys(platoon).includes(squad.uuid)) {
-        platoon[squad.uuid] = squad
+      if (!Object.keys(platoon).includes(uuid)) {
+        platoon[uuid] = action.payload
       }
     },
     removeSquad(state, action) {
-      const { index, tab, squadUuid } = action.payload
+      const { uuid, index, tab } = action.payload
       const platoon = state[tab][index]
-      if (Object.keys(platoon).includes(squadUuid)) {
-        delete platoon[squadUuid]
+      if (Object.keys(platoon).includes(uuid)) {
+        delete platoon[uuid]
       }
     }
   },

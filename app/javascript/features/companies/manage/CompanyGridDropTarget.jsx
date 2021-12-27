@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { DropTarget } from 'react-drag-drop-container';
 import { nanoid } from "@reduxjs/toolkit";
 import { Box, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-
-import { UnitCard } from "./UnitCard";
 import './CompanyGridDropTarget.css'
 import { SquadCard } from "./SquadCard";
-import { useDispatch } from "react-redux";
+import { createSquad } from "../../units/squad";
 
 const useStyles = makeStyles(() => ({
   placementBox: {
@@ -26,53 +24,72 @@ const useStyles = makeStyles(() => ({
  * assigned the category tab and tab position index so they appear correctly in the
  * future and ingame.
  *
- * @param index: position of the box within the Company builder grid of drop targets
+ * @param gridIndex: position of the box within the Company builder grid of drop targets
+ * @param currentTab
  * @param squads
  * @param onHitCallback: Callback fired when this company grid drop target receives a hit and has an unit dropped in
  * @param onUnitClick: Callback fired when the unit icon is clicked. Expect to pass squad identifier
  * @param onSquadDestroy
  */
-export const CompanyGridDropTarget = ({ index, squads, onHitCallback, onUnitClick, onSquadDestroy }) => {
+export const CompanyGridDropTarget = ({
+                                        gridIndex,
+                                        currentTab,
+                                        squads,
+                                        onHitCallback,
+                                        onUnitClick,
+                                        onSquadDestroy
+                                      }) => {
   const classes = useStyles()
 
-  const [pop, setPop] = useState(0.0)
 
   // Is it necessary to maintain total cost of the drop target/platoon?
 
   const onHit = (e) => {
     const dragData = e.dragData
-    console.log(`${dragData.unitName} dropped into target ${index}`)
-    const uuid = nanoid()
-    const newSquad = {
-      uuid: uuid,
-      unitId: dragData.unitId,
-      unitName: dragData.unitName,
-      unitPop: dragData.unitPop,
-      man: dragData.man,
-      mun: dragData.mun,
-      fuel: dragData.fuel,
-      image: dragData.image
+    console.log(`${dragData.unitName} dropped into target ${gridIndex}`)
+    if (Object.keys(dragData).includes("uuid")) {
+      // Moved an existing squad into this drop target
+      const { uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab } = dragData
+
+      // Remove it from its previous platoon index
+      onSquadDestroy(uuid, id, pop, man, mun, fuel, index, tab)
+
+      // Need to add this squad to the current platoon index
+      onHitCallback({ ...dragData, index: gridIndex, tab: currentTab })
+    } else if (dragData.index !== gridIndex) {
+      const uuid = nanoid()
+      const newSquad = createSquad(uuid, null, dragData.unitId, dragData.unitName, dragData.pop, dragData.man,
+        dragData.mun, dragData.fuel, dragData.image, gridIndex, currentTab)
+      onHitCallback(newSquad)
+    } else {
+      console.log(`skipping onHit for the same index ${gridIndex}`)
     }
-
-    setPop(pop + parseFloat(dragData.unitPop))
-
-    onHitCallback(dragData.unitName, dragData.unitPop, dragData.man, dragData.mun, dragData.fuel, index, newSquad)
   }
 
-  const onDestroyClick = (uuid, squadId, unitPop, manCost, munCost, fuelCost) => {
-    console.log(`Destroy squad: ${uuid}, ${squadId}, ${unitPop} with costs ${manCost}, ${munCost}, ${fuelCost}`)
-    onSquadDestroy(squadId, unitPop, manCost, munCost, fuelCost, index, uuid)
+  const onDestroyClick = (uuid, squadId, pop, man, mun, fuel) => {
+    console.log(`Destroy squad: ${uuid}, ${squadId}, ${pop} with costs ${man}, ${mun}, ${fuel}`)
+    onSquadDestroy(uuid, squadId, pop, man, mun, fuel, gridIndex, currentTab)
+  }
+
+  let gridPop = 0
+  let squadCards = []
+  if (squads) {
+    for (const squad of Object.values(squads)) {
+      gridPop += parseFloat(squad.pop)
+      squadCards.push(<SquadCard key={squad.uuid}
+                                 uuid={squad.uuid} squadId={squad.id} unitId={squad.unitId} unitName={squad.unitName}
+                                 pop={squad.pop} man={squad.man} mun={squad.mun} fuel={squad.fuel} image={squad.image}
+                                 index={squad.index} tab={squad.tab}
+                                 onUnitClick={onUnitClick} onDestroyClick={onDestroyClick} />)
+    }
   }
 
   return (
     <DropTarget targetKey="unit" onHit={onHit}>
-      <Paper key={index} className={classes.placementBox}>
+      <Paper key={gridIndex} className={classes.placementBox}>
         <Box sx={{ position: 'relative', p: 1 }}>
-          {Object.values(squads).map(({ uuid, unitId, unitName, unitPop, man, mun, fuel, image }) => (
-            <SquadCard key={uuid} id={uuid} unitId={unitId} unitName={unitName}
-                       unitPop={unitPop} man={man} mun={mun} fuel={fuel} image={image}
-                       onUnitClick={onUnitClick} onDestroyClick={onDestroyClick} />))}
-          <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }}>{pop}</Box>
+          {squadCards}
+          <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }}>{gridPop}</Box>
         </Box>
       </Paper>
     </DropTarget>

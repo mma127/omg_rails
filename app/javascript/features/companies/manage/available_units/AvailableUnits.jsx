@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import { selectCompanyById } from "../../companiesSlice";
 import { selectAllAvailableUnits } from "../../../units/availableUnitsSlice";
-import { UnitCardDroppable } from "../UnitCardDroppable";
+import { AvailableUnitDroppable } from "../AvailableUnitDroppable";
 import { unitImageMapping } from "../../../../constants/units/all_factions";
 
 
@@ -33,7 +33,7 @@ export const AvailableUnits = ({ companyId, onUnitSelect }) => {
     <>
       {
         availableUnits.map(au => (
-          <UnitCardDroppable
+          <AvailableUnitDroppable
             key={au.unitId}
             unitId={au.unitId}
             unitName={au.unitName}

@@ -1,34 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress, Container, Grid, Paper, Typography } from "@mui/material";
+import { CircularProgress, Container, Grid, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
 import { CompanyGridDropTarget } from "./CompanyGridDropTarget";
 import { CompanyGridTabs } from "./CompanyGridTabs";
-import { UnitCardDroppable } from "./UnitCardDroppable";
 
 import { ANTI_ARMOUR, ARMOUR, ASSAULT, CORE, INFANTRY, SUPPORT } from "../../../constants/company";
-import { RIFLEMEN, SHERMAN } from "../../../constants/units/americans";
-
-import riflemen from '../../../../assets/images/doctrines/americans/units/riflemen.png'
-import sherman from '../../../../assets/images/doctrines/americans/units/sherman.png'
-import { fetchCompanyById, selectCompanyById } from "../companiesSlice";
-import {
-  fetchCompanyAvailableUnits,
-  selectAllAvailableUnits,
-  selectAvailableUnitsStatus
-} from "../../units/availableUnitsSlice"
+import { addUnitCost, fetchCompanyById, removeUnitCost, selectCompanyById } from "../companiesSlice";
+import { selectAllAvailableUnits, selectAvailableUnitsStatus } from "../../units/availableUnitsSlice"
 import { AvailableUnits } from "./available_units/AvailableUnits";
-import { selectUnitById } from "../../units/unitsSlice";
 import { UnitDetails } from "./UnitDetails";
 import {
-  addSquad, removeSquad,
+  addSquad,
+  removeSquad,
   selectAntiArmourSquads,
   selectArmourSquads,
   selectAssaultSquads,
   selectCoreSquads,
-  selectInfantrySquads, selectSupportSquads
+  selectInfantrySquads,
+  selectSupportSquads
 } from "../../units/squadsSlice";
 
 const useStyles = makeStyles(theme => ({
@@ -43,6 +35,7 @@ const useStyles = makeStyles(theme => ({
 
 const defaultTab = CORE
 export const CompanyManager = () => {
+  const dispatch = useDispatch()
   const [currentTab, setCurrentTab] = useState(defaultTab)
   const [selectedUnitId, setSelectedUnitId] = useState(null)
   const [selectedUnitImage, setSelectedUnitImage] = useState(null)
@@ -56,7 +49,7 @@ export const CompanyManager = () => {
   const support = useSelector(selectSupportSquads)
 
   let currentTabPlatoons
-  switch(currentTab) {
+  switch (currentTab) {
     case CORE: {
       currentTabPlatoons = core
       break
@@ -91,14 +84,8 @@ export const CompanyManager = () => {
 
   let params = useParams()
   const companyId = params.companyId
-
   const company = useSelector(state => selectCompanyById(state, companyId))
-  const [companyPop, setCompanyPop] = useState(parseFloat(company.pop))
-  const [availableMan, setAvailableMan] = useState(company.man)
-  const [availableMun, setAvailableMun] = useState(company.mun)
-  const [availableFuel, setAvailableFuel] = useState(company.fuel)
 
-  const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchCompanyById({ companyId }))
   }, [companyId])
@@ -120,24 +107,16 @@ export const CompanyManager = () => {
     setSelectedUnitName(unitName)
   }
 
-  const onDropTargetHit = (unit, unitPop, manCost, munCost, fuelCost, index, newSquad) => {
-    console.log(`Added ${unit}, pop ${unitPop}, costs ${manCost}MP ${munCost}MU ${fuelCost}FU to category ${currentTab} position ${index}`)
-    setCompanyPop(companyPop + parseFloat(unitPop))
-    setAvailableMan(availableMan - manCost)
-    setAvailableMun(availableMun - munCost)
-    setAvailableFuel(availableFuel - fuelCost)
-
-    dispatch(addSquad({index: index, tab: currentTab, squad: newSquad}))
+  const onDropTargetHit = ({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab }) => {
+    console.log(`Added ${unitName}, pop ${pop}, costs ${man}MP ${mun}MU ${fuel}FU to category ${tab} position ${index}`)
+    dispatch(addUnitCost({ id: company.id, pop, man, mun, fuel }))
+    dispatch(addSquad({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab }))
   }
 
-  const onSquadDestroy = (squadId, squadPop, squadMan, squadMun, squadFuel, index, squadUuid) => {
-    // TODO Remove squad from company
-    setCompanyPop(companyPop - parseFloat(squadPop))
-    setAvailableMan(availableMan + squadMan)
-    setAvailableMun(availableMun + squadMun)
-    setAvailableFuel(availableFuel + squadFuel)
-
-    dispatch(removeSquad({index: index, tab: currentTab, squadUuid: squadUuid}))
+  const onSquadDestroy = (uuid, id, pop, man, mun, fuel, index, tab) => {
+    // TODO remove squad id from company if not null
+    dispatch(removeUnitCost({ id: company.id, pop, man, mun, fuel }))
+    dispatch(removeSquad({ uuid, index, tab }))
   }
 
   const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
@@ -171,22 +150,22 @@ export const CompanyManager = () => {
           <Grid item xs={2} md={1}>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                         pr={1}>Population</Typography>
-            <Typography variant="body2" gutterBottom>{companyPop}</Typography>
+            <Typography variant="body2" gutterBottom>{company.pop}</Typography>
           </Grid>
           <Grid item xs={2} md={1}>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                         pr={1}>Manpower</Typography>
-            <Typography variant="body2" gutterBottom>{availableMan}</Typography>
+            <Typography variant="body2" gutterBottom>{company.man}</Typography>
           </Grid>
           <Grid item xs={2} md={1}>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                         pr={1}>Munitions</Typography>
-            <Typography variant="body2" gutterBottom>{availableMun}</Typography>
+            <Typography variant="body2" gutterBottom>{company.mun}</Typography>
           </Grid>
           <Grid item xs={2} md={1}>
             <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                         pr={1}>Fuel</Typography>
-            <Typography variant="body2" gutterBottom>{availableFuel}</Typography>
+            <Typography variant="body2" gutterBottom>{company.fuel}</Typography>
           </Grid>
         </Grid>
         <Grid item>
@@ -194,38 +173,45 @@ export const CompanyManager = () => {
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={0} squads={currentTabPlatoons[0]}  onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
+            <CompanyGridDropTarget gridIndex={0} currentTab={currentTab} squads={currentTabPlatoons[0]}
+                                   onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
                                    onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={1} squads={currentTabPlatoons[1]}  onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
+            <CompanyGridDropTarget gridIndex={1} currentTab={currentTab} squads={currentTabPlatoons[1]}
+                                   onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
                                    onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={2} squads={currentTabPlatoons[2]}  onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
+            <CompanyGridDropTarget gridIndex={2} currentTab={currentTab} squads={currentTabPlatoons[2]}
+                                   onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
                                    onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={3} squads={currentTabPlatoons[3]}  onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
+            <CompanyGridDropTarget gridIndex={3} currentTab={currentTab} squads={currentTabPlatoons[3]}
+                                   onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
                                    onSquadDestroy={onSquadDestroy} />
           </Grid>
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={4} squads={currentTabPlatoons[4]}
+            <CompanyGridDropTarget gridIndex={4} currentTab={currentTab} squads={currentTabPlatoons[4]}
                                    onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
                                    onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={5} squads={currentTabPlatoons[5]}  onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
+            <CompanyGridDropTarget gridIndex={5} currentTab={currentTab} squads={currentTabPlatoons[5]}
+                                   onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
                                    onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={6} squads={currentTabPlatoons[6]}  onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
+            <CompanyGridDropTarget gridIndex={6} currentTab={currentTab} squads={currentTabPlatoons[6]}
+                                   onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
                                    onSquadDestroy={onSquadDestroy} />
           </Grid>
           <Grid item xs={3}>
-            <CompanyGridDropTarget index={7} squads={currentTabPlatoons[7]}  onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
+            <CompanyGridDropTarget gridIndex={7} currentTab={currentTab} squads={currentTabPlatoons[7]}
+                                   onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
                                    onSquadDestroy={onSquadDestroy} />
           </Grid>
         </Grid>
