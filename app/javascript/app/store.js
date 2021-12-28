@@ -4,6 +4,7 @@ import companiesSlice from "../features/companies/companiesSlice";
 import doctrinesSlice from "../features/doctrines/doctrinesSlice";
 import unitsSlice from "../features/units/unitsSlice";
 import availableUnitsSlice from "../features/units/availableUnitsSlice";
+import squadsSlice from "../features/units/squadsSlice";
 
 
 export default configureStore({
@@ -12,6 +13,7 @@ export default configureStore({
     companies: companiesSlice,
     doctrines: doctrinesSlice,
     units: unitsSlice,
-    availableUnits: availableUnitsSlice
+    availableUnits: availableUnitsSlice,
+    squads: squadsSlice
   },
 })

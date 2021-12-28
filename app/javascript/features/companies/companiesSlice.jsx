@@ -41,7 +41,28 @@ export const deleteCompanyById = createAsyncThunk("companies/deleteCompany", asy
 const companiesSlice = createSlice({
   name: "companies",
   initialState,
-  reducers: {},
+  reducers: {
+    addUnitCost(state, action) {
+      const { id, pop, man, mun, fuel } = action.payload
+      const company = state.entities[id]
+      if (company) {
+        company.pop += parseFloat(pop)
+        company.man -= man
+        company.mun -= mun
+        company.fuel -= fuel
+      }
+    },
+    removeUnitCost(state, action) {
+      const { id, pop, man, mun, fuel } = action.payload
+      const company = state.entities[id]
+      if (company) {
+        company.pop -= parseFloat(pop)
+        company.man += man
+        company.mun += mun
+        company.fuel += fuel
+      }
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchCompanies.fulfilled, (state, action) => {
@@ -87,6 +108,8 @@ const companiesSlice = createSlice({
 })
 
 export default companiesSlice.reducer
+
+export const { addUnitCost, removeUnitCost } = companiesSlice.actions
 
 export const {
   selectAll: selectAllCompanies,
