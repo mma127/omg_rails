@@ -22,6 +22,11 @@ const useStyles = makeStyles(() => ({
 }))
 
 /**
+ * Represents a concrete squad
+ *
+ * NOTE: There is a bug with the React Drag Drop Container library with the onDrop callback. It appears to fire
+ * increasing numbers of times as a drag container is moved around. Not using onDrop and instead handling updating
+ * the old grid with redux. https://github.com/peterh32/react-drag-drop-container/issues/39
  *
  * @param uuid
  * @param squadId: non null if this represents an existing squad
