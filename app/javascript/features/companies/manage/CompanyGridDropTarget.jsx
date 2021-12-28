@@ -9,7 +9,7 @@ import { createSquad } from "../../units/squad";
 
 const useStyles = makeStyles(() => ({
   placementBox: {
-    minHeight: '20rem',
+    minHeight: '15rem',
     minWidth: '4rem'
   }
 }))
@@ -52,7 +52,7 @@ export const CompanyGridDropTarget = ({
       const { uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab } = dragData
 
       // Remove it from its previous platoon index
-      onSquadDestroy(uuid, id, pop, man, mun, fuel, index, tab)
+      onSquadDestroy(uuid, id, unitId, pop, man, mun, fuel, index, tab)
 
       // Need to add this squad to the current platoon index
       onHitCallback({ ...dragData, index: gridIndex, tab: currentTab })
@@ -66,9 +66,9 @@ export const CompanyGridDropTarget = ({
     }
   }
 
-  const onDestroyClick = (uuid, squadId, pop, man, mun, fuel) => {
+  const onDestroyClick = (uuid, squadId, unitId, pop, man, mun, fuel) => {
     console.log(`Destroy squad: ${uuid}, ${squadId}, ${pop} with costs ${man}, ${mun}, ${fuel}`)
-    onSquadDestroy(uuid, squadId, pop, man, mun, fuel, gridIndex, currentTab)
+    onSquadDestroy(uuid, squadId, unitId, pop, man, mun, fuel, gridIndex, currentTab)
   }
 
   let gridPop = 0

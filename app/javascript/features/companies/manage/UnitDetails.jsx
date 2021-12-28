@@ -15,7 +15,8 @@ import { formatResourceCost } from "../../../utils/company";
 
 const useStyles = makeStyles(theme => ({
   statsBox: {
-    minHeight: '10rem'
+    minHeight: '10rem',
+    height: '100%'
   },
   detailTitle: {
     fontWeight: 'bold'
@@ -59,18 +60,6 @@ export const UnitDetails = ({ unitId, unitImage }) => {
             </Grid>
           </Grid>
           <Grid item container spacing={2}>
-            {/*<Grid item xs={3}>*/}
-            {/*  <Typography variant="subtitle2" color="text.secondary" gutterBottom pr={1}>Manpower</Typography>*/}
-            {/*  <Typography variant="body2" gutterBottom>{availableUnit.man}</Typography>*/}
-            {/*</Grid>*/}
-            {/*<Grid item xs={3}>*/}
-            {/*  <Typography variant="subtitle2" color="text.secondary" gutterBottom pr={1}>Munitions</Typography>*/}
-            {/*  <Typography variant="body2" gutterBottom>{availableUnit.mun}</Typography>*/}
-            {/*</Grid>*/}
-            {/*<Grid item xs={3}>*/}
-            {/*  <Typography variant="subtitle2" color="text.secondary" gutterBottom pr={1}>Fuel</Typography>*/}
-            {/*  <Typography variant="body2" gutterBottom>{availableUnit.fuel}</Typography>*/}
-            {/*</Grid>*/}
             <Grid item xs={6}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                           pr={1}>Cost</Typography>

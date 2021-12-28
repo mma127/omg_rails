@@ -80,7 +80,7 @@ export const SquadCard = (
         <Box sx={{ p: 1 }} className={classes.squadCardItems}>
           <UnitCard unitId={unitId} label={unitName} image={image} onUnitClick={onUnitClick} />
           <DeleteOutlineIcon
-            onClick={() => onDestroyClick(uuid, squadId, pop, man, mun, fuel)}
+            onClick={() => onDestroyClick(uuid, squadId, unitId, pop, man, mun, fuel)}
             className={classes.deleteIcon}
             color="error" />
         </Box>

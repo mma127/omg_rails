@@ -24,19 +24,21 @@ const useStyles = makeStyles(() => ({
  * @param onClick: callback fired when the unit card is clicked
  */
 export const AvailableUnitDroppable = ({
-                                    unitId,
-                                    unitName,
-                                    label,
-                                    availableUnit,
-                                    image,
-                                    onUnitClick,
-                                    available,
-                                    resupply,
-                                    companyMax
-                                  }) => {
+                                         unitId,
+                                         unitName,
+                                         label,
+                                         availableUnit,
+                                         image,
+                                         onUnitClick,
+                                         available,
+                                         resupply,
+                                         companyMax
+                                       }) => {
   const classes = useStyles()
 
   const cost = formatResourceCost({ man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel })
+
+  const notAvailable = available === 0
 
   return (
     <Tooltip
@@ -58,12 +60,13 @@ export const AvailableUnitDroppable = ({
     >
       <Box className={classes.dragDropContainer}>
         <DragDropContainer targetKey="unit"
+                           noDragging={notAvailable}
                            onDragStart={() => onUnitClick(unitId, unitName)}
                            dragData={{
                              unitId: unitId, unitName: unitName, image: image, pop: availableUnit.pop,
                              man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel
                            }}>
-          <UnitCard unitId={unitId} label={label} image={image} onUnitClick={onUnitClick} />
+          <UnitCard unitId={unitId} label={label} image={image} onUnitClick={onUnitClick} disabled={notAvailable} />
         </DragDropContainer>
       </Box>
     </Tooltip>

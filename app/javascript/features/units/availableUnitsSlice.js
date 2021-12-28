@@ -1,6 +1,7 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
 import { fetchCompanyById } from "../companies/companiesSlice";
+import { addSquad, removeSquad } from "./squadsSlice";
 
 const availableUnitsAdapter = createEntityAdapter()
 
@@ -56,6 +57,16 @@ const availableUnitsSlice = createSlice({
       .addCase(fetchCompanyById.rejected, (state, action) => {
         state.availableUnitsStatus = "idle"
         state.loadingAvailableUnitsError = action.error.message
+      })
+      .addCase(addSquad, (state, action) => {
+        const { unitId } = action.payload
+        const availableUnit = state.entities[unitId]
+        availableUnit.available -= 1
+      })
+      .addCase(removeSquad, (state, action) => {
+        const { unitId } = action.payload
+        const availableUnit = state.entities[unitId]
+        availableUnit.available += 1
       })
   }
 })

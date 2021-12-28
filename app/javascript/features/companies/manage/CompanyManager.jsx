@@ -24,9 +24,8 @@ import {
 } from "../../units/squadsSlice";
 
 const useStyles = makeStyles(theme => ({
-  placementBox: {
-    minHeight: '10rem',
-    minWidth: '4rem'
+  availableUnitsContainer: {
+    minHeight: '280px'
   },
   detailTitle: {
     fontWeight: 'bold'
@@ -113,10 +112,10 @@ export const CompanyManager = () => {
     dispatch(addSquad({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab }))
   }
 
-  const onSquadDestroy = (uuid, id, pop, man, mun, fuel, index, tab) => {
+  const onSquadDestroy = (uuid, id, unitId, pop, man, mun, fuel, index, tab) => {
     // TODO remove squad id from company if not null
     dispatch(removeUnitCost({ id: company.id, pop, man, mun, fuel }))
-    dispatch(removeSquad({ uuid, index, tab }))
+    dispatch(removeSquad({ uuid, unitId, index, tab }))
   }
 
   const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
@@ -136,7 +135,7 @@ export const CompanyManager = () => {
       <Typography variant="h5" gutterBottom>{company.name}</Typography>
 
       <Grid container spacing={2}>
-        <Grid item container spacing={2}>
+        <Grid item container spacing={2} className={classes.availableUnitsContainer}>
           <Grid item md={6}>
             {availableUnitsContent}
             {/*TODO read available units for this company from backend */}
