@@ -3,7 +3,7 @@ import { DropTarget } from 'react-drag-drop-container';
 import { nanoid } from "@reduxjs/toolkit";
 import { Box, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import './CompanyGridDropTarget.css'
+import '../../../../assets/stylesheets/CompanyGridDropTarget.css'
 import { SquadCard } from "./SquadCard";
 import { createSquad } from "../../units/squad";
 
