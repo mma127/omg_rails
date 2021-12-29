@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_25_234147) do
+ActiveRecord::Schema.define(version: 2021_12_29_021936) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,9 +81,11 @@ ActiveRecord::Schema.define(version: 2021_12_25_234147) do
     t.integer "pop", default: 0, comment: "Population cost of this company"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "ruleset_id", null: false
     t.index ["doctrine_id"], name: "index_companies_on_doctrine_id"
     t.index ["faction_id"], name: "index_companies_on_faction_id"
     t.index ["player_id"], name: "index_companies_on_player_id"
+    t.index ["ruleset_id"], name: "index_companies_on_ruleset_id"
   end
 
   create_table "company_offmaps", force: :cascade do |t|
@@ -267,12 +269,14 @@ ActiveRecord::Schema.define(version: 2021_12_25_234147) do
   create_table "squads", force: :cascade do |t|
     t.bigint "company_id"
     t.bigint "unit_id"
-    t.integer "tab_category", comment: "Tab this squad is in"
+    t.string "tab_category", comment: "Tab this squad is in"
     t.integer "category_position", comment: "Position within the tab the squad is in"
     t.decimal "vet", comment: "Squad's veterancy"
     t.string "name", comment: "Squad's custom name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "available_unit_id", null: false
+    t.index ["available_unit_id"], name: "index_squads_on_available_unit_id"
     t.index ["company_id"], name: "index_squads_on_company_id"
     t.index ["unit_id"], name: "index_squads_on_unit_id"
   end

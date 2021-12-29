@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tab, Tabs } from "@mui/material";
-import { CORE, READABLE_CATEGORIES } from "../../../constants/company";
+import { CORE, DISPLAY_CATEGORIES } from "../../../constants/company";
 
 export const CompanyGridTabs = ({ selectedTab, changeCallback }) => {
 
@@ -9,7 +9,7 @@ export const CompanyGridTabs = ({ selectedTab, changeCallback }) => {
     changeCallback(index)
   }
 
-  let tabs = Object.entries(READABLE_CATEGORIES).map(([key, displayValue]) => (
+  let tabs = Object.entries(DISPLAY_CATEGORIES).map(([key, displayValue]) => (
     <Tab key={`company-grid-tab-${key}`} label={displayValue} value={key} />
   ))
 

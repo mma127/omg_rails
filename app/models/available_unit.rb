@@ -25,6 +25,7 @@
 class AvailableUnit < ApplicationRecord
   belongs_to :company
   belongs_to :unit
+  has_many :squads
 
   def unit_name
     unit.name

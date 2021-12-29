@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress, Container, Grid, Typography } from "@mui/material";
+import { Button, CircularProgress, Container, Grid, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
@@ -20,7 +20,7 @@ import {
   selectAssaultSquads,
   selectCoreSquads,
   selectInfantrySquads,
-  selectSupportSquads
+  selectSupportSquads, upsertSquads
 } from "../../units/squadsSlice";
 
 const useStyles = makeStyles(theme => ({
@@ -106,16 +106,20 @@ export const CompanyManager = () => {
     setSelectedUnitName(unitName)
   }
 
-  const onDropTargetHit = ({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab }) => {
+  const onDropTargetHit = ({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab, vet }) => {
     console.log(`Added ${unitName}, pop ${pop}, costs ${man}MP ${mun}MU ${fuel}FU to category ${tab} position ${index}`)
     dispatch(addUnitCost({ id: company.id, pop, man, mun, fuel }))
-    dispatch(addSquad({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab }))
+    dispatch(addSquad({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab, vet }))
   }
 
   const onSquadDestroy = (uuid, id, unitId, pop, man, mun, fuel, index, tab) => {
     // TODO remove squad id from company if not null
     dispatch(removeUnitCost({ id: company.id, pop, man, mun, fuel }))
     dispatch(removeSquad({ uuid, unitId, index, tab }))
+  }
+
+  const saveSquads = () => {
+    dispatch(upsertSquads({ companyId }))
   }
 
   const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
@@ -167,8 +171,13 @@ export const CompanyManager = () => {
             <Typography variant="body2" gutterBottom>{company.fuel}</Typography>
           </Grid>
         </Grid>
-        <Grid item>
-          <CompanyGridTabs selectedTab={currentTab} changeCallback={onTabChange} />
+        <Grid item container spacing={2}>
+          <Grid item xs={8}>
+            <CompanyGridTabs selectedTab={currentTab} changeCallback={onTabChange} />
+          </Grid>
+          <Grid item xs={4}>
+            <Button variant="contained" color="secondary" size="small" onClick={saveSquads}>Save</Button>
+          </Grid>
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={3}>
