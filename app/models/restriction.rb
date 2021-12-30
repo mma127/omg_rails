@@ -51,5 +51,8 @@ class Restriction < ApplicationRecord
     if unlock_id.present? && (faction_id.present? || doctrine_id.present?)
       errors.add(:unlock_id, "Can only have one of faction_id, doctrine_id, or unlock_id present")
     end
+    if faction_id.blank? && doctrine_id.blank? && unlock_id.blank?
+      errors.add("Must have one of faction_id, doctrine_id, unlock_id")
+    end
   end
 end

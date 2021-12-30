@@ -191,7 +191,7 @@ class CompanyService
         if s[:squad_id].blank?
           ## Create new Squad records for squads without squad id
           available_unit = available_units_by_unit_id[s[:unit_id]]
-          new_squads << Squad.new(company: company, unit_id: s[:unit_id], vet: s[:vet], tab_category: s[:tab],
+          new_squads << Squad.new(company: company, vet: s[:vet], tab_category: s[:tab],
                                   category_position: s[:index], available_unit: available_unit)
         else
           ## Update existing Squads

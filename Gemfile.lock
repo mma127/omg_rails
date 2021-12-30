@@ -117,6 +117,11 @@ GEM
       dry-inflector (~> 0.1, >= 0.1.2)
       dry-logic (~> 1.0, >= 1.0.2)
     erubi (1.10.0)
+    factory_bot (6.2.0)
+      activesupport (>= 5.0.0)
+    factory_bot_rails (6.2.0)
+      factory_bot (~> 6.2.0)
+      railties (>= 5.0.0)
     ffi (1.15.4)
     foreman (0.87.2)
     globalid (0.5.2)
@@ -286,6 +291,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
     semantic_range (3.0.0)
+    shoulda-matchers (5.1.0)
+      activesupport (>= 5.2.0)
     spring (3.0.0)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
@@ -337,6 +344,7 @@ DEPENDENCIES
   capybara (>= 3.26)
   devise
   dotenv-rails
+  factory_bot_rails
   foreman
   grape
   grape-entity
@@ -360,6 +368,7 @@ DEPENDENCIES
   sass-rails (>= 6)
   seedbank
   selenium-webdriver
+  shoulda-matchers
   spring
   thor
   turbolinks (~> 5)

@@ -4,7 +4,12 @@
 #
 #  id                                                                                   :bigint           not null, primary key
 #  available(Number of this unit available to purchase for the company)                 :integer
+#  callin_modifier(Calculated base callin modifier of this unit for the company)        :decimal(, )      not null
 #  company_max(Maximum number of the unit a company can hold)                           :integer          not null
+#  fuel(Calculated fuel cost of this unit for the company)                              :integer          not null
+#  man(Calculated man cost of this unit for the company)                                :integer          not null
+#  mun(Calculated mun cost of this unit for the company)                                :integer          not null
+#  pop(Calculated pop cost of this unit for the company)                                :decimal(, )      not null
 #  resupply(Per game resupply)                                                          :integer          not null
 #  resupply_max(How much resupply is available from saved up resupplies, <= company ma) :integer          not null
 #  created_at                                                                           :datetime         not null
@@ -33,10 +38,20 @@ class AvailableUnit < ApplicationRecord
   validates_presence_of :resupply
   validates_presence_of :resupply_max
   validates_presence_of :company_max
+  validates_presence_of :pop
+  validates_presence_of :man
+  validates_presence_of :mun
+  validates_presence_of :fuel
+  validates_presence_of :callin_modifier
   validates_numericality_of :available, greater_than_or_equal_to: 0
   validates_numericality_of :resupply, greater_than_or_equal_to: 0
   validates_numericality_of :resupply_max, greater_than_or_equal_to: 0
   validates_numericality_of :company_max, greater_than_or_equal_to: 0
+  validates_numericality_of :pop, greater_than_or_equal_to: 0
+  validates_numericality_of :man, greater_than_or_equal_to: 0
+  validates_numericality_of :mun, greater_than_or_equal_to: 0
+  validates_numericality_of :fuel, greater_than_or_equal_to: 0
+  validates_numericality_of :callin_modifier, greater_than_or_equal_to: 0
 
   def unit_name
     unit.name

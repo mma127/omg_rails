@@ -11,22 +11,18 @@
 #  updated_at                                                 :datetime         not null
 #  available_unit_id                                          :bigint           not null
 #  company_id                                                 :bigint
-#  unit_id                                                    :bigint
 #
 # Indexes
 #
 #  index_squads_on_available_unit_id  (available_unit_id)
 #  index_squads_on_company_id         (company_id)
-#  index_squads_on_unit_id            (unit_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (company_id => companies.id)
-#  fk_rails_...  (unit_id => units.id)
 #
 class Squad < ApplicationRecord
   belongs_to :company
-  belongs_to :unit
   belongs_to :available_unit
   has_many :squad_upgrades
   has_many :upgrades, through: :squad_upgrades
@@ -41,7 +37,6 @@ class Squad < ApplicationRecord
   }
 
   validates_presence_of :company
-  validates_presence_of :unit
   validates_presence_of :vet
   validates_presence_of :tab_category
   validates_presence_of :category_position
@@ -49,7 +44,7 @@ class Squad < ApplicationRecord
   validates_numericality_of :category_position
 
   def unit_name
-    unit.name
+    available_unit.unit.name
   end
 
   def pop

@@ -30,22 +30,15 @@
 #  fk_rails_...  (restriction_id => restrictions.id)
 #  fk_rails_...  (unit_id => units.id)
 #
-class RestrictionUnit < ApplicationRecord
-  belongs_to :restriction
-  belongs_to :unit
+require "rails_helper"
 
-  # enum types: {
-  #   allow: "allow",
-  #   disallow: "disallow"
-  # }
-
-  validates_numericality_of :man
-  validates_numericality_of :mun
-  validates_numericality_of :fuel
-  validates_numericality_of :pop
-  validates_numericality_of :callin_modifier
-  validates_numericality_of :resupply
-  validates_numericality_of :resupply_max
-  validates_numericality_of :company_max
-  validates_uniqueness_of :unit_id, scope: :restriction_id
+RSpec.describe BaseRestrictionUnit, type: :model do
+  it "generates and saves the description" do
+    unit = create :infantry, display_name: "Rifles"
+    restriction = create :restriction, name: "American army"
+    base_restriction_unit = create :base_restriction_unit, restriction: restriction, unit: unit
+    expect(base_restriction_unit.description).to eq("American army - Rifles")
+  end
 end
+
+

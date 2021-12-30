@@ -30,22 +30,26 @@
 #  fk_rails_...  (restriction_id => restrictions.id)
 #  fk_rails_...  (unit_id => units.id)
 #
-class RestrictionUnit < ApplicationRecord
-  belongs_to :restriction
-  belongs_to :unit
+require "rails_helper"
 
-  # enum types: {
-  #   allow: "allow",
-  #   disallow: "disallow"
-  # }
+RSpec.describe RestrictionUnit, type: :model do
+  let!(:restriction_unit) { create :restriction_unit}
 
-  validates_numericality_of :man
-  validates_numericality_of :mun
-  validates_numericality_of :fuel
-  validates_numericality_of :pop
-  validates_numericality_of :callin_modifier
-  validates_numericality_of :resupply
-  validates_numericality_of :resupply_max
-  validates_numericality_of :company_max
-  validates_uniqueness_of :unit_id, scope: :restriction_id
+  describe 'associations' do
+    it { should belong_to(:restriction) }
+    it { should belong_to(:unit) }
+  end
+
+  describe 'validations' do
+    it { should validate_numericality_of(:man) }
+    it { should validate_numericality_of(:mun) }
+    it { should validate_numericality_of(:fuel) }
+    it { should validate_numericality_of(:pop) }
+    it { should validate_numericality_of(:callin_modifier) }
+    it { should validate_numericality_of(:resupply) }
+    it { should validate_numericality_of(:resupply_max) }
+    it { should validate_numericality_of(:company_max) }
+    it { should validate_uniqueness_of(:unit_id).scoped_to(:restriction_id) }
+  end
 end
+

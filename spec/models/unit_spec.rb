@@ -20,31 +20,24 @@
 #
 #  index_units_on_name  (name)
 #
-class Unit < ApplicationRecord
-  has_many :unit_modifications
-  has_many :unit_games
-  has_many :games, through: :unit_games
+require "rails_helper"
 
-  validates_presence_of :name
-  validates_presence_of :const_name
-  validates_presence_of :display_name
-  validates_uniqueness_of :name
-  validates_numericality_of :unitwide_upgrade_slots
-  validates_numericality_of :upgrade_slots
+RSpec.describe Unit, type: :model do
+  let!(:unit) { create :unit}
 
-  def entity
-    Entity.new(self)
+  describe 'associations' do
+    it { should have_many(:unit_modifications) }
+    it { should have_many(:unit_games) }
+    it { should have_many(:games) }
   end
 
-  class Entity < Grape::Entity
-    expose :id
-    expose :name
-    expose :display_name, as: :displayName
-    expose :description
-    expose :type
-    expose :is_airdrop, as: :isAirdrop
-    expose :is_infiltrate, as: :isInfiltrate
-    expose :upgrade_slots, as: :upgradeSlots
-    expose :unitwide_upgrade_slots, as: :unitwideUpgradeSlots
+  describe 'validations' do
+    it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:const_name) }
+    it { should validate_presence_of(:display_name) }
+    it { should validate_uniqueness_of(:name) }
+    it { should validate_numericality_of(:unitwide_upgrade_slots) }
+    it { should validate_numericality_of(:upgrade_slots) }
   end
 end
+
