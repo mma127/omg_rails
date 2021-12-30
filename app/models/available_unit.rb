@@ -27,6 +27,17 @@ class AvailableUnit < ApplicationRecord
   belongs_to :unit
   has_many :squads
 
+  validates_presence_of :company
+  validates_presence_of :unit
+  validates_presence_of :available
+  validates_presence_of :resupply
+  validates_presence_of :resupply_max
+  validates_presence_of :company_max
+  validates_numericality_of :available, greater_than_or_equal_to: 0
+  validates_numericality_of :resupply, greater_than_or_equal_to: 0
+  validates_numericality_of :resupply_max, greater_than_or_equal_to: 0
+  validates_numericality_of :company_max, greater_than_or_equal_to: 0
+
   def unit_name
     unit.name
   end
@@ -39,9 +50,9 @@ class AvailableUnit < ApplicationRecord
   #   unit.description
   # end
   #
-  # def unit_type
-  #   unit.type
-  # end
+  def unit_type
+    unit.type
+  end
   #
   # def unit_upgrade_slots
   #   unit.upgrade_slots
@@ -70,7 +81,7 @@ class AvailableUnit < ApplicationRecord
     expose :unit_name, as: :unitName
     expose :unit_display_name, as: :unitDisplayName
     # expose :unit_description, as: :unitDescription
-    # expose :unit_type, as: :unitType
+    expose :unit_type, as: :unitType
     # expose :unit_upgrade_slots, as: :unitUpgradeSlots
     # expose :unit_unitwide_upgrade_slots, as: :unitUnitwideUpgradeSlots
     # expose :unit_is_airdrop, as: :unitIsAirdrop

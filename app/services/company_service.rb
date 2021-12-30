@@ -7,6 +7,9 @@ class CompanyService
 
   MAX_COMPANIES_PER_SIDE = 2.freeze
 
+  MIN_POP_PER_PLATOON = 7.freeze
+  MAX_POP_PER_PLATOON = 25.freeze
+
   WAR_RULESET = "war".freeze
 
   def initialize(player)
@@ -50,20 +53,19 @@ class CompanyService
   # * The set of unit ids given in squads contain valid Unit ids
   # * The set of unit ids given in squads are a subset of the company's AvailableUnit unit ids
   # * The company has sufficient manpower, munitions, and fuel resources to afford all given squads
+  # * Each platoon of squads (squads grouped by tab and index) has pop between the MIN and MAX allowed
   # * The company has sufficient availability in AvailableUnits for every unique unit in the given squads
-  #
-  # TODO ENFORCE PLATOON MINIMUM AND MAX SIZE
   def update_company_squads(company, squads, override = false)
     unless can_update_company(company, override)
       # Raise validation error if the company does not belong to the player
-      raise CompanyUpdateValidationError("Player #{@player.id} cannot delete Company #{company.id}")
+      raise CompanyUpdateValidationError.new("Player #{@player.id} cannot delete Company #{company.id}")
     end
 
     existing_squads = company.squads
     existing_squad_ids = existing_squads.pluck(:id)
     payload_squad_ids = squads.select { |s| s[:squad_id].present? }.pluck(:squad_id)
     unless (payload_squad_ids - existing_squad_ids).size == 0
-      raise CompanyUpdateValidationError("Invalid squad update. Given squad ids #{payload_squad_ids - existing_squad_ids}"\
+      raise CompanyUpdateValidationError.new("Invalid squad update. Given squad ids #{payload_squad_ids - existing_squad_ids}"\
         " that don't exist for the company #{company.id}")
     end
 
@@ -75,7 +77,7 @@ class CompanyService
     uniq_units_new_by_id = get_uniq_units_by_id(uniq_unit_ids_new)
     unless uniq_unit_ids_new.size == uniq_units_new_by_id.size
       # Raise validation error if some of the given unit ids for the new squads don't match a Unit record
-      raise CompanyUpdateValidationError("Cannot create squads. Invalid unit id(s) given: #{uniq_unit_ids_new - uniq_units_new_by_id.keys}")
+      raise CompanyUpdateValidationError.new("Cannot create squads. Invalid unit id(s) given: #{uniq_unit_ids_new - uniq_units_new_by_id.keys}")
     end
 
     # Get available units for the company - cost is stored there
@@ -84,24 +86,40 @@ class CompanyService
     uniq_available_unit_ids = available_units.pluck(:unit_id).uniq
     if (uniq_unit_ids_new - uniq_available_unit_ids).size > 0
       # Raise validation error if some of the given unit ids are not in the set of AvailableUnits for the company
-      raise CompanyUpdateValidationError("Cannot create squads, found unavailable unit ids #{uniq_unit_ids_new - uniq_available_unit_ids}")
+      raise CompanyUpdateValidationError.new("Cannot create squads, found unavailable unit ids #{uniq_unit_ids_new - uniq_available_unit_ids}")
     end
 
     # For now, expect unit id and company id are a unique constraint for AvailableUnits so using simple index_by,
     # but may change in the future to support free units
     available_units_by_unit_id = available_units.index_by(&:unit_id)
 
+    # Build hash of tab and index to pop
+    # Raise validation error if a platoon (squads within a tab and index) has either less pop than the minimum or
+    # more pop than the maximum allowed
+    tab_categories = Squad.tab_categories
+    platoon_pop_by_tab_and_index = Hash[
+      tab_categories[:core], Array.new(8,0),
+      tab_categories[:assault], Array.new(8,0),
+      tab_categories[:infantry], Array.new(8,0),
+      tab_categories[:armour], Array.new(8,0),
+      tab_categories[:anti_armour], Array.new(8,0),
+      tab_categories[:support], Array.new(8,0),
+    ]
+
     # TODO include upgrade prices
     # TODO include resource bonuses
     man_new = 0
     mun_new = 0
     fuel_new = 0
+    pop_new = 0
 
     squads.each do |squad|
       available_unit = available_units_by_unit_id[squad[:unit_id]]
       man_new += available_unit.man
       mun_new += available_unit.mun
       fuel_new += available_unit.fuel
+      platoon_pop_by_tab_and_index[squad[:tab]][squad[:index]] += available_unit.pop
+      pop_new += available_unit.pop
     end
 
     ruleset = company.ruleset
@@ -112,8 +130,18 @@ class CompanyService
 
     unless man_remaining >= 0 && mun_remaining >= 0 && fuel_remaining >= 0
       # Raise validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources
-      raise CompanyUpdateValidationError("Invalid squad update, negative resource balance found: #{man_remaining} manpower"\
+      raise CompanyUpdateValidationError.new("Invalid squad update, negative resource balance found: #{man_remaining} manpower"\
         ", #{mun_remaining} munitions, #{fuel_remaining} fuel")
+    end
+
+    platoon_pop_by_tab_and_index.each do |tab, indices|
+      indices.each_with_index do |pop, index|
+        unless pop == 0 || (MIN_POP_PER_PLATOON <= pop && pop <= MAX_POP_PER_PLATOON)
+          # Raise validation error if the platoon's aggregated pop is not between the min and max allowed pop per platoon
+          raise CompanyUpdateValidationError.new("Invalid squad update. Platoon at [#{tab} #{index}] has #{pop} pop, "\
+            "must be between [#{MIN_POP_PER_PLATOON},#{MAX_POP_PER_PLATOON}] inclusive")
+        end
+      end
     end
 
     ## Get all existing squads for the company
@@ -136,7 +164,7 @@ class CompanyService
       available_number = available_units_by_unit_id[unit_id].available
 
       unless count_delta <= available_number
-        raise CompanyUpdateValidationError("Insufficient availability to create squads for unit #{unit.id} in company"\
+        raise CompanyUpdateValidationError.new("Insufficient availability to create squads for unit #{unit_id} in company"\
           " #{company.id}: Existing count #{existing_count}, payload count #{payload_unit_count}, available number #{available_number}")
       end
 
@@ -148,9 +176,9 @@ class CompanyService
     # will be destroying and units that will give their availability back as the unit is not included at all in the new
     # squads list
     existing_squads_by_unit_id.each do |unit_id, existing_unit_squads|
-      next unless available_changes.include? unit_id
+      next if available_changes.include? unit_id
 
-      available_changes[unit_id] = -(existing_unit_squads.size)
+      available_changes[unit_id] = existing_unit_squads.size
     end
 
     ##### At this point, we know the company can have the new squads as they are within price and availability
@@ -181,11 +209,10 @@ class CompanyService
       available_changes.each do |unit_id, delta|
         available_unit = available_units_by_unit_id[unit_id]
         new_available_number = available_unit.available + delta
-        available_unit.update!(available: new_available_number)
+        available_unit.update!(available: [new_available_number, 0].max)
       end
 
-      # TODO UPDATE COMPANY POP
-      company.update!(man: man_remaining, mun: mun_remaining, fuel: fuel_remaining)
+      company.update!(pop: pop_new, man: man_remaining, mun: mun_remaining, fuel: fuel_remaining)
     end
 
     company.reload
@@ -194,7 +221,7 @@ class CompanyService
 
   def delete_company(company, override = false)
     unless can_update_company(company, override)
-      raise CompanyUpdateValidationError("Player #{@player.id} cannot update Company #{company.id}")
+      raise CompanyUpdateValidationError.new("Player #{@player.id} cannot update Company #{company.id}")
     end
 
     company.destroy!

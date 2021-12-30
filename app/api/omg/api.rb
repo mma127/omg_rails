@@ -15,7 +15,10 @@ module OMG
       error! e.full_messages, 400
     end
 
-    rescue_from :all
+    rescue_from :all do |e|
+      Rails.logger.error("Error during Grape endpoint: #{e.message}\nBacktrace: #{e.backtrace.first(15).join("\n")}")
+      error! e.message
+    end
 
     mount Players
     mount Doctrines

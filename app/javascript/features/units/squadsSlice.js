@@ -11,6 +11,7 @@ const squadsAdapter = createEntityAdapter()
 const initialState = squadsAdapter.getInitialState({
   squadsStatus: "idle",
   squadsError: null,
+  isChanged: false,
   pop: 0,
   man: 0,
   mun: 0,
@@ -23,17 +24,33 @@ const initialState = squadsAdapter.getInitialState({
   [SUPPORT]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} }
 })
 
-export const fetchCompanySquads = createAsyncThunk("squads/fetchCompanySquads", async ({ companyId }) => {
-  const response = await axios.get(`/companies/${companyId}/squads`)
-  return response.data
+export const fetchCompanySquads = createAsyncThunk("squads/fetchCompanySquads", async ({ companyId }, {rejectWithValue}) => {
+  try {
+    const response = await axios.get(`/companies/${companyId}/squads`)
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
 })
 
-export const upsertSquads = createAsyncThunk("squads/upsertSquads", async ({ companyId }, { getState }) => {
-  const squads = selectCurrentSquads(getState())
-  const response = await axios.post(`/companies/${companyId}/squads`, { squads })
-  return response.data
-})
+export const upsertSquads = createAsyncThunk(
+  "squads/upsertSquads",
+  async ({ companyId }, { getState, rejectWithValue }) => {
+    const squads = selectCurrentSquads(getState())
+    try {
+      const response = await axios.post(`/companies/${companyId}/squads`, { squads })
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
 
+/**
+ * Given a list of squad objects,
+ * @param squads: Array of squad objects, including tab and index values to identify which tab index the squad belongs to
+ * @returns object containing keys of Tab Categories, and values of objects representing the 8 tab indices
+ */
 const buildNewSquadTabs = (squads) => {
   const tabs = {
     [CORE]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
@@ -64,6 +81,7 @@ const squadsSlice = createSlice({
       if (!Object.keys(platoon).includes(uuid)) {
         platoon[uuid] = action.payload
       }
+      state.isChanged = true
     },
     removeSquad(state, action) {
       const { uuid, index, tab } = action.payload
@@ -71,7 +89,9 @@ const squadsSlice = createSlice({
       if (Object.keys(platoon).includes(uuid)) {
         delete platoon[uuid]
       }
-    }
+      state.isChanged = true
+    },
+    clearCompanyManager: () => initialState
   },
   extraReducers(builder) {
     builder
@@ -81,13 +101,16 @@ const squadsSlice = createSlice({
       })
       .addCase(fetchCompanyById.fulfilled, (state, action) => {
         squadsAdapter.setAll(state, action.payload.squads)
-        // TODO populate tabs
+        const newTabs = buildNewSquadTabs(action.payload.squads)
+        for (const tabName of CATEGORIES) {
+          state[tabName] = newTabs[tabName]
+        }
 
         state.squadsStatus = "idle"
       })
       .addCase(fetchCompanyById.rejected, (state, action) => {
         state.squadsStatus = "idle"
-        state.squadsError = action.error.message
+        state.squadsError = action.payload.error
       })
 
       .addCase(upsertSquads.pending, (state, action) => {
@@ -105,14 +128,14 @@ const squadsSlice = createSlice({
       })
       .addCase(upsertSquads.rejected, (state, action) => {
         state.squadsStatus = "idle"
-        state.squadsError = action.error.message
+        state.squadsError = action.payload.error
       })
   }
 })
 
 export default squadsSlice.reducer
 
-export const { addSquad, removeSquad } = squadsSlice.actions
+export const { addSquad, removeSquad, clearCompanyManager } = squadsSlice.actions
 
 export const {
   selectAll: selectAllSquads,

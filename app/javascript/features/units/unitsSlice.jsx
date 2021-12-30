@@ -5,10 +5,16 @@ const unitsAdapter = createEntityAdapter()
 
 const initialState = unitsAdapter.getInitialState({})
 
-export const fetchUnitById = createAsyncThunk("units/fetchUnitById", async ({unitId}) => {
-  const response = await axios.get(`/units/${unitId}`)
-  return response.data
-})
+export const fetchUnitById = createAsyncThunk(
+  "units/fetchUnitById",
+  async ({ unitId }) => {
+    try {
+      const response = await axios.get(`/units/${unitId}`)
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  })
 
 const unitsSlice = createSlice({
   name: "units",

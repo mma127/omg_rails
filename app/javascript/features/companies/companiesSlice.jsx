@@ -6,6 +6,7 @@ const companiesAdapter = createEntityAdapter()
 const initialState = companiesAdapter.getInitialState({
   loadingCompanyStatus: "idle",
   loadingCompanyError: null,
+  loadingCompaniesError: null,
   creatingStatus: "idle",
   creatingError: null,
   deletingError: null
@@ -14,29 +15,53 @@ const initialState = companiesAdapter.getInitialState({
 /**
  * Fetch all companies for the player. High level data only for company selection
  */
-export const fetchCompanies = createAsyncThunk("companies/fetchCompanies", async () => {
-  const response = await axios.get("/companies")
-  return response.data
-})
+export const fetchCompanies = createAsyncThunk(
+  "companies/fetchCompanies",
+  async () => {
+    try {
+      const response = await axios.get("/companies")
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  })
 
 /**
  * Fetch data for a specific company for the player.
  * Includes available units, squads, unlocks to populate company manager
  */
-export const fetchCompanyById = createAsyncThunk("companies/fetchCompanyById", async ({ companyId }) => {
-  const response = await axios.get(`/companies/${companyId}`)
-  return response.data
-})
+export const fetchCompanyById = createAsyncThunk(
+  "companies/fetchCompanyById",
+  async ({ companyId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/companies/${companyId}`)
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  })
 
-export const createCompany = createAsyncThunk("companies/createCompany", async ({ name, doctrineId }) => {
-  const response = await axios.post("/companies", { name, doctrineId })
-  return response.data
-})
+export const createCompany = createAsyncThunk(
+  "companies/createCompany",
+  async ({ name, doctrineId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/companies", { name, doctrineId })
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  })
 
-export const deleteCompanyById = createAsyncThunk("companies/deleteCompany", async ({ companyId }) => {
-  const response = await axios.delete(`/companies/${companyId}`)
-  return response.data
-})
+export const deleteCompanyById = createAsyncThunk(
+  "companies/deleteCompany",
+  async ({ companyId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`/companies/${companyId}`)
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  })
 
 const companiesSlice = createSlice({
   name: "companies",
@@ -68,6 +93,9 @@ const companiesSlice = createSlice({
       .addCase(fetchCompanies.fulfilled, (state, action) => {
         companiesAdapter.setAll(state, action.payload)
       })
+      .addCase(fetchCompanies.rejected, (state, action) => {
+        state.loadingCompaniesError = action.payload.error
+      })
 
       .addCase(fetchCompanyById.pending, (state) => {
         state.loadingCompanyStatus = "pending"
@@ -79,7 +107,7 @@ const companiesSlice = createSlice({
       })
       .addCase(fetchCompanyById.rejected, (state, action) => {
         state.loadingCompanyStatus = "rejected"
-        state.loadingCompanyError = action.error.message
+        state.loadingCompanyError = action.payload.error
       })
 
       .addCase(createCompany.pending, (state) => {
@@ -92,7 +120,7 @@ const companiesSlice = createSlice({
       })
       .addCase(createCompany.rejected, (state, action) => {
         state.creatingStatus = "rejected"
-        state.creatingError = action.error.message
+        state.creatingError = action.payload.error
       })
 
       .addCase(deleteCompanyById.pending, (state, action) => {
@@ -102,7 +130,7 @@ const companiesSlice = createSlice({
         companiesAdapter.removeOne(state, action.payload)
       })
       .addCase(deleteCompanyById.rejected, (state, action) => {
-        state.deletingError = action.error.message
+        state.deletingError = action.payload.error
       })
   }
 })

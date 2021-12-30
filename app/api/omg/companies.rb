@@ -26,7 +26,7 @@ module OMG
 
           present new_company
         rescue StandardError => e
-          Rails.logger.warn("Failed to create company for Player #{current_player.id} with params #{params}: #{e.message}")
+          Rails.logger.warn("Failed to create company for Player #{current_player.id} with params #{params}: #{e.message}\n#{e.backtrace.first(15).join("\n")}")
           error! e.message, 400
         end
       end
@@ -55,7 +55,21 @@ module OMG
         present company.available_units
       end
 
-      desc 'Save squads for the player and update available units'
+      desc 'Retrieve all squads for the company'
+      params do
+        requires :id, type: Integer, desc: "Company ID"
+      end
+      get ':id/squads' do
+        declared_params = declared(params)
+        company = Company.includes(:squads, :ruleset, :available_units).find_by(id: declared_params[:id], player: current_player)
+        if company.blank?
+          error! "Could not find company #{params[:id]} for the current player", 404
+        end
+
+        present company.squads
+      end
+
+      desc 'Save squads for the company and update available units'
       params do
         requires :id, type: Integer, desc: "Company ID"
         group :squads, type: Array, desc: "Company squads list" do
@@ -77,7 +91,7 @@ module OMG
           squads_response = {squads: squads, available_units: available_units}
           present squads_response, with: Entities::SquadsResponse
         rescue StandardError => e
-          Rails.logger.warn("Failed to create company for Player #{current_player.id}: #{e.message}\nParams #{declared_params}")
+          Rails.logger.warn("Failed to create company for Player #{current_player.id}: #{e.message}\nParams #{declared_params}\nBacktrace: #{e.backtrace.first(15).join("\n")}")
           error! e.message, 400
         end
       end

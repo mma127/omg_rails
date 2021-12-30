@@ -13,7 +13,7 @@ import { selectAllAvailableUnits, selectAvailableUnitsStatus } from "../../units
 import { AvailableUnits } from "./available_units/AvailableUnits";
 import { UnitDetails } from "./UnitDetails";
 import {
-  addSquad,
+  addSquad, clearCompanyManager,
   removeSquad,
   selectAntiArmourSquads,
   selectArmourSquads,
@@ -22,6 +22,7 @@ import {
   selectInfantrySquads,
   selectSupportSquads, upsertSquads
 } from "../../units/squadsSlice";
+import { ErrorTypography } from "../../../components/ErrorTypography";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -85,8 +86,19 @@ export const CompanyManager = () => {
   const companyId = params.companyId
   const company = useSelector(state => selectCompanyById(state, companyId))
 
+  const squadsStatus = useSelector(state => state.squads.squadsStatus)
+  const isChanged = useSelector(state => state.squads.isChanged)
+  const squadsError = useSelector(state => state.squads.squadsError)
+  const isSaving = squadsStatus === 'pending'
+  const canSave = !isSaving && isChanged
+  const errorMessage = isSaving ? "" : squadsError
+
   useEffect(() => {
     dispatch(fetchCompanyById({ companyId }))
+
+    return () => {
+      dispatch(clearCompanyManager())
+    }
   }, [companyId])
 
   // TODO use this to constrain the drag area
@@ -142,7 +154,6 @@ export const CompanyManager = () => {
         <Grid item container spacing={2} className={classes.availableUnitsContainer}>
           <Grid item md={6}>
             {availableUnitsContent}
-            {/*TODO read available units for this company from backend */}
             {/*TODO maybe populate by type, alphabetically or cost ASC */}
           </Grid>
           <Grid item md={6} xs={12}>
@@ -172,11 +183,16 @@ export const CompanyManager = () => {
           </Grid>
         </Grid>
         <Grid item container spacing={2}>
-          <Grid item xs={8}>
+          <Grid item xs={6}>
             <CompanyGridTabs selectedTab={currentTab} changeCallback={onTabChange} />
           </Grid>
-          <Grid item xs={4}>
-            <Button variant="contained" color="secondary" size="small" onClick={saveSquads}>Save</Button>
+          <Grid item container xs={6}>
+            <Grid item xs={2}>
+              <Button variant="contained" color="secondary" size="small" onClick={saveSquads} disabled={!canSave}>Save</Button>
+            </Grid>
+            <Grid item xs={10}>
+              <ErrorTypography>{errorMessage}</ErrorTypography>
+            </Grid>
           </Grid>
         </Grid>
         <Grid item container spacing={2}>
