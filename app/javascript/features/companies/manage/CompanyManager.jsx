@@ -181,19 +181,18 @@ export const CompanyManager = () => {
                         pr={1}>Fuel</Typography>
             <Typography variant="body2" gutterBottom>{company.fuel}</Typography>
           </Grid>
-        </Grid>
-        <Grid item container spacing={2}>
-          <Grid item xs={6}>
-            <CompanyGridTabs selectedTab={currentTab} changeCallback={onTabChange} />
-          </Grid>
-          <Grid item container xs={6}>
-            <Grid item xs={2}>
+          <Grid item md={2}/>
+          <Grid item container md={6}>
+            <Grid item md={2}>
               <Button variant="contained" color="secondary" size="small" onClick={saveSquads} disabled={!canSave}>Save</Button>
             </Grid>
-            <Grid item xs={10}>
+            <Grid item md={10}>
               <ErrorTypography>{errorMessage}</ErrorTypography>
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item spacing={2}>
+          <CompanyGridTabs selectedTab={currentTab} changeCallback={onTabChange} />
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={3}>
