@@ -26,6 +26,7 @@ class Squad < ApplicationRecord
   belongs_to :available_unit
   has_many :squad_upgrades
   has_many :upgrades, through: :squad_upgrades
+  delegate :unit, to: :available_unit
 
   enum tab_category: {
     core: 'core',
@@ -43,8 +44,12 @@ class Squad < ApplicationRecord
   validates_numericality_of :vet
   validates_numericality_of :category_position
 
+  def unit_id
+    unit.id
+  end
+
   def unit_name
-    available_unit.unit.name
+    unit.name
   end
 
   def pop

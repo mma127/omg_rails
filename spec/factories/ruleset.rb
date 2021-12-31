@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :ruleset do
-    name { 'Ruleset 1' }
+    name { 'war' }
     description { 'Starting ruleset' }
     starting_man { 7000 }
     starting_mun { 1600 }

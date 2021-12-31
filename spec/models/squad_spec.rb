@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: squads
+#
+#  id                                                         :bigint           not null, primary key
+#  category_position(Position within the tab the squad is in) :integer
+#  name(Squad's custom name)                                  :string
+#  tab_category(Tab this squad is in)                         :string
+#  vet(Squad's veterancy)                                     :decimal(, )
+#  created_at                                                 :datetime         not null
+#  updated_at                                                 :datetime         not null
+#  available_unit_id                                          :bigint           not null
+#  company_id                                                 :bigint
+#
+# Indexes
+#
+#  index_squads_on_available_unit_id  (available_unit_id)
+#  index_squads_on_company_id         (company_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (company_id => companies.id)
+#
 require "rails_helper"
 
 RSpec.describe Squad, type: :model do

@@ -18,7 +18,7 @@ class CompanyService
 
   def create_company(doctrine, name)
     unless can_create_company(doctrine)
-      raise CompanyCreationValidationError("Player #{@player.id} has too many #{doctrine.faction.side} companies, cannot create another one.")
+      raise CompanyCreationValidationError.new("Player #{@player.id} has too many #{doctrine.faction.side} companies, cannot create another one.")
     end
 
     # Get ruleset
@@ -160,16 +160,23 @@ class CompanyService
         existing_count = 0
       end
       payload_unit_count = payload_unit_squads.size
-      count_delta = existing_count - payload_unit_count
+      availability_delta = existing_count - payload_unit_count
       available_number = available_units_by_unit_id[unit_id].available
 
-      unless count_delta <= available_number
+      # Inverse of the availability delta as the availablity delta is how much we are changing down the available number
+      # so the inverse is how much net the available number must compare aagainst
+      # Ex, 0 existing, 2 payload count, 2 available, then the availability delta is -2 as we are going to adjust down available by 2.
+      #   To validate, we take the inverse (2), and compare against the available number as that 2 is what we are net adding to the company for the unit
+      # Ex, 2 existing, 1 payload count, 0 available, then the availability delta is 1 as we are adjusting up by 1, as we are making 1 more available
+      #   To validate we take the inverse, -1, and compare against the available number. For cases like this where the payload count is < existing, we should
+      #   always pass the validation as we are adding to the available number for the unit
+      unless -availability_delta <= available_number
         raise CompanyUpdateValidationError.new("Insufficient availability to create squads for unit #{unit_id} in company"\
           " #{company.id}: Existing count #{existing_count}, payload count #{payload_unit_count}, available number #{available_number}")
       end
 
       # Save the delta so we can update it later after we finish validating availability
-      available_changes[unit_id] = count_delta
+      available_changes[unit_id] = availability_delta
     end
 
     # Check for any existing squads that have units which aren't in the payload squads list. These represent squads we
