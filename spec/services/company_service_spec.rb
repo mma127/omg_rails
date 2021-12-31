@@ -134,7 +134,7 @@ RSpec.describe CompanyService do
         _, available_units = subject.update_company_squads(@company, squads_param)
         expect(available_units.size).to eq 3
         expect(AvailableUnit.find_by(company: @company, unit: unit1).available).to eq 3
-        expect(AvailableUnit.find_by(company: @company, unit: unit2).available).to eq 0
+        expect(AvailableUnit.find_by(company: @company, unit: unit2).available).to eq 1
         expect(AvailableUnit.find_by(company: @company, unit: unit3).available).to eq 0
       end
 
@@ -257,10 +257,6 @@ RSpec.describe CompanyService do
     context "when there are existing Squads in the Company" do
       let!(:unit4) { create :unit }
       let!(:restriction_unit4) { create :base_restriction_unit, unit: unit4, pop: 8, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine }
-
-      # let!(:squads_param) {
-      #
-      # }
 
       before do
         @company = subject.create_company(doctrine, name)
@@ -475,6 +471,34 @@ RSpec.describe CompanyService do
                "Insufficient availability to create squads for unit #{unit4.id} in company #{@company.id}: Existing count 0, payload count 1, available number 0"
              )
       end
+    end
+  end
+
+  context "#delete_company" do
+    before do
+      @company = subject.create_company(doctrine, name)
+      @available_unit1 = @company.available_units.find_by(unit: unit1)
+      @available_unit2 = @company.available_units.find_by(unit: unit2)
+      @available_unit3 = @company.available_units.find_by(unit: unit3)
+
+      create :squad, company: @company, available_unit: @available_unit1, tab_category: "core", category_position: 0
+      create :squad, company: @company, available_unit: @available_unit2, tab_category: "core", category_position: 0
+      create :squad, company: @company, available_unit: @available_unit3, tab_category: "core", category_position: 3
+    end
+
+    it "destroys the Company" do
+      subject.delete_company(@company)
+      expect { @company.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+    it "destroys the Company's AvailableUnits" do
+      company_id = @company.id
+      subject.delete_company(@company)
+      expect(AvailableUnit.where(company_id: company_id).size).to eq 0
+    end
+    it "destroys the Company's Squads" do
+      company_id = @company.id
+      subject.delete_company(@company)
+      expect(Squad.where(company_id: company_id).size).to eq 0
     end
   end
 end
