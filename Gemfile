@@ -51,6 +51,8 @@ gem 'pry-doc'
 gem 'pry-awesome_print'
 gem 'awesome_print'
 
+gem 'bundler-audit'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
