@@ -33,7 +33,7 @@ jobs:
         auth:
           username: temeraire02
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-      - image: circleci/postgres:12.9-alpine
+      - image: circleci/postgres:12.9
         auth:
           username: temeraire02
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
