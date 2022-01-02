@@ -361,6 +361,7 @@ DEPENDENCIES
   rspec
   rspec-rails
   sass-rails (>= 6)
+  sassc (~> 2.1)
   seedbank
   selenium-webdriver
   spring
