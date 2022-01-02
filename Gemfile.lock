@@ -267,6 +267,8 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.3)
+    rspec_junit_formatter (0.4.1)
+      rspec-core (>= 2, < 4, != 2.12.0)
     ruby-openid (2.9.2)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
@@ -360,6 +362,7 @@ DEPENDENCIES
   rails-data-migrations
   rspec
   rspec-rails
+  rspec_junit_formatter
   sass-rails (>= 6)
   sassc (= 2.1.0)
   seedbank
