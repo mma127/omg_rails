@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { CircularProgress, Container, Grid, Typography } from "@mui/material";
+import { Button, CircularProgress, Container, Grid, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
@@ -13,15 +13,16 @@ import { selectAllAvailableUnits, selectAvailableUnitsStatus } from "../../units
 import { AvailableUnits } from "./available_units/AvailableUnits";
 import { UnitDetails } from "./UnitDetails";
 import {
-  addSquad,
+  addSquad, clearCompanyManager,
   removeSquad,
   selectAntiArmourSquads,
   selectArmourSquads,
   selectAssaultSquads,
   selectCoreSquads,
   selectInfantrySquads,
-  selectSupportSquads
+  selectSupportSquads, upsertSquads
 } from "../../units/squadsSlice";
+import { ErrorTypography } from "../../../components/ErrorTypography";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -85,8 +86,19 @@ export const CompanyManager = () => {
   const companyId = params.companyId
   const company = useSelector(state => selectCompanyById(state, companyId))
 
+  const squadsStatus = useSelector(state => state.squads.squadsStatus)
+  const isChanged = useSelector(state => state.squads.isChanged)
+  const squadsError = useSelector(state => state.squads.squadsError)
+  const isSaving = squadsStatus === 'pending'
+  const canSave = !isSaving && isChanged
+  const errorMessage = isSaving ? "" : squadsError
+
   useEffect(() => {
     dispatch(fetchCompanyById({ companyId }))
+
+    return () => {
+      dispatch(clearCompanyManager())
+    }
   }, [companyId])
 
   // TODO use this to constrain the drag area
@@ -106,16 +118,20 @@ export const CompanyManager = () => {
     setSelectedUnitName(unitName)
   }
 
-  const onDropTargetHit = ({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab }) => {
+  const onDropTargetHit = ({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab, vet }) => {
     console.log(`Added ${unitName}, pop ${pop}, costs ${man}MP ${mun}MU ${fuel}FU to category ${tab} position ${index}`)
     dispatch(addUnitCost({ id: company.id, pop, man, mun, fuel }))
-    dispatch(addSquad({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab }))
+    dispatch(addSquad({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab, vet }))
   }
 
   const onSquadDestroy = (uuid, id, unitId, pop, man, mun, fuel, index, tab) => {
     // TODO remove squad id from company if not null
     dispatch(removeUnitCost({ id: company.id, pop, man, mun, fuel }))
     dispatch(removeSquad({ uuid, unitId, index, tab }))
+  }
+
+  const saveSquads = () => {
+    dispatch(upsertSquads({ companyId }))
   }
 
   const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
@@ -138,7 +154,6 @@ export const CompanyManager = () => {
         <Grid item container spacing={2} className={classes.availableUnitsContainer}>
           <Grid item md={6}>
             {availableUnitsContent}
-            {/*TODO read available units for this company from backend */}
             {/*TODO maybe populate by type, alphabetically or cost ASC */}
           </Grid>
           <Grid item md={6} xs={12}>
@@ -166,8 +181,17 @@ export const CompanyManager = () => {
                         pr={1}>Fuel</Typography>
             <Typography variant="body2" gutterBottom>{company.fuel}</Typography>
           </Grid>
+          <Grid item md={2}/>
+          <Grid item container md={6}>
+            <Grid item md={2}>
+              <Button variant="contained" color="secondary" size="small" onClick={saveSquads} disabled={!canSave}>Save</Button>
+            </Grid>
+            <Grid item md={10}>
+              <ErrorTypography>{errorMessage}</ErrorTypography>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item>
+        <Grid item spacing={2}>
           <CompanyGridTabs selectedTab={currentTab} changeCallback={onTabChange} />
         </Grid>
         <Grid item container spacing={2}>

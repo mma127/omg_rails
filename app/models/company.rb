@@ -14,12 +14,14 @@
 #  doctrine_id                              :bigint           not null
 #  faction_id                               :bigint           not null
 #  player_id                                :bigint           not null
+#  ruleset_id                               :bigint           not null
 #
 # Indexes
 #
 #  index_companies_on_doctrine_id  (doctrine_id)
 #  index_companies_on_faction_id   (faction_id)
 #  index_companies_on_player_id    (player_id)
+#  index_companies_on_ruleset_id   (ruleset_id)
 #
 # Foreign Keys
 #
@@ -31,6 +33,7 @@ class Company < ApplicationRecord
   belongs_to :player
   belongs_to :doctrine
   belongs_to :faction
+  belongs_to :ruleset
 
   has_many :available_units, dependent: :destroy
   has_many :squads, dependent: :destroy
@@ -43,6 +46,7 @@ class Company < ApplicationRecord
   validates_presence_of :faction
   validates_presence_of :doctrine
   validates_presence_of :player
+  validates_presence_of :ruleset
 
   def faction_name
     faction.name

@@ -9,12 +9,13 @@ module API
     end
 
     def create
-      if create_params[:doctrineId].blank?
+      if create_params[:doctrine_id].blank?
         render json: "Doctrine id is required", status: :bad_request
       end
-      doctrine = Doctrine.find_by(id: create_params[:doctrineId])
+      doctrine_id = create_params[:doctrine_id]
+      doctrine = Doctrine.find_by(id: doctrine_id)
       if doctrine.blank?
-        render json: "Invalid doctrine with id #{create_params[:doctrineId]}", status: :bad_request
+        render json: "Invalid doctrine with id #{doctrine_id}", status: :bad_request
       end
 
       begin
@@ -48,7 +49,7 @@ module API
     private
 
     def create_params
-      params.permit(:name, :doctrineId)
+      params.permit(:name, :doctrine_id)
     end
   end
 end

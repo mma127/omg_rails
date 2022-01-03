@@ -21,8 +21,6 @@
 #  index_units_on_name  (name)
 #
 class Unit < ApplicationRecord
-  belongs_to :restriction, optional: true
-
   has_many :unit_modifications
   has_many :unit_games
   has_many :games, through: :unit_games

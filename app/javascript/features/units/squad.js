@@ -8,7 +8,7 @@ export const createAvailableUnit = (unitId, unitName, pop, man, mun, fuel, image
   image: image,
 })
 
-export const createSquad = (uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab) => ({
+export const createSquad = (uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab, vet=0) => ({
   uuid: uuid,
   id: id,
   unitId: unitId,
@@ -19,5 +19,6 @@ export const createSquad = (uuid, id, unitId, unitName, pop, man, mun, fuel, ima
   fuel: fuel,
   image: image,
   index: index,
-  tab: tab
+  tab: tab,
+  vet: vet
 })

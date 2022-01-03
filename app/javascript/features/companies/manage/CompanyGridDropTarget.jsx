@@ -55,7 +55,7 @@ export const CompanyGridDropTarget = ({
       onSquadDestroy(uuid, id, unitId, pop, man, mun, fuel, index, tab)
 
       // Need to add this squad to the current platoon index
-      onHitCallback({ ...dragData, index: gridIndex, tab: currentTab })
+      onHitCallback({ ...dragData, vet: 0, index: gridIndex, tab: currentTab })
     } else if (dragData.index !== gridIndex) {
       const uuid = nanoid()
       const newSquad = createSquad(uuid, null, dragData.unitId, dragData.unitName, dragData.pop, dragData.man,
@@ -79,7 +79,7 @@ export const CompanyGridDropTarget = ({
       squadCards.push(<SquadCard key={squad.uuid}
                                  uuid={squad.uuid} squadId={squad.id} unitId={squad.unitId} unitName={squad.unitName}
                                  pop={squad.pop} man={squad.man} mun={squad.mun} fuel={squad.fuel} image={squad.image}
-                                 index={squad.index} tab={squad.tab}
+                                 index={squad.index} tab={squad.tab} vet={squad.vet}
                                  onUnitClick={onUnitClick} onDestroyClick={onDestroyClick} />)
     }
   }

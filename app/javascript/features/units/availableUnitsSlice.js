@@ -1,33 +1,29 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import axios from "axios"
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { fetchCompanyById } from "../companies/companiesSlice";
-import { addSquad, removeSquad } from "./squadsSlice";
+import { addSquad, clearCompanyManager, removeSquad, upsertSquads } from "./squadsSlice";
+import {
+  EMPLACEMENT,
+  INFANTRY,
+  LIGHT_VEHICLE,
+  SUPPORT_TEAM,
+  TANK,
+  unitTypes
+} from "../../constants/units/all_factions";
 
 const availableUnitsAdapter = createEntityAdapter()
 
 const initialState = availableUnitsAdapter.getInitialState({
-  availableUnits: [],
+  [INFANTRY]: [],
+  [SUPPORT_TEAM]: [],
+  [LIGHT_VEHICLE]: [],
+  [TANK]: [],
+  [EMPLACEMENT]: [],
   availableUnitsStatus: "idle",
   loadingAvailableUnitsError: null,
   creatingStatus: "idle",
   creatingError: null,
   deletingError: null
 })
-
-// export const fetchCompanyAvailableUnits = createAsyncThunk("companies/fetchCompanyAvailableUnits", async ({ companyId }) => {
-//   const response = await axios.get(`/companies/${companyId}/available_units`)
-//   return response.data
-// })
-
-// export const createCompany = createAsyncThunk("companies/createCompany", async ({ name, doctrineId }) => {
-//   const response = await axios.post("/companies", { name, doctrineId })
-//   return response.data
-// })
-//
-// export const deleteCompanyById = createAsyncThunk("companies/deleteCompany", async ({ companyId }) => {
-//   const response = await axios.delete(`/companies/${companyId}`)
-//   return response.data
-// })
 
 const renormalizeAvailableUnits = (availableUnits) => {
   /**
@@ -38,6 +34,17 @@ const renormalizeAvailableUnits = (availableUnits) => {
     id: au.unitId,
     availableUnitId: au.id
   }))
+}
+
+const getSortedUnitsForType = (availableUnits, unitType) => {
+  return availableUnits.filter(au => au.unitType === unitType)
+    .sort((a, b) => a.unitDisplayName.localeCompare(b.unitDisplayName))
+}
+
+const setStateForUnitTypes = (availableUnits, state) => {
+  unitTypes.forEach(unitType => {
+    state[unitType] = getSortedUnitsForType(availableUnits, unitType)
+  })
 }
 
 const availableUnitsSlice = createSlice({
@@ -51,12 +58,14 @@ const availableUnitsSlice = createSlice({
         state.loadingAvailableUnitsError = null
       })
       .addCase(fetchCompanyById.fulfilled, (state, action) => {
-        availableUnitsAdapter.setAll(state, renormalizeAvailableUnits(action.payload.availableUnits))
+        const renormalized_available_units = renormalizeAvailableUnits(action.payload.availableUnits)
+        availableUnitsAdapter.setAll(state, renormalized_available_units)
+        setStateForUnitTypes(renormalized_available_units, state)
         state.availableUnitsStatus = "idle"
       })
       .addCase(fetchCompanyById.rejected, (state, action) => {
         state.availableUnitsStatus = "idle"
-        state.loadingAvailableUnitsError = action.error.message
+        state.loadingAvailableUnitsError = action.payload.error
       })
       .addCase(addSquad, (state, action) => {
         const { unitId } = action.payload
@@ -68,6 +77,15 @@ const availableUnitsSlice = createSlice({
         const availableUnit = state.entities[unitId]
         availableUnit.available += 1
       })
+
+      .addCase(upsertSquads.fulfilled, (state, action) => {
+        const renormalized_available_units = renormalizeAvailableUnits(action.payload.availableUnits)
+        availableUnitsAdapter.setAll(state, renormalized_available_units)
+        setStateForUnitTypes(renormalized_available_units, state)
+      })
+      .addCase(clearCompanyManager, (state, action) => {
+        return initialState
+      })
   }
 })
 
@@ -78,6 +96,10 @@ export const {
   selectById: selectAvailableUnitByUnitId
 } = availableUnitsAdapter.getSelectors(state => state.availableUnits)
 
-// export const selectAvailableUnits = state => state.availableUnits.availableUnits
-// export const selectAvailableUnitByUnitId = (state, unitId) => state.availableUnits.availableUnits.find(au => au.unitId === unitId)
+export const selectInfantryAvailableUnits = state => state.availableUnits[INFANTRY]
+export const selectSupportTeamAvailableUnits = state => state.availableUnits[SUPPORT_TEAM]
+export const selectLightVehicleAvailableUnits = state => state.availableUnits[LIGHT_VEHICLE]
+export const selectTankAvailableUnits = state => state.availableUnits[TANK]
+export const selectEmplacementAvailableUnits = state => state.availableUnits[EMPLACEMENT]
+
 export const selectAvailableUnitsStatus = state => state.availableUnits.availableUnitsStatus

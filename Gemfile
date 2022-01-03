@@ -15,6 +15,7 @@ gem 'activerecord-import'
 gem 'puma', '~> 5.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
+# Pinning to 2.1.0 due to https://github.com/sass/sassc-ruby/issues/189
 gem 'sassc', '2.1.0'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem 'webpacker', '~> 5.0'
@@ -52,6 +53,8 @@ gem 'pry-doc'
 gem 'pry-awesome_print'
 gem 'awesome_print'
 
+gem 'bundler-audit'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
@@ -63,6 +66,8 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'dotenv-rails'
+  gem 'factory_bot_rails'
+  gem 'shoulda-matchers'
 end
 
 group :development do
