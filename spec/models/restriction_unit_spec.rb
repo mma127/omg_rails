@@ -40,6 +40,7 @@ RSpec.describe RestrictionUnit, type: :model do
   describe 'associations' do
     it { should belong_to(:restriction) }
     it { should belong_to(:unit) }
+    it { should belong_to(:ruleset) }
   end
 
   describe 'validations' do

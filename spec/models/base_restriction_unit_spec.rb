@@ -38,7 +38,8 @@ RSpec.describe BaseRestrictionUnit, type: :model do
   it "generates and saves the description" do
     unit = create :infantry, display_name: "Rifles"
     restriction = create :restriction, name: "American army"
-    base_restriction_unit = create :base_restriction_unit, restriction: restriction, unit: unit
+    ruleset = create :ruleset
+    base_restriction_unit = create :base_restriction_unit, restriction: restriction, unit: unit, ruleset: ruleset
     expect(base_restriction_unit.description).to eq("American army - Rifles")
   end
 end

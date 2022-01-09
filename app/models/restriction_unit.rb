@@ -37,11 +37,6 @@ class RestrictionUnit < ApplicationRecord
   belongs_to :unit
   belongs_to :ruleset
 
-  # enum types: {
-  #   allow: "allow",
-  #   disallow: "disallow"
-  # }
-
   validates_numericality_of :man
   validates_numericality_of :mun
   validates_numericality_of :fuel

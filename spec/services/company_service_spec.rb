@@ -13,9 +13,9 @@ RSpec.describe CompanyService do
   let(:unit1) { create :unit }
   let(:unit2) { create :unit }
   let(:unit3) { create :unit }
-  let!(:restriction_unit1) { create :base_restriction_unit, unit: unit1, pop: 4, resupply: 4, resupply_max: 6, company_max: 10, restriction: restriction_faction }
-  let!(:restriction_unit2) { create :base_restriction_unit, unit: unit2, pop: 7, resupply: 2, resupply_max: 5, company_max: 5, restriction: restriction_faction }
-  let!(:restriction_unit3) { create :base_restriction_unit, unit: unit3, pop: 13, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine }
+  let!(:restriction_unit1) { create :base_restriction_unit, unit: unit1, pop: 4, resupply: 4, resupply_max: 6, company_max: 10, restriction: restriction_faction, ruleset: ruleset }
+  let!(:restriction_unit2) { create :base_restriction_unit, unit: unit2, pop: 7, resupply: 2, resupply_max: 5, company_max: 5, restriction: restriction_faction, ruleset: ruleset }
+  let!(:restriction_unit3) { create :base_restriction_unit, unit: unit3, pop: 13, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: ruleset }
 
   context "#create_company" do
     it "creates the Company with valid params" do
@@ -256,7 +256,7 @@ RSpec.describe CompanyService do
 
     context "when there are existing Squads in the Company" do
       let!(:unit4) { create :unit }
-      let!(:restriction_unit4) { create :base_restriction_unit, unit: unit4, pop: 8, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine }
+      let!(:restriction_unit4) { create :base_restriction_unit, unit: unit4, pop: 8, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: ruleset }
 
       before do
         @company = subject.create_company(doctrine, name)
