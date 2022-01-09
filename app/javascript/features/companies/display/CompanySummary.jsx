@@ -47,7 +47,7 @@ export const CompanySummary = ({ company }) => {
   }
 
   return (
-    <Box m={4} sx={{ maxWidth: '600px' }} justifyContent="center">
+    <Box m={5} sx={{ maxWidth: '600px' }} justifyContent="center">
       <Card elevation={3}>
           <CardActionArea onClick={manageCompany}>
             <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>

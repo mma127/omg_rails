@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :restriction_unit do
     association :restriction
     association :unit
+    association :ruleset
     description { 'Restriction Unit' }
     man { 100 }
     mun { 90 }

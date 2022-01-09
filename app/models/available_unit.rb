@@ -31,6 +31,7 @@ class AvailableUnit < ApplicationRecord
   belongs_to :company
   belongs_to :unit
   has_many :squads
+  delegate :ruleset, to: :company
 
   validates_presence_of :company
   validates_presence_of :unit

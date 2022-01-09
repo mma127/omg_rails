@@ -137,8 +137,8 @@ export const CompanyForm = ({ side, back, company, single = false, companyCallba
 
   // Radios have a 9px padding left, decided to add to other elements so they are aligned vertically
   return (
-    <Box m={5} sx={{ maxWidth: '535px' }} justifyContent="center">
-      <Card elevation={3}>
+    <Box m={5} sx={{ maxWidth: '600px' }} justifyContent="center">
+      <Card elevation={3} sx={{padding: '16px'}}>
         <Typography variant={"h5"} pl={"9px"} gutterBottom>New {sideTitle} Company</Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box pl={"9px"} pb={2}>
