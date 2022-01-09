@@ -12,6 +12,7 @@ const initialState = squadsAdapter.getInitialState({
   squadsStatus: "idle",
   squadsError: null,
   isChanged: false,
+  notifySnackbar: false,
   pop: 0,
   man: 0,
   mun: 0,
@@ -91,7 +92,10 @@ const squadsSlice = createSlice({
       }
       state.isChanged = true
     },
-    clearCompanyManager: () => initialState
+    clearCompanyManager: () => initialState,
+    clearNotifySnackbar(state) {
+      state.notifySnackbar = false
+    }
   },
   extraReducers(builder) {
     builder
@@ -116,6 +120,7 @@ const squadsSlice = createSlice({
       .addCase(upsertSquads.pending, (state, action) => {
         state.squadsStatus = "pending"
         state.squadsError = null
+        state.notifySnackbar = false
       })
       .addCase(upsertSquads.fulfilled, (state, action) => {
         // action.payload.squads & action.payload.availableUnits
@@ -125,17 +130,20 @@ const squadsSlice = createSlice({
           state[tabName] = newTabs[tabName]
         }
         state.squadsStatus = "idle"
+        state.isChanged = false
+        state.notifySnackbar = true
       })
       .addCase(upsertSquads.rejected, (state, action) => {
         state.squadsStatus = "idle"
         state.squadsError = action.payload.error
+        state.notifySnackbar = true
       })
   }
 })
 
 export default squadsSlice.reducer
 
-export const { addSquad, removeSquad, clearCompanyManager } = squadsSlice.actions
+export const { addSquad, removeSquad, clearCompanyManager, clearNotifySnackbar } = squadsSlice.actions
 
 export const {
   selectAll: selectAllSquads,

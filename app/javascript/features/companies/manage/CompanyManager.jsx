@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { Button, CircularProgress, Container, Grid, Typography } from "@mui/material";
+import { Alert, Button, CircularProgress, Container, Grid, Snackbar, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
@@ -13,7 +13,7 @@ import { selectAllAvailableUnits, selectAvailableUnitsStatus } from "../../units
 import { AvailableUnits } from "./available_units/AvailableUnits";
 import { UnitDetails } from "./UnitDetails";
 import {
-  addSquad, clearCompanyManager,
+  addSquad, clearCompanyManager, clearNotifySnackbar,
   removeSquad,
   selectAntiArmourSquads,
   selectArmourSquads,
@@ -40,6 +40,13 @@ export const CompanyManager = () => {
   const [selectedUnitId, setSelectedUnitId] = useState(null)
   const [selectedUnitImage, setSelectedUnitImage] = useState(null)
   const [selectedUnitName, setSelectedUnitName] = useState(null)
+
+  const notifySnackbar = useSelector(state => state.squads.notifySnackbar)
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+
+  useEffect(() => {
+    setOpenSnackbar(notifySnackbar)
+  }, [notifySnackbar])
 
   const core = useSelector(selectCoreSquads)
   const assault = useSelector(selectAssaultSquads)
@@ -104,6 +111,8 @@ export const CompanyManager = () => {
   // TODO use this to constrain the drag area
   const constraintsRef = useRef(null)
 
+  const handleCloseSnackbar = () => setOpenSnackbar(false)
+
   const onTabChange = (newTab) => {
     console.log(`Manager changed to new tab ${newTab}`)
     setCurrentTab(newTab)
@@ -146,9 +155,32 @@ export const CompanyManager = () => {
     availableUnitsContent = <AvailableUnits companyId={companyId} onUnitSelect={onUnitSelect} />
   }
 
+  let snackbarSeverity = "success"
+  let snackbarContent = "Saved successfully"
+  let errorAlert
+  if (errorMessage?.length > 0) {
+    errorAlert = <Alert severity="error">{errorMessage}</Alert>
+  }
+  if (notifySnackbar) {
+    if (errorMessage?.length > 0) {
+      snackbarSeverity = "error"
+      snackbarContent = "Failed to save company"
+    }
+  }
+
   return (
     <Container maxWidth="xl" ref={constraintsRef} sx={{ paddingTop: '1rem' }}>
       <Typography variant="h5" gutterBottom>{company.name}</Typography>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarContent}
+        </Alert>
+      </Snackbar>
 
       <Grid container spacing={2}>
         <Grid item container spacing={2} className={classes.availableUnitsContainer}>
@@ -181,17 +213,19 @@ export const CompanyManager = () => {
                         pr={1}>Fuel</Typography>
             <Typography variant="body2" gutterBottom>{company.fuel}</Typography>
           </Grid>
-          <Grid item md={2}/>
+          <Grid item md={2} />
           <Grid item container md={6}>
             <Grid item md={2}>
-              <Button variant="contained" color="secondary" size="small" onClick={saveSquads} disabled={!canSave}>Save</Button>
+              <Button variant="contained" color="secondary" size="small" onClick={saveSquads}
+                      disabled={!canSave}>Save</Button>
             </Grid>
             <Grid item md={10}>
-              <ErrorTypography>{errorMessage}</ErrorTypography>
+              {errorAlert}
+              {/*<ErrorTypography>{errorMessage}</ErrorTypography>*/}
             </Grid>
           </Grid>
         </Grid>
-        <Grid item spacing={2}>
+        <Grid item container spacing={2}>
           <CompanyGridTabs selectedTab={currentTab} changeCallback={onTabChange} />
         </Grid>
         <Grid item container spacing={2}>

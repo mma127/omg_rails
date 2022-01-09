@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_30_223657) do
+ActiveRecord::Schema.define(version: 2022_01_03_015312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -226,9 +226,11 @@ ActiveRecord::Schema.define(version: 2021_12_30_223657) do
     t.decimal "callin_modifier", default: "1.0", comment: "Base callin modifier, default is 1"
     t.integer "priority", comment: "Priority order to apply the modification from 1 -> 100"
     t.string "description", comment: "What does this RestrictionUnit do?"
-    t.index ["restriction_id", "unit_id"], name: "index_restriction_units_on_restriction_id_and_unit_id", unique: true
-    t.index ["restriction_id"], name: "index_restriction_units_on_restriction_id"
-    t.index ["unit_id"], name: "index_restriction_units_on_unit_id"
+    t.bigint "ruleset_id", null: false
+    t.index ["restriction_id", "ruleset_id"], name: "index_restriction_units_on_restriction_id_and_ruleset_id"
+    t.index ["restriction_id", "unit_id", "ruleset_id"], name: "index_restriction_units_restriction_unit_ruleset", unique: true
+    t.index ["ruleset_id"], name: "index_restriction_units_on_ruleset_id"
+    t.index ["unit_id", "ruleset_id"], name: "index_restriction_units_on_unit_id_and_ruleset_id"
   end
 
   create_table "restrictions", force: :cascade do |t|

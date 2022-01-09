@@ -17,13 +17,15 @@
 #  created_at                                                                            :datetime         not null
 #  updated_at                                                                            :datetime         not null
 #  restriction_id                                                                        :bigint
+#  ruleset_id                                                                            :bigint           not null
 #  unit_id                                                                               :bigint
 #
 # Indexes
 #
-#  index_restriction_units_on_restriction_id              (restriction_id)
-#  index_restriction_units_on_restriction_id_and_unit_id  (restriction_id,unit_id) UNIQUE
-#  index_restriction_units_on_unit_id                     (unit_id)
+#  index_restriction_units_on_restriction_id_and_ruleset_id  (restriction_id,ruleset_id)
+#  index_restriction_units_on_ruleset_id                     (ruleset_id)
+#  index_restriction_units_on_unit_id_and_ruleset_id         (unit_id,ruleset_id)
+#  index_restriction_units_restriction_unit_ruleset          (restriction_id,unit_id,ruleset_id) UNIQUE
 #
 # Foreign Keys
 #
