@@ -16,7 +16,7 @@ after :factions do
 
   british = Faction.find_by_name("british")
   engineers = Doctrine.create!(name: "engineers", display_name: "Engineers", const_name: "OMGUPG.CMW.ROYALENGIESDOC", internal_name: "CMW.DOC.engineers", faction: british)
-  royal_artillery = Doctrine.create!(name: "royal_artillery", display_name: "Canadians", const_name: "OMGUPG.CMW.ARTYDOC", internal_name: "CMW.DOC.artillery", faction: british)
+  canadians = Doctrine.create!(name: "canadians", display_name: "Canadians", const_name: "OMGUPG.CMW.ARTYDOC", internal_name: "CMW.DOC.artillery", faction: british)
   commandos = Doctrine.create!(name: "commandos", display_name: "Commandos", const_name: "OMGUPG.CMW.COMMANDODOC", internal_name: "CMW.DOC.commandos", faction: british)
 
   # Restrictions at doctrine level
@@ -33,6 +33,6 @@ after :factions do
   Restriction.create!(name: "Luftwaffe doctrine", description: "For the Luftwaffe doctrine", doctrine: luftwaffe)
 
   Restriction.create!(name: "Royal Engineers doctrine", description: "For the Royal Engineers doctrine", doctrine: engineers)
-  Restriction.create!(name: "Royal Artillery doctrine", description: "For the Royal Artillery doctrine", doctrine: royal_artillery)
+  Restriction.create!(name: "Royal Canadian doctrine", description: "For the Royal Canadians doctrine", doctrine: canadians)
   Restriction.create!(name: "Commandos doctrine", description: "For the Commandos doctrine", doctrine: commandos)
 end

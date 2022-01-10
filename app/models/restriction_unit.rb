@@ -37,13 +37,5 @@ class RestrictionUnit < ApplicationRecord
   belongs_to :unit
   belongs_to :ruleset
 
-  validates_numericality_of :man
-  validates_numericality_of :mun
-  validates_numericality_of :fuel
-  validates_numericality_of :pop
-  validates_numericality_of :callin_modifier
-  validates_numericality_of :resupply
-  validates_numericality_of :resupply_max
-  validates_numericality_of :company_max
   validates_uniqueness_of :unit_id, scope: :restriction_id
 end

@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :base_restriction_unit do
     association :restriction
     association :unit
+    association :ruleset
     man { 100 }
     mun { 90 }
     fuel { 40 }
@@ -9,7 +10,7 @@ FactoryBot.define do
     resupply { 2 }
     resupply_max { 3 }
     company_max { 10 }
-    type { "BaseRestrictionUnit" }
+    priority { 1 }
   end
 end
 

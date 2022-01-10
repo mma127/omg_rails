@@ -1,7 +1,7 @@
 // Sides
 import airborne from "../../assets/images/doctrine_banners/airborne.png";
 import armor from "../../assets/images/doctrine_banners/armor.png";
-import artillery from "../../assets/images/doctrine_banners/artillery.png";
+import canadians from "../../assets/images/doctrine_banners/canadians.png";
 import blitz from "../../assets/images/doctrine_banners/blitz.png";
 import commandos from "../../assets/images/doctrine_banners/commandos.png";
 import defensive from "../../assets/images/doctrine_banners/defensive.png";
@@ -25,7 +25,7 @@ export const PANZER_ELITE = 'panzer_elite';
 export const AIRBORNE = 'airborne';
 export const ARMOR = 'armor';
 export const INFANTRY = 'infantry';
-export const ARTILLERY = 'artillery';
+export const CANADIANS = 'canadians';
 export const COMMANDOS = 'commandos';
 export const ENGINEERS = 'engineers';
 export const DEFENSIVE = 'defensive';
@@ -38,7 +38,7 @@ export const TANK_HUNTERS = 'tank_hunters';
 export const doctrineImgMapping = {
   [AIRBORNE]: airborne,
   [ARMOR]: armor,
-  [ARTILLERY]: artillery,
+  [CANADIANS]: canadians,
   [BLITZ]: blitz,
   [COMMANDOS]: commandos,
   [DEFENSIVE]: defensive,

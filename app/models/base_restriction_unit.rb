@@ -33,6 +33,14 @@
 #  fk_rails_...  (unit_id => units.id)
 #
 class BaseRestrictionUnit < RestrictionUnit
+  validates_numericality_of :man
+  validates_numericality_of :mun
+  validates_numericality_of :fuel
+  validates_numericality_of :pop
+  validates_numericality_of :callin_modifier
+  validates_numericality_of :resupply
+  validates_numericality_of :resupply_max
+  validates_numericality_of :company_max
 
   before_save :generate_description
 

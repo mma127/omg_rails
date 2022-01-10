@@ -25,6 +25,7 @@ class AvailableUnitsService
     # Get restriction for Doctrine, then find all doctrine allowed units
     doctrine_restriction = Restriction.find_by(doctrine: @doctrine)
     doctrine_allowed_units = get_base_restriction_unit_hash doctrine_restriction
+    doctrine_disabled_units = get_disabled_restriction_unit_hash doctrine_restriction
 
     # TODO Unlock
     # TODO Reward
@@ -32,6 +33,7 @@ class AvailableUnitsService
 
     base_units_hashes = faction_allowed_units
     base_units_hashes = merge_allowed_units(base_units_hashes, doctrine_allowed_units)
+    base_units_hashes = remove_disabled_units(base_units_hashes, doctrine_disabled_units)
 
     create_available_units(base_units_hashes)
   end
@@ -42,10 +44,21 @@ class AvailableUnitsService
     BaseRestrictionUnit.where(restriction: restriction).index_by(&:unit_id)
   end
 
+  def get_disabled_restriction_unit_hash(restriction)
+    DisabledRestrictionUnit.where(restriction: restriction).index_by(&:unit_id)
+  end
+
   def merge_allowed_units(existing_units_hash, restricted_units_hash)
     # TODO This only works for BaseRestrictionUnit where more specific ones replace the more general one
     if restricted_units_hash.present?
       existing_units_hash = existing_units_hash.merge(restricted_units_hash)
+    end
+    existing_units_hash
+  end
+
+  def remove_disabled_units(existing_units_hash, disabled_units_hash)
+    if disabled_units_hash.present?
+      existing_units_hash = existing_units_hash.except(*disabled_units_hash.keys)
     end
     existing_units_hash
   end
@@ -65,6 +78,6 @@ class AvailableUnitsService
   end
 
   def validate_empty_available_units
-    raise AvailableUnitsValidationError("Company #{@company.id} has existing AvailableUnits") unless AvailableUnit.where(company: @company).empty?
+    raise AvailableUnitsValidationError.new("Company #{@company.id} has existing AvailableUnits") unless AvailableUnit.where(company: @company).empty?
   end
 end
