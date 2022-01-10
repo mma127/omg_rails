@@ -44,14 +44,6 @@ RSpec.describe RestrictionUnit, type: :model do
   end
 
   describe 'validations' do
-    it { should validate_numericality_of(:man) }
-    it { should validate_numericality_of(:mun) }
-    it { should validate_numericality_of(:fuel) }
-    it { should validate_numericality_of(:pop) }
-    it { should validate_numericality_of(:callin_modifier) }
-    it { should validate_numericality_of(:resupply) }
-    it { should validate_numericality_of(:resupply_max) }
-    it { should validate_numericality_of(:company_max) }
     it { should validate_uniqueness_of(:unit_id).scoped_to(:restriction_id) }
   end
 end

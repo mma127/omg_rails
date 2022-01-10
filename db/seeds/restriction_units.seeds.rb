@@ -209,10 +209,12 @@ after :restrictions do
                               man: 350, mun: 0, fuel: 60, pop: 3, resupply: 3, resupply_max: 4, company_max: 6, priority: 1)
 
   ## RCA
-  rca = Doctrine.find_by_name("royal_artillery")
+  rca = Doctrine.find_by_name("canadians")
   rca_restriction = Restriction.find_by_doctrine_id(rca.id)
 
-  # TODO Need to block infantry_section as they are replaced by canadian_section
+  # Need to block infantry_section as they are replaced by canadian_section
+  DisabledRestrictionUnit.create!(restriction: rca_restriction, unit: infantry_section, ruleset: war_ruleset, priority: 1)
+
   canadian_section = Infantry.find_by_name("canadian_section")
   BaseRestrictionUnit.create!(restriction: rca_restriction, unit: canadian_section, ruleset: war_ruleset,
                               man: 220, mun: 0, fuel: 0, pop: 5, resupply: 99, resupply_max: 100, company_max: 100, priority: 1)

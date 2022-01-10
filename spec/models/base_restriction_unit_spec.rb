@@ -35,6 +35,19 @@
 require "rails_helper"
 
 RSpec.describe BaseRestrictionUnit, type: :model do
+
+  describe 'validations' do
+    it { should validate_numericality_of(:man) }
+    it { should validate_numericality_of(:mun) }
+    it { should validate_numericality_of(:fuel) }
+    it { should validate_numericality_of(:pop) }
+    it { should validate_numericality_of(:callin_modifier) }
+    it { should validate_numericality_of(:resupply) }
+    it { should validate_numericality_of(:resupply_max) }
+    it { should validate_numericality_of(:company_max) }
+  end
+
+
   it "generates and saves the description" do
     unit = create :infantry, display_name: "Rifles"
     restriction = create :restriction, name: "American army"

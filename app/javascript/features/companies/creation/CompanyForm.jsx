@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import airborne from '../../../../assets/images/doctrine_banners/airborne.png'
 import armor from '../../../../assets/images/doctrine_banners/armor.png'
-import artillery from '../../../../assets/images/doctrine_banners/artillery.png'
+import canadians from '../../../../assets/images/doctrine_banners/canadians.png'
 import blitz from '../../../../assets/images/doctrine_banners/blitz.png'
 import commandos from '../../../../assets/images/doctrine_banners/commandos.png'
 import defensive from '../../../../assets/images/doctrine_banners/defensive.png'
@@ -83,7 +83,7 @@ export const CompanyForm = ({ side, back, company, single = false, companyCallba
           />
         </Box>
         <Box>
-          <Radio {...controlProps("artillery", artillery)}
+          <Radio {...controlProps("canadians", canadians)}
           />
           <Radio {...controlProps("commandos", commandos)}
           />
