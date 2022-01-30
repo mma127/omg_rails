@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_03_015312) do
+ActiveRecord::Schema.define(version: 2022_01_16_154656) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,31 @@ ActiveRecord::Schema.define(version: 2022_01_03_015312) do
     t.bigint "upgrade_id"
     t.index ["company_id"], name: "index_available_upgrades_on_company_id"
     t.index ["upgrade_id"], name: "index_available_upgrades_on_upgrade_id"
+  end
+
+  create_table "battle_players", force: :cascade do |t|
+    t.bigint "battle_id", null: false
+    t.bigint "player_id", null: false
+    t.bigint "company_id", null: false
+    t.string "side", null: false, comment: "Team side"
+    t.boolean "abandoned", comment: "Is this player abandoning?"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["battle_id"], name: "index_battle_players_on_battle_id"
+    t.index ["company_id"], name: "index_battle_players_on_company_id"
+    t.index ["player_id"], name: "index_battle_players_on_player_id"
+  end
+
+  create_table "battles", force: :cascade do |t|
+    t.string "name", comment: "Optional battle name"
+    t.string "state", null: false, comment: "Battle status"
+    t.integer "size", null: false, comment: "Size of each team"
+    t.string "winner", comment: "Winning side"
+    t.bigint "ruleset_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ruleset_id"], name: "index_battles_on_ruleset_id"
+    t.index ["state"], name: "index_battles_on_state"
   end
 
   create_table "callin_modifier_allowed_units", comment: "Units allowed in a callin for a callin modifier to take effect", force: :cascade do |t|

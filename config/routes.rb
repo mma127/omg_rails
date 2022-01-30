@@ -6,19 +6,9 @@ Rails.application.routes.draw do
     delete 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
   end
 
-  # namespace :api, defaults: { format: :json } do
-  #   resources :player, only: [:index]
-  #
-  #   resources :doctrines, only: [:index, :show]
-  #
-  #   resources :companies, only: [:index, :create, :destroy] do
-  #     member do
-  #       get 'available_units'
-  #     end
-  #   end
-  # end
-
   mount OMG::API => '/'
+
+  mount ActionCable.server => '/cable'
 
   root "main#index"
   get '*path' => redirect('/')

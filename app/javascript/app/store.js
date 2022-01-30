@@ -5,6 +5,7 @@ import doctrinesSlice from "../features/doctrines/doctrinesSlice";
 import unitsSlice from "../features/units/unitsSlice";
 import availableUnitsSlice from "../features/units/availableUnitsSlice";
 import squadsSlice from "../features/units/squadsSlice";
+import lobbySlice from "../features/lobby/lobbySlice";
 
 
 export default configureStore({
@@ -14,6 +15,7 @@ export default configureStore({
     doctrines: doctrinesSlice,
     units: unitsSlice,
     availableUnits: availableUnitsSlice,
-    squads: squadsSlice
+    squads: squadsSlice,
+    lobby: lobbySlice
   },
 })
