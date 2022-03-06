@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { fetchActiveBattles } from "../lobby/lobbySlice";
+import { fetchActiveBattles, leaveBattle } from "../lobby/lobbySlice";
 
 const initialState = {
   data: null,
@@ -42,6 +42,10 @@ const playerSlice = createSlice({
           const currentBattle = action.payload.find(battle => battle.battlePlayers.find(bp => bp.playerId === state.data.id))
           state.currentBattleId = currentBattle ? currentBattle.id : null
         }
+      })
+
+      .addCase(leaveBattle.fulfilled, (state, action) => {
+        state.currentBattleId = null
       })
   }
 })

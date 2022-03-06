@@ -13,6 +13,7 @@ import { ErrorTypography } from "../../../components/ErrorTypography";
 import { selectIsAuthed } from "../../player/playerSlice";
 import { BattleCardPlayer } from "./BattleCardPlayer";
 import { nanoid } from "@reduxjs/toolkit";
+import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
@@ -71,7 +72,8 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                         battleId={id}
                                                         playerId={p.playerId}
                                                         playerName={p.playerName}
-                                                        companyDoctrine={p.companyDoctrine}/>)}
+                                                        companyDoctrine={p.companyDoctrine}
+                                                        side={ALLIED_SIDE}/>)}
             </Box>
           </Grid>
           <Grid item xs={1}>
@@ -81,12 +83,13 @@ export const BattleCard = ({ id, rulesetId }) => {
           </Grid>
 
           <Grid item xs={5}>
-            <Box pt={2} pb={2} className={classes.column}>
+            <Box className={classes.column}>
               {axisPlayers.map(p => <BattleCardPlayer key={p.playerId || nanoid()}
                                                       battleId={id}
                                                       playerId={p.playerId}
                                                       playerName={p.playerName}
-                                                      companyDoctrine={p.companyDoctrine}/>)}
+                                                      companyDoctrine={p.companyDoctrine}
+                                                      side={AXIS_SIDE}/>)}
             </Box>
           </Grid>
 

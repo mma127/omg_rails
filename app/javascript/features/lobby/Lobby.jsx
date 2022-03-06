@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCompanies } from "../companies/companiesSlice";
 import { CreateBattleAccordion } from "./creation/CreateBattleAccordion";
 import { BattleCard } from "./display/BattleCard";
-import { selectIsAuthed, selectPlayer, setCurrentBattle } from "../player/playerSlice";
+import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId, setCurrentBattle } from "../player/playerSlice";
 import { isPlayerInBattle } from "../../utils/battle";
 import { LobbyContent } from "./LobbyContent";
 
@@ -30,6 +30,7 @@ export const Lobby = () => {
   const dispatch = useDispatch()
   const isAuthed = useSelector(selectIsAuthed)
   const player = useSelector(selectPlayer)
+  const currentBattleId = useSelector(selectPlayerCurrentBattleId)
 
   const handleConnectedCable = (message) => {
     console.log(`Connected to cable`)
@@ -49,6 +50,9 @@ export const Lobby = () => {
       }
       case PLAYER_JOINED: {
         dispatch(updateBattle({ battle: message.battle }))
+        if (isAuthed && isPlayerInBattle(player.id, message.battle.battlePlayers) && currentBattleId !== message.battle.id) {
+          dispatch(setCurrentBattle({ battleId: message.battle.id }))
+        }
         break
       }
       case PLAYER_LEFT: {

@@ -6,7 +6,9 @@ const battlesAdapter = createEntityAdapter()
 const initialState = battlesAdapter.getInitialState({
   loadingBattlesError: null,
   creatingBattleStatus: "idle",
-  creatingBattleError: null
+  creatingBattleError: null,
+  updatingBattleStatus: "idle",
+  updatingBattleError: null
 })
 
 /**
@@ -30,6 +32,18 @@ export const createBattle = createAsyncThunk(
   async ({ name, size, rulesetId, initialCompanyId }) => {
     try {
       const response = await axios.post("/battles/player/create_match", { name, size, rulesetId, initialCompanyId })
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
+export const joinBattle = createAsyncThunk(
+  "lobby/joinBattle",
+  async ({ battleId, companyId }) => {
+    try {
+      const response = await axios.post("/battles/player/join_match", { battleId, companyId })
       return response.data
     } catch (err) {
       return rejectWithValue(err.response.data)
@@ -86,6 +100,22 @@ const lobbySlice = createSlice({
       .addCase(createBattle.rejected, (state, action) => {
         state.creatingBattleStatus = "rejected"
         state.creatingBattleError = action.payload.error
+      })
+
+      .addCase(joinBattle.pending, (state, action) => {
+        state.updatingBattleStatus = "pending"
+        state.updatingBattleError = null
+      })
+      .addCase(joinBattle.fulfilled, (state, action) => {
+        state.updatingBattleStatus = "fulfilled"
+      })
+      .addCase(joinBattle.rejected, (state, action) => {
+        state.updatingBattleStatus = "rejected"
+        state.updatingBattleError = action.payload.error
+      })
+
+      .addCase(leaveBattle.rejected, (state, action) => {
+        state.updatingBattleError = action.payload.error
       })
   }
 })

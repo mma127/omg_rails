@@ -44,7 +44,7 @@ class BattleService
     validate_battle_joinable(battle)
 
     # Validate company exists and is of the same ruleset as the battle
-    company = validate_company(company_id, ruleset)
+    company = validate_company(company_id, battle.ruleset)
     # Validate player owns company
     validate_player_company(company)
 

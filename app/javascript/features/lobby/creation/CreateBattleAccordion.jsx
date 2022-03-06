@@ -5,21 +5,19 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ActionCableConsumer, ActionCableProvider } from 'react-actioncable-provider';
 import { CreateBattleForm } from "./CreateBattleForm";
 import { fetchActiveBattles } from "../lobbySlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchCompanies } from "../../companies/companiesSlice";
+import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 
 const rulesetId = 1
 
 export const CreateBattleAccordion = ({rulesetId}) => {
-  // Lobby page container
-  // TODO:
-  //    Chat
-  //    List of active players
-  //    List of games
-  //    Joined game
-
   // Create battle accordion expansion control
   const [isExpanded, setIsExpanded] = React.useState(false);
+  const isAuthed = useSelector(selectIsAuthed)
+  const currentBattleId = useSelector(selectPlayerCurrentBattleId)
+
+  const isDisabled = isAuthed && !!currentBattleId
 
   const handleAccordionChange = (event, isExpanded) => {
     setIsExpanded(isExpanded)
@@ -33,6 +31,7 @@ export const CreateBattleAccordion = ({rulesetId}) => {
   return (
     <Accordion
       expanded={isExpanded}
+      disabled={isDisabled}
       onChange={handleAccordionChange}
       TransitionProps={{ unmountOnExit: true }}
     >
