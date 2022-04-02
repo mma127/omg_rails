@@ -63,6 +63,17 @@ export const leaveBattle = createAsyncThunk(
   }
 )
 
+export const readyPlayer = createAsyncThunk(
+  "lobby/readyPlayer",
+  async ({ battleId, playerId }) => {
+    try {
+      const response = await axios.post("/battles/player/ready", { battleId, playerId })
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
 
 const lobbySlice = createSlice({
   name: "lobby",

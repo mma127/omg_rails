@@ -7,9 +7,10 @@ import {
   Typography
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import CheckIcon from '@mui/icons-material/Check';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch, useSelector } from "react-redux";
-import { createBattle, leaveBattle, selectBattleById } from "../lobbySlice";
+import { createBattle, leaveBattle, readyPlayer } from "../lobbySlice";
 import { ErrorTypography } from "../../../components/ErrorTypography";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 import { doctrineImgMapping } from "../../../constants/doctrines";
@@ -27,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     height: '60px',
     width: '120px'
   },
-  leaveIcon: {
+  clickableIcon: {
     cursor: 'pointer',
     marginLeft: '20px'
   },
@@ -46,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctrine, side }) => {
+export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctrine, side, battleState, ready }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   // const companies = useSelector(selectAllCompanies)
@@ -58,6 +59,8 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
 
   const isCurrentPlayer = player ? player.id === playerId : false
 
+  const leavable = battleState === "open" || battleState === "full"
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -68,6 +71,10 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
+
+  const handleReadyClick = () => {
+    dispatch(readyPlayer({battleId: battleId, playerId: playerId}))
+  }
 
   const leaveGame = () => {
     if (isCurrentPlayer) {
@@ -85,7 +92,10 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
                className={classes.optionImage} />
         </Box>
         <Typography variant={"h5"} color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
-        <LogoutIcon className={classes.leaveIcon} color="error" onClick={leaveGame}/>
+        {ready ?
+          <CheckIcon className={classes.clickableIcon} color="success" /> :
+          <Button variant="contained" type="submit" color="secondary" size="small" onClick={handleReadyClick}>Ready</Button>}
+        {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame}/> : ""}
       </>
     )
   } else if (playerId) {
@@ -97,6 +107,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
                className={classes.optionImage} />
         </Box>
         <Typography variant={"h5"} className={classes.playerName}>{playerName}</Typography>
+        {ready ? <CheckIcon className={classes.clickableIcon} color="success" /> : null}
       </>
     )
   } else if (isAuthed && !currentBattleId) {

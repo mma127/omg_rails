@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_16_154656) do
+ActiveRecord::Schema.define(version: 2022_04_02_203418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2022_01_16_154656) do
     t.boolean "abandoned", comment: "Is this player abandoning?"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "ready", default: false, comment: "Ready flag for the player"
     t.index ["battle_id"], name: "index_battle_players_on_battle_id"
     t.index ["company_id"], name: "index_battle_players_on_company_id"
     t.index ["player_id"], name: "index_battle_players_on_player_id"

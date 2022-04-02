@@ -57,6 +57,14 @@ module OMG
         end
 
         # Ready up in Battle
+        desc "Ready a player in a battle"
+        params do
+          requires :battleId, type: Integer, desc: "Battle id to ready in"
+        end
+        post 'ready' do
+          service = BattleService.new(current_player)
+          service.ready_player(declared_params[:battleId])
+        end
 
         # Abandon a 'generating', 'ingame', 'reporting'? Battle
 

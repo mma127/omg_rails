@@ -4,6 +4,9 @@ class BattleService
   # Cable message types
   CREATED_BATTLE = "created_battle".freeze
   PLAYER_JOINED = "player_joined".freeze
+  PLAYER_JOINED_FULL = "player_joined_full".freeze
+  PLAYER_READY = "player_ready".freeze
+  PLAYER_ALL_READY = "player_all_ready".freeze
   PLAYER_LEFT = "player_left".freeze
   REMOVE_BATTLE = "removed_battle".freeze
 
@@ -58,11 +61,45 @@ class BattleService
     ActiveRecord::Base.transaction do
       BattlePlayer.create!(battle: battle, player: @player, company: company, side: company.side)
 
+      # If this causes the battle to be full, make that change
+      if battle.reload.players_full?
+        battle.full!
+        type = PLAYER_JOINED_FULL
+      else
+        type = PLAYER_JOINED
+      end
+
       # Broadcast battle update
-      message_hash = { type: PLAYER_JOINED, battle: battle.reload }
+      message_hash = { type: type, battle: battle.reload }
       battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
       broadcast_cable(battle_message)
     end
+  end
+
+  def ready_player(battle_id)
+    # Validate battle exists
+    battle = validate_battle(battle_id)
+
+    # Validate battle is readyable
+    validate_battle_readyable(battle)
+
+    # Validate the player is in the battle
+    validate_player_in_battle(battle)
+
+    BattlePlayer.find_by(battle: battle, player: @player).update!(ready: true)
+
+    # If the battle has all players ready, move to generating state
+    if battle.reload.players_ready?
+      battle.ready!
+      type = PLAYER_ALL_READY
+    else
+      type = PLAYER_READY
+    end
+
+    # Broadcast battle update
+    message_hash = { type: type, battle: battle }
+    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+    broadcast_cable(battle_message)
   end
 
   def leave_battle(battle_id)
@@ -72,8 +109,15 @@ class BattleService
     # Validate battle is leavable
     validate_battle_leavable(battle)
 
+    # Validate the player is in the battle
+    validate_player_in_battle(battle)
+
     # Attempt to remove player from battle
     BattlePlayer.find_by(battle: battle, player: @player).destroy
+
+    if battle.full?
+      battle.not_full!
+    end
 
     if battle.reload.battle_players.count == 0
       # Deleted the last player, delete the battle
@@ -106,6 +150,14 @@ class BattleService
 
   def validate_battle_joinable(battle)
     raise BattleValidationError.new "Cannot join battle in #{battle.state} state" unless battle.joinable
+  end
+
+  def validate_battle_readyable(battle)
+    raise BattleValidationError.new "Cannot ready up in a battle in #{battle.state} state" unless battle.full?
+  end
+
+  def validate_player_in_battle(battle)
+    raise BattleValidationError.new "Player #{@player.name} is not in battle #{battle.id}" unless battle.battle_players.find_by(player: @player).present?
   end
 
   def validate_ruleset(ruleset_id)

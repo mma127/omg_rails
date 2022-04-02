@@ -55,11 +55,13 @@ export const BattleCard = ({ id, rulesetId }) => {
   const size = battle.size
   const alliedPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'allied'), size)
   const axisPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'axis'), size)
+  const generatingContent = battle.state === "generating" ? <Typography>Generating</Typography> : ""
 
   return (
     <Box>
       <Card elevation={3} sx={{ padding: '16px' }}>
         <Typography variant={"h5"} pl={"9px"} gutterBottom>{battle.name}</Typography>
+        {generatingContent}
         <Grid container>
           <Grid item xs={1}>
             <Box className={classes.column}>
@@ -73,7 +75,10 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                         playerId={p.playerId}
                                                         playerName={p.playerName}
                                                         companyDoctrine={p.companyDoctrine}
-                                                        side={ALLIED_SIDE}/>)}
+                                                        side={ALLIED_SIDE}
+                                                        battleState={battle.state}
+                                                        ready={p.ready}
+              />)}
             </Box>
           </Grid>
           <Grid item xs={1}>
@@ -89,7 +94,10 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                       playerId={p.playerId}
                                                       playerName={p.playerName}
                                                       companyDoctrine={p.companyDoctrine}
-                                                      side={AXIS_SIDE}/>)}
+                                                      side={AXIS_SIDE}
+                                                      battleState={battle.state}
+                                                      ready={p.ready}
+              />)}
             </Box>
           </Grid>
 

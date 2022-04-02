@@ -16,6 +16,9 @@ import { LobbyContent } from "./LobbyContent";
 const rulesetId = 1
 const CREATED_BATTLE = "created_battle"
 const PLAYER_JOINED = "player_joined"
+const PLAYER_JOINED_FULL = "player_joined_full"
+const PLAYER_READY = "player_ready"
+const PLAYER_ALL_READY = "player_all_ready"
 const PLAYER_LEFT = "player_left"
 const REMOVE_BATTLE = "removed_battle"
 
@@ -55,6 +58,21 @@ export const Lobby = () => {
         }
         break
       }
+      case PLAYER_JOINED_FULL: {
+        dispatch(updateBattle({ battle: message.battle }))
+        if (isAuthed && isPlayerInBattle(player.id, message.battle.battlePlayers) && currentBattleId !== message.battle.id) {
+          dispatch(setCurrentBattle({ battleId: message.battle.id }))
+        }
+        break
+      }
+      case PLAYER_READY: {
+        dispatch(updateBattle({ battle: message.battle }))
+        break
+      }
+      case PLAYER_ALL_READY: {
+        dispatch(updateBattle({ battle: message.battle }))
+        break
+      }
       case PLAYER_LEFT: {
         dispatch(updateBattle({ battle: message.battle }))
         break
@@ -75,7 +93,7 @@ export const Lobby = () => {
       <ActionCableConsumer channel="BattlesChannel"
                            onConnected={handleConnectedCable}
                            onReceived={handleReceivedCable} />
-      <LobbyContent rulesetId={rulesetId}/>
+      <LobbyContent rulesetId={rulesetId} />
     </Container>
   )
 }

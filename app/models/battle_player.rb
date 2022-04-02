@@ -54,5 +54,6 @@ class BattlePlayer < ApplicationRecord
     expose :side
     expose :abandoned
     expose :company_doctrine, as: :companyDoctrine
+    expose :ready
   end
 end

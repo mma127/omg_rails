@@ -29,6 +29,10 @@ class Battle < ApplicationRecord
       transition :open => :full
     end
 
+    event :not_full do
+      transition :full => :open
+    end
+
     event :ready do
       transition :full =>  :generating
     end
@@ -48,6 +52,18 @@ class Battle < ApplicationRecord
     event :abandoned do
       transition [:open, :ingame, :reporting] => :abandoned
     end
+  end
+
+  def total_size
+    size * 2
+  end
+
+  def players_full?
+    battle_players.size == total_size
+  end
+
+  def players_ready?
+    battle_players.all? { |bp| bp.ready }
   end
 
   def joinable
