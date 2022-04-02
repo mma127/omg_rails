@@ -2,6 +2,10 @@ module OMG
   module Helpers
     extend Grape::API::Helpers
 
+    def declared_params
+      @declared_params = declared(params)
+    end
+
     def current_player
       warden = env["warden"]
       @current_player ||= warden.authenticate

@@ -70,6 +70,20 @@ development:
   password: password
 ```
 
+#### Redis
+1. Add the Redis repository to the Ubuntu source repositories.
+
+`sudo add-apt-repository ppa:redislabs/redis`
+
+2. Update your Ubuntu packages.
+
+`sudo apt update`
+
+3. Install Redis using the package installation program.
+
+`sudo apt install redis-server`
+
+
 #### Bundle
 7. Install gems\
 `bundle install`

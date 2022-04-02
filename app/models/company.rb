@@ -48,6 +48,14 @@ class Company < ApplicationRecord
   validates_presence_of :player
   validates_presence_of :ruleset
 
+  def doctrine_name
+    doctrine.name
+  end
+
+  def doctrine_display_name
+    doctrine.display_name
+  end
+
   def faction_name
     faction.name
   end
@@ -65,14 +73,16 @@ class Company < ApplicationRecord
     expose :name
     expose :player_id, as: :playerId
     expose :doctrine_id, as: :doctrineId
-    expose :faction_id, as: :faction_id
+    expose :faction_id, as: :factionId
     expose :man, :mun, :fuel, :pop
     expose :vps_earned, as: :vpsEarned
     expose :side
     expose :faction_name, as: :factionName
+    expose :doctrine_name, as: :doctrineName
+    expose :doctrine_display_name, as: :doctrineDisplayName
 
     expose :available_units, as: :availableUnits, using: AvailableUnit::Entity, if: { type: :full }
     expose :squads, using: Squad::Entity, if: { type: :full }
-    # TODO Squads, unlocks
+    # TODO unlocks
   end
 end

@@ -1,5 +1,11 @@
+require 'grape_logging'
+
 module OMG
   class API < Grape::API
+
+    logger.formatter = GrapeLogging::Formatters::Default.new
+    insert_before Grape::Middleware::Error, GrapeLogging::Middleware::RequestLogger, { logger: logger }
+
     helpers OMG::Helpers
 
     format :json
@@ -24,6 +30,7 @@ module OMG
     mount Doctrines
     mount Companies
     mount Units
+    mount Battles
 
     route :any, '*path' do
       error! "Not implemented", 404
