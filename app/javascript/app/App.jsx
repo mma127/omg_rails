@@ -11,7 +11,7 @@ import { Container, createTheme, CssBaseline, ThemeProvider } from "@mui/materia
 import { Lobby } from "../features/lobby/Lobby";
 import { Companies } from "../features/companies/Companies";
 import { CompanyManager } from "../features/companies/manage/CompanyManager";
-import { ActionCableConsumer, ActionCableProvider } from "react-actioncable-provider";
+import { ActionCableConsumer, ActionCableProvider } from "@thrash-industries/react-actioncable-provider";
 
 const theme = createTheme({
   palette: {
