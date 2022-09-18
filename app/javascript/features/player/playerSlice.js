@@ -1,9 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { fetchActiveBattles, leaveBattle } from "../lobby/lobbySlice";
 
 const initialState = {
   data: null,
-  status: "idle"
+  status: "idle",
+  currentBattleId: null
 }
 
 export const fetchPlayer = createAsyncThunk("player/fetchPlayer", async () => {
@@ -15,7 +17,10 @@ const playerSlice = createSlice({
   name: "player",
   initialState,
   reducers: {
-
+    setCurrentBattle(state, action) {
+      const { battleId } = action.payload
+      state.currentBattleId = battleId
+    }
   },
   extraReducers(builder) {
     builder
@@ -30,10 +35,25 @@ const playerSlice = createSlice({
         state.status = "rejected"
         state.data = null
       })
+
+      .addCase(fetchActiveBattles.fulfilled, (state, action) => {
+        // TODO this is a bit questionable, might have issues if out of order
+        if (state.data) {
+          const currentBattle = action.payload.find(battle => battle.battlePlayers.find(bp => bp.playerId === state.data.id))
+          state.currentBattleId = currentBattle ? currentBattle.id : null
+        }
+      })
+
+      .addCase(leaveBattle.fulfilled, (state, action) => {
+        state.currentBattleId = null
+      })
   }
 })
 
 export default playerSlice.reducer
 
+export const { setCurrentBattle } = playerSlice.actions
+
 export const selectPlayer = state => state.player.data
 export const selectIsAuthed = state => Boolean(state.player.data)
+export const selectPlayerCurrentBattleId = state => state.player.currentBattleId

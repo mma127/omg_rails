@@ -11,6 +11,7 @@ import { Container, createTheme, CssBaseline, ThemeProvider } from "@mui/materia
 import { Lobby } from "../features/lobby/Lobby";
 import { Companies } from "../features/companies/Companies";
 import { CompanyManager } from "../features/companies/manage/CompanyManager";
+import { ActionCableConsumer, ActionCableProvider } from "react-actioncable-provider";
 
 const theme = createTheme({
   palette: {
@@ -45,22 +46,26 @@ const theme = createTheme({
   }
 });
 
+// const cableUrl = "ws://localhost:5000/cable"
+const cableUrl = "/cable"
 
 export const App = () => (
   <>
-    <ThemeProvider theme={theme}>
-      <CssBaseline enableColorScheme>
-        <Router>
-          <Navbar />
-          <Routes>
-            <Route path="/">
-              <Route index element={<Lobby />} />
-              <Route path="companies" element={<Companies />} />
-              <Route path="companies/:companyId" element={<CompanyManager />} />
-            </Route>
-          </Routes>
-        </Router>
-      </CssBaseline>
-    </ThemeProvider>
+    <ActionCableProvider url={cableUrl}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline enableColorScheme>
+          <Router>
+            <Navbar />
+            <Routes>
+              <Route path="/">
+                <Route index element={<Lobby />} />
+                <Route path="companies" element={<Companies />} />
+                <Route path="companies/:companyId" element={<CompanyManager />} />
+              </Route>
+            </Routes>
+          </Router>
+        </CssBaseline>
+      </ThemeProvider>
+    </ActionCableProvider>
   </>
 )

@@ -27,7 +27,7 @@ export const Companies = () => {
   if (!isAuthed) {
     content = (
       <Box pt={5} sx={{ "display": "flex" }}>
-        <Fingerprint  fontSize={"large"} color="warning" />
+        <Fingerprint fontSize={"large"} color="warning" />
         <Typography variant={"h5"} pl={"5px"} sx={{ alignSelf: 'end' }}>Sign in to manage companies</Typography>
       </Box>
     )
