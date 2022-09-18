@@ -22,10 +22,11 @@ class Player < ApplicationRecord
   devise :trackable, :timeoutable, :omniauthable, omniauth_providers: %i[steam]
 
   def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create! do |player|
-      player.name = auth.info.nickname
-      player.avatar = auth.info.image
-    end
+    player = where(provider: auth.provider, uid: auth.uid).first_or_create!
+    player.name = auth.info.nickname
+    player.avatar = auth.info.image
+    player.save!
+    player
   end
 
   has_many :companies

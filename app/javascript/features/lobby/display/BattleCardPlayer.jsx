@@ -85,6 +85,13 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
   let content
   if (playerId && isCurrentPlayer) {
     // Filled spot by logged in player
+    let readyContent
+    if (battleState === "full" && ready) {
+      readyContent = <CheckIcon className={classes.clickableIcon} color="success" />
+    } else if (battleState === "full" && !ready) {
+      readyContent = <Button variant="contained" type="submit" color="secondary" size="small" onClick={handleReadyClick}>Ready</Button>
+    }
+
     content = (
       <>
         <Box sx={{ display: "flex", justifyContent: 'center' }} pr={1}>
@@ -92,9 +99,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
                className={classes.optionImage} />
         </Box>
         <Typography variant={"h5"} color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
-        {ready ?
-          <CheckIcon className={classes.clickableIcon} color="success" /> :
-          <Button variant="contained" type="submit" color="secondary" size="small" onClick={handleReadyClick}>Ready</Button>}
+        {readyContent}
         {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame}/> : ""}
       </>
     )

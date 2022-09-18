@@ -195,6 +195,9 @@ class BattleService
 
   def validate_company_platoons(company)
     categories_by_platoons = get_company_squads_by_platoon(company)
+
+    raise BattleValidationError.new "Company cannot be empty" if categories_by_platoons.empty?
+
     categories_by_platoons.each do |category, category_platoons|
       # Category_platoons is a hash of category_position (platoon index) to an array of squads
       category_platoons.each do |position, squads|
