@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { ActionCableConsumer, ActionCableProvider } from 'react-actioncable-provider';
+import { ActionCableConsumer, ActionCableProvider } from '@thrash-industries/react-actioncable-provider';
 import { CreateBattleForm } from "./creation/CreateBattleForm";
 import { fetchActiveBattles, addNewBattle, selectAllActiveBattles, updateBattle, removeBattle } from "./lobbySlice";
 import { useDispatch, useSelector } from "react-redux";
