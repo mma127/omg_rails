@@ -26,10 +26,6 @@ test:
   <<: *default
   database: omg_test
 
-staging:
-  <<: *default
-  database: omg_staging
-
 production:
   <<: *default
   database: omg_production
