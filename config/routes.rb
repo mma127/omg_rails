@@ -10,6 +10,11 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => '/cable'
 
+  # Allow activestorage blob paths
+  scope ActiveStorage.routes_prefix do
+    get "/blobs/redirect/:signed_id/*filename" => "secure_blobs#show"
+  end
+
   root "main#index"
   get '*path' => redirect('/')
 end

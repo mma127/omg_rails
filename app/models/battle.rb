@@ -20,6 +20,8 @@ class Battle < ApplicationRecord
   belongs_to :ruleset
   has_many :battle_players, dependent: :destroy
 
+  has_one_attached :battlefile
+
   validates_presence_of :ruleset
   validates_presence_of :size
   validates_numericality_of :size
