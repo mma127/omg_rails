@@ -58,7 +58,7 @@ class BattlefileService
     headerData << [1].pack('L')
 
     if headerData.size != 184
-      Rails.logger.error("ailed Battlefile creation due to header size mismatch (ID: #{battle_id})")
+      Rails.logger.error("Failed Battlefile creation due to header size mismatch (ID: #{battle_id})")
     end
 
     if tocData.size != 24 + 138 + 12 + 12 + 22 + 26
