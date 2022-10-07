@@ -19,6 +19,8 @@
 class Battle < ApplicationRecord
   belongs_to :ruleset
   has_many :battle_players, dependent: :destroy
+  has_many :players, through: :battle_players
+  has_many :companies, through: :battle_players
 
   has_one_attached :battlefile
 

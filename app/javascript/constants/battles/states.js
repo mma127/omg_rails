@@ -1,0 +1,5 @@
+export const OPEN = "open"
+export const FULL = "full"
+export const GENERATING = "generating"
+export const INGAME = "ingame"
+export const REPORTING = "reporting"

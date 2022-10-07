@@ -7,6 +7,7 @@ class BattleService
   PLAYER_JOINED_FULL = "player_joined_full".freeze
   PLAYER_READY = "player_ready".freeze
   PLAYER_ALL_READY = "player_all_ready".freeze
+  BATTLEFILE_GENERATED = "battlefile_generated".freeze
   PLAYER_LEFT = "player_left".freeze
   REMOVE_BATTLE = "removed_battle".freeze
 
@@ -92,6 +93,7 @@ class BattleService
     if battle.reload.players_ready?
       battle.ready!
       type = PLAYER_ALL_READY
+      BattlefileGenerationJob.perform_async(battle_id)
     else
       type = PLAYER_READY
     end

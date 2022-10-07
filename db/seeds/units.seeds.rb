@@ -14,7 +14,7 @@ after :doctrines do
   LightVehicle.create!(name: "halftrack_allied", const_name: "ALLY.HALFTRACK", display_name: "Halftrack", upgrade_slots: 1)
   LightVehicle.create!(name: "quad_halftrack", const_name: "ALLY_QUAD", display_name: "Quad .50cal HT")
   LightVehicle.create!(name: "greyhound", const_name: "ALLY.GREYHOUND", display_name: "M8 Greyhound", upgrade_slots: 2)
-  LightVehicle.create!(name: "t17", const_name: "ALLY.T17", display_name: "T17", upgrade_slots: 2)
+  LightVehicle.create!(name: "t17", const_name: "ALLY.T17", display_name: "T17 Armored Car", upgrade_slots: 2)
 
   Tank.create!(name: "sherman", const_name: "ALLY.SHERMAN", display_name: "M4 Sherman", upgrade_slots: 2)
   Tank.create!(name: "sherman_croc", const_name: "ALLY.CROC", display_name: "Sherman Crocodile", upgrade_slots: 2)

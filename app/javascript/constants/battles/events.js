@@ -1,0 +1,8 @@
+export const CREATED_BATTLE = "created_battle"
+export const PLAYER_JOINED = "player_joined"
+export const PLAYER_JOINED_FULL = "player_joined_full"
+export const PLAYER_READY = "player_ready"
+export const PLAYER_ALL_READY = "player_all_ready"
+export const BATTLEFILE_GENERATED = "battlefile_generated"
+export const PLAYER_LEFT = "player_left"
+export const REMOVE_BATTLE = "removed_battle"

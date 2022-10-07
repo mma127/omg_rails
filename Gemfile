@@ -52,6 +52,10 @@ gem 'rack-cors'
 gem 'thor'
 gem "seedbank"
 
+gem 'sidekiq'
+
+gem 'rubyzip', require: false
+
 # Pretty printing
 gem 'pry'
 gem 'pry-rails'

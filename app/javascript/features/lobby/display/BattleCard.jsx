@@ -14,6 +14,8 @@ import { selectIsAuthed } from "../../player/playerSlice";
 import { BattleCardPlayer } from "./BattleCardPlayer";
 import { nanoid } from "@reduxjs/toolkit";
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
+import { GENERATING, INGAME } from "../../../constants/battles/states";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
@@ -55,13 +57,15 @@ export const BattleCard = ({ id, rulesetId }) => {
   const size = battle.size
   const alliedPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'allied'), size)
   const axisPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'axis'), size)
-  const generatingContent = battle.state === "generating" ? <Typography>Generating</Typography> : ""
+  const generatingContent = battle.state === GENERATING ? <Typography>Generating</Typography> : ""
+  const ingameContent = battle.state === INGAME ? <Link to={`/api/battles/battlefile?battleId=${id}`} target="_blank" download>Download Battlefile</Link> : ""
 
   return (
     <Box>
       <Card elevation={3} sx={{ padding: '16px' }}>
         <Typography variant={"h5"} pl={"9px"} gutterBottom>{battle.name}</Typography>
         {generatingContent}
+        {ingameContent}
         <Grid container>
           <Grid item xs={1}>
             <Box className={classes.column}>
