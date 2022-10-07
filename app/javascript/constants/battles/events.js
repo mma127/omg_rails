@@ -1,3 +1,4 @@
+// Battle events from ActionCable
 export const CREATED_BATTLE = "created_battle"
 export const PLAYER_JOINED = "player_joined"
 export const PLAYER_JOINED_FULL = "player_joined_full"
