@@ -12,7 +12,7 @@ class BattlesChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    Rails.logger.info("#{@connection.current_player.&name} unsubscribed from #{CHANNEL}")
+    Rails.logger.info("#{@connection.current_player&.name} unsubscribed from #{CHANNEL}")
     # Any cleanup needed when channel is unsubscribed
   end
 end
