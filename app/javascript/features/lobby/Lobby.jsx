@@ -12,15 +12,16 @@ import { BattleCard } from "./display/BattleCard";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId, setCurrentBattle } from "../player/playerSlice";
 import { isPlayerInBattle } from "../../utils/battle";
 import { LobbyContent } from "./LobbyContent";
+import {
+  BATTLEFILE_GENERATED,
+  CREATED_BATTLE,
+  PLAYER_ALL_READY,
+  PLAYER_JOINED,
+  PLAYER_JOINED_FULL, PLAYER_LEFT,
+  PLAYER_READY, REMOVE_BATTLE
+} from "../../constants/battles/events";
 
 const rulesetId = 1
-const CREATED_BATTLE = "created_battle"
-const PLAYER_JOINED = "player_joined"
-const PLAYER_JOINED_FULL = "player_joined_full"
-const PLAYER_READY = "player_ready"
-const PLAYER_ALL_READY = "player_all_ready"
-const PLAYER_LEFT = "player_left"
-const REMOVE_BATTLE = "removed_battle"
 
 export const Lobby = () => {
   // Lobby page container
@@ -70,6 +71,10 @@ export const Lobby = () => {
         break
       }
       case PLAYER_ALL_READY: {
+        dispatch(updateBattle({ battle: message.battle }))
+        break
+      }
+      case BATTLEFILE_GENERATED: {
         dispatch(updateBattle({ battle: message.battle }))
         break
       }

@@ -105,6 +105,7 @@ GEM
     childprocess (4.1.0)
     coderay (1.1.3)
     concurrent-ruby (1.1.9)
+    connection_pool (2.3.0)
     crass (1.0.6)
     devise (4.8.1)
       bcrypt (~> 3.0)
@@ -320,6 +321,10 @@ GEM
     semantic_range (3.0.0)
     shoulda-matchers (5.1.0)
       activesupport (>= 5.2.0)
+    sidekiq (6.5.7)
+      connection_pool (>= 2.2.5)
+      rack (~> 2.0)
+      redis (>= 4.5.0, < 5)
     spring (4.0.0)
     sprockets (4.0.2)
       concurrent-ruby (~> 1.0)
@@ -406,11 +411,13 @@ DEPENDENCIES
   rspec
   rspec-rails
   rspec_junit_formatter
+  rubyzip
   sass-rails (>= 6)
   sassc (= 2.1.0)
   seedbank
   selenium-webdriver
   shoulda-matchers
+  sidekiq
   spring
   state_machines-activerecord
   thor

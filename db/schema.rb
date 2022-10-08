@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_24_010738) do
+ActiveRecord::Schema.define(version: 2022_09_29_015403) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -205,6 +205,7 @@ ActiveRecord::Schema.define(version: 2022_09_24_010738) do
     t.string "side", null: false, comment: "Allied or Axis side"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "race", comment: "In-game race id"
     t.index ["const_name"], name: "index_factions_on_const_name", unique: true
     t.index ["name"], name: "index_factions_on_name", unique: true
   end

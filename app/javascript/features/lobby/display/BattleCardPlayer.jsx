@@ -15,6 +15,7 @@ import { ErrorTypography } from "../../../components/ErrorTypography";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 import { doctrineImgMapping } from "../../../constants/doctrines";
 import { JoinBattlePopover } from "./JoinBattlePopover";
+import { FULL, GENERATING, INGAME, OPEN } from "../../../constants/battles/states";
 
 const useStyles = makeStyles(theme => ({
   wrapperRow: {
@@ -44,6 +45,10 @@ const useStyles = makeStyles(theme => ({
     overflowX: 'clip',
     maxWidth: '80%',
     textOverflow: 'ellipsis'
+  },
+  readyBtn: {
+    marginLeft: '20px',
+    lineHeight: '1'
   }
 }))
 
@@ -59,7 +64,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
 
   const isCurrentPlayer = player ? player.id === playerId : false
 
-  const leavable = battleState === "open" || battleState === "full"
+  const leavable = battleState === OPEN || battleState === FULL
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -73,7 +78,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
   const id = open ? 'simple-popover' : undefined;
 
   const handleReadyClick = () => {
-    dispatch(readyPlayer({battleId: battleId, playerId: playerId}))
+    dispatch(readyPlayer({ battleId: battleId, playerId: playerId }))
   }
 
   const leaveGame = () => {
@@ -86,10 +91,14 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
   if (playerId && isCurrentPlayer) {
     // Filled spot by logged in player
     let readyContent
-    if (battleState === "full" && ready) {
+    if ((battleState === FULL && ready) || battleState === GENERATING) {
       readyContent = <CheckIcon className={classes.clickableIcon} color="success" />
-    } else if (battleState === "full" && !ready) {
-      readyContent = <Button variant="contained" type="submit" color="secondary" size="small" onClick={handleReadyClick}>Ready</Button>
+    } else if (battleState === FULL && !ready) {
+      readyContent = <Button variant="contained" type="submit" color="secondary" size="small"
+                             className={classes.readyBtn} onClick={handleReadyClick}>Ready</Button>
+    } else if (battleState === INGAME) {
+      // TODO Abandon
+
     }
 
     content = (
@@ -100,7 +109,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
         </Box>
         <Typography variant={"h5"} color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
         {readyContent}
-        {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame}/> : ""}
+        {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame} /> : ""}
       </>
     )
   } else if (playerId) {
@@ -112,7 +121,8 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
                className={classes.optionImage} />
         </Box>
         <Typography variant={"h5"} className={classes.playerName}>{playerName}</Typography>
-        {ready ? <CheckIcon className={classes.clickableIcon} color="success" /> : null}
+        {(battleState === FULL && ready) || battleState === GENERATING ?
+          <CheckIcon className={classes.clickableIcon} color="success" /> : null}
       </>
     )
   } else if (isAuthed && !currentBattleId) {
@@ -120,12 +130,13 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
     content = (
       <>
         <Box mr={1} className={classes.optionImage} /> {/*Used for spacing*/}
-        <Typography variant={"h6"} color="primary" className={classes.joinText} onClick={handleClick}>Join Battle</Typography>
+        <Typography variant={"h6"} color="primary" className={classes.joinText} onClick={handleClick}>Join
+          Battle</Typography>
         <Popover id={id}
                  open={open}
                  anchorEl={anchorEl}
                  onClose={handleClose}
-                 anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}>
+                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
           <JoinBattlePopover battleId={battleId} side={side} handleClose={handleClose} />
         </Popover>
       </>

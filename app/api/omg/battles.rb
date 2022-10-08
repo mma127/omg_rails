@@ -16,6 +16,15 @@ module OMG
         present query, type: :include_players
       end
 
+      desc 'download battlefile'
+      params do
+        requires :battleId, type: Integer, desc: "Battle id to download"
+      end
+      get :battlefile do
+        service = BattlefileService.new(declared_params[:battleId])
+        redirect service.get_file_download_url
+      end
+
       namespace :player do
         before do
           authenticate!

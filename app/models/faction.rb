@@ -31,4 +31,12 @@ class Faction < ApplicationRecord
   validates_presence_of :side
   validates_uniqueness_of :name
   validates_uniqueness_of :const_name
+
+  def side_integer
+    if side == Faction.sides[:allied]
+      0
+    else
+      1
+    end
+  end
 end

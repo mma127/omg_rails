@@ -75,6 +75,18 @@ export const readyPlayer = createAsyncThunk(
   }
 )
 
+export const downloadBattlefile = createAsyncThunk(
+  "lobby/downloadBattlefile",
+  async ({ battleId }) => {
+    try {
+      const response = await axios.post("/battles/battlefile", { battleId })
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
 const lobbySlice = createSlice({
   name: "lobby",
   initialState,
