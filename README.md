@@ -83,6 +83,8 @@ development:
 
 `sudo apt install redis-server`
 
+4. Run Redis server locally
+`redis-server`
 
 #### Bundle
 7. Install gems\
