@@ -14,8 +14,8 @@ development:
   <<: *default
   host: localhost
   database: omg_development
-  username: <%= ENV.fetch('POSTGRES_DB_USER') %>
-  password: <%= ENV.fetch('POSTGRES_DB_PASS') %>
+  username: <%= ENV.fetch('POSTGRES_USER') %>
+  password: <%= ENV.fetch('POSTGRES_PASSWORD') %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
