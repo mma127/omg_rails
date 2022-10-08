@@ -14,8 +14,8 @@ development:
   <<: *default
   host: localhost
   database: omg_development
-  username: <%= ENV.fetch('POSTGRES_USER') || "mma" %>
-  password: <%= ENV.fetch('POSTGRES_PASSWORD') || "password" %>
+  username: <%= ENV.fetch('POSTGRES_USER', "mma")  %>
+  password: <%= ENV.fetch('POSTGRES_PASSWORD', "password") %>
 
 
 # Warning: The database defined as "test" will be erased and
