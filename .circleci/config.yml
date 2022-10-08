@@ -38,9 +38,7 @@ jobs:
           username: temeraire02
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
         environment: # add POSTGRES environment variables.
-          POSTGRES_USER: circleci-demo-ruby
-          POSTGRES_DB: omg_test
-          POSTGRES_PASSWORD: "omgtestpassword"
+          POSTGRES_USER: root
     # environment variables specific to Ruby/Rails, applied to the primary container.
     environment:
       BUNDLE_JOBS: "3"
