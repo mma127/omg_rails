@@ -58,8 +58,8 @@ export const CompanyGridDropTarget = ({
       onHitCallback({ ...dragData, vet: 0, index: gridIndex, tab: currentTab })
     } else if (dragData.index !== gridIndex) {
       const uuid = nanoid()
-      const newSquad = createSquad(uuid, null, dragData.unitId, dragData.unitName, dragData.pop, dragData.man,
-        dragData.mun, dragData.fuel, dragData.image, gridIndex, currentTab)
+      const newSquad = createSquad(uuid, null, dragData.unitId, dragData.unitName, dragData.unitDisplayName,
+        dragData.pop, dragData.man, dragData.mun, dragData.fuel, dragData.image, gridIndex, currentTab)
       onHitCallback(newSquad)
     } else {
       console.log(`skipping onHit for the same index ${gridIndex}`)
@@ -78,6 +78,7 @@ export const CompanyGridDropTarget = ({
       gridPop += parseFloat(squad.pop)
       squadCards.push(<SquadCard key={squad.uuid}
                                  uuid={squad.uuid} squadId={squad.id} unitId={squad.unitId} unitName={squad.unitName}
+                                 unitDisplayName={squad.unitDisplayName}
                                  pop={squad.pop} man={squad.man} mun={squad.mun} fuel={squad.fuel} image={squad.image}
                                  index={squad.index} tab={squad.tab} vet={squad.vet}
                                  onUnitClick={onUnitClick} onDestroyClick={onDestroyClick} />)

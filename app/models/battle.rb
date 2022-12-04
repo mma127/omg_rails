@@ -21,6 +21,7 @@ class Battle < ApplicationRecord
   has_many :battle_players, dependent: :destroy
   has_many :players, through: :battle_players
   has_many :companies, through: :battle_players
+  has_many :squads, through: :companies
 
   has_one_attached :battlefile
 
@@ -47,6 +48,10 @@ class Battle < ApplicationRecord
 
     event :reporting do
       transition :ingame => :reporting
+    end
+
+    event :revert_reporting do
+      transition :reporting => :ingame
     end
 
     event :finalize do

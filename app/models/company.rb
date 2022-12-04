@@ -30,6 +30,8 @@
 #  fk_rails_...  (player_id => players.id)
 #
 class Company < ApplicationRecord
+  MAX_VP = 25.freeze
+
   belongs_to :player
   belongs_to :doctrine
   belongs_to :faction

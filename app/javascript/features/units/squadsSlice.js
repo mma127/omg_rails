@@ -66,8 +66,8 @@ const buildNewSquadTabs = (squads) => {
     const platoon = tabs[squad.tab][squad.index]
     const uuid = nanoid()
     const image = unitImageMapping[squad.unitName]
-    platoon[uuid] = createSquad(uuid, squad.id, squad.unitId, squad.unitName, squad.pop, squad.man, squad.mun,
-      squad.fuel, image, squad.index, squad.tab)
+    platoon[uuid] = createSquad(uuid, squad.id, squad.unitId, squad.unitName, squad.unitDisplayName, squad.pop, squad.man, squad.mun,
+      squad.fuel, image, squad.index, squad.tab, squad.vet)
   })
   return tabs
 }

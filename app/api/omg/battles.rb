@@ -41,7 +41,7 @@ module OMG
         end
         post 'create_match' do
           service = BattleService.new(current_player)
-          service.create_battle(declared_params[:name],declared_params[:size],declared_params[:rulesetId],declared_params[:initialCompanyId])
+          service.create_battle(declared_params[:name], declared_params[:size], declared_params[:rulesetId], declared_params[:initialCompanyId])
         end
 
         # Join Battle with Company
@@ -77,6 +77,36 @@ module OMG
 
         # Abandon a 'generating', 'ingame', 'reporting'? Battle
 
+      end
+
+      namespace :report do
+        desc 'Handle a battle report from omg_statexport.scar'
+        params do
+          requires :battleID, type: Integer, desc: "Battle id"
+          requires :final, type: Integer, desc: "Battle final flag, 1 for final, 0 for not"
+          requires :battleReport, type: String, desc: "Display name of reporting player"
+          requires :timeElapsed, type: Integer, desc: "Battle elapsed time"
+          requires :raceWinner, type: String, desc: "Axis or Allies"
+          requires :map, type: String, desc: "Map name"
+          requires :deadSGroups, type: String, desc: "List of dead squads, semicolon separated"
+          requires :surviveSGroups, type: String, desc: "List of surviving squads with xp, semicolon separated in format: [squad id],[exp];..."
+          optional :newSGroups, type: String, desc: "List of new squads" # Not using for now
+          requires :dropPlayers, type: String, desc: "List of dropped player names, possible to receive a blank string name"
+          requires :battleStats, type: String, desc: "Stats string by player semicolon separated in format: "\
+            "[player name],CompanyId:[company id],Inf Lost:[int] ,Vehicles Lost:[int] ,Inf Killed[int] ,Vehicles Killed:[int];..."
+        end
+        post do
+          BattleReportService.enqueue_report(declared_params[:battleID],
+                                             declared_params[:final],
+                                             declared_params[:battleReport],
+                                             declared_params[:timeElapsed],
+                                             declared_params[:raceWinner],
+                                             declared_params[:map],
+                                             declared_params[:deadSGroups],
+                                             declared_params[:surviveSGroups],
+                                             declared_params[:dropPlayers],
+                                             declared_params[:battleStats],)
+        end
       end
     end
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_29_015403) do
+ActiveRecord::Schema.define(version: 2022_11_29_030418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -237,6 +237,7 @@ ActiveRecord::Schema.define(version: 2022_09_29_015403) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.integer "vps", default: 0, null: false, comment: "War VPs earned"
   end
 
   create_table "resource_bonuses", force: :cascade do |t|

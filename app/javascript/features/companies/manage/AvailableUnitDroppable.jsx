@@ -63,7 +63,7 @@ export const AvailableUnitDroppable = ({
                            noDragging={notAvailable}
                            onDragStart={() => onUnitClick(unitId, unitName)}
                            dragData={{
-                             unitId: unitId, unitName: unitName, image: image, pop: availableUnit.pop,
+                             unitId: unitId, unitName: unitName, unitDisplayName: label, image: image, pop: availableUnit.pop,
                              man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel
                            }}>
           <UnitCard unitId={unitId} label={label} image={image} onUnitClick={onUnitClick} disabled={notAvailable} />

@@ -12,6 +12,7 @@
 #  provider(Omniauth provider) :string
 #  sign_in_count               :integer          default(0), not null
 #  uid(Omniauth uid)           :string
+#  vps(War VPs earned)         :integer          default(0), not null
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #

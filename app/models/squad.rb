@@ -24,6 +24,7 @@
 class Squad < ApplicationRecord
   belongs_to :company
   belongs_to :available_unit
+
   has_many :squad_upgrades
   has_many :upgrades, through: :squad_upgrades
   delegate :unit, to: :available_unit
@@ -50,6 +51,10 @@ class Squad < ApplicationRecord
 
   def unit_name
     unit.name
+  end
+
+  def unit_display_name
+    unit.display_name
   end
 
   def pop
@@ -81,6 +86,7 @@ class Squad < ApplicationRecord
     expose :company_id, as: :companyId
     expose :unit_id, as: :unitId
     expose :unit_name, as: :unitName
+    expose :unit_display_name, as: :unitDisplayName
     expose :pop
     expose :man
     expose :mun

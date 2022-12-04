@@ -63,6 +63,7 @@ class AvailableUnitsService
     existing_units_hash
   end
 
+  # When creating new available_units, start available at max resupply value
   def create_available_units(unit_hashes)
     validate_empty_available_units
 
