@@ -502,6 +502,27 @@ RSpec.describe CompanyService do
     end
   end
 
+  describe "#recalculate_resources" do
+    before do
+      @company = subject.create_company(doctrine, name)
+      @available_unit1 = @company.available_units.find_by(unit: unit1)
+      @available_unit2 = @company.available_units.find_by(unit: unit2)
+      @available_unit3 = @company.available_units.find_by(unit: unit3)
+
+      create :squad, company: @company, available_unit: @available_unit1, tab_category: "core", category_position: 0
+      create :squad, company: @company, available_unit: @available_unit2, tab_category: "core", category_position: 0
+      create :squad, company: @company, available_unit: @available_unit3, tab_category: "core", category_position: 3
+    end
+
+    it "calculates the correct resources remaining" do
+      man, mun, fuel, pop = subject.recalculate_resources(@company)
+      expect(man).to eq ruleset.starting_man - @available_unit1.man - @available_unit2.man - @available_unit3.man
+      expect(mun).to eq ruleset.starting_mun - @available_unit1.mun - @available_unit2.mun - @available_unit3.mun
+      expect(fuel).to eq ruleset.starting_fuel - @available_unit1.fuel - @available_unit2.fuel - @available_unit3.fuel
+      expect(pop).to eq @available_unit1.pop + @available_unit2.pop + @available_unit3.pop
+    end
+  end
+
   context "#can_create_company" do
     it "can create when the player does not have the max number of companies for that side" do
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset

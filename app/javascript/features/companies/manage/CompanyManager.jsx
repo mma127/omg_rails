@@ -169,7 +169,7 @@ export const CompanyManager = () => {
   }
 
   return (
-    <Container maxWidth="xl" ref={constraintsRef} sx={{ paddingTop: '1rem' }}>
+    <Container maxWidth="xl" ref={constraintsRef} sx={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
       <Typography variant="h5" gutterBottom>{company.name}</Typography>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

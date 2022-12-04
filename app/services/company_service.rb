@@ -29,7 +29,7 @@ class CompanyService
                                   player: @player,
                                   doctrine: doctrine,
                                   faction: doctrine.faction,
-                                  vps_earned: 0,
+                                  vps_earned: @player.vps,
                                   man: ruleset.starting_man,
                                   mun: ruleset.starting_mun,
                                   fuel: ruleset.starting_fuel,
@@ -164,6 +164,28 @@ class CompanyService
     company.destroy!
   end
 
+  # Based on squads of the company and ruleset starting resources, determine what resources are left
+  # TODO refactor with similar block in #update_company_squads
+  def recalculate_resources(company)
+    # For now, expect unit id and company id are a unique constraint for AvailableUnits so using simple index_by,
+    # but may change in the future to support free units
+    available_units_by_unit_id = company.available_units.index_by(&:unit_id)
+
+    # Build hash of tab and index to pop
+    platoon_pop_by_tab_and_index = build_empty_tab_index_pop
+
+    squads = company.squads.map { |s| { unit_id: s.unit.id, tab: s.tab_category, index: s.category_position } }
+
+    # Calculate resources used by the input squads
+    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_unit_id, platoon_pop_by_tab_and_index)
+
+    # Calculate resources remaining when subtracting the squad resources from the company's total starting resources
+    # Raise validation error if the new squads' cost is greater in one or more resource than the company's total starting resources
+    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, man_new, mun_new, fuel_new)
+
+    [man_remaining, mun_remaining, fuel_remaining, pop_new]
+  end
+
   private
 
   # A company can be created for a player if they have fewer than the limit of companies for the doctrine's side
@@ -184,7 +206,7 @@ class CompanyService
     unless uniq_payload_squad_ids.size == payload_squad_ids.size
       # Raise validation error if one or more given squad ids are duplicated
       raise CompanyUpdateValidationError.new("Duplicate squad ids found in payload squad ids: "\
-        "#{payload_squad_ids.group_by{ |e| e }.select { |_, v| v.size > 1 }.map(&:first)}")
+        "#{payload_squad_ids.group_by { |e| e }.select { |_, v| v.size > 1 }.map(&:first)}")
     end
 
     unless (payload_squad_ids - existing_squad_ids).size == 0
@@ -215,12 +237,12 @@ class CompanyService
   def build_empty_tab_index_pop
     tab_categories = Squad.tab_categories
     Hash[
-      tab_categories[:core], Array.new(8,0),
-      tab_categories[:assault], Array.new(8,0),
-      tab_categories[:infantry], Array.new(8,0),
-      tab_categories[:armour], Array.new(8,0),
-      tab_categories[:anti_armour], Array.new(8,0),
-      tab_categories[:support], Array.new(8,0),
+      tab_categories[:core], Array.new(8, 0),
+      tab_categories[:assault], Array.new(8, 0),
+      tab_categories[:infantry], Array.new(8, 0),
+      tab_categories[:armour], Array.new(8, 0),
+      tab_categories[:anti_armour], Array.new(8, 0),
+      tab_categories[:support], Array.new(8, 0),
     ].with_indifferent_access
   end
 
