@@ -10,6 +10,7 @@ class BattleService
   BATTLEFILE_GENERATED = "battlefile_generated".freeze
   PLAYER_LEFT = "player_left".freeze
   REMOVE_BATTLE = "removed_battle".freeze
+  BATTLE_FINALIZED = "battle_finalized".freeze
 
   def initialize(player)
     @player = player
@@ -134,6 +135,15 @@ class BattleService
     broadcast_cable(battle_message)
   end
 
+  def finalize_battle(battle)
+    validate_battle_final(battle)
+
+    message_hash = { type: BATTLE_FINALIZED, battle: battle }
+
+    battle_message = Entities::BattleMessage.represent message_hash
+    broadcast_cable(battle_message)
+  end
+
   private
 
   def broadcast_cable(message)
@@ -160,6 +170,10 @@ class BattleService
 
   def validate_player_in_battle(battle)
     raise BattleValidationError.new "Player #{@player.name} is not in battle #{battle.id}" unless battle.battle_players.find_by(player: @player).present?
+  end
+
+  def validate_battle_final(battle)
+    raise BattleValidationError.new "Cannot send finalize message for battle in non-final state #{battle.state}" unless battle.final?
   end
 
   def validate_ruleset(ruleset_id)
