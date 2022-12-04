@@ -17,8 +17,11 @@ import {
   CREATED_BATTLE,
   PLAYER_ALL_READY,
   PLAYER_JOINED,
-  PLAYER_JOINED_FULL, PLAYER_LEFT,
-  PLAYER_READY, REMOVE_BATTLE
+  PLAYER_JOINED_FULL,
+  PLAYER_LEFT,
+  PLAYER_READY,
+  REMOVE_BATTLE,
+  BATTLE_FINALIZED
 } from "../../constants/battles/events";
 
 const rulesetId = 1
@@ -83,6 +86,10 @@ export const Lobby = () => {
         break
       }
       case REMOVE_BATTLE: {
+        dispatch(removeBattle({ battle: message.battle }))
+        break
+      }
+      case BATTLE_FINALIZED: {
         dispatch(removeBattle({ battle: message.battle }))
         break
       }

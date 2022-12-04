@@ -62,6 +62,15 @@ class BattleReportService
       Rails.logger.error("Failed to process battle report for battle #{battle_id}, error: #{e.message}")
       raise
     end
+
+    begin
+      Rails.logger.info("Attempting to send battle_finalized cable")
+      service = BattleService.new(nil)
+      service.finalize_battle(@battle)
+    rescue StandardError => e
+      # Catch but don't raise again
+      Rails.logger.error("Failed to broadcast battle_finalized cable for battle #{@battle.id}, error: #{e.full_message}")
+    end
   end
 
   private
