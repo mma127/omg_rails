@@ -50,6 +50,7 @@ class BattlefileService
       company_content = build_player_company_block(c, index)
       companies_block << company_content
     end
+    report_url = "#{ENV['SERVER_HOST']}/api/battles/report"
 
     # Header data
     scar_contents = <<-SCAR
@@ -65,6 +66,7 @@ BattleMode = "#{battle_mode}"
 SpawnArtyNeeded = true
 WinningCueNeeded = true
 TerritoryCheckWinNeeded = true
+ReportUrl = "#{report_url}"
 
 function Setup_PlayerUnits(player)
   print("Setup_PlayerUnits")
