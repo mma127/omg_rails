@@ -9,6 +9,9 @@ class BattleReportService
 
   def self.enqueue_report(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,
                           dead_squads, surviving_squads, dropped_players, battle_stats)
+    Rails.logger.info("Enqueuing BattleReportJob for battle #{battle_id} with params:")
+    Rails.logger.info("is_final #{is_final}, reporting player #{reporting_player_name}, time_elapsed #{time_elapsed}, winner #{race_winner}")
+    Rails.logger.info("dead_squads #{dead_squads}, surviving_squads #{surviving_squads}")
     BattleReportJob.perform_async(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,
                                   dead_squads, surviving_squads, dropped_players, battle_stats)
   end
@@ -17,6 +20,7 @@ class BattleReportService
                      dead_squads, surviving_squads, dropped_players, battle_stats)
     # Get lock on battle to prevent duplicate updates to associated companies
     # Just lock the read of the battle's state and update of the battle's state to reporting
+    Rails.logger.info("Starting processing of battle report for Battle #{battle_id}")
     @battle.with_lock do
       if @battle.reporting? || @battle.final?
         Rails.logger.info("Battle #{battle_id} is already in '#{@battle.state}' state, skipping battle report processing")
