@@ -69,13 +69,19 @@ const availableUnitsSlice = createSlice({
       })
       .addCase(addSquad, (state, action) => {
         const { unitId } = action.payload
-        const availableUnit = state.entities[unitId]
-        availableUnit.available -= 1
+        const availableUnitEntity = state.entities[unitId]
+        const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === unitId)
+        availableUnitEntity.available -= 1
+        availableUnitTable.available -= 1
+        console.log(`${availableUnitEntity.unitName} availability reduced by 1 to ${availableUnitEntity.available}`)
       })
       .addCase(removeSquad, (state, action) => {
         const { unitId } = action.payload
-        const availableUnit = state.entities[unitId]
-        availableUnit.available += 1
+        const availableUnitEntity = state.entities[unitId]
+        const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === unitId)
+        availableUnitEntity.available += 1
+        availableUnitTable.available += 1
+        console.log(`${availableUnitEntity.unitName} availability increased by 1 to ${availableUnitEntity.available}`)
       })
 
       .addCase(upsertSquads.fulfilled, (state, action) => {
