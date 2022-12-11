@@ -38,7 +38,7 @@ export const AvailableUnitDroppable = ({
 
   const cost = formatResourceCost({ man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel })
 
-  const notAvailable = available === 0
+  const notAvailable = available <= 0
 
   return (
     <Tooltip
