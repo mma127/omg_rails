@@ -51,6 +51,8 @@ class BattlefileService
       companies_block << company_content
     end
     report_url = "#{ENV['SERVER_HOST']}/api/battles/report"
+    # Need to slice the protocol off so the SCAR cURL library works
+    report_url.slice!("https://")
 
     # Header data
     scar_contents = <<-SCAR
