@@ -85,7 +85,7 @@ module OMG
           requires :battleID, type: Integer, desc: "Battle id"
           requires :final, type: Integer, desc: "Battle final flag, 1 for final, 0 for not"
           requires :battleReport, type: String, desc: "Display name of reporting player"
-          requires :timeElapsed, type: Integer, desc: "Battle elapsed time"
+          requires :timeElapsed, type: Float, desc: "Battle elapsed time"
           requires :raceWinner, type: String, desc: "Axis or Allies"
           requires :map, type: String, desc: "Map name"
           requires :deadSGroups, type: String, desc: "List of dead squads, semicolon separated"
