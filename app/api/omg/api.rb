@@ -18,11 +18,12 @@ module OMG
     #     ]
     # }
     rescue_from Grape::Exceptions::ValidationErrors do |e|
+      Rails.logger.error("ValidationError during Grape endpoint: #{e.full_messages}")
       error! e.full_messages, 400
     end
 
     rescue_from :all do |e|
-      Rails.logger.error("Error during Grape endpoint: #{e.message}\nBacktrace: #{e.backtrace.first(15).join("\n")}")
+      Rails.logger.error("Error during Grape endpoint: #{e.full_messages}\nBacktrace: #{e.backtrace.first(15).join("\n")}")
       error! e.message
     end
 
