@@ -136,28 +136,30 @@ class BattleReportService
     dead_squad_ids = dead_squads_str.split(";")
     dead_squads_by_available_unit = Squad.includes(:available_unit).where(id: dead_squad_ids).group_by(&:available_unit_id)
     squads_to_update = []
+    available_units_to_update = []
     dead_squads_by_available_unit.each do |available_unit_id, squads|
       # Per available_unit, can get the available_unit available value at the start and update for all squads before saving
       available_unit = squads.first.available_unit
-      available = available_unit.available
-      Rails.logger.info("Available_unit #{available_unit_id} with #{squads.size} squads to rebuild, #{available} available")
+      Rails.logger.info("Available_unit #{available_unit_id} with #{squads.size} squads to rebuild, #{available_unit.available} available")
       squads.each do |squad|
-        if available > 0
-          Rails.logger.info("Available #{available} > 0 for Squad #{squad.id}, rebuilding")
+        if available_unit.available > 0
+          Rails.logger.info("Available #{available_unit.available} > 0 for Squad #{squad.id}, rebuilding")
           squad.vet = 0
           squad.name = nil
-          available -= 1
+          available_unit.available -= 1
           squads_to_update << squad
           # TODO Reset squad stats
         else
           # Not enough availability to autorebuild, remove the dead squad
-          Rails.logger.info("Available #{available} is 0 for Squad #{squad.id}, deleting")
+          Rails.logger.info("Available #{available_unit.available} is 0 for Squad #{squad.id}, deleting")
           squad.destroy!
         end
       end
+      available_units_to_update << available_unit
     end
     Rails.logger.info("Saving auto rebuilt squads")
     Squad.import!(squads_to_update, on_duplicate_key_update: { conflict_target: [:id], columns: [:vet, :name] })
+    AvailableUnit.import!(available_units_to_update, on_duplicate_key_update: { conflict_target: [:id], columns: [:available] })
   end
 
   # squads have been reconciled,

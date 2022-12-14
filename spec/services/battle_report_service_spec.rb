@@ -148,7 +148,7 @@ RSpec.describe BattleReportService do
 
       it "raises an error" do
         expect { instance.send(:validate_battle_ingame) }.to raise_error BattleReportService::BattleReportValidationError,
-                                                                        "Invalid battle state 'reporting', expected 'ingame'"
+                                                                         "Invalid battle state 'reporting', expected 'ingame'"
       end
     end
   end
@@ -220,13 +220,21 @@ RSpec.describe BattleReportService do
       squad23.update!(vet: 24)
     end
 
+    subject { instance.send(:autorebuild_dead_squads, dead_squads_str) }
+
     context "when there is sufficient availability" do
       it "rebuilds the dead squads" do
-        expect { instance.send(:autorebuild_dead_squads, dead_squads_str) }.not_to change { Squad.count }
+        expect { subject }.not_to change { Squad.count }
         expect(squad11.reload.vet).to eq 0
         expect(squad11.name).to eq nil
         expect(squad22.reload.vet).to eq 0
         expect(squad23.reload.vet).to eq 0
+      end
+
+      it "updates the available_unit" do
+        subject
+        expect(available_unit1.reload.available).to eq 9
+        expect(available_unit2.reload.available).to eq 78
       end
     end
 
@@ -237,10 +245,16 @@ RSpec.describe BattleReportService do
       end
 
       it "destroys the unavailable squads" do
-        expect { instance.send(:autorebuild_dead_squads, dead_squads_str) }.to change { Squad.count }.by(-2)
+        expect { subject }.to change { Squad.count }.by(-2)
         expect { squad11.reload }.to raise_error(ActiveRecord::RecordNotFound)
         expect(squad22.reload.vet).to eq 0
         expect { squad23.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "updates the available_unit" do
+        subject
+        expect(available_unit1.reload.available).to eq 0
+        expect(available_unit2.reload.available).to eq 0
       end
     end
   end
