@@ -62,8 +62,8 @@ RSpec.describe BattleReportService do
 
       it "updates availability" do
         process_report
-        expect(available_unit1.reload.available).to eq 10
-        expect(available_unit2.reload.available).to eq 90
+        expect(available_unit1.reload.available).to eq 9
+        expect(available_unit2.reload.available).to eq 89
       end
 
       it "updates company resources" do
