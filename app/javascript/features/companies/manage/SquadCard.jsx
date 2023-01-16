@@ -47,6 +47,7 @@ const useStyles = makeStyles(() => ({
  * @param tab
  * @param onUnitClick: callback fired when the squad card is clicked anywhere except the destroy icon
  * @param onDestroyClick: callback fired when the destroy icon is clicked
+ * @param enabled: Flag for whether the card is editable
  * @constructor
  */
 export const SquadCard = (
@@ -65,7 +66,8 @@ export const SquadCard = (
     index,
     tab,
     onUnitClick,
-    onDestroyClick
+    onDestroyClick,
+    enabled
   }
 ) => {
   const classes = useStyles()
@@ -75,6 +77,14 @@ export const SquadCard = (
   // const [munCost, setMunCost] = useState(mun)
   // const [fuelCost, setFuelCost] = useState(fuel)
   const cost = formatResourceCost({ man: man, mun: mun, fuel: fuel })
+
+  let deleteContent = ""
+  if (enabled) {
+    deleteContent = <DeleteOutlineIcon
+      onClick={() => onDestroyClick(uuid, squadId, unitId, pop, man, mun, fuel)}
+      className={classes.deleteIcon}
+      color="error" />
+  }
 
   return (
     <Tooltip
@@ -95,19 +105,27 @@ export const SquadCard = (
     >
       <Card className={classes.squadCard}>
         <DragDropContainer targetKey="unit" onDragStart={() => onUnitClick(unitId, unitName)}
+                           noDragging={!enabled}
                            dragData={
                              {
-                               uuid: uuid, id: squadId, unitId: unitId, unitName: unitName, unitDisplayName: unitDisplayName,
-                               pop: pop, man: man, mun: mun, fuel: fuel, image: image, index: index, tab: tab
+                               uuid: uuid,
+                               id: squadId,
+                               unitId: unitId,
+                               unitName: unitName,
+                               unitDisplayName: unitDisplayName,
+                               pop: pop,
+                               man: man,
+                               mun: mun,
+                               fuel: fuel,
+                               image: image,
+                               index: index,
+                               tab: tab
                              }
                            }
         >
           <Box sx={{ p: 1 }} className={classes.squadCardItems}>
             <UnitCard unitId={unitId} label={unitName} image={image} onUnitClick={onUnitClick} />
-            <DeleteOutlineIcon
-              onClick={() => onDestroyClick(uuid, squadId, unitId, pop, man, mun, fuel)}
-              className={classes.deleteIcon}
-              color="error" />
+            {deleteContent}
           </Box>
         </DragDropContainer>
       </Card>

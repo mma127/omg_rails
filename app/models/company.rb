@@ -44,6 +44,7 @@ class Company < ApplicationRecord
   has_many :company_offmaps, dependent: :destroy
   has_many :offmaps, through: :company_offmaps
   has_many :company_resource_bonuses, dependent: :destroy
+  has_many :battle_players
 
   validates_presence_of :faction
   validates_presence_of :doctrine
@@ -66,6 +67,10 @@ class Company < ApplicationRecord
     faction.side
   end
 
+  def active_battle_id
+    battle_players.in_active_battle.first&.id
+  end
+
   def entity
     Entity.new(self)
   end
@@ -82,6 +87,7 @@ class Company < ApplicationRecord
     expose :faction_name, as: :factionName
     expose :doctrine_name, as: :doctrineName
     expose :doctrine_display_name, as: :doctrineDisplayName
+    expose :active_battle_id, as: :activeBattleId
 
     expose :available_units, as: :availableUnits, using: AvailableUnit::Entity, if: { type: :full }
     expose :squads, using: Squad::Entity, if: { type: :full }

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, Button, CircularProgress, Container, Grid, Snackbar, Typography } from "@mui/material";
+import { Alert, AlertTitle, Button, CircularProgress, Container, Grid, Snackbar, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
@@ -143,6 +143,7 @@ export const CompanyManager = () => {
     dispatch(upsertSquads({ companyId }))
   }
 
+  const editEnabled = !company.activeBattleId
   const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
   const availableUnits = useSelector(selectAllAvailableUnits)
   let availableUnitsContent
@@ -152,7 +153,7 @@ export const CompanyManager = () => {
   } else {
     console.log("Selected available units")
     console.log(availableUnits)
-    availableUnitsContent = <AvailableUnits companyId={companyId} onUnitSelect={onUnitSelect} />
+    availableUnitsContent = <AvailableUnits companyId={companyId} onUnitSelect={onUnitSelect} enabled={editEnabled} />
   }
 
   let snackbarSeverity = "success"
@@ -168,8 +169,16 @@ export const CompanyManager = () => {
     }
   }
 
+  let companyLockedContent = ""
+  if (!editEnabled) {
+    companyLockedContent = <Alert severity={"warning"}>
+      <AlertTitle>In Battle - Company Locked</AlertTitle>
+    </Alert>
+  }
+
   return (
     <Container maxWidth="xl" ref={constraintsRef} sx={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
+      {companyLockedContent}
       <Typography variant="h5" gutterBottom>{company.name}</Typography>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -232,44 +241,44 @@ export const CompanyManager = () => {
           <Grid item xs={3}>
             <CompanyGridDropTarget gridIndex={0} currentTab={currentTab} squads={currentTabPlatoons[0]}
                                    onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                   onSquadDestroy={onSquadDestroy} />
+                                   onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
           </Grid>
           <Grid item xs={3}>
             <CompanyGridDropTarget gridIndex={1} currentTab={currentTab} squads={currentTabPlatoons[1]}
                                    onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                   onSquadDestroy={onSquadDestroy} />
+                                   onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
           </Grid>
           <Grid item xs={3}>
             <CompanyGridDropTarget gridIndex={2} currentTab={currentTab} squads={currentTabPlatoons[2]}
                                    onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                   onSquadDestroy={onSquadDestroy} />
+                                   onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
           </Grid>
           <Grid item xs={3}>
             <CompanyGridDropTarget gridIndex={3} currentTab={currentTab} squads={currentTabPlatoons[3]}
                                    onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                   onSquadDestroy={onSquadDestroy} />
+                                   onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
           </Grid>
         </Grid>
         <Grid item container spacing={2}>
           <Grid item xs={3}>
             <CompanyGridDropTarget gridIndex={4} currentTab={currentTab} squads={currentTabPlatoons[4]}
                                    onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                   onSquadDestroy={onSquadDestroy} />
+                                   onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
           </Grid>
           <Grid item xs={3}>
             <CompanyGridDropTarget gridIndex={5} currentTab={currentTab} squads={currentTabPlatoons[5]}
                                    onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                   onSquadDestroy={onSquadDestroy} />
+                                   onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
           </Grid>
           <Grid item xs={3}>
             <CompanyGridDropTarget gridIndex={6} currentTab={currentTab} squads={currentTabPlatoons[6]}
                                    onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                   onSquadDestroy={onSquadDestroy} />
+                                   onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
           </Grid>
           <Grid item xs={3}>
             <CompanyGridDropTarget gridIndex={7} currentTab={currentTab} squads={currentTabPlatoons[7]}
                                    onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                   onSquadDestroy={onSquadDestroy} />
+                                   onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
           </Grid>
         </Grid>
       </Grid>

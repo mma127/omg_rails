@@ -12,7 +12,7 @@ import { unitImageMapping } from "../../../../constants/units/all_factions";
 import { Box, Typography } from "@mui/material";
 
 
-const generateContentForUnitType = (availableUnits, onUnitSelect) => availableUnits.map(
+const generateContentForUnitType = (availableUnits, onUnitSelect, enabled) => availableUnits.map(
   au => (<AvailableUnitDroppable
     key={au.unitId}
     unitId={au.unitId}
@@ -24,6 +24,7 @@ const generateContentForUnitType = (availableUnits, onUnitSelect) => availableUn
     resupply={au.resupply}
     companyMax={au.companyMax}
     onUnitClick={onUnitSelect}
+    enabled={enabled}
   />))
 
 /**
@@ -31,34 +32,35 @@ const generateContentForUnitType = (availableUnits, onUnitSelect) => availableUn
  * @param companyId: company id for which we should display available units
  * @param onUnitSelect
  */
-export const AvailableUnits = ({ onUnitSelect }) => {
+export const AvailableUnits = ({ onUnitSelect, enabled }) => {
   const infantry = useSelector(selectInfantryAvailableUnits)
   const supportTeams = useSelector(selectSupportTeamAvailableUnits)
   const lightVehicles = useSelector(selectLightVehicleAvailableUnits)
   const tanks = useSelector(selectTankAvailableUnits)
   const emplacements = useSelector(selectEmplacementAvailableUnits)
+  console.log(`Company edit is ${enabled}`)
 
   return (
     <>
       {infantry.length > 0 ? <Box>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>Infantry</Typography>
-        {generateContentForUnitType(infantry, onUnitSelect)}
+        {generateContentForUnitType(infantry, onUnitSelect, enabled)}
       </Box> : null}
       {supportTeams.length > 0 ? <Box>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>Support Teams</Typography>
-        {generateContentForUnitType(supportTeams, onUnitSelect)}
+        {generateContentForUnitType(supportTeams, onUnitSelect, enabled)}
       </Box> : null}
       {lightVehicles.length > 0 ? <Box>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>Light Vehicles</Typography>
-        {generateContentForUnitType(lightVehicles, onUnitSelect)}
+        {generateContentForUnitType(lightVehicles, onUnitSelect, enabled)}
       </Box> : null}
       {tanks.length > 0 ? <Box>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>Tanks</Typography>
-        {generateContentForUnitType(tanks, onUnitSelect)}
+        {generateContentForUnitType(tanks, onUnitSelect, enabled)}
       </Box> : null}
       {emplacements.length > 0 ? <Box>
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>Emplacements</Typography>
-        {generateContentForUnitType(emplacements, onUnitSelect)}
+        {generateContentForUnitType(emplacements, onUnitSelect, enabled)}
       </Box> : null}
     </>
   )

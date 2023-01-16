@@ -1,7 +1,7 @@
 import React from 'react'
 import { DragDropContainer } from "react-drag-drop-container";
 import { makeStyles } from "@mui/styles";
-import { Box, Tooltip, Typography, Zoom } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 
 import { UnitCard } from "./UnitCard";
 import { formatResourceCost } from "../../../utils/company";
@@ -32,7 +32,8 @@ export const AvailableUnitDroppable = ({
                                          onUnitClick,
                                          available,
                                          resupply,
-                                         companyMax
+                                         companyMax,
+                                         enabled
                                        }) => {
   const classes = useStyles()
 
@@ -60,7 +61,7 @@ export const AvailableUnitDroppable = ({
     >
       <Box className={classes.dragDropContainer}>
         <DragDropContainer targetKey="unit"
-                           noDragging={notAvailable}
+                           noDragging={notAvailable || !enabled}
                            onDragStart={() => onUnitClick(unitId, unitName)}
                            dragData={{
                              unitId: unitId, unitName: unitName, unitDisplayName: label, image: image, pop: availableUnit.pop,
