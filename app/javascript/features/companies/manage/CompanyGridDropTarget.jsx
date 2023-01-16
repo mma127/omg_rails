@@ -30,6 +30,7 @@ const useStyles = makeStyles(() => ({
  * @param onHitCallback: Callback fired when this company grid drop target receives a hit and has an unit dropped in
  * @param onUnitClick: Callback fired when the unit icon is clicked. Expect to pass squad identifier
  * @param onSquadDestroy
+ * @param enabled: Flag for whether the drop target and any squad cards contained within are editable
  */
 export const CompanyGridDropTarget = ({
                                         gridIndex,
@@ -37,7 +38,8 @@ export const CompanyGridDropTarget = ({
                                         squads,
                                         onHitCallback,
                                         onUnitClick,
-                                        onSquadDestroy
+                                        onSquadDestroy,
+                                        enabled
                                       }) => {
   const classes = useStyles()
 
@@ -45,6 +47,10 @@ export const CompanyGridDropTarget = ({
   // Is it necessary to maintain total cost of the drop target/platoon?
 
   const onHit = (e) => {
+    if (!enabled) {
+      console.log("Drop target is not enabled")
+      return
+    }
     const dragData = e.dragData
     console.log(`${dragData.unitName} dropped into target ${gridIndex}`)
     if (Object.keys(dragData).includes("uuid")) {
@@ -81,7 +87,7 @@ export const CompanyGridDropTarget = ({
                                  unitDisplayName={squad.unitDisplayName}
                                  pop={squad.pop} man={squad.man} mun={squad.mun} fuel={squad.fuel} image={squad.image}
                                  index={squad.index} tab={squad.tab} vet={squad.vet}
-                                 onUnitClick={onUnitClick} onDestroyClick={onDestroyClick} />)
+                                 onUnitClick={onUnitClick} onDestroyClick={onDestroyClick} enabled={enabled} />)
     }
   }
 

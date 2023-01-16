@@ -31,7 +31,7 @@ class BattlePlayer < ApplicationRecord
     axis: "axis"
   }
 
-  scope :in_active_battle, -> { joins(:battle).where.not(battle: { state: "final" }) }
+  scope :in_active_battle, -> { joins(:battle).where.not(battle: { state: %w[final abandoned] }) }
 
   def player_name
     player.name

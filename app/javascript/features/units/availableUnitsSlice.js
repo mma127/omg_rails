@@ -18,6 +18,7 @@ const initialState = availableUnitsAdapter.getInitialState({
   [LIGHT_VEHICLE]: [],
   [TANK]: [],
   [EMPLACEMENT]: [],
+  companyId: null,
   availableUnitsStatus: "idle",
   loadingAvailableUnitsError: null,
   creatingStatus: "idle",
@@ -62,6 +63,7 @@ const availableUnitsSlice = createSlice({
         availableUnitsAdapter.setAll(state, renormalized_available_units)
         setStateForUnitTypes(renormalized_available_units, state)
         state.availableUnitsStatus = "idle"
+        state.companyId = action.payload.id // Current company id
       })
       .addCase(fetchCompanyById.rejected, (state, action) => {
         state.availableUnitsStatus = "idle"
