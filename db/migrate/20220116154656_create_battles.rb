@@ -16,9 +16,9 @@ class CreateBattles < ActiveRecord::Migration[6.1]
       t.references :battle, null: false
       t.references :player, null: false
       t.references :company, null: false
-
+      t.boolean :ready, default: false, comment: "Ready flag for the player"
       t.string :side, null: false, comment: "Team side"
-      t.boolean :abandoned, comment: "Is this player abandoning?"
+      t.boolean :abandoned, default: false, comment: "Is this player abandoning?"
 
       t.timestamps
     end

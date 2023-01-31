@@ -1,15 +1,13 @@
 FactoryBot.define do
-  factory :base_restriction_unit do
+  factory :enabled_upgrade do
     association :restriction
-    association :unit
+    association :upgrade
     association :ruleset
     man { 100 }
     mun { 90 }
     fuel { 40 }
     pop { 5 }
-    resupply { 2 }
-    resupply_max { 3 }
-    company_max { 10 }
+    uses { 2 }
     priority { 1 }
   end
 end

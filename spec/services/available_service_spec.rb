@@ -73,14 +73,14 @@ RSpec.describe AvailableUnitsService do
   end
 
   context "#get_base_restriction_unit_hash" do
-    it "returns all BaseRestrictionUnits by unit id for the faction restriction" do
+    it "returns all EnabledRestrictionUnits by unit id for the faction restriction" do
       result = subject.send(:get_base_restriction_unit_hash, restriction_faction)
       expect(result.size).to eq 3
       expect(result.keys).to match_array [unit1.id, unit2.id, unit4.id]
       expect(result.values).to match_array [restriction_unit1, restriction_unit2, restriction_unit4]
     end
 
-    it "returns all BaseRestrictionUnits by unit id for the doctrine restriction" do
+    it "returns all EnabledRestrictionUnits by unit id for the doctrine restriction" do
       result = subject.send(:get_base_restriction_unit_hash, restriction_doctrine)
       expect(result.size).to eq 3
       expect(result.keys).to match_array [unit1.id, unit3.id, unit5.id]

@@ -18,10 +18,10 @@
 #
 # Indexes
 #
-#  index_units_on_name  (name)
+#  index_units_on_name  (name) UNIQUE
 #
 class Unit < ApplicationRecord
-  has_many :unit_modifications
+  has_many :restriction_units
   has_many :unit_games
   has_many :games, through: :unit_games
 

@@ -8,7 +8,8 @@
 #  mun(Munitions available to this company) :integer          default(0)
 #  name(Company name)                       :string
 #  pop(Population cost of this company)     :integer          default(0)
-#  vps_earned(VPs earned by this company)   :integer          default(0)
+#  vps_current(VPs available to spend)      :integer          default(0), not null
+#  vps_earned(VPs earned by this company)   :integer          default(0), not null
 #  created_at                               :datetime         not null
 #  updated_at                               :datetime         not null
 #  doctrine_id                              :bigint           not null
@@ -28,6 +29,7 @@
 #  fk_rails_...  (doctrine_id => doctrines.id)
 #  fk_rails_...  (faction_id => factions.id)
 #  fk_rails_...  (player_id => players.id)
+#  fk_rails_...  (ruleset_id => rulesets.id)
 #
 require "rails_helper"
 

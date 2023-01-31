@@ -31,25 +31,25 @@ class AvailableUnitsService
     # TODO Reward
     # TODO Alpha
 
-    base_units_hashes = faction_allowed_units
-    base_units_hashes = merge_allowed_units(base_units_hashes, doctrine_allowed_units)
-    base_units_hashes = remove_disabled_units(base_units_hashes, doctrine_disabled_units)
+    allowed_units_hashes = faction_allowed_units
+    allowed_units_hashes = merge_allowed_units(allowed_units_hashes, doctrine_allowed_units)
+    allowed_units_hashes = remove_disabled_units(allowed_units_hashes, doctrine_disabled_units)
 
-    create_available_units(base_units_hashes)
+    create_available_units(allowed_units_hashes)
   end
 
   private
 
   def get_base_restriction_unit_hash(restriction)
-    BaseRestrictionUnit.where(restriction: restriction).index_by(&:unit_id)
+    EnabledUnit.where(restriction: restriction).index_by(&:unit_id)
   end
 
   def get_disabled_restriction_unit_hash(restriction)
-    DisabledRestrictionUnit.where(restriction: restriction).index_by(&:unit_id)
+    DisabledUnit.where(restriction: restriction).index_by(&:unit_id)
   end
 
   def merge_allowed_units(existing_units_hash, restricted_units_hash)
-    # TODO This only works for BaseRestrictionUnit where more specific ones replace the more general one
+    # TODO This only works for EnabledRestrictionUnit where more specific ones replace the more general one
     if restricted_units_hash.present?
       existing_units_hash = existing_units_hash.merge(restricted_units_hash)
     end
