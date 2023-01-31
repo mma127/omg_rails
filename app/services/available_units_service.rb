@@ -20,12 +20,12 @@ class AvailableUnitsService
   def build_new_company_available_units
     # Get restriction for Faction, then find all faction allowed units
     faction_restriction = Restriction.find_by(faction: @faction)
-    faction_allowed_units = get_base_restriction_unit_hash faction_restriction
+    faction_allowed_units = get_enabled_unit_hash faction_restriction
 
     # Get restriction for Doctrine, then find all doctrine allowed units
     doctrine_restriction = Restriction.find_by(doctrine: @doctrine)
-    doctrine_allowed_units = get_base_restriction_unit_hash doctrine_restriction
-    doctrine_disabled_units = get_disabled_restriction_unit_hash doctrine_restriction
+    doctrine_allowed_units = get_enabled_unit_hash doctrine_restriction
+    doctrine_disabled_units = get_disabled_unit_hash doctrine_restriction
 
     # TODO Unlock
     # TODO Reward
@@ -40,11 +40,11 @@ class AvailableUnitsService
 
   private
 
-  def get_base_restriction_unit_hash(restriction)
+  def get_enabled_unit_hash(restriction)
     EnabledUnit.where(restriction: restriction).index_by(&:unit_id)
   end
 
-  def get_disabled_restriction_unit_hash(restriction)
+  def get_disabled_unit_hash(restriction)
     DisabledUnit.where(restriction: restriction).index_by(&:unit_id)
   end
 

@@ -16,14 +16,14 @@ RSpec.describe AvailableUnitsService do
   let(:unit4) { create :unit }
   let(:unit5) { create :unit }
   let(:unit6) { create :unit }
-  let!(:restriction_unit1) { create :base_restriction_unit, unit: unit1, man: 200, pop: 4, resupply: 4, resupply_max: 6, company_max: 10, restriction: restriction_faction, ruleset: ruleset }
-  let!(:restriction_unit1_doctrine) { create :base_restriction_unit, unit: unit1, man: 300, pop: 5, resupply: 2, resupply_max: 4, company_max: 8, restriction: restriction_doctrine, ruleset: ruleset }
-  let!(:restriction_unit2) { create :base_restriction_unit, unit: unit2, pop: 7, resupply: 2, resupply_max: 5, company_max: 5, restriction: restriction_faction, ruleset: ruleset }
-  let!(:restriction_unit3) { create :base_restriction_unit, unit: unit3, pop: 13, fuel: 700, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: ruleset }
-  let!(:restriction_unit4) { create :base_restriction_unit, unit: unit4, pop: 16, mun: 225, resupply: 1, resupply_max: 1, company_max: 1, restriction: restriction_faction, ruleset: ruleset }
-  let!(:restriction_unit5) { create :base_restriction_unit, unit: unit5, pop: 5, resupply: 10, resupply_max: 15, company_max: 15, restriction: restriction_doctrine, ruleset: ruleset }
-  let!(:restriction_unit6) { create :base_restriction_unit, unit: unit6, pop: 5, resupply: 99, resupply_max: 99, company_max: 100, restriction: restriction_faction2, ruleset: ruleset }
-  let!(:disabled_restriction_unit_2) { create :disabled_restriction_unit, unit: unit2, restriction: restriction_doctrine, ruleset: ruleset }
+  let!(:restriction_unit1) { create :enabled_unit, unit: unit1, man: 200, pop: 4, resupply: 4, resupply_max: 6, company_max: 10, restriction: restriction_faction, ruleset: ruleset }
+  let!(:restriction_unit1_doctrine) { create :enabled_unit, unit: unit1, man: 300, pop: 5, resupply: 2, resupply_max: 4, company_max: 8, restriction: restriction_doctrine, ruleset: ruleset }
+  let!(:restriction_unit2) { create :enabled_unit, unit: unit2, pop: 7, resupply: 2, resupply_max: 5, company_max: 5, restriction: restriction_faction, ruleset: ruleset }
+  let!(:restriction_unit3) { create :enabled_unit, unit: unit3, pop: 13, fuel: 700, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: ruleset }
+  let!(:restriction_unit4) { create :enabled_unit, unit: unit4, pop: 16, mun: 225, resupply: 1, resupply_max: 1, company_max: 1, restriction: restriction_faction, ruleset: ruleset }
+  let!(:restriction_unit5) { create :enabled_unit, unit: unit5, pop: 5, resupply: 10, resupply_max: 15, company_max: 15, restriction: restriction_doctrine, ruleset: ruleset }
+  let!(:restriction_unit6) { create :enabled_unit, unit: unit6, pop: 5, resupply: 99, resupply_max: 99, company_max: 100, restriction: restriction_faction2, ruleset: ruleset }
+  let!(:disabled_restriction_unit_2) { create :disabled_unit, unit: unit2, restriction: restriction_doctrine, ruleset: ruleset }
 
   subject { described_class.new(company) }
 
@@ -72,25 +72,25 @@ RSpec.describe AvailableUnitsService do
     end
   end
 
-  context "#get_base_restriction_unit_hash" do
-    it "returns all EnabledRestrictionUnits by unit id for the faction restriction" do
-      result = subject.send(:get_base_restriction_unit_hash, restriction_faction)
+  context "#get_enabled_unit_hash" do
+    it "returns all EnabledUnits by unit id for the faction restriction" do
+      result = subject.send(:get_enabled_unit_hash, restriction_faction)
       expect(result.size).to eq 3
       expect(result.keys).to match_array [unit1.id, unit2.id, unit4.id]
       expect(result.values).to match_array [restriction_unit1, restriction_unit2, restriction_unit4]
     end
 
-    it "returns all EnabledRestrictionUnits by unit id for the doctrine restriction" do
-      result = subject.send(:get_base_restriction_unit_hash, restriction_doctrine)
+    it "returns all EnabledUnits by unit id for the doctrine restriction" do
+      result = subject.send(:get_enabled_unit_hash, restriction_doctrine)
       expect(result.size).to eq 3
       expect(result.keys).to match_array [unit1.id, unit3.id, unit5.id]
       expect(result.values).to match_array [restriction_unit1_doctrine, restriction_unit3, restriction_unit5]
     end
   end
 
-  context "#get_disabled_restriction_unit_hash" do
-    it "returns all DisabledRestrictionUnits by unit id for the doctrine restriction" do
-      result = subject.send(:get_disabled_restriction_unit_hash, restriction_doctrine)
+  context "#get_disabled_unit_hash" do
+    it "returns all DisabledUnits by unit id for the doctrine restriction" do
+      result = subject.send(:get_disabled_unit_hash, restriction_doctrine)
       expect(result.size).to eq 1
       expect(result.keys).to match_array [unit2.id]
       expect(result.values).to match_array [disabled_restriction_unit_2]
