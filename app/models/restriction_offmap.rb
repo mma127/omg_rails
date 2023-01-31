@@ -2,11 +2,12 @@
 #
 # Table name: restriction_offmaps
 #
-#  id             :bigint           not null, primary key
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  offmap_id      :bigint
-#  restriction_id :bigint
+#  id                              :bigint           not null, primary key
+#  max(Maximum number purchasable) :integer
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#  offmap_id                       :bigint
+#  restriction_id                  :bigint
 #
 # Indexes
 #

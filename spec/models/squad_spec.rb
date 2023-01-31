@@ -3,13 +3,13 @@
 # Table name: squads
 #
 #  id                                                         :bigint           not null, primary key
-#  category_position(Position within the tab the squad is in) :integer
+#  category_position(Position within the tab the squad is in) :integer          not null
 #  name(Squad's custom name)                                  :string
-#  tab_category(Tab this squad is in)                         :string
+#  tab_category(Tab this squad is in)                         :string           not null
 #  vet(Squad's veterancy)                                     :decimal(, )
 #  created_at                                                 :datetime         not null
 #  updated_at                                                 :datetime         not null
-#  available_unit_id                                          :bigint           not null
+#  available_unit_id                                          :bigint
 #  company_id                                                 :bigint
 #
 # Indexes
@@ -19,6 +19,7 @@
 #
 # Foreign Keys
 #
+#  fk_rails_...  (available_unit_id => available_units.id)
 #  fk_rails_...  (company_id => companies.id)
 #
 require "rails_helper"

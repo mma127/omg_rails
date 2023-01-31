@@ -18,7 +18,7 @@
 #
 # Indexes
 #
-#  index_units_on_name  (name)
+#  index_units_on_name  (name) UNIQUE
 #
 require "rails_helper"
 
@@ -26,7 +26,7 @@ RSpec.describe Unit, type: :model do
   let!(:unit) { create :unit}
 
   describe 'associations' do
-    it { should have_many(:unit_modifications) }
+    it { should have_many(:restriction_units) }
     it { should have_many(:unit_games) }
     it { should have_many(:games) }
   end

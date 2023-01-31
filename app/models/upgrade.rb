@@ -15,20 +15,7 @@
 #  uses(Number of uses this upgrade provides)                       :integer
 #  created_at                                                       :datetime         not null
 #  updated_at                                                       :datetime         not null
-#  restriction_id                                                   :bigint
-#
-# Indexes
-#
-#  index_upgrades_on_restriction_id  (restriction_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (restriction_id => restrictions.id)
 #
 class Upgrade < ApplicationRecord
-
-  belongs_to :restriction
-
-  has_many :upgrade_modifications
 end
 

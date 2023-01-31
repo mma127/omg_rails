@@ -129,6 +129,17 @@ the following in the class:
 Each exposed attribute is one on the model, and we should also use the `as` option to alias any
 attribute names with underscores to camel case.
 
+#### Reset the DB
+1. `bundle exec rake db:drop`
+2. `bundle exec rake db:create`
+3. `bundle exec rake db:migrate`
+4. `bundle exec rake db:seed`
+
+or the script 
+`sh reset_db.sh`
+
+Create an alias with `alias reset_db='sh reset_db.sh'`
+
 ## Deployment
 ### Heroku
 

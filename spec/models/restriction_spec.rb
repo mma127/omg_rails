@@ -9,18 +9,21 @@
 #  created_at                                     :datetime         not null
 #  updated_at                                     :datetime         not null
 #  doctrine_id                                    :bigint
+#  doctrine_unlock_id                             :bigint
 #  faction_id                                     :bigint
 #  unlock_id                                      :bigint
 #
 # Indexes
 #
-#  index_restrictions_on_doctrine_id  (doctrine_id)
-#  index_restrictions_on_faction_id   (faction_id)
-#  index_restrictions_on_unlock_id    (unlock_id)
+#  index_restrictions_on_doctrine_id         (doctrine_id)
+#  index_restrictions_on_doctrine_unlock_id  (doctrine_unlock_id)
+#  index_restrictions_on_faction_id          (faction_id)
+#  index_restrictions_on_unlock_id           (unlock_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (doctrine_id => doctrines.id)
+#  fk_rails_...  (doctrine_unlock_id => doctrine_unlocks.id)
 #  fk_rails_...  (faction_id => factions.id)
 #  fk_rails_...  (unlock_id => unlocks.id)
 #
@@ -33,10 +36,10 @@ RSpec.describe Restriction, type: :model do
     it { should belong_to(:faction).optional }
     it { should belong_to(:doctrine).optional }
     it { should belong_to(:unlock).optional }
-    it { should have_many(:unit_modifications) }
-    it { should have_many(:upgrade_modifications) }
     it { should have_many(:restriction_units) }
     it { should have_many(:units) }
+    it { should have_many(:restriction_upgrades) }
+    it { should have_many(:upgrades) }
     it { should have_many(:restriction_offmaps) }
     it { should have_many(:offmaps) }
     it { should have_many(:restriction_callin_modifiers) }

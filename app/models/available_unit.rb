@@ -30,7 +30,7 @@
 class AvailableUnit < ApplicationRecord
   belongs_to :company
   belongs_to :unit
-  has_many :squads
+  has_many :squads, dependent: :destroy
   delegate :ruleset, to: :company
 
   validates_presence_of :company

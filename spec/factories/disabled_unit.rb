@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :disabled_restriction_unit do
+  factory :disabled_unit do
     association :restriction
     association :unit
     association :ruleset

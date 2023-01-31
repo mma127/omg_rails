@@ -18,7 +18,7 @@
 #
 # Indexes
 #
-#  index_units_on_name  (name)
+#  index_units_on_name  (name) UNIQUE
 #
 require "rails_helper"
 
