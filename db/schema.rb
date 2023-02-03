@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_30_034149) do
+ActiveRecord::Schema.define(version: 2023_02_03_194040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -372,6 +372,18 @@ ActiveRecord::Schema.define(version: 2023_01_30_034149) do
     t.index ["unit_id"], name: "index_unit_games_on_unit_id"
   end
 
+  create_table "unit_swaps", comment: "Association of old and new units to swap for an unlock", force: :cascade do |t|
+    t.bigint "unlock_id", null: false
+    t.bigint "old_unit_id", null: false
+    t.bigint "new_unit_id", null: false
+    t.string "description", comment: "Description of this UnitSwap"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["new_unit_id"], name: "index_unit_swaps_on_new_unit_id"
+    t.index ["old_unit_id"], name: "index_unit_swaps_on_old_unit_id"
+    t.index ["unlock_id"], name: "index_unit_swaps_on_unlock_id"
+  end
+
   create_table "units", comment: "Metadata for a unit", force: :cascade do |t|
     t.string "name", null: false, comment: "Unique unit name"
     t.string "type", null: false, comment: "Unit type"
@@ -461,4 +473,7 @@ ActiveRecord::Schema.define(version: 2023_01_30_034149) do
   add_foreign_key "squads", "companies"
   add_foreign_key "unit_games", "games"
   add_foreign_key "unit_games", "units"
+  add_foreign_key "unit_swaps", "units", column: "new_unit_id"
+  add_foreign_key "unit_swaps", "units", column: "old_unit_id"
+  add_foreign_key "unit_swaps", "unlocks"
 end
