@@ -32,5 +32,9 @@ RSpec.describe DoctrineUnlock, type: :model do
   describe 'associations' do
     it { should belong_to(:doctrine) }
     it { should belong_to(:unlock) }
+    it { should have_one(:restriction) }
+    it { should have_many(:restriction_units) }
+    it { should have_many(:restriction_upgrades) }
+    it { should have_many(:restriction_offmaps) }
   end
 end

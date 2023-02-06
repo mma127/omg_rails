@@ -29,9 +29,9 @@ class DoctrineUnlock < ApplicationRecord
   belongs_to :unlock
   has_one :restriction
 
-  has_many :restriction_units
-  has_many :restriction_upgrades
-  has_many :restriction_offmaps
+  has_many :restriction_units, through: :restriction
+  has_many :restriction_upgrades, through: :restriction
+  has_many :restriction_offmaps, through: :restriction
 
   def entity
     Entity.new(self)

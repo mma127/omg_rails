@@ -20,9 +20,9 @@ class Unlock < ApplicationRecord
   has_many :doctrines, through: :doctrine_unlocks
   has_one :restriction
 
-  has_many :restriction_units
-  has_many :restriction_upgrades
-  has_many :restriction_offmaps
+  has_many :restriction_units, through: :restriction
+  has_many :restriction_upgrades, through: :restriction
+  has_many :restriction_offmaps, through: :restriction
 
   validates_presence_of :name
   validates_presence_of :display_name

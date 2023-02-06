@@ -42,7 +42,7 @@ class Company < ApplicationRecord
   has_many :available_units, dependent: :destroy
   has_many :squads, dependent: :destroy
   has_many :company_unlocks, dependent: :destroy
-  has_many :unlocks, through: :company_unlocks
+  has_many :doctrine_unlocks, through: :company_unlocks
   has_many :company_offmaps, dependent: :destroy
   has_many :offmaps, through: :company_offmaps
   has_many :company_resource_bonuses, dependent: :destroy

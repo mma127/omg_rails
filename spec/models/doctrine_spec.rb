@@ -30,7 +30,7 @@ RSpec.describe Doctrine, type: :model do
     it { should belong_to(:faction) }
     it { should have_many(:doctrine_unlocks) }
     it { should have_many(:unlocks) }
-    it { should have_many(:restrictions) }
+    it { should have_one(:restrictions) }
   end
 
   describe 'validations' do
