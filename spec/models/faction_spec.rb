@@ -23,7 +23,7 @@ RSpec.describe Faction, type: :model do
 
   describe 'associations' do
     it { should have_many(:doctrines) }
-    it { should have_one(:restrictions) }
+    it { should have_one(:restriction) }
   end
 
   describe 'validations' do
