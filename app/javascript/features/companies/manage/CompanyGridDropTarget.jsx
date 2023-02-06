@@ -55,7 +55,7 @@ export const CompanyGridDropTarget = ({
     console.log(`${dragData.unitName} dropped into target ${gridIndex}`)
     if (Object.keys(dragData).includes("uuid")) {
       // Moved an existing squad into this drop target
-      const { uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab } = dragData
+      const { uuid, id, unitId, availableUnitId, unitName, pop, man, mun, fuel, image, index, tab } = dragData
 
       // Remove it from its previous platoon index
       onSquadDestroy(uuid, id, unitId, pop, man, mun, fuel, index, tab)
@@ -64,8 +64,8 @@ export const CompanyGridDropTarget = ({
       onHitCallback({ ...dragData, vet: 0, index: gridIndex, tab: currentTab })
     } else if (dragData.index !== gridIndex) {
       const uuid = nanoid()
-      const newSquad = createSquad(uuid, null, dragData.unitId, dragData.unitName, dragData.unitDisplayName,
-        dragData.pop, dragData.man, dragData.mun, dragData.fuel, dragData.image, gridIndex, currentTab)
+      const newSquad = createSquad(uuid, null, dragData.unitId, dragData.availableUnitId, dragData.unitName,
+        dragData.unitDisplayName, dragData.pop, dragData.man, dragData.mun, dragData.fuel, dragData.image, gridIndex, currentTab)
       onHitCallback(newSquad)
     } else {
       console.log(`skipping onHit for the same index ${gridIndex}`)

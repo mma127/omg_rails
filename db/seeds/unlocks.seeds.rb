@@ -49,26 +49,26 @@ after :units do
 
     puts "name: #{name}, constname: #{row["const"]}, doctrine: #{doctrine.display_name}"
     unlock = Unlock.create!(name: snakecase(name), const_name: row["const"], display_name: name, description: row["description"])
-    DoctrineUnlock.create!(doctrine: doctrine, unlock: unlock, tree: row["tree"], branch: row["branch"], row: row["tier"])
+    DoctrineUnlock.create!(doctrine: doctrine, unlock: unlock, vp_cost: row["vp"], tree: row["tree"], branch: row["branch"], row: row["tier"])
   end
 
-  # UnitSwaps for unlocks
-
-  ## Airborne Support Teams
-  support_teams = Unlock.find_by(name: "support_teams")
-  # old units
-  sniper_allied = Unit.find_by(name: "sniper_allied")
-  _30cal_hmg = Unit.find_by(name: "30cal_hmg")
-  mortar_allied = Unit.find_by(name: "mortar_allied")
-  _57mm_atg = Unit.find_by(name: "57mm_atg")
-  # new units
-  airborne_hmg = Unit.find_by(name: "airborne_hmg")
-  airborne_mortar = Unit.find_by(name: "airborne_mortar")
-  airborne_atg = Unit.find_by(name: "airborne_atg")
-  airborne_sniper = Unit.find_by(name: "airborne_sniper")
-  UnitSwap.create!(unlock: support_teams, old_unit: sniper_allied, new_unit: airborne_sniper)
-  UnitSwap.create!(unlock: support_teams, old_unit: _30cal_hmg, new_unit: airborne_hmg)
-  UnitSwap.create!(unlock: support_teams, old_unit: mortar_allied, new_unit: airborne_mortar)
-  UnitSwap.create!(unlock: support_teams, old_unit: _57mm_atg, new_unit: airborne_atg)
+  # # UnitSwaps for unlocks
+  #
+  # ## Airborne Support Teams
+  # support_teams = Unlock.find_by(name: "support_teams")
+  # # old units
+  # sniper_allied = Unit.find_by(name: "sniper_allied")
+  # _30cal_hmg = Unit.find_by(name: "30cal_hmg")
+  # mortar_allied = Unit.find_by(name: "mortar_allied")
+  # _57mm_atg = Unit.find_by(name: "57mm_atg")
+  # # new units
+  # airborne_hmg = Unit.find_by(name: "airborne_hmg")
+  # airborne_mortar = Unit.find_by(name: "airborne_mortar")
+  # airborne_atg = Unit.find_by(name: "airborne_atg")
+  # airborne_sniper = Unit.find_by(name: "airborne_sniper")
+  # UnitSwap.create!(unlock: support_teams, old_unit: sniper_allied, new_unit: airborne_sniper)
+  # UnitSwap.create!(unlock: support_teams, old_unit: _30cal_hmg, new_unit: airborne_hmg)
+  # UnitSwap.create!(unlock: support_teams, old_unit: mortar_allied, new_unit: airborne_mortar)
+  # UnitSwap.create!(unlock: support_teams, old_unit: _57mm_atg, new_unit: airborne_atg)
 
 end

@@ -31,86 +31,91 @@ module OMG
         end
       end
 
-      desc "get details for the given company"
-      params do
-        requires :id, type: Integer, desc: "Company ID"
-      end
-      get ':id' do
-        company = Company.includes(:available_units, :squads, :battle_players).find_by(id: params[:id], player: current_player)
-        if company.blank?
-          error! "Could not find company #{params[:id]} for the current player", 404
+      route_param :id, type: Integer do
+        desc "get details for the given company"
+        params do
+          requires :id, type: Integer, desc: "Company ID"
         end
-        present company, type: :full
-      end
-
-      desc "get all available units for the given company"
-      params do
-        requires :id, type: Integer, desc: "Company ID"
-      end
-      get ':id/available_units' do
-        company = Company.find_by(id: params[:id], player: current_player)
-        if company.blank?
-          error! "Could not find company #{params[:id]} for the current player", 404
-        end
-        present company.available_units
-      end
-
-      desc 'Retrieve all squads for the company'
-      params do
-        requires :id, type: Integer, desc: "Company ID"
-      end
-      get ':id/squads' do
-        declared_params = declared(params)
-        company = Company.includes(:squads, :ruleset, :available_units).find_by(id: declared_params[:id], player: current_player)
-        if company.blank?
-          error! "Could not find company #{params[:id]} for the current player", 404
+        get do
+          company = Company.includes(:available_units, :squads, :battle_players).find_by(id: params[:id], player: current_player)
+          if company.blank?
+            error! "Could not find company #{params[:id]} for the current player", 404
+          end
+          present company, type: :full
         end
 
-        present company.squads
-      end
-
-      desc 'Save squads for the company and update available units'
-      params do
-        requires :id, type: Integer, desc: "Company ID"
-        group :squads, type: Array, desc: "Company squads list" do
-          optional :squadId, type: Integer, as: :squad_id, desc: "Squad id, if exists. Empty for new squads"
-          requires :unitId, type: Integer, as: :unit_id, desc: "Squad's unit id"
-          optional :name, type: String, desc: "Squad's name"
-          requires :vet, type: BigDecimal, desc: "Squad veterancy"
-          requires :tab, type: String, values: Squad.tab_categories.values, desc: "Squad's tab category"
-          requires :index, type: Integer, desc: "Squad's position within a tab category"
+        desc "get all available units for the given company"
+        params do
+          requires :id, type: Integer, desc: "Company ID"
         end
-      end
-      post ':id/squads' do
-        begin
+        get 'available_units' do
+          company = Company.find_by(id: params[:id], player: current_player)
+          if company.blank?
+            error! "Could not find company #{params[:id]} for the current player", 404
+          end
+          present company.available_units
+        end
+
+        desc 'Retrieve all squads for the company'
+        params do
+          requires :id, type: Integer, desc: "Company ID"
+        end
+        get 'squads' do
           declared_params = declared(params)
           company = Company.includes(:squads, :ruleset, :available_units).find_by(id: declared_params[:id], player: current_player)
+          if company.blank?
+            error! "Could not find company #{params[:id]} for the current player", 404
+          end
+
+          present company.squads
+        end
+
+        desc 'Save squads for the company and update available units'
+        params do
+          requires :id, type: Integer, desc: "Company ID"
+          group :squads, type: Array, desc: "Company squads list" do
+            optional :squadId, type: Integer, as: :squad_id, desc: "Squad id, if exists. Empty for new squads"
+            requires :unitId, type: Integer, as: :unit_id, desc: "Squad's unit id"
+            requires :availableUnitId, type: Integer, as: :available_unit_id, desc: "Squad's available unit id"
+            optional :name, type: String, desc: "Squad's name"
+            requires :vet, type: BigDecimal, desc: "Squad veterancy"
+            requires :tab, type: String, values: Squad.tab_categories.values, desc: "Squad's tab category"
+            requires :index, type: Integer, desc: "Squad's position within a tab category"
+          end
+        end
+        post 'squads' do
+          begin
+            declared_params = declared(params)
+            company = Company.includes(:squads, :ruleset, :available_units).find_by(id: declared_params[:id], player: current_player)
+            company_service = CompanyService.new(current_player)
+            squads, available_units = company_service.update_company_squads(company, declared_params[:squads])
+
+            squads_response = {squads: squads, available_units: available_units}
+            present squads_response, with: Entities::SquadsResponse
+          rescue StandardError => e
+            Rails.logger.warn("Failed to create company for Player #{current_player.id}: #{e.message}\nParams #{declared_params}\nBacktrace: #{e.backtrace.first(15).join("\n")}")
+            error! e.message, 400
+          end
+        end
+
+
+        desc "delete the given company"
+        params do
+          requires :id, type: Integer, desc: "Company ID"
+        end
+        delete do
+          company = Company.find_by(id: params[:id], player: current_player)
+          if company.blank?
+            error! "Could not find company #{params[:id]} for the current player", 404
+          end
+
           company_service = CompanyService.new(current_player)
-          squads, available_units = company_service.update_company_squads(company, declared_params[:squads])
+          company_service.delete_company(company)
 
-          squads_response = {squads: squads, available_units: available_units}
-          present squads_response, with: Entities::SquadsResponse
-        rescue StandardError => e
-          Rails.logger.warn("Failed to create company for Player #{current_player.id}: #{e.message}\nParams #{declared_params}\nBacktrace: #{e.backtrace.first(15).join("\n")}")
-          error! e.message, 400
-        end
-      end
-
-
-      desc "delete the given company"
-      params do
-        requires :id, type: Integer, desc: "Company ID"
-      end
-      delete ':id' do
-        company = Company.find_by(id: params[:id], player: current_player)
-        if company.blank?
-          error! "Could not find company #{params[:id]} for the current player", 404
+          params[:id]
         end
 
-        company_service = CompanyService.new(current_player)
-        company_service.delete_company(company)
-
-        params[:id]
+        mount CompanyUnlocks
       end
     end
   end

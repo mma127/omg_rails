@@ -8,5 +8,7 @@ class CreateUnitSwaps < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+
+    add_index :unit_swaps, [:unlock_id, :old_unit_id], unique: true
   end
 end

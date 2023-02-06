@@ -18,7 +18,7 @@
 #
 class Faction < ApplicationRecord
   has_many :doctrines, inverse_of: :faction
-  has_many :restrictions
+  has_one :restriction
 
   enum side: {
     allied: "allied",

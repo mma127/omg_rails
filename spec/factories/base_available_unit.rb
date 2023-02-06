@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :available_unit do
+  factory :base_available_unit do
     available { 4 }
     resupply { 2 }
     resupply_max { 3 }
@@ -9,7 +9,6 @@ FactoryBot.define do
     mun { 50 }
     fuel { 40 }
     callin_modifier { 1 }
-    type { "BaseAvailableUnit" }
 
     association :company
     association :unit

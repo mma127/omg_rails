@@ -24,27 +24,13 @@
 #  fk_rails_...  (doctrine_id => doctrines.id)
 #  fk_rails_...  (unlock_id => unlocks.id)
 #
-class DoctrineUnlock < ApplicationRecord
-  belongs_to :doctrine
-  belongs_to :unlock
-  has_one :restriction
+require "rails_helper"
 
-  has_many :restriction_units
-  has_many :restriction_upgrades
-  has_many :restriction_offmaps
+RSpec.describe DoctrineUnlock, type: :model do
+  let!(:doctrine_unlock) { create :doctrine_unlock }
 
-  def entity
-    Entity.new(self)
-  end
-
-  class Entity < Grape::Entity
-    expose :id
-    expose :doctrine_id, as: :doctrineId
-    expose :unlock_id, as: :unlockId
-    expose :vp_cost, as: :vpCost
-    expose :tree
-    expose :branch
-    expose :row
-    expose :unlock, using: Unlock::Entity
+  describe 'associations' do
+    it { should belong_to(:doctrine) }
+    it { should belong_to(:unlock) }
   end
 end

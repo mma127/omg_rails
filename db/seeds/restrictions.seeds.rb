@@ -1,19 +1,13 @@
-after :units do
+after :unlocks do
   # Factions and Doctrines already have their standard Restriction created
   # This should contain unlock restrictions
 
-  # Americans
-  americans = Faction.find_by_name("americans")
-
-  ## Infantry
-  infantry = Doctrine.find_by_name("infantry")
-
-
-  ## Airborne
-  airborne = Doctrine.find_by_name("airborne")
-
-
-  ## Armor
-  armor = Doctrine.find_by_name("armor")
+  DoctrineUnlock.includes(:doctrine, :unlock).each do |du|
+    doctrine = du.doctrine
+    unlock = du.unlock
+    Restriction.create!(doctrine_unlock: du,
+                        name: "#{doctrine.display_name} | #{unlock.display_name}",
+                        description: "#{doctrine.display_name} Doctrine Unlock Restriction - #{unlock.display_name}")
+  end
 
 end

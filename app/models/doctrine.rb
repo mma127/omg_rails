@@ -27,7 +27,7 @@ class Doctrine < ApplicationRecord
   belongs_to :faction, inverse_of: :doctrines
   has_many :doctrine_unlocks
   has_many :unlocks, through: :doctrine_unlocks
-  has_many :restrictions
+  has_one :restriction
 
   validates_presence_of :name
   validates_presence_of :const_name
