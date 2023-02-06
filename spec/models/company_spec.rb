@@ -45,7 +45,7 @@ RSpec.describe Company, type: :model do
     it { should have_many(:available_units) }
     it { should have_many(:squads) }
     it { should have_many(:company_unlocks) }
-    it { should have_many(:unlocks) }
+    it { should have_many(:doctrine_unlocks) }
     it { should have_many(:company_offmaps) }
     it { should have_many(:offmaps) }
     it { should have_many(:company_resource_bonuses) }
