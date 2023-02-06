@@ -53,12 +53,12 @@ RSpec.describe EnabledUnit, type: :model do
   end
 
 
-  it "generates and saves the description" do
+  it "generates and saves the internal_description" do
     unit = create :infantry, display_name: "Rifles"
     restriction = create :restriction, name: "American army"
     ruleset = create :ruleset
     enabled_unit = create :enabled_unit, restriction: restriction, unit: unit, ruleset: ruleset
-    expect(enabled_unit.description).to eq("American army - Rifles")
+    expect(enabled_unit.internal_description).to eq("American army - Rifles")
   end
 end
 

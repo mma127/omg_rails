@@ -1,3 +1,23 @@
+# == Schema Information
+#
+# Table name: company_unlocks
+#
+#  id                 :bigint           not null, primary key
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  company_id         :bigint
+#  doctrine_unlock_id :bigint
+#
+# Indexes
+#
+#  index_company_unlocks_on_company_id          (company_id)
+#  index_company_unlocks_on_doctrine_unlock_id  (doctrine_unlock_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (company_id => companies.id)
+#  fk_rails_...  (doctrine_unlock_id => doctrine_unlocks.id)
+#
 require "rails_helper"
 
 RSpec.describe CompanyUnlock, type: :model do

@@ -5,7 +5,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUnitById, selectUnitById } from "../../units/unitsSlice";
 import {
-  selectAvailableUnitByUnitId,
+  selectAvailableUnitById,
   selectAllAvailableUnits,
   selectAvailableUnitsStatus
 } from "../../units/availableUnitsSlice";
@@ -23,13 +23,13 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const UnitDetails = ({ unitId, unitImage }) => {
+export const AvailableUnitDetails = ({ unitId, availableUnitId, unitImage }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
   const selectedUnitDetails = useSelector(state => selectUnitById(state, unitId))
   const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
-  const availableUnit = useSelector(state => selectAvailableUnitByUnitId(state, unitId))
+  const availableUnit = useSelector(state => selectAvailableUnitById(state, availableUnitId))
   const isAvailableUnitsReady = availableUnitsStatus !== "pending"
 
 

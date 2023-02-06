@@ -176,7 +176,7 @@ class CompanyService
     # Build hash of tab and index to pop
     platoon_pop_by_tab_and_index = build_empty_tab_index_pop
 
-    squads = company.squads.map { |s| { unit_id: s.unit.id, tab: s.tab_category, index: s.category_position, available_unit_id: s.available_unit_id } }
+    squads = company.squads.map { |s| { tab: s.tab_category, index: s.category_position, available_unit_id: s.available_unit_id } }
 
     # Calculate resources used by the input squads
     man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)

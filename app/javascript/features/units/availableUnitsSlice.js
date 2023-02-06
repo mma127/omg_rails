@@ -26,17 +26,6 @@ const initialState = availableUnitsAdapter.getInitialState({
   deletingError: null
 })
 
-const renormalizeAvailableUnits = (availableUnits) => {
-  /**
-   * More useful to key available units by unit id
-   */
-  return availableUnits.map(au => ({
-    ...au,
-    id: au.unitId,
-    availableUnitId: au.id
-  }))
-}
-
 const getSortedUnitsForType = (availableUnits, unitType) => {
   return availableUnits.filter(au => au.unitType === unitType)
     .sort((a, b) => a.unitDisplayName.localeCompare(b.unitDisplayName))
@@ -59,9 +48,8 @@ const availableUnitsSlice = createSlice({
         state.loadingAvailableUnitsError = null
       })
       .addCase(fetchCompanyById.fulfilled, (state, action) => {
-        const renormalized_available_units = renormalizeAvailableUnits(action.payload.availableUnits)
-        availableUnitsAdapter.setAll(state, renormalized_available_units)
-        setStateForUnitTypes(renormalized_available_units, state)
+        availableUnitsAdapter.setAll(state, action.payload.availableUnits)
+        setStateForUnitTypes(action.payload.availableUnits, state)
         state.availableUnitsStatus = "idle"
         state.companyId = action.payload.id // Current company id
       })
@@ -70,26 +58,25 @@ const availableUnitsSlice = createSlice({
         state.loadingAvailableUnitsError = action.payload.error
       })
       .addCase(addSquad, (state, action) => {
-        const { unitId } = action.payload
-        const availableUnitEntity = state.entities[unitId]
-        const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === unitId)
+        const { availableUnitId } = action.payload
+        const availableUnitEntity = state.entities[availableUnitId]
+        const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
         availableUnitEntity.available -= 1
         availableUnitTable.available -= 1
         console.log(`${availableUnitEntity.unitName} availability reduced by 1 to ${availableUnitEntity.available}`)
       })
       .addCase(removeSquad, (state, action) => {
-        const { unitId } = action.payload
-        const availableUnitEntity = state.entities[unitId]
-        const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === unitId)
+        const { availableUnitId } = action.payload
+        const availableUnitEntity = state.entities[availableUnitId]
+        const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
         availableUnitEntity.available += 1
         availableUnitTable.available += 1
         console.log(`${availableUnitEntity.unitName} availability increased by 1 to ${availableUnitEntity.available}`)
       })
 
       .addCase(upsertSquads.fulfilled, (state, action) => {
-        const renormalized_available_units = renormalizeAvailableUnits(action.payload.availableUnits)
-        availableUnitsAdapter.setAll(state, renormalized_available_units)
-        setStateForUnitTypes(renormalized_available_units, state)
+        availableUnitsAdapter.setAll(state, action.payload.availableUnits)
+        setStateForUnitTypes(action.payload.availableUnits, state)
       })
       .addCase(clearCompanyManager, (state, action) => {
         return initialState
@@ -101,7 +88,7 @@ export default availableUnitsSlice.reducer
 
 export const {
   selectAll: selectAllAvailableUnits,
-  selectById: selectAvailableUnitByUnitId
+  selectById: selectAvailableUnitById
 } = availableUnitsAdapter.getSelectors(state => state.availableUnits)
 
 export const selectInfantryAvailableUnits = state => state.availableUnits[INFANTRY]

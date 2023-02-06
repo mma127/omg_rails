@@ -41,11 +41,11 @@ require "rails_helper"
 
 RSpec.describe DisabledUnit, type: :model do
 
-  it "generates and saves the description" do
+  it "generates and saves the internal_description" do
     unit = create :infantry, display_name: "Rifles"
     restriction = create :restriction, name: "American army"
     ruleset = create :ruleset
     disabled_unit = create :disabled_unit, restriction: restriction, unit: unit, ruleset: ruleset
-    expect(disabled_unit.description).to eq("American army - Rifles - DISABLED")
+    expect(disabled_unit.internal_description).to eq("American army - Rifles - DISABLED")
   end
 end

@@ -62,7 +62,7 @@ export const AvailableUnitDroppable = ({
       <Box className={classes.dragDropContainer}>
         <DragDropContainer targetKey="unit"
                            noDragging={notAvailable || !enabled}
-                           onDragStart={() => onUnitClick(unitId, unitName)}
+                           onDragStart={() => onUnitClick(unitId, availableUnit.id, image, unitName)}
                            dragData={{
                              unitId: unitId, availableUnitId: availableUnit.id, unitName: unitName, unitDisplayName: label,
                              image: image, pop: availableUnit.pop, man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel

@@ -33,6 +33,8 @@ class DoctrineUnlock < ApplicationRecord
   has_many :restriction_upgrades, through: :restriction
   has_many :restriction_offmaps, through: :restriction
 
+  before_save :generate_internal_description
+
   def entity
     Entity.new(self)
   end
@@ -46,5 +48,11 @@ class DoctrineUnlock < ApplicationRecord
     expose :branch
     expose :row
     expose :unlock, using: Unlock::Entity
+  end
+
+  private
+
+  def generate_internal_description
+    self.internal_description = "#{doctrine.display_name} | #{unlock.display_name}"
   end
 end

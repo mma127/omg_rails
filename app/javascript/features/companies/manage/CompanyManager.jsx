@@ -11,7 +11,7 @@ import { ANTI_ARMOUR, ARMOUR, ASSAULT, CORE, INFANTRY, SUPPORT } from "../../../
 import { addUnitCost, fetchCompanyById, removeUnitCost, selectCompanyById } from "../companiesSlice";
 import { selectAllAvailableUnits, selectAvailableUnitsStatus } from "../../units/availableUnitsSlice"
 import { AvailableUnits } from "./available_units/AvailableUnits";
-import { UnitDetails } from "./UnitDetails";
+import { AvailableUnitDetails } from "./AvailableUnitDetails";
 import {
   addSquad, clearCompanyManager, clearNotifySnackbar,
   removeSquad,
@@ -38,6 +38,7 @@ export const CompanyManager = () => {
   const dispatch = useDispatch()
   const [currentTab, setCurrentTab] = useState(defaultTab)
   const [selectedUnitId, setSelectedUnitId] = useState(null)
+  const [selectedAvailableUnitId, setSelectedAvailableUnitId] = useState(null)
   const [selectedUnitImage, setSelectedUnitImage] = useState(null)
   const [selectedUnitName, setSelectedUnitName] = useState(null)
 
@@ -118,19 +119,20 @@ export const CompanyManager = () => {
     setCurrentTab(newTab)
   }
 
-  const onUnitSelect = (unitId, unitImage, unitName) => {
+  const onUnitSelect = (unitId, availableUnitId, unitImage, unitName) => {
     /** Called when a unit is selected. Populates the unit stats box with relevant data
      * TODO if a squad is clicked, should take upgrades into account
      */
     setSelectedUnitId(unitId)
+    setSelectedAvailableUnitId(availableUnitId)
     setSelectedUnitImage(unitImage)
     setSelectedUnitName(unitName)
   }
 
-  const onDropTargetHit = ({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab, vet }) => {
+  const onDropTargetHit = ({ uuid, id, unitId, availableUnitId, unitName, pop, man, mun, fuel, image, index, tab, vet }) => {
     console.log(`Added ${unitName}, pop ${pop}, costs ${man}MP ${mun}MU ${fuel}FU to category ${tab} position ${index}`)
     dispatch(addUnitCost({ id: company.id, pop, man, mun, fuel }))
-    dispatch(addSquad({ uuid, id, unitId, unitName, pop, man, mun, fuel, image, index, tab, vet }))
+    dispatch(addSquad({ uuid, id, unitId, availableUnitId, unitName, pop, man, mun, fuel, image, index, tab, vet }))
   }
 
   const onSquadDestroy = (uuid, id, unitId, pop, man, mun, fuel, index, tab) => {
@@ -198,7 +200,7 @@ export const CompanyManager = () => {
             {/*TODO maybe populate by type, alphabetically or cost ASC */}
           </Grid>
           <Grid item md={6} xs={12}>
-            <UnitDetails unitId={selectedUnitId} unitImage={selectedUnitImage} />
+            <AvailableUnitDetails unitId={selectedUnitId} availableUnitId={selectedAvailableUnitId} unitImage={selectedUnitImage} />
           </Grid>
         </Grid>
         <Grid item container spacing={2}>

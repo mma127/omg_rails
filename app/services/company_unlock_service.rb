@@ -50,7 +50,7 @@ class CompanyUnlockService
       # Recalculate company resources when squads might be changed
       if disabled_units.present? || unit_swaps.present?
         company_service = CompanyService.new(nil)
-        company_service.recalculate_resources(@company)
+        company_service.recalculate_resources(@company.reload)
       end
 
       # Create a CompanyUnlock and reduce company vps

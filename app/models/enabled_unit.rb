@@ -47,11 +47,11 @@ class EnabledUnit < RestrictionUnit
   validates_numericality_of :resupply_max
   validates_numericality_of :company_max
 
-  before_save :generate_description
+  before_save :generate_internal_description
 
   private
 
-  def generate_description
-    self.description = "#{restriction.name} - #{unit.display_name}"
+  def generate_internal_description
+    self.internal_description = "#{restriction.name} - #{unit.display_name}"
   end
 end

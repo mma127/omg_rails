@@ -4,7 +4,7 @@ class CreateRestrictionUpgrades < ActiveRecord::Migration[6.1]
       t.references :restriction, index: true, foreign_key: true
       t.references :upgrade, index: true, foreign_key: true
       t.references :ruleset, index: true, foreign_key: true
-      t.string :description, comment: "What does this RestrictionUpgrade do?"
+      t.string :internal_description, comment: "What does this RestrictionUpgrade do?"
       t.string :type, null: false, comment: "What effect this restriction has on the upgrade"
       t.integer :uses, comment: "Number of uses this upgrade provides"
       t.integer :pop, comment: "Population cost"

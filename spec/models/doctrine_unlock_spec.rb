@@ -37,4 +37,10 @@ RSpec.describe DoctrineUnlock, type: :model do
     it { should have_many(:restriction_upgrades) }
     it { should have_many(:restriction_offmaps) }
   end
+
+
+  it "should construct a internal_description" do
+    expect(doctrine_unlock.internal_description)
+      .to eq "#{doctrine_unlock.doctrine.display_name} | #{doctrine_unlock.unlock.display_name}"
+  end
 end

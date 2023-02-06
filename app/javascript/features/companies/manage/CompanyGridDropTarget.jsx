@@ -83,8 +83,8 @@ export const CompanyGridDropTarget = ({
     for (const squad of Object.values(squads)) {
       gridPop += parseFloat(squad.pop)
       squadCards.push(<SquadCard key={squad.uuid}
-                                 uuid={squad.uuid} squadId={squad.id} unitId={squad.unitId} unitName={squad.unitName}
-                                 unitDisplayName={squad.unitDisplayName}
+                                 uuid={squad.uuid} squadId={squad.id} unitId={squad.unitId} availableUnitId={squad.availableUnitId}
+                                 unitName={squad.unitName} unitDisplayName={squad.unitDisplayName}
                                  pop={squad.pop} man={squad.man} mun={squad.mun} fuel={squad.fuel} image={squad.image}
                                  index={squad.index} tab={squad.tab} vet={squad.vet}
                                  onUnitClick={onUnitClick} onDestroyClick={onDestroyClick} enabled={enabled} />)

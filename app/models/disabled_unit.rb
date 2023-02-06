@@ -38,11 +38,11 @@
 #  fk_rails_...  (unit_id => units.id)
 #
 class DisabledUnit < RestrictionUnit
-  before_save :generate_description
+  before_save :generate_internal_description
 
   private
 
-  def generate_description
-    self.description = "#{restriction.name} - #{unit.display_name} - DISABLED"
+  def generate_internal_description
+    self.internal_description = "#{restriction.name} - #{unit.display_name} - DISABLED"
   end
 end

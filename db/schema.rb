@@ -176,6 +176,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
   create_table "doctrine_unlocks", comment: "Associates doctrines to unlocks", force: :cascade do |t|
     t.bigint "doctrine_id"
     t.bigint "unlock_id"
+    t.string "internal_description", comment: "Doctrine and Unlock names"
     t.integer "vp_cost", default: 0, null: false, comment: "VP cost of this doctrine unlock"
     t.integer "tree", comment: "Which tree of the doctrine this unlock will appear at"
     t.integer "branch", comment: "Which branch of the doctrine tree this unlock will appear at"
@@ -274,7 +275,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.bigint "restriction_id"
     t.bigint "unit_id"
     t.bigint "ruleset_id"
-    t.string "description", null: false, comment: "What does this RestrictionUnit do?"
+    t.string "internal_description", null: false, comment: "What does this RestrictionUnit do?"
     t.string "type", null: false, comment: "What effect this restriction has on the unit"
     t.decimal "pop", comment: "Population cost"
     t.integer "man", comment: "Manpower cost"
@@ -301,7 +302,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.bigint "restriction_id"
     t.bigint "upgrade_id"
     t.bigint "ruleset_id"
-    t.string "description", comment: "What does this RestrictionUpgrade do?"
+    t.string "internal_description", comment: "What does this RestrictionUpgrade do?"
     t.string "type", null: false, comment: "What effect this restriction has on the upgrade"
     t.integer "uses", comment: "Number of uses this upgrade provides"
     t.integer "pop", comment: "Population cost"
@@ -380,7 +381,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.bigint "unlock_id", null: false
     t.bigint "old_unit_id", null: false
     t.bigint "new_unit_id", null: false
-    t.string "description", comment: "Description of this UnitSwap"
+    t.string "internal_description", comment: "Internal description of this UnitSwap"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["new_unit_id"], name: "index_unit_swaps_on_new_unit_id"
