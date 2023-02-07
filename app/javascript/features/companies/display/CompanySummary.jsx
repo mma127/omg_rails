@@ -65,7 +65,7 @@ export const CompanySummary = ({ company }) => {
         <CardActions>
           <Grid container>
             <Grid item xs={11}>
-              <Button variant="contained" to={`/companies/${company.id}`} component={Link} color="secondary">Manage Company</Button>
+              <Button variant="contained" to={managementLink} component={Link} color="secondary">Manage Company</Button>
             </Grid>
             <Grid item xs={1}>
               <DeleteOutlineIcon onClick={deleteCompany} className={classes.deleteIcon} color="error" />

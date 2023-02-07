@@ -41,7 +41,7 @@ module OMG
           if company.blank?
             error! "Could not find company #{params[:id]} for the current player", 404
           end
-          present company, type: :full
+          present company
         end
 
         desc "get all available units for the given company"

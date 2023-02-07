@@ -92,27 +92,27 @@ const squadsSlice = createSlice({
       }
       state.isChanged = true
     },
-    clearCompanyManager: () => initialState,
+    resetSquadState: () => initialState,
     clearNotifySnackbar(state) {
       state.notifySnackbar = false
     }
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchCompanyById.pending, (state, action) => {
+      .addCase(fetchCompanySquads.pending, (state, action) => {
         state.squadsStatus = "pending"
         state.squadsError = null
       })
-      .addCase(fetchCompanyById.fulfilled, (state, action) => {
-        squadsAdapter.setAll(state, action.payload.squads)
-        const newTabs = buildNewSquadTabs(action.payload.squads)
+      .addCase(fetchCompanySquads.fulfilled, (state, action) => {
+        squadsAdapter.setAll(state, action.payload)
+        const newTabs = buildNewSquadTabs(action.payload)
         for (const tabName of CATEGORIES) {
           state[tabName] = newTabs[tabName]
         }
 
         state.squadsStatus = "idle"
       })
-      .addCase(fetchCompanyById.rejected, (state, action) => {
+      .addCase(fetchCompanySquads.rejected, (state, action) => {
         state.squadsStatus = "idle"
         state.squadsError = action.payload.error
       })
@@ -143,7 +143,7 @@ const squadsSlice = createSlice({
 
 export default squadsSlice.reducer
 
-export const { addSquad, removeSquad, clearCompanyManager, clearNotifySnackbar } = squadsSlice.actions
+export const { addSquad, removeSquad, resetSquadState, clearNotifySnackbar } = squadsSlice.actions
 
 export const {
   selectAll: selectAllSquads,
