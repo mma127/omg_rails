@@ -43,6 +43,7 @@ class InitialSchema < ActiveRecord::Migration[6.1]
       t.integer :starting_man, null: false, comment: "Company starting manpower"
       t.integer :starting_mun, null: false, comment: "Company starting muntions"
       t.integer :starting_fuel, null: false, comment: "Company starting fuel"
+      t.integer :starting_vps, null: false, comment: "Company starting vps"
 
       t.timestamps
     end

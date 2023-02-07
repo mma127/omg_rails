@@ -37,7 +37,7 @@ module OMG
           requires :id, type: Integer, desc: "Company ID"
         end
         get do
-          company = Company.includes(:available_units, :squads, :battle_players).find_by(id: params[:id], player: current_player)
+          company = Company.includes(:available_units, :squads, :battle_players, :company_unlocks).find_by(id: params[:id], player: current_player)
           if company.blank?
             error! "Could not find company #{params[:id]} for the current player", 404
           end

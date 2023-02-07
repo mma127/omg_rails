@@ -24,12 +24,16 @@ class CompanyService
     # Get ruleset
     ruleset = Ruleset.find_by(name: WAR_RULESET)
 
+    # Starting vps
+    vps = @player.vps + ruleset.starting_vps
+
     # Create Company entity
     new_company = Company.create!(name: name,
                                   player: @player,
                                   doctrine: doctrine,
                                   faction: doctrine.faction,
-                                  vps_earned: @player.vps,
+                                  vps_earned: vps,
+                                  vps_current: vps,
                                   man: ruleset.starting_man,
                                   mun: ruleset.starting_mun,
                                   fuel: ruleset.starting_fuel,

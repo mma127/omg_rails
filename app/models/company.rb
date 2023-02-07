@@ -93,6 +93,8 @@ class Company < ApplicationRecord
 
     expose :available_units, as: :availableUnits, using: AvailableUnit::Entity, if: { type: :full }
     expose :squads, using: Squad::Entity, if: { type: :full }
-    # TODO unlocks
+    expose :company_unlocks, as: :unlocks, using: CompanyUnlock::Entity, if: { type: :full } # TODO Does this need the full doctrine_unlock entity?
+    # TODO offmaps
+    # TODO resource bonuses
   end
 end

@@ -82,7 +82,7 @@ export const SquadCard = (
   let deleteContent = ""
   if (enabled) {
     deleteContent = <DeleteOutlineIcon
-      onClick={() => onDestroyClick(uuid, squadId, unitId, pop, man, mun, fuel)}
+      onClick={() => onDestroyClick(uuid, squadId, availableUnitId, pop, man, mun, fuel)}
       className={classes.deleteIcon}
       color="error" />
   }

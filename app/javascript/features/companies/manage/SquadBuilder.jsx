@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const defaultTab = CORE
-export const CompanyManager = () => {
+export const SquadBuilder = () => {
   const dispatch = useDispatch()
   const [currentTab, setCurrentTab] = useState(defaultTab)
   const [selectedUnitId, setSelectedUnitId] = useState(null)

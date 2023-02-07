@@ -16,8 +16,10 @@ class Ruleset < ApplicationRecord
   validates_presence_of :starting_man
   validates_presence_of :starting_mun
   validates_presence_of :starting_fuel
+  validates_presence_of :starting_vps
 
   validates_numericality_of :starting_man
   validates_numericality_of :starting_mun
   validates_numericality_of :starting_fuel
+  validates_numericality_of :starting_vps
 end

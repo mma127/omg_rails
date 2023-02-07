@@ -58,7 +58,7 @@ export const CompanyGridDropTarget = ({
       const { uuid, id, unitId, availableUnitId, unitName, pop, man, mun, fuel, image, index, tab } = dragData
 
       // Remove it from its previous platoon index
-      onSquadDestroy(uuid, id, unitId, pop, man, mun, fuel, index, tab)
+      onSquadDestroy(uuid, id, availableUnitId, pop, man, mun, fuel, index, tab)
 
       // Need to add this squad to the current platoon index
       onHitCallback({ ...dragData, vet: 0, index: gridIndex, tab: currentTab })
@@ -72,9 +72,9 @@ export const CompanyGridDropTarget = ({
     }
   }
 
-  const onDestroyClick = (uuid, squadId, unitId, pop, man, mun, fuel) => {
+  const onDestroyClick = (uuid, squadId, availableUnitId, pop, man, mun, fuel) => {
     console.log(`Destroy squad: ${uuid}, ${squadId}, ${pop} with costs ${man}, ${mun}, ${fuel}`)
-    onSquadDestroy(uuid, squadId, unitId, pop, man, mun, fuel, gridIndex, currentTab)
+    onSquadDestroy(uuid, squadId, availableUnitId, pop, man, mun, fuel, gridIndex, currentTab)
   }
 
   let gridPop = 0
