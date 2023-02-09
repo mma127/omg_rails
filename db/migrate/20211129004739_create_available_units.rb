@@ -3,6 +3,7 @@ class CreateAvailableUnits < ActiveRecord::Migration[6.1]
     create_table :available_units, comment: "Unit availability per company" do |t|
       t.references :company, index: true, foreign_key: true
       t.references :unit, index: true, foreign_key: true
+      t.string :type, null: false, comment: "Type of available unit"
       t.integer :available, default: 0, null: false, comment: "Number of this unit available to purchase for the company"
       t.integer :resupply, default: 0, null: false, comment: "Per game resupply"
       t.integer :resupply_max, default: 0, null: false, comment: "How much resupply is available from saved up resupplies, <= company ma"
@@ -16,5 +17,7 @@ class CreateAvailableUnits < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+
+    add_index :available_units, [:company_id, :unit_id, :type], unique: true
   end
 end

@@ -15,28 +15,17 @@
 #
 #  index_unlocks_on_name  (name) UNIQUE
 #
-class Unlock < ApplicationRecord
-  has_many :doctrine_unlocks
-  has_many :doctrines, through: :doctrine_unlocks
-  has_one :restriction
+require "rails_helper"
 
-  has_many :restriction_units, through: :restriction
-  has_many :restriction_upgrades, through: :restriction
-  has_many :restriction_offmaps, through: :restriction
+RSpec.describe Unlock, type: :model do
+  let!(:unit_swap) { create :unit_swap}
 
-  validates_presence_of :name
-  validates_presence_of :display_name
-  validates_uniqueness_of :name
-
-  def entity
-    Entity.new(self)
-  end
-
-  class Entity < Grape::Entity
-    expose :id
-    expose :name
-    expose :display_name, as: :displayName
-    expose :description
-    expose :image_path, as: :imagePath
+  describe 'associations' do
+    it { should have_many(:doctrine_unlocks) }
+    it { should have_many(:doctrines) }
+    it { should have_one(:restriction) }
+    it { should have_many(:restriction_units) }
+    it { should have_many(:restriction_upgrades) }
+    it { should have_many(:restriction_offmaps) }
   end
 end

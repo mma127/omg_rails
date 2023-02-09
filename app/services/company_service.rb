@@ -79,21 +79,24 @@ class CompanyService
     validate_squad_units_exist(uniq_unit_ids_new, uniq_units_new_by_id)
 
     # Get available units for the company - cost is stored there
-    # NOTE: Not handling free units for now, likely will need a flag on AvailableUnit
     available_units = company.available_units
+
+    # Get unique squad available_unit_ids
+    uniq_available_unit_ids_new = squads.map { |s| s[:available_unit_id] }.uniq
+    # Validate that all available_unit_ids correspond to existing available_units
+    validate_squad_available_units_exist(uniq_available_unit_ids_new, available_units, company.id)
 
     # Validates that all unit ids correspond to available units
     validate_squad_units_available(uniq_unit_ids_new, available_units, company.id)
 
-    # For now, expect unit id and company id are a unique constraint for AvailableUnits so using simple index_by,
-    # but may change in the future to support free units
-    available_units_by_unit_id = available_units.index_by(&:unit_id)
+    # Index available_units by id
+    available_units_by_id = available_units.index_by(&:id)
 
     # Build hash of tab and index to pop
     platoon_pop_by_tab_and_index = build_empty_tab_index_pop
 
     # Calculate resources used by the input squads
-    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_unit_id, platoon_pop_by_tab_and_index)
+    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
 
     # Calculate resources remaining when subtracting the squad resources from the company's total starting resources
     # Raise validation error if the new squads' cost is greater in one or more resource than the company's total starting resources
@@ -104,19 +107,19 @@ class CompanyService
     validate_platoon_pop(platoon_pop_by_tab_and_index)
 
     ## Get all existing squads for the company
-    existing_squads_by_unit_id = existing_squads.group_by(&:unit_id)
+    existing_squads_by_available_unit_id = existing_squads.group_by(&:available_unit_id)
 
-    # Get payload squads by unit id
-    payload_squads_by_unit_id = squads.group_by { |s| s[:unit_id] }
+    # Get payload squads by available unit id
+    payload_squads_by_available_unit_id = squads.group_by { |s| s[:available_unit_id] }
 
     ## Calculate delta in number of each unit against the available number of that unit for the company
     ## Raise validation error if insufficient
-    available_changes = build_available_unit_deltas(company, payload_squads_by_unit_id, existing_squads_by_unit_id, available_units_by_unit_id)
+    available_changes = build_available_unit_deltas(company, payload_squads_by_available_unit_id, existing_squads_by_available_unit_id, available_units_by_id)
 
     # Check for any existing squads that have units which aren't in the payload squads list. These represent squads we
     # will be destroying and units that will give their availability back as the unit is not included at all in the new
     # squads list
-    add_existing_squads_to_remove(existing_squads_by_unit_id, available_changes)
+    add_existing_squads_to_remove(existing_squads_by_available_unit_id, available_changes)
 
     ##### At this point, we know the company can have the new squads as they are within price and availability
 
@@ -127,7 +130,7 @@ class CompanyService
       squads.each do |s|
         if s[:squad_id].blank?
           ## Create new Squad records for squads without squad id
-          available_unit = available_units_by_unit_id[s[:unit_id]]
+          available_unit = available_units_by_id[s[:available_unit_id]]
           new_squads << Squad.new(company: company, vet: s[:vet], tab_category: s[:tab],
                                   category_position: s[:index], available_unit: available_unit)
         else
@@ -143,8 +146,8 @@ class CompanyService
       Squad.where(id: [squad_ids_to_delete]).destroy_all if squad_ids_to_delete.present?
 
       ## Update unit available number for every squad operation above
-      available_changes.each do |unit_id, delta|
-        available_unit = available_units_by_unit_id[unit_id]
+      available_changes.each do |available_unit_id, delta|
+        available_unit = available_units_by_id[available_unit_id]
         new_available_number = available_unit.available + delta
         available_unit.update!(available: [new_available_number, 0].max)
       end
@@ -167,17 +170,16 @@ class CompanyService
   # Based on squads of the company and ruleset starting resources, determine what resources are left
   # TODO refactor with similar block in #update_company_squads
   def recalculate_resources(company)
-    # For now, expect unit id and company id are a unique constraint for AvailableUnits so using simple index_by,
-    # but may change in the future to support free units
-    available_units_by_unit_id = company.available_units.index_by(&:unit_id)
+    # Index available units by id
+    available_units_by_id = company.available_units.index_by(&:id)
 
     # Build hash of tab and index to pop
     platoon_pop_by_tab_and_index = build_empty_tab_index_pop
 
-    squads = company.squads.map { |s| { unit_id: s.unit.id, tab: s.tab_category, index: s.category_position } }
+    squads = company.squads.map { |s| { tab: s.tab_category, index: s.category_position, available_unit_id: s.available_unit_id } }
 
     # Calculate resources used by the input squads
-    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_unit_id, platoon_pop_by_tab_and_index)
+    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
 
     # Calculate resources remaining when subtracting the squad resources from the company's total starting resources
     # Raise validation error if the new squads' cost is greater in one or more resource than the company's total starting resources
@@ -224,6 +226,13 @@ class CompanyService
     end
   end
 
+  def validate_squad_available_units_exist(uniq_available_unit_ids_new, available_units, company_id)
+    diff = uniq_available_unit_ids_new - available_units.pluck(:id).uniq
+    unless diff.empty?
+      raise CompanyUpdateValidationError.new("Invalid available_unit_id(s) given in company #{company_id} squad update: #{diff}")
+    end
+  end
+
   # Validates that all unit ids correspond to available units
   def validate_squad_units_available(uniq_unit_ids_new, available_units, company_id)
     uniq_available_unit_ids = available_units.pluck(:unit_id).uniq
@@ -249,7 +258,7 @@ class CompanyService
   # Calculates manpower, munitions, fuel, and pop used by the input squads, based on costs of the corresponding
   # AvailableUnit for the squad's unit id. Also increments the pop of the platoon_pop_by_tab_and_index value for the
   # tab and index the squad is in.
-  def calculate_squad_resources(squads, available_units_by_unit_id, platoon_pop_by_tab_and_index)
+  def calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
     # TODO include upgrade prices
     # TODO include resource bonuses
     man_new = 0
@@ -258,7 +267,7 @@ class CompanyService
     pop_new = 0
 
     squads.each do |squad|
-      available_unit = available_units_by_unit_id[squad[:unit_id]]
+      available_unit = available_units_by_id[squad[:available_unit_id]]
       man_new += available_unit.man
       mun_new += available_unit.mun
       fuel_new += available_unit.fuel
@@ -312,32 +321,32 @@ class CompanyService
   # Calculate delta in number of each unit against the available number of that unit for the company
   # Take into account the difference between the existing number of squads of that unit and the number of squads of that unit in the payload
   # Raise validation error if insufficient
-  def build_available_unit_deltas(company, payload_squads_by_unit_id, existing_squads_by_unit_id, available_units_by_unit_id)
+  def build_available_unit_deltas(company, payload_squads_by_available_unit_id, existing_squads_by_available_unit_id, available_units_by_id)
     available_changes = {}
-    payload_squads_by_unit_id.each do |unit_id, payload_unit_squads|
-      if existing_squads_by_unit_id.include? unit_id
-        existing_count = existing_squads_by_unit_id[unit_id].size
+    payload_squads_by_available_unit_id.each do |available_unit_id, payload_unit_squads|
+      if existing_squads_by_available_unit_id.include? available_unit_id
+        existing_count = existing_squads_by_available_unit_id[available_unit_id].size
       else
         existing_count = 0
       end
       payload_unit_count = payload_unit_squads.size
       availability_delta = existing_count - payload_unit_count
-      available_number = available_units_by_unit_id[unit_id].available
+      available_number = available_units_by_id[available_unit_id].available
 
-      # Inverse of the availability delta as the availablity delta is how much we are changing down the available number
-      # so the inverse is how much net the available number must compare aagainst
+      # Inverse of the availability delta as the availability delta is how much we are changing down the available number
+      # so the inverse is how much net the available number must compare against
       # Ex, 0 existing, 2 payload count, 2 available, then the availability delta is -2 as we are going to adjust down available by 2.
       #   To validate, we take the inverse (2), and compare against the available number as that 2 is what we are net adding to the company for the unit
       # Ex, 2 existing, 1 payload count, 0 available, then the availability delta is 1 as we are adjusting up by 1, as we are making 1 more available
       #   To validate we take the inverse, -1, and compare against the available number. For cases like this where the payload count is < existing, we should
       #   always pass the validation as we are adding to the available number for the unit
       unless -availability_delta <= available_number
-        raise CompanyUpdateValidationError.new("Insufficient availability to create squads for unit #{unit_id} in company"\
+        raise CompanyUpdateValidationError.new("Insufficient availability to create squads for available unit #{available_unit_id} in company"\
           " #{company.id}: Existing count #{existing_count}, payload count #{payload_unit_count}, available number #{available_number}")
       end
 
       # Save the delta so we can update it later after we finish validating availability
-      available_changes[unit_id] = availability_delta
+      available_changes[available_unit_id] = availability_delta
     end
     available_changes
   end
@@ -345,11 +354,11 @@ class CompanyService
   # Check for any existing squads that have units which aren't in the payload squads list. These represent squads we
   # will be destroying and units that will give their availability back as the unit is not included at all in the new
   # squads list
-  def add_existing_squads_to_remove(existing_squads_by_unit_id, available_changes)
-    existing_squads_by_unit_id.each do |unit_id, existing_unit_squads|
-      next if available_changes.include? unit_id
+  def add_existing_squads_to_remove(existing_squads_by_available_unit_id, available_changes)
+    existing_squads_by_available_unit_id.each do |available_unit_id, existing_unit_squads|
+      next if available_changes.include? available_unit_id
 
-      available_changes[unit_id] = existing_unit_squads.size
+      available_changes[available_unit_id] = existing_unit_squads.size
     end
   end
 end

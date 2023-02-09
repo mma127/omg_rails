@@ -4,7 +4,7 @@ class CreateRestrictionUnits < ActiveRecord::Migration[6.1]
       t.references :restriction, index: true, foreign_key: true
       t.references :unit, index: true, foreign_key: true
       t.references :ruleset, index: true, foreign_key: true
-      t.string :description, null: false, comment: "What does this RestrictionUnit do?"
+      t.string :internal_description, null: false, comment: "What does this RestrictionUnit do?"
       t.string :type, null: false, comment: "What effect this restriction has on the unit"
       t.decimal :pop, comment: "Population cost"
       t.integer :man, comment: "Manpower cost"

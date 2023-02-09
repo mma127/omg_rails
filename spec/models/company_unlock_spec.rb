@@ -18,17 +18,13 @@
 #  fk_rails_...  (company_id => companies.id)
 #  fk_rails_...  (doctrine_unlock_id => doctrine_unlocks.id)
 #
-class CompanyUnlock < ApplicationRecord
-  belongs_to :company
-  belongs_to :doctrine_unlock
+require "rails_helper"
 
-  def entity
-    Entity.new(self)
-  end
+RSpec.describe CompanyUnlock, type: :model do
+  let!(:company_unlock) { create :company_unlock }
 
-  class Entity < Grape::Entity
-    expose :id
-    expose :company_id, as: :companyId
-    expose :doctrine_unlock, using: DoctrineUnlock::Entity
+  describe 'associations' do
+    it { should belong_to(:company) }
+    it { should belong_to(:doctrine_unlock) }
   end
 end

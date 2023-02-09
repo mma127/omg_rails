@@ -86,6 +86,7 @@ class Squad < ApplicationRecord
     expose :category_position, as: :index
     expose :company_id, as: :companyId
     expose :unit_id, as: :unitId
+    expose :available_unit_id, as: :availableUnitId
     expose :unit_name, as: :unitName
     expose :unit_display_name, as: :unitDisplayName
     expose :pop

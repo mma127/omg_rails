@@ -24,35 +24,23 @@
 #  fk_rails_...  (doctrine_id => doctrines.id)
 #  fk_rails_...  (unlock_id => unlocks.id)
 #
-class DoctrineUnlock < ApplicationRecord
-  belongs_to :doctrine
-  belongs_to :unlock
-  has_one :restriction
+require "rails_helper"
 
-  has_many :restriction_units, through: :restriction
-  has_many :restriction_upgrades, through: :restriction
-  has_many :restriction_offmaps, through: :restriction
+RSpec.describe DoctrineUnlock, type: :model do
+  let!(:doctrine_unlock) { create :doctrine_unlock }
 
-  before_save :generate_internal_description
-
-  def entity
-    Entity.new(self)
+  describe 'associations' do
+    it { should belong_to(:doctrine) }
+    it { should belong_to(:unlock) }
+    it { should have_one(:restriction) }
+    it { should have_many(:restriction_units) }
+    it { should have_many(:restriction_upgrades) }
+    it { should have_many(:restriction_offmaps) }
   end
 
-  class Entity < Grape::Entity
-    expose :id
-    expose :doctrine_id, as: :doctrineId
-    expose :unlock_id, as: :unlockId
-    expose :vp_cost, as: :vpCost
-    expose :tree
-    expose :branch
-    expose :row
-    expose :unlock, using: Unlock::Entity
-  end
 
-  private
-
-  def generate_internal_description
-    self.internal_description = "#{doctrine.display_name} | #{unlock.display_name}"
+  it "should construct a internal_description" do
+    expect(doctrine_unlock.internal_description)
+      .to eq "#{doctrine_unlock.doctrine.display_name} | #{doctrine_unlock.unlock.display_name}"
   end
 end

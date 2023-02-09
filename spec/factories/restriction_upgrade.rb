@@ -3,7 +3,7 @@ FactoryBot.define do
     association :restriction
     association :upgrade
     association :ruleset
-    description { 'Restriction Upgrade' }
+    internal_description { 'Restriction Upgrade' }
     uses { 1 }
     man { 100 }
     mun { 90 }

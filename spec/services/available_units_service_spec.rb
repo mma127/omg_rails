@@ -70,6 +70,16 @@ RSpec.describe AvailableUnitsService do
       expect(au.resupply).to eq 10
       expect(au.company_max).to eq 15
     end
+
+    context "when the company has existing AvailableUnits" do
+      before do
+        create :available_unit, company: company, unit: unit1
+      end
+
+      it "raises an error" do
+        expect { subject.build_new_company_available_units }.to raise_error "Company #{company.id} has existing AvailableUnits"
+      end
+    end
   end
 
   context "#get_enabled_unit_hash" do
@@ -135,11 +145,11 @@ RSpec.describe AvailableUnitsService do
     end
   end
 
-  context "#create_available_units" do
+  context "#create_base_available_units" do
     context "when the company is valid" do
       before do
         unit_hash = { unit1.id => restriction_unit1_doctrine, unit2.id => restriction_unit2 }
-        subject.send(:create_available_units, unit_hash)
+        subject.send(:create_base_available_units, unit_hash.values)
       end
 
       it "creates AvailableUnits from the given restriction units" do
@@ -170,9 +180,31 @@ RSpec.describe AvailableUnitsService do
       before do
         create :available_unit, company: company, unit: unit1
       end
-      it "raises an error" do
-        expect { subject.send(:create_available_units, {}) }.to raise_error "Company #{company.id} has existing AvailableUnits"
+      it "doesn't raise an error, because it doesn't matter to this method" do
+        expect { subject.send(:create_base_available_units, []) }.not_to raise_error
       end
+    end
+  end
+
+  describe "#remove_available_units" do
+    let!(:available_unit1) { create :base_available_unit, unit: unit1, company: company }
+    let!(:available_unit2) { create :base_available_unit, unit: unit2, company: company }
+    let!(:squad1) { create :squad, company: company, available_unit: available_unit1 }
+    let!(:squad2) { create :squad, company: company, available_unit: available_unit1 }
+    let!(:squad3) { create :squad, company: company, available_unit: available_unit2 }
+    let(:units_to_remove) { [unit1] }
+
+    it "removes available_units matching the given units" do
+      expect { subject.send(:remove_available_units, units_to_remove) }.to change { AvailableUnit.count }.by(-1)
+      expect(AvailableUnit.exists?(available_unit1.id)).to be false
+      expect(available_unit2.destroyed?).to be false
+    end
+
+    it "removes squads associated with the removed available_units" do
+      expect { subject.send(:remove_available_units, units_to_remove) }.to change { Squad.count }.by(-2)
+      expect(Squad.exists?(squad1.id)).to be false
+      expect(Squad.exists?(squad2.id)).to be false
+      expect(squad3.destroyed?).to be false
     end
   end
 

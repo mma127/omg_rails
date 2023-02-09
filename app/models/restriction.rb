@@ -15,6 +15,7 @@
 #
 # Indexes
 #
+#  idx_restrictions_uniq_id                  (faction_id,doctrine_id,doctrine_unlock_id,unlock_id) UNIQUE
 #  index_restrictions_on_doctrine_id         (doctrine_id)
 #  index_restrictions_on_doctrine_unlock_id  (doctrine_unlock_id)
 #  index_restrictions_on_faction_id          (faction_id)

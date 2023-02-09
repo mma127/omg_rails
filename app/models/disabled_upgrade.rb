@@ -2,20 +2,20 @@
 #
 # Table name: restriction_upgrades
 #
-#  id                                                    :bigint           not null, primary key
-#  description(What does this RestrictionUpgrade do?)    :string
-#  fuel(Fuel cost)                                       :integer
-#  man(Manpower cost)                                    :integer
-#  mun(Munition cost)                                    :integer
-#  pop(Population cost)                                  :integer
-#  priority(Priority of this restriction)                :integer
-#  type(What effect this restriction has on the upgrade) :string           not null
-#  uses(Number of uses this upgrade provides)            :integer
-#  created_at                                            :datetime         not null
-#  updated_at                                            :datetime         not null
-#  restriction_id                                        :bigint
-#  ruleset_id                                            :bigint
-#  upgrade_id                                            :bigint
+#  id                                                          :bigint           not null, primary key
+#  fuel(Fuel cost)                                             :integer
+#  internal_description(What does this RestrictionUpgrade do?) :string
+#  man(Manpower cost)                                          :integer
+#  mun(Munition cost)                                          :integer
+#  pop(Population cost)                                        :integer
+#  priority(Priority of this restriction)                      :integer
+#  type(What effect this restriction has on the upgrade)       :string           not null
+#  uses(Number of uses this upgrade provides)                  :integer
+#  created_at                                                  :datetime         not null
+#  updated_at                                                  :datetime         not null
+#  restriction_id                                              :bigint
+#  ruleset_id                                                  :bigint
+#  upgrade_id                                                  :bigint
 #
 # Indexes
 #
@@ -30,11 +30,11 @@
 #  fk_rails_...  (upgrade_id => upgrades.id)
 #
 class DisabledUpgrade < RestrictionUpgrade
-  before_save :generate_description
+  before_save :generate_internal_description
 
   private
 
-  def generate_description
-    self.description = "#{restriction.name} - #{upgrade.display_name} - DISABLED"
+  def generate_internal_description
+    self.internal_description = "#{restriction.name} - #{upgrade.display_name} - DISABLED"
   end
 end

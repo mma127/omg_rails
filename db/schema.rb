@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
   create_table "available_units", comment: "Unit availability per company", force: :cascade do |t|
     t.bigint "company_id"
     t.bigint "unit_id"
+    t.string "type", null: false, comment: "Type of available unit"
     t.integer "available", default: 0, null: false, comment: "Number of this unit available to purchase for the company"
     t.integer "resupply", default: 0, null: false, comment: "Per game resupply"
     t.integer "resupply_max", default: 0, null: false, comment: "How much resupply is available from saved up resupplies, <= company ma"
@@ -57,6 +58,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.decimal "callin_modifier", null: false, comment: "Calculated base callin modifier of this unit for the company"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id", "unit_id", "type"], name: "index_available_units_on_company_id_and_unit_id_and_type", unique: true
     t.index ["company_id"], name: "index_available_units_on_company_id"
     t.index ["unit_id"], name: "index_available_units_on_unit_id"
   end
@@ -164,16 +166,18 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
 
   create_table "company_unlocks", force: :cascade do |t|
     t.bigint "company_id"
-    t.bigint "unlock_id"
+    t.bigint "doctrine_unlock_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_company_unlocks_on_company_id"
-    t.index ["unlock_id"], name: "index_company_unlocks_on_unlock_id"
+    t.index ["doctrine_unlock_id"], name: "index_company_unlocks_on_doctrine_unlock_id"
   end
 
   create_table "doctrine_unlocks", comment: "Associates doctrines to unlocks", force: :cascade do |t|
     t.bigint "doctrine_id"
     t.bigint "unlock_id"
+    t.string "internal_description", comment: "Doctrine and Unlock names"
+    t.integer "vp_cost", default: 0, null: false, comment: "VP cost of this doctrine unlock"
     t.integer "tree", comment: "Which tree of the doctrine this unlock will appear at"
     t.integer "branch", comment: "Which branch of the doctrine tree this unlock will appear at"
     t.integer "row", comment: "Which row of the doctrine tree branch this unlock will appear at"
@@ -271,7 +275,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.bigint "restriction_id"
     t.bigint "unit_id"
     t.bigint "ruleset_id"
-    t.string "description", null: false, comment: "What does this RestrictionUnit do?"
+    t.string "internal_description", null: false, comment: "What does this RestrictionUnit do?"
     t.string "type", null: false, comment: "What effect this restriction has on the unit"
     t.decimal "pop", comment: "Population cost"
     t.integer "man", comment: "Manpower cost"
@@ -298,7 +302,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.bigint "restriction_id"
     t.bigint "upgrade_id"
     t.bigint "ruleset_id"
-    t.string "description", comment: "What does this RestrictionUpgrade do?"
+    t.string "internal_description", comment: "What does this RestrictionUpgrade do?"
     t.string "type", null: false, comment: "What effect this restriction has on the upgrade"
     t.integer "uses", comment: "Number of uses this upgrade provides"
     t.integer "pop", comment: "Population cost"
@@ -325,6 +329,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["doctrine_id"], name: "index_restrictions_on_doctrine_id"
     t.index ["doctrine_unlock_id"], name: "index_restrictions_on_doctrine_unlock_id"
+    t.index ["faction_id", "doctrine_id", "doctrine_unlock_id", "unlock_id"], name: "idx_restrictions_uniq_id", unique: true
     t.index ["faction_id"], name: "index_restrictions_on_faction_id"
     t.index ["unlock_id"], name: "index_restrictions_on_unlock_id"
     t.check_constraint "num_nonnulls(faction_id, doctrine_id, doctrine_unlock_id, unlock_id) = 1", name: "chk_only_one_is_not_null"
@@ -376,11 +381,12 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.bigint "unlock_id", null: false
     t.bigint "old_unit_id", null: false
     t.bigint "new_unit_id", null: false
-    t.string "description", comment: "Description of this UnitSwap"
+    t.string "internal_description", comment: "Internal description of this UnitSwap"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["new_unit_id"], name: "index_unit_swaps_on_new_unit_id"
     t.index ["old_unit_id"], name: "index_unit_swaps_on_old_unit_id"
+    t.index ["unlock_id", "old_unit_id"], name: "index_unit_swaps_on_unlock_id_and_old_unit_id", unique: true
     t.index ["unlock_id"], name: "index_unit_swaps_on_unlock_id"
   end
 
@@ -449,7 +455,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
   add_foreign_key "company_resource_bonuses", "companies"
   add_foreign_key "company_resource_bonuses", "resource_bonuses"
   add_foreign_key "company_unlocks", "companies"
-  add_foreign_key "company_unlocks", "unlocks"
+  add_foreign_key "company_unlocks", "doctrine_unlocks"
   add_foreign_key "doctrine_unlocks", "doctrines"
   add_foreign_key "doctrine_unlocks", "unlocks"
   add_foreign_key "doctrines", "factions"

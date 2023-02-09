@@ -55,6 +55,7 @@ export const SquadCard = (
     uuid,
     squadId,
     unitId,
+    availableUnitId,
     unitName,
     unitDisplayName,
     vet,
@@ -104,13 +105,14 @@ export const SquadCard = (
       arrow
     >
       <Card className={classes.squadCard}>
-        <DragDropContainer targetKey="unit" onDragStart={() => onUnitClick(unitId, unitName)}
+        <DragDropContainer targetKey="unit" onDragStart={() => onUnitClick(unitId, availableUnitId, image, unitName)}
                            noDragging={!enabled}
                            dragData={
                              {
                                uuid: uuid,
                                id: squadId,
                                unitId: unitId,
+                               availableUnitId: availableUnitId,
                                unitName: unitName,
                                unitDisplayName: unitDisplayName,
                                pop: pop,
@@ -124,7 +126,7 @@ export const SquadCard = (
                            }
         >
           <Box sx={{ p: 1 }} className={classes.squadCardItems}>
-            <UnitCard unitId={unitId} label={unitName} image={image} onUnitClick={onUnitClick} />
+            <UnitCard unitId={unitId} availableUnitId={availableUnitId} label={unitName} image={image} onUnitClick={onUnitClick} />
             {deleteContent}
           </Box>
         </DragDropContainer>

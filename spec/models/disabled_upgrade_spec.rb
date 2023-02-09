@@ -2,20 +2,20 @@
 #
 # Table name: restriction_upgrades
 #
-#  id                                                    :bigint           not null, primary key
-#  description(What does this RestrictionUpgrade do?)    :string
-#  fuel(Fuel cost)                                       :integer
-#  man(Manpower cost)                                    :integer
-#  mun(Munition cost)                                    :integer
-#  pop(Population cost)                                  :integer
-#  priority(Priority of this restriction)                :integer
-#  type(What effect this restriction has on the upgrade) :string           not null
-#  uses(Number of uses this upgrade provides)            :integer
-#  created_at                                            :datetime         not null
-#  updated_at                                            :datetime         not null
-#  restriction_id                                        :bigint
-#  ruleset_id                                            :bigint
-#  upgrade_id                                            :bigint
+#  id                                                          :bigint           not null, primary key
+#  fuel(Fuel cost)                                             :integer
+#  internal_description(What does this RestrictionUpgrade do?) :string
+#  man(Manpower cost)                                          :integer
+#  mun(Munition cost)                                          :integer
+#  pop(Population cost)                                        :integer
+#  priority(Priority of this restriction)                      :integer
+#  type(What effect this restriction has on the upgrade)       :string           not null
+#  uses(Number of uses this upgrade provides)                  :integer
+#  created_at                                                  :datetime         not null
+#  updated_at                                                  :datetime         not null
+#  restriction_id                                              :bigint
+#  ruleset_id                                                  :bigint
+#  upgrade_id                                                  :bigint
 #
 # Indexes
 #
@@ -33,11 +33,11 @@ require "rails_helper"
 
 RSpec.describe DisabledUpgrade, type: :model do
 
-  it "generates and saves the description" do
+  it "generates and saves the internal_description" do
     upgrade = create :upgrade, display_name: "Medkit"
     restriction = create :restriction, name: "American army"
     ruleset = create :ruleset
     disabled_upgrade = create :disabled_upgrade, restriction: restriction, upgrade: upgrade, ruleset: ruleset
-    expect(disabled_upgrade.description).to eq("American army - Medkit - DISABLED")
+    expect(disabled_upgrade.internal_description).to eq("American army - Medkit - DISABLED")
   end
 end

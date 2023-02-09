@@ -117,22 +117,37 @@ after :restrictions do
                       man: 300, mun: 0, fuel: 0, pop: 6, resupply: 2, resupply_max: 4, company_max: 6, priority: 1,
                       unitwide_upgrade_slots: 1, upgrade_slots: 4)
 
+  ### Support Teams Unit Swap
+  support_teams_unlock = Unlock.find_by(name: "support_teams")
+  support_teams_doctrine_unlock = DoctrineUnlock.find_by(doctrine: airborne_doc, unlock: support_teams_unlock)
+  support_teams_restriction = Restriction.find_by(doctrine_unlock: support_teams_doctrine_unlock)
   airborne_hmg = SupportTeam.find_by_name("airborne_hmg")
-  EnabledUnit.create!(restriction: airborne_restriction, unit: airborne_hmg, ruleset: war_ruleset,
+  EnabledUnit.create!(restriction: support_teams_restriction, unit: airborne_hmg, ruleset: war_ruleset,
                       man: 300, mun: 40, fuel: 0, pop: 3, resupply: 3, resupply_max: 6, company_max: 6, priority: 1,
                       upgrade_slots: 1)
   airborne_mortar = SupportTeam.find_by_name("airborne_mortar")
-  EnabledUnit.create!(restriction: airborne_restriction, unit: airborne_mortar, ruleset: war_ruleset,
+  EnabledUnit.create!(restriction: support_teams_restriction, unit: airborne_mortar, ruleset: war_ruleset,
                       man: 430, mun: 50, fuel: 0, pop: 3, resupply: 3, resupply_max: 6, company_max: 6, priority: 1,
                       upgrade_slots: 1)
   airborne_atg = SupportTeam.find_by_name("airborne_atg")
-  EnabledUnit.create!(restriction: airborne_restriction, unit: airborne_atg, ruleset: war_ruleset,
+  EnabledUnit.create!(restriction: support_teams_restriction, unit: airborne_atg, ruleset: war_ruleset,
                       man: 480, mun: 130, fuel: 0, pop: 5, resupply: 4, resupply_max: 6, company_max: 6, priority: 1,
                       upgrade_slots: 1)
   airborne_sniper = SupportTeam.find_by_name("airborne_sniper")
-  EnabledUnit.create!(restriction: airborne_restriction, unit: airborne_sniper, ruleset: war_ruleset,
+  EnabledUnit.create!(restriction: support_teams_restriction, unit: airborne_sniper, ruleset: war_ruleset,
                       man: 600, mun: 150, fuel: 0, pop: 8, resupply: 1, resupply_max: 1, company_max: 3, priority: 1,
                       upgrade_slots: 1)
+
+  DisabledUnit.create!(restriction: support_teams_restriction, unit: _30cal_hmg, ruleset: war_ruleset)
+  DisabledUnit.create!(restriction: support_teams_restriction, unit: mortar_allied, ruleset: war_ruleset)
+  DisabledUnit.create!(restriction: support_teams_restriction, unit: _57mm_atg, ruleset: war_ruleset)
+  DisabledUnit.create!(restriction: support_teams_restriction, unit: sniper_allied, ruleset: war_ruleset)
+
+  UnitSwap.create!(unlock: support_teams_unlock, old_unit: _30cal_hmg, new_unit: airborne_hmg)
+  UnitSwap.create!(unlock: support_teams_unlock, old_unit: mortar_allied, new_unit: airborne_mortar)
+  UnitSwap.create!(unlock: support_teams_unlock, old_unit: _57mm_atg, new_unit: airborne_atg)
+  UnitSwap.create!(unlock: support_teams_unlock, old_unit: sniper_allied, new_unit: airborne_sniper)
+  ### End Support Teams Unit Swap
 
   chaffee = Tank.find_by_name("chaffee")
   EnabledUnit.create!(restriction: airborne_restriction, unit: chaffee, ruleset: war_ruleset,

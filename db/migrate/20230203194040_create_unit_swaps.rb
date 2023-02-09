@@ -4,9 +4,11 @@ class CreateUnitSwaps < ActiveRecord::Migration[6.1]
       t.references :unlock, index: true, foreign_key: true, null: false
       t.references :old_unit, null: false, foreign_key: { to_table: :units }
       t.references :new_unit, null: false, foreign_key: { to_table: :units }
-      t.string :description, comment: "Description of this UnitSwap"
+      t.string :internal_description, comment: "Internal description of this UnitSwap"
 
       t.timestamps
     end
+
+    add_index :unit_swaps, [:unlock_id, :old_unit_id], unique: true
   end
 end
