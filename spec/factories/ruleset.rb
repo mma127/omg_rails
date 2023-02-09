@@ -5,6 +5,7 @@ FactoryBot.define do
     starting_man { 7000 }
     starting_mun { 1600 }
     starting_fuel { 1400 }
+    starting_vps { 5 }
   end
 end
 
