@@ -60,7 +60,7 @@ export const App = () => (
               <Route path="/">
                 <Route index element={<Lobby />} />
                 <Route path="companies" element={<Companies />} />
-                <Route path="companies/:companyId" element={<CompanyManager />} />
+                <Route path="companies/:companyId/*" element={<CompanyManager />} />
               </Route>
             </Routes>
           </Router>

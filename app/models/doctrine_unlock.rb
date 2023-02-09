@@ -47,6 +47,7 @@ class DoctrineUnlock < ApplicationRecord
     expose :tree
     expose :branch
     expose :row
+    expose :disabled
     expose :unlock, using: Unlock::Entity
   end
 

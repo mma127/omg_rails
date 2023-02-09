@@ -25,9 +25,13 @@ const useStyles = makeStyles(() => ({
 export const UnitCard = ({ unitId, availableUnitId, label, image, onUnitClick, disabled }) => {
   const classes = useStyles()
 
+  const handleClick = () => {
+    onUnitClick(unitId, availableUnitId, image, label)
+  }
+
   /** TODO onUnitClick needs to be squad aware */
   return (
-    <Card className={`${classes.unitCard} ${disabled ? 'disabled' : ''}`} onClick={() => onUnitClick(unitId, availableUnitId, image, label)}>
+    <Card className={`${classes.unitCard} ${disabled ? 'disabled' : ''}`} onClick={handleClick}>
       <CardMedia component="img" height="45" image={image} alt={label} />
     </Card>
   )

@@ -9,6 +9,10 @@ class AuthenticationController < Devise::OmniauthCallbacksController
   end
 
   def failure
-    render status: :unauthorized, json: { error: "You are not authorized to access this resource." }
+    render status: :unauthorized, json: {
+      type: OmniAuth::Utils.camelize(failed_strategy.name),
+      reason: failure_message,
+      error: "You are not authorized to access this resource."
+    }
   end
 end

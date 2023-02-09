@@ -1,6 +1,6 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { fetchCompanyById } from "../companies/companiesSlice";
-import { addSquad, clearCompanyManager, removeSquad, upsertSquads } from "./squadsSlice";
+import { addSquad, resetSquadState, removeSquad, upsertSquads } from "./squadsSlice";
 import {
   EMPLACEMENT,
   INFANTRY,
@@ -9,6 +9,7 @@ import {
   TANK,
   unitTypes
 } from "../../constants/units/all_factions";
+import axios from "axios";
 
 const availableUnitsAdapter = createEntityAdapter()
 
@@ -37,23 +38,34 @@ const setStateForUnitTypes = (availableUnits, state) => {
   })
 }
 
+export const fetchCompanyAvailableUnits = createAsyncThunk("availableUnits/fetchCompanyAvailableUnits", async ({ companyId }, {rejectWithValue}) => {
+  try {
+    const response = await axios.get(`/companies/${companyId}/available_units`)
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
 const availableUnitsSlice = createSlice({
   name: "availableUnits",
   initialState,
-  reducers: {},
+  reducers: {
+    resetAvailableUnitState: () => initialState
+  },
   extraReducers(builder) {
     builder
-      .addCase(fetchCompanyById.pending, (state, action) => {
+      .addCase(fetchCompanyAvailableUnits.pending, (state, action) => {
         state.availableUnitsStatus = "pending"
         state.loadingAvailableUnitsError = null
       })
-      .addCase(fetchCompanyById.fulfilled, (state, action) => {
-        availableUnitsAdapter.setAll(state, action.payload.availableUnits)
-        setStateForUnitTypes(action.payload.availableUnits, state)
+      .addCase(fetchCompanyAvailableUnits.fulfilled, (state, action) => {
+        availableUnitsAdapter.setAll(state, action.payload)
+        setStateForUnitTypes(action.payload, state)
         state.availableUnitsStatus = "idle"
         state.companyId = action.payload.id // Current company id
       })
-      .addCase(fetchCompanyById.rejected, (state, action) => {
+      .addCase(fetchCompanyAvailableUnits.rejected, (state, action) => {
         state.availableUnitsStatus = "idle"
         state.loadingAvailableUnitsError = action.payload.error
       })
@@ -78,13 +90,12 @@ const availableUnitsSlice = createSlice({
         availableUnitsAdapter.setAll(state, action.payload.availableUnits)
         setStateForUnitTypes(action.payload.availableUnits, state)
       })
-      .addCase(clearCompanyManager, (state, action) => {
-        return initialState
-      })
   }
 })
 
 export default availableUnitsSlice.reducer
+
+export const { resetAvailableUnitState } = availableUnitsSlice.actions
 
 export const {
   selectAll: selectAllAvailableUnits,

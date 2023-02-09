@@ -181,6 +181,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.integer "tree", comment: "Which tree of the doctrine this unlock will appear at"
     t.integer "branch", comment: "Which branch of the doctrine tree this unlock will appear at"
     t.integer "row", comment: "Which row of the doctrine tree branch this unlock will appear at"
+    t.boolean "disabled", default: false, null: false, comment: "Is this doctrine unlock disabled?"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["doctrine_id", "tree", "branch", "row"], name: "index_doctrine_unlocks_on_doctrine_tree", unique: true
@@ -341,6 +342,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.integer "starting_man", null: false, comment: "Company starting manpower"
     t.integer "starting_mun", null: false, comment: "Company starting muntions"
     t.integer "starting_fuel", null: false, comment: "Company starting fuel"
+    t.integer "starting_vps", null: false, comment: "Company starting vps"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

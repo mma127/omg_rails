@@ -8,6 +8,7 @@ class CreateDoctrineUnlocks < ActiveRecord::Migration[6.1]
       t.integer :tree, comment: "Which tree of the doctrine this unlock will appear at"
       t.integer :branch, comment: "Which branch of the doctrine tree this unlock will appear at"
       t.integer :row, comment: "Which row of the doctrine tree branch this unlock will appear at"
+      t.boolean :disabled, default: false, null: false, comment: "Is this doctrine unlock disabled?"
 
       t.timestamps
     end

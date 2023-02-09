@@ -23,15 +23,14 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const AvailableUnitDetails = ({ unitId, availableUnitId, unitImage }) => {
+export const AvailableUnitDetails = ({ availableUnitId }) => {
+  console.log(`AvailableUnitId Details - ${availableUnitId}`)
   const classes = useStyles()
   const dispatch = useDispatch()
 
-  const selectedUnitDetails = useSelector(state => selectUnitById(state, unitId))
-  const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
   const availableUnit = useSelector(state => selectAvailableUnitById(state, availableUnitId))
-  const isAvailableUnitsReady = availableUnitsStatus !== "pending"
-
+  const unitId = availableUnit?.unitId
+  const selectedUnitDetails = useSelector(state => selectUnitById(state, unitId))
 
   useEffect(() => {
     // Dispatch a fetch if the unit id is valid and the selector failed to find a matching unit
@@ -40,12 +39,8 @@ export const AvailableUnitDetails = ({ unitId, availableUnitId, unitImage }) => 
   }, [unitId])
 
   let content
-  if (selectedUnitDetails && isAvailableUnitsReady) {
-    console.log(selectedUnitDetails)
-    console.log(availableUnit)
-
+  if (selectedUnitDetails && availableUnit) {
     const cost = formatResourceCost({ man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel })
-
     content = (
       <Box p={2}>
         <Grid container spacing={2}>
