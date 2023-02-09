@@ -41,6 +41,10 @@ export const AvailableUnitDroppable = ({
 
   const notAvailable = available <= 0
 
+  const onDragStart = () => {
+    onUnitClick(unitId, availableUnit.id, image, unitName)
+  }
+
   return (
     <Tooltip
       key={unitId}
@@ -62,12 +66,12 @@ export const AvailableUnitDroppable = ({
       <Box className={classes.dragDropContainer}>
         <DragDropContainer targetKey="unit"
                            noDragging={notAvailable || !enabled}
-                           onDragStart={() => onUnitClick(unitId, availableUnit.id, image, unitName)}
+                           onDragStart={onDragStart}
                            dragData={{
                              unitId: unitId, availableUnitId: availableUnit.id, unitName: unitName, unitDisplayName: label,
                              image: image, pop: availableUnit.pop, man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel
                            }}>
-          <UnitCard unitId={unitId} label={label} image={image} onUnitClick={onUnitClick} disabled={notAvailable} />
+          <UnitCard unitId={unitId} availableUnitId={availableUnit.id} label={label} image={image} onUnitClick={onUnitClick} disabled={notAvailable} />
         </DragDropContainer>
       </Box>
     </Tooltip>

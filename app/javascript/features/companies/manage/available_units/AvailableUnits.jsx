@@ -14,7 +14,7 @@ import { Box, Typography } from "@mui/material";
 
 const generateContentForUnitType = (availableUnits, onUnitSelect, enabled) => availableUnits.map(
   au => (<AvailableUnitDroppable
-    key={au.unitId}
+    key={au.id}
     unitId={au.unitId}
     unitName={au.unitName}
     availableUnit={au}

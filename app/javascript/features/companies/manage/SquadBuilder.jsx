@@ -29,6 +29,7 @@ import {
 } from "../../units/squadsSlice";
 import { ErrorTypography } from "../../../components/ErrorTypography";
 import { AlertSnackbar } from "../AlertSnackbar";
+import { selectIsCompanyUnlocksChanged } from "./unlocks/companyUnlocksSlice";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -107,6 +108,8 @@ export const SquadBuilder = ({}) => {
   const canSave = !isSaving && isChanged
   const errorMessage = isSaving ? "" : squadsError
 
+  const isCompanyUnlocksChange = useSelector(selectIsCompanyUnlocksChanged)
+
   useEffect(() => {
     console.log("dispatching squad and available_unit fetch from SquadBuilder")
     dispatch(fetchCompanySquads({ companyId }))
@@ -117,7 +120,7 @@ export const SquadBuilder = ({}) => {
       dispatch(resetSquadState())
       dispatch(resetAvailableUnitState())
     }
-  }, [companyId])
+  }, [companyId, isCompanyUnlocksChange])
 
   // TODO use this to constrain the drag area
   const constraintsRef = useRef(null)
@@ -133,8 +136,8 @@ export const SquadBuilder = ({}) => {
     /** Called when a unit is selected. Populates the unit stats box with relevant data
      * TODO if a squad is clicked, should take upgrades into account
      */
-    setSelectedUnitId(unitId)
     setSelectedAvailableUnitId(availableUnitId)
+    // setSelectedUnitId(unitId)
     setSelectedUnitImage(unitImage)
     setSelectedUnitName(unitName)
   }

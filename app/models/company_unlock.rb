@@ -29,6 +29,7 @@ class CompanyUnlock < ApplicationRecord
   class Entity < Grape::Entity
     expose :id
     expose :company_id, as: :companyId
-    expose :doctrine_unlock, using: DoctrineUnlock::Entity
+    expose :doctrine_unlock_id, as: :doctrineUnlockId
+    expose :doctrine_unlock, using: DoctrineUnlock::Entity, if: { type: :include_unlock }
   end
 end

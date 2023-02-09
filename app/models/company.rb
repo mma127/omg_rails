@@ -85,6 +85,7 @@ class Company < ApplicationRecord
     expose :faction_id, as: :factionId
     expose :man, :mun, :fuel, :pop
     expose :vps_earned, as: :vpsEarned
+    expose :vps_current, as: :vpsCurrent
     expose :side
     expose :faction_name, as: :factionName
     expose :doctrine_name, as: :doctrineName
@@ -93,7 +94,7 @@ class Company < ApplicationRecord
 
     expose :available_units, as: :availableUnits, using: AvailableUnit::Entity, if: { type: :full }
     expose :squads, using: Squad::Entity, if: { type: :full }
-    expose :company_unlocks, as: :unlocks, using: CompanyUnlock::Entity, if: { type: :full } # TODO Does this need the full doctrine_unlock entity?
+    expose :company_unlocks, as: :unlocks, using: CompanyUnlock::Entity
     # TODO offmaps
     # TODO resource bonuses
   end
