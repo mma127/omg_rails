@@ -48,8 +48,9 @@ after :units do
     end
 
     puts "name: #{name}, constname: #{row["const"]}, doctrine: #{doctrine.display_name}"
+    is_disabled = row["vp"].to_i > 25
     unlock = Unlock.create!(name: snakecase(name), const_name: row["const"], display_name: name, description: row["description"])
-    DoctrineUnlock.create!(doctrine: doctrine, unlock: unlock, vp_cost: row["vp"], tree: row["tree"], branch: row["branch"], row: row["tier"])
+    DoctrineUnlock.create!(doctrine: doctrine, unlock: unlock, vp_cost: row["vp"], tree: row["tree"], branch: row["branch"], row: row["tier"], disabled: is_disabled)
   end
 
   # # UnitSwaps for unlocks

@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '0.35em'
   },
   titleText: {
-    height: '4rem'
+    minHeight: '4rem'
   },
   ownedText: {
     color: theme.palette.secondary.light
@@ -50,9 +50,9 @@ export const DoctrineUnlock = ({ doctrineUnlock, isOwned }) => {
     dispatch(purchaseUnlock({ doctrineUnlockId: doctrineUnlock.id }))
   }
 
-  return (
-    <Paper key={`${doctrineUnlock.tree}-${doctrineUnlock.branch}-${doctrineUnlock.row}`}
-           className={`${classes.unlockContainer} ${isOwned ? 'owned' : ''}`}>
+  let innerContent
+  if (!doctrineUnlock.disabled) {
+    innerContent = (
       <Box p={2} className={classes.unlockInnerContainer}>
         <Typography variant="h5" gutterBottom align="center"
                     className={`${classes.titleText} ${isOwned ? classes.ownedText : null}`}>
@@ -73,6 +73,13 @@ export const DoctrineUnlock = ({ doctrineUnlock, isOwned }) => {
           </Button>
         </Box>
       </Box>
+    )
+  }
+
+  return (
+    <Paper key={`${doctrineUnlock.tree}-${doctrineUnlock.branch}-${doctrineUnlock.row}`}
+           className={`${classes.unlockContainer} ${isOwned ? 'owned' : ''}`}>
+      {innerContent}
     </Paper>
   )
 }

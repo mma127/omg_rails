@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, AlertTitle, Box, Container, Tab, Tabs, Typography } from "@mui/material";
+import { Alert, AlertTitle, Box, Container, Grid, Tab, Tabs, Typography } from "@mui/material";
 import { Link, Route, Routes, useParams } from "react-router-dom";
 import { makeStyles, useTheme } from "@mui/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -11,8 +11,20 @@ import { fetchCompanyById, selectCompanyById } from "../companiesSlice";
 
 import { SquadBuilder } from "./SquadBuilder";
 import { CompanyUnlocks } from "./unlocks/CompanyUnlocks";
+import { doctrineImgMapping } from "../../../constants/doctrines";
+import { selectDoctrineById } from "../../doctrines/doctrinesSlice";
 
 const useStyles = makeStyles(theme => ({
+  titleItem: {
+    display: 'flex'
+  },
+  companyDocImage: {
+    justifyContent: 'flex-end'
+  },
+  companyName: {
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
   contentContainer: {
     display: 'flex'
   },
@@ -26,7 +38,11 @@ const useStyles = makeStyles(theme => ({
   },
   detailTitle: {
     fontWeight: 'bold'
-  }
+  },
+  doctrineImage: {
+    height: '90px',
+    width: '180px'
+  },
 }))
 
 const SQUADS = "squads"
@@ -49,6 +65,7 @@ export const CompanyManager = () => {
   let params = useParams()
   const companyId = params.companyId
   const company = useSelector(state => selectCompanyById(state, companyId))
+  const doctrine = useSelector(state => selectDoctrineById(state, company.doctrineId))
 
   useEffect(() => {
     console.log("dispatching company fetch from CompanyManager")
@@ -67,7 +84,17 @@ export const CompanyManager = () => {
   return (
     <Container maxWidth="xl" sx={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
       {companyLockedContent}
-      <Typography variant="h5" gutterBottom>{company.name}</Typography>
+      <Grid container spacing={2}>
+        <Grid item md={6} xs={12} className={`${classes.titleItem} ${classes.companyDocImage}`}>
+          <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>
+            <img src={doctrineImgMapping[doctrine.name]} alt={doctrine.displayName}
+                 className={classes.doctrineImage} />
+          </Box>
+        </Grid>
+        <Grid item md={6} xs={12} className={`${classes.titleItem} ${classes.companyName}`}>
+          <Typography variant="h5" gutterBottom>{company.name}</Typography>
+        </Grid>
+      </Grid>
       <Box className={classes.contentContainer}>
         <Tabs value={currentTab} onChange={onTabChange} orientation="vertical" className={classes.tabs}>
           <Tab key={`company-manager-tab-${SQUADS}`}
