@@ -9,6 +9,9 @@ class CreateUnitSwaps < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
+    # These enforce a 1 to 1 mapping between a specific old_unit_id and a specific new_unit_id, such that
+    # a unit swap is reversible because an old unit can only be swapped to 1 type of new unit and vice versa
     add_index :unit_swaps, [:unlock_id, :old_unit_id], unique: true
+    add_index :unit_swaps, [:unlock_id, :new_unit_id], unique: true
   end
 end

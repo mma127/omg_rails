@@ -19,7 +19,19 @@ export const purchaseUnlock = createAsyncThunk(
   async ({ doctrineUnlockId }, { getState, rejectWithValue }) => {
     try {
       const companyId = selectActiveCompanyId(getState())
-      const response = await axios.post(`/companies/${companyId}/unlocks`, { doctrineUnlockId })
+      const response = await axios.post(`/companies/${companyId}/unlocks/purchase`, { doctrineUnlockId })
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+export const refundUnlock = createAsyncThunk(
+  "companyUnlocks/refundUnlock",
+  async ({ companyUnlockId }, { getState, rejectWithValue }) => {
+    try {
+      const companyId = selectActiveCompanyId(getState())
+      const response = await axios.post(`/companies/${companyId}/unlocks/refund`, { companyUnlockId })
       return response.data
     } catch (err) {
       return rejectWithValue(err.response.data)
@@ -51,6 +63,22 @@ const companyUnlocksSlice = createSlice({
         state.isSaving = false
       })
       .addCase(purchaseUnlock.rejected, (state, action) => {
+        state.errorMessage = action.payload.error
+        state.notifySnackbar = true
+        state.isSaving = false
+      })
+      .addCase(refundUnlock.pending, (state, action) => {
+        state.errorMessage = null
+        state.notifySnackbar = false
+        state.isSaving = true
+      })
+      .addCase(refundUnlock.fulfilled, (state, action) => {
+        companyUnlocksAdapter.removeOne(state, action.payload.id)
+        state.isChanged = true
+        state.notifySnackbar = true
+        state.isSaving = false
+      })
+      .addCase(refundUnlock.rejected, (state, action) => {
         state.errorMessage = action.payload.error
         state.notifySnackbar = true
         state.isSaving = false

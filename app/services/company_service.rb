@@ -171,11 +171,17 @@ class CompanyService
     company.destroy!
   end
 
+  # Recalculates resources remaining for the company based on squads and availability, AND updates the company
+  def recalculate_and_update_resources(company)
+    man, mun, fuel, pop = recalculate_resources(company)
+    company.update!(man: man, mun: mun, fuel: fuel, pop: pop)
+  end
+
   # Based on squads of the company and ruleset starting resources, determine what resources are left
   # TODO refactor with similar block in #update_company_squads
   def recalculate_resources(company)
     # Index available units by id
-    available_units_by_id = company.available_units.index_by(&:id)
+    available_units_by_id = company.reload.available_units.index_by(&:id)
 
     # Build hash of tab and index to pop
     platoon_pop_by_tab_and_index = build_empty_tab_index_pop

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
-import { purchaseUnlock } from "./manage/unlocks/companyUnlocksSlice";
+import { purchaseUnlock, refundUnlock } from "./manage/unlocks/companyUnlocksSlice";
 
 const companiesAdapter = createEntityAdapter()
 
@@ -105,6 +105,7 @@ const companiesSlice = createSlice({
       })
       .addCase(fetchCompanyById.fulfilled, (state, action) => {
         state.loadingCompanyStatus = "fulfilled"
+        state.needsRefresh = false
         companiesAdapter.upsertOne(state, action.payload)
       })
       .addCase(fetchCompanyById.rejected, (state, action) => {
@@ -136,6 +137,9 @@ const companiesSlice = createSlice({
       })
 
       .addCase(purchaseUnlock.fulfilled, (state, action) => {
+        state.needsRefresh = true
+      })
+      .addCase(refundUnlock.fulfilled, (state, action) => {
         state.needsRefresh = true
       })
   }
