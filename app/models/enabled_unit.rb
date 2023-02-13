@@ -49,6 +49,21 @@ class EnabledUnit < RestrictionUnit
 
   before_save :generate_internal_description
 
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :internal_description, as: :internalDescription
+    expose :man
+    expose :mun
+    expose :fuel
+    expose :pop
+    expose :resupply
+    expose :unit, using: Unit::Entity
+  end
+
   private
 
   def generate_internal_description

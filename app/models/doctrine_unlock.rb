@@ -35,6 +35,18 @@ class DoctrineUnlock < ApplicationRecord
 
   before_save :generate_internal_description
 
+  def enabled_units
+    EnabledUnit.includes(:unit).where(restriction: [restriction, unlock.restriction])
+  end
+
+  def disabled_units
+    DisabledUnit.includes(:unit).where(restriction: [restriction, unlock.restriction])
+  end
+
+  def unit_swaps
+    UnitSwap.includes(:old_unit, :new_unit).where(unlock: unlock)
+  end
+
   def entity
     Entity.new(self)
   end
@@ -49,6 +61,10 @@ class DoctrineUnlock < ApplicationRecord
     expose :row
     expose :disabled
     expose :unlock, using: Unlock::Entity
+
+    expose :enabled_units, as: :enabledUnits, using: EnabledUnit::Entity, if: { type: :full }
+    expose :disabled_units, as: :disabledUnits, using: DisabledUnit::Entity, if: { type: :full }
+    expose :unit_swaps, as: :unitSwaps, using: UnitSwap::Entity, if: { type: :full }
   end
 
   private

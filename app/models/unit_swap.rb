@@ -30,6 +30,17 @@ class UnitSwap < ApplicationRecord
 
   before_save :generate_internal_description
 
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :unlock_id
+    expose :old_unit, as: :oldUnit, using: Unit::Entity
+    expose :new_unit, as: :newUnit, using: Unit::Entity
+  end
+
   private
 
   def generate_internal_description
