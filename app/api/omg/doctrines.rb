@@ -22,7 +22,7 @@ module OMG
           requires :id, type: Integer, desc: "Company ID"
         end
         get 'unlocks' do
-          present Doctrine.find(params[:id]).doctrine_unlocks
+          present Doctrine.includes(doctrine_unlocks: [:restriction, unlock: :restriction]).find(params[:id]).doctrine_unlocks, type: :full
         end
       end
     end
