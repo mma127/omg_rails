@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Alert, Box, Grid, Typography } from "@mui/material";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCompanyById, selectCompanyById } from "../../companiesSlice";
+import { fetchCompanyById, selectCompanyById, resetNeedsRefresh } from "../../companiesSlice";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { fetchCompanySquads, resetSquadState } from "../../../units/squadsSlice";
@@ -15,11 +15,11 @@ import { DoctrineUnlock } from "./DoctrineUnlock";
 import { selectCompanyUnlockIds, selectCompanyUnlocksByDoctrineUnlockId } from "./companyUnlocksSlice";
 
 const buildUnlock = (doctrineUnlock, companyUnlocksByDoctrineUnlockId) => {
-  const isOwned = _.has(companyUnlocksByDoctrineUnlockId, doctrineUnlock.id)
+  const companyUnlock = _.get(companyUnlocksByDoctrineUnlockId, doctrineUnlock.id, null)
 
   return (
     <Grid item xs={2} key={`grid-${doctrineUnlock.tree}-${doctrineUnlock.branch}-${doctrineUnlock.row}`}>
-      <DoctrineUnlock doctrineUnlock={doctrineUnlock} isOwned={isOwned} />
+      <DoctrineUnlock doctrineUnlock={doctrineUnlock} companyUnlock={companyUnlock} />
     </Grid>
   )
 }

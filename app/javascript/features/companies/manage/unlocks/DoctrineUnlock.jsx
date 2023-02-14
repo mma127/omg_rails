@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import { unlockImageMapping } from "../../../../constants/unlocks/all_factions";
 import { UnlockCard } from "./UnlockCard";
 import { useDispatch, useSelector } from "react-redux";
-import { purchaseUnlock } from "./companyUnlocksSlice";
+import { purchaseUnlock, refundUnlock } from "./companyUnlocksSlice";
 
 const useStyles = makeStyles(theme => ({
   unlockContainer: {
@@ -39,15 +39,41 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const DoctrineUnlock = ({ doctrineUnlock, isOwned }) => {
+export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const isSaving = useSelector(state => state.companyUnlocks.isSaving)
 
   const unlock = doctrineUnlock.unlock
+  const isOwned = !_.isNil(companyUnlock)
 
   const purchase = () => {
     dispatch(purchaseUnlock({ doctrineUnlockId: doctrineUnlock.id }))
+  }
+
+  const refund = () => {
+    dispatch(refundUnlock({ companyUnlockId: companyUnlock.id }))
+  }
+
+  let buttonContent
+  if (isOwned) {
+    buttonContent = (
+      <Button variant="contained" color="error" size="small" onClick={refund} className={classes.button}
+              disabled={isSaving}>
+        <Typography variant="button" display="block">
+          Refund {doctrineUnlock.vpCost} VP
+        </Typography>
+      </Button>
+    )
+  } else {
+    buttonContent = (
+      <Button variant="contained" color="secondary" size="small" onClick={purchase} className={classes.button}
+              disabled={isSaving}>
+        <Typography variant="button" display="block">
+          {doctrineUnlock.vpCost} VP
+        </Typography>
+      </Button>
+    )
   }
 
   let innerContent
@@ -65,12 +91,7 @@ export const DoctrineUnlock = ({ doctrineUnlock, isOwned }) => {
           {unlock.description}
         </Typography>
         <Box sx={{ marginTop: 'auto' }}>
-          <Button variant="contained" color="secondary" size="small" onClick={purchase} className={classes.button}
-                  disabled={isSaving || isOwned}>
-            <Typography variant="button" display="block">
-              {doctrineUnlock.vpCost} VP
-            </Typography>
-          </Button>
+          {buttonContent}
         </Box>
       </Box>
     )

@@ -145,11 +145,11 @@ RSpec.describe AvailableUnitsService do
     end
   end
 
-  context "#create_base_available_units" do
+  context "#create_enabled_available_units" do
     context "when the company is valid" do
       before do
         unit_hash = { unit1.id => restriction_unit1_doctrine, unit2.id => restriction_unit2 }
-        subject.send(:create_base_available_units, unit_hash.values)
+        subject.send(:create_enabled_available_units, unit_hash.values)
       end
 
       it "creates AvailableUnits from the given restriction units" do
@@ -181,7 +181,73 @@ RSpec.describe AvailableUnitsService do
         create :available_unit, company: company, unit: unit1
       end
       it "doesn't raise an error, because it doesn't matter to this method" do
-        expect { subject.send(:create_base_available_units, []) }.not_to raise_error
+        expect { subject.send(:create_enabled_available_units, []) }.not_to raise_error
+      end
+    end
+  end
+
+  describe "#recreate_disabled_from_doctrine_unlock" do
+    let(:units_disabled) { [unit1, unit2, unit3] } # These were previously disabled but unit2 has a disable_unit on the doctrine
+    let!(:doctrine_unlock) { create :doctrine_unlock }
+    let(:du_restriction) { doctrine_unlock.restriction }
+
+    before do
+      create :company_unlock, company: company, doctrine_unlock: doctrine_unlock
+    end
+
+    context "when the available_units should come from the faction/doctrine base set" do
+      it "creates BaseAvailableUnits for the given units that are enabled by the faction & doctrine" do
+        expect { subject.recreate_disabled_from_doctrine_unlock(units_disabled, doctrine_unlock) }.to change { BaseAvailableUnit.count }.by(2)
+        expect(BaseAvailableUnit.find_by(company: company, unit: unit1).present?).to be true
+        expect(BaseAvailableUnit.find_by(company: company, unit: unit2).present?).to be false
+        expect(BaseAvailableUnit.find_by(company: company, unit: unit3).present?).to be true
+        expect(BaseAvailableUnit.count).to eq 2
+
+        expect(BaseAvailableUnit.all.pluck(:unit_id)).to match_array [unit1.id, unit3.id]
+      end
+    end
+
+    context "when the available_units are also affected by a doctrine_unlock enabling one" do
+      before do
+        # Create doctrine unlock that enables unit2
+        doctrine_unlock2 = create :doctrine_unlock
+        restriction_du2 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2
+        create :enabled_unit, unit: unit2, restriction: restriction_du2, ruleset: ruleset
+        company_unlock2 = create :company_unlock, company: company, doctrine_unlock: doctrine_unlock2
+      end
+      # should see that 3 available units are created
+      it "creates BaseAvailableUnits for the given units that are enabled by the faction & doctrine & doctrine unlock" do
+        expect { subject.recreate_disabled_from_doctrine_unlock(units_disabled, doctrine_unlock) }.to change { BaseAvailableUnit.count }.by(3)
+        expect(BaseAvailableUnit.find_by(company: company, unit: unit1).present?).to be true
+        expect(BaseAvailableUnit.find_by(company: company, unit: unit2).present?).to be true
+        expect(BaseAvailableUnit.find_by(company: company, unit: unit3).present?).to be true
+        expect(BaseAvailableUnit.count).to eq 3
+
+        expect(BaseAvailableUnit.all.pluck(:unit_id)).to match_array [unit1.id, unit2.id, unit3.id]
+      end
+    end
+
+    context "when the available_units are also affected by a doctrine_unlock enabling one and a doctrine_unlock disabling one" do
+      before do
+        # Create doctrine unlock that enables unit2
+        doctrine_unlock2 = create :doctrine_unlock
+        doctrine_unlock3 = create :doctrine_unlock
+        restriction_du2 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2
+        restriction_du3 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock3
+        create :enabled_unit, unit: unit2, restriction: restriction_du2, ruleset: ruleset
+        create :disabled_unit, unit: unit3, restriction: restriction_du3, ruleset: ruleset
+        create :company_unlock, company: company, doctrine_unlock: doctrine_unlock2
+        create :company_unlock, company: company, doctrine_unlock: doctrine_unlock3
+      end
+      # should see that 2 available units are created
+      it "creates BaseAvailableUnits for the given units that are enabled/disabled by the faction & doctrine & doctrine unlock" do
+        expect { subject.recreate_disabled_from_doctrine_unlock(units_disabled, doctrine_unlock) }.to change { BaseAvailableUnit.count }.by(2)
+        expect(BaseAvailableUnit.find_by(company: company, unit: unit1).present?).to be true
+        expect(BaseAvailableUnit.find_by(company: company, unit: unit2).present?).to be true
+        expect(BaseAvailableUnit.find_by(company: company, unit: unit3).present?).to be false
+        expect(BaseAvailableUnit.count).to eq 2
+
+        expect(BaseAvailableUnit.all.pluck(:unit_id)).to match_array [unit1.id, unit2.id]
       end
     end
   end

@@ -165,8 +165,7 @@ class BattleReportService
   # squads have been reconciled,
   def recalculate_company_resources
     @battle.companies.each do |c|
-      man, mun, fuel, pop, _ = CompanyService.new(c.player).recalculate_resources(c)
-      c.update!(pop: pop, man: man, mun: mun, fuel: fuel)
+      CompanyService.new(c.player).recalculate_and_update_resources(c)
     end
   end
 
