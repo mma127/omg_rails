@@ -15,6 +15,7 @@
 #  index_unit_swaps_on_new_unit_id                (new_unit_id)
 #  index_unit_swaps_on_old_unit_id                (old_unit_id)
 #  index_unit_swaps_on_unlock_id                  (unlock_id)
+#  index_unit_swaps_on_unlock_id_and_new_unit_id  (unlock_id,new_unit_id) UNIQUE
 #  index_unit_swaps_on_unlock_id_and_old_unit_id  (unlock_id,old_unit_id) UNIQUE
 #
 # Foreign Keys

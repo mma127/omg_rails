@@ -388,6 +388,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["new_unit_id"], name: "index_unit_swaps_on_new_unit_id"
     t.index ["old_unit_id"], name: "index_unit_swaps_on_old_unit_id"
+    t.index ["unlock_id", "new_unit_id"], name: "index_unit_swaps_on_unlock_id_and_new_unit_id", unique: true
     t.index ["unlock_id", "old_unit_id"], name: "index_unit_swaps_on_unlock_id_and_old_unit_id", unique: true
     t.index ["unlock_id"], name: "index_unit_swaps_on_unlock_id"
   end
@@ -400,6 +401,8 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.text "description", comment: "Display description of the unit"
     t.integer "upgrade_slots", default: 0, null: false, comment: "Slots used for per model weapon upgrades"
     t.integer "unitwide_upgrade_slots", default: 0, null: false, comment: "Unit wide weapon replacement slot"
+    t.integer "transport_squad_slots", comment: "How many squads this unit can transport"
+    t.integer "transport_model_slots", comment: "How many models this unit can transport"
     t.boolean "is_airdrop", default: false, null: false, comment: "Is this unit airdroppable?"
     t.boolean "is_infiltrate", default: false, null: false, comment: "Is this unit able to infiltrate?"
     t.string "retreat_name", comment: "Name for retreating unit"
