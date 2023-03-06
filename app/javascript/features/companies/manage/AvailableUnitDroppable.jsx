@@ -53,18 +53,6 @@ export const AvailableUnitDroppable = ({
                        dragData={{
                          availableUnit: availableUnit,
                          unit: unit
-                         // unitId: availableUnit.unitId,
-                         // availableUnit: availableUnit,
-                         // availableUnitId: availableUnit.id,
-                         // unitName: availableUnit.unitName,
-                         // unitDisplayName: availableUnit.unitDisplayName,
-                         // image: image,
-                         // pop: availableUnit.pop,
-                         // man: availableUnit.man,
-                         // mun: availableUnit.mun,
-                         // fuel: availableUnit.fuel,
-                         // transportSquadSlots: unit.transportSquadSlots,
-                         // transportModelSlots: unit.transportModelSlots
                        }}>
       <Tooltip
         key={availableUnitId}

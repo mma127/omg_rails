@@ -39,7 +39,6 @@ import { ErrorTypography } from "../../../components/ErrorTypography";
 import { AlertSnackbar } from "../AlertSnackbar";
 import { selectIsCompanyUnlocksChanged } from "./unlocks/companyUnlocksSlice";
 import { createSquad } from "../../units/squad";
-import { useTimeout } from "usehooks-ts";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
