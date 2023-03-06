@@ -24,17 +24,19 @@
 #
 class Upgrade < ApplicationRecord
 
+  # If this upgrade replaces a unit, use the model_count value to override the unit's model count
   with_options if: :unit_replace? do |unit_replace_upgrade|
     unit_replace_upgrade.validates :additional_model_count, presence: false
     unit_replace_upgrade.validates :model_count, presence: true
   end
+  # If this upgrade is not a replacement, use the additional_model_count to add to the unit's model count
   with_options unless: :unit_replace? do |standard_upgrade|
-    standard_upgrade.validates :additional_model_count, presence: true
+    # standard_upgrade.validates :additional_model_count, presence: true # Not hard required (upgrade does not need to change model count)
     standard_upgrade.validates :model_count, presence: false
   end
 
   def unit_replace?
-    is_unit_replace.true?
+    is_unit_replace.present?
   end
 end
 

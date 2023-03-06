@@ -34,7 +34,7 @@ RSpec.describe Squad, type: :model do
     it { should belong_to(:company) }
     it { should belong_to(:available_unit) }
     it { should have_many(:squad_upgrades) }
-    it { should have_many(:upgrades) }
+    it { should have_many(:available_upgrades) }
 
     context "when transporting squads" do
       let!(:passenger1) { create :squad }
