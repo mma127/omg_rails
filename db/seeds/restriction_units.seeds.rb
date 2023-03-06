@@ -469,6 +469,37 @@ after :restrictions do
                       man: 280, mun: 80, fuel: 0, pop: 2, resupply: 1, resupply_max: 1, company_max: 1, priority: 1,
                       upgrade_slots: 1)
 
+  # Need to block vehicles/tanks from Wehr as they are replaced by blitz versions that can transport the panzer ace
+  DisabledUnit.create!(restriction: blitz_restriction, unit: puma, ruleset: war_ruleset, priority: 1)
+  DisabledUnit.create!(restriction: blitz_restriction, unit: ostwind, ruleset: war_ruleset, priority: 1)
+  DisabledUnit.create!(restriction: blitz_restriction, unit: geschutzwagen, ruleset: war_ruleset, priority: 1)
+  DisabledUnit.create!(restriction: blitz_restriction, unit: stug, ruleset: war_ruleset, priority: 1)
+  DisabledUnit.create!(restriction: blitz_restriction, unit: p4, ruleset: war_ruleset, priority: 1)
+  DisabledUnit.create!(restriction: blitz_restriction, unit: panther_axis, ruleset: war_ruleset, priority: 1)
+  
+  puma_blitz = LightVehicle.find_by(name: "puma_blitz")
+  EnabledUnit.create!(restriction: blitz_restriction, unit: puma_blitz, ruleset: war_ruleset,
+                      man: 280, mun: 0, fuel: 70, pop: 7, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
+                      upgrade_slots: 2)
+
+  ostwind_blitz = Tank.find_by_name("ostwind_blitz")
+  EnabledUnit.create!(restriction: blitz_restriction, unit: ostwind_blitz, ruleset: war_ruleset,
+                      man: 320, mun: 0, fuel: 230, pop: 10, resupply: 3, resupply_max: 6, company_max: 8, priority: 1)
+  geschutzwagen_blitz = Tank.find_by_name("geschutzwagen_blitz")
+  EnabledUnit.create!(restriction: blitz_restriction, unit: geschutzwagen_blitz, ruleset: war_ruleset,
+                      man: 270, mun: 0, fuel: 180, pop: 7, resupply: 3, resupply_max: 6, company_max: 10, priority: 1)
+  stug_blitz = Tank.find_by_name("stug_blitz")
+  EnabledUnit.create!(restriction: blitz_restriction, unit: stug_blitz, ruleset: war_ruleset,
+                      man: 280, mun: 0, fuel: 170, pop: 8, resupply: 3, resupply_max: 6, company_max: 10, priority: 1,
+                      upgrade_slots: 1)
+  p4_blitz = Tank.find_by_name("p4_blitz")
+  EnabledUnit.create!(restriction: blitz_restriction, unit: p4_blitz, ruleset: war_ruleset,
+                      man: 350, mun: 0, fuel: 300, pop: 12, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
+                      upgrade_slots: 2)
+  panther_blitz = Tank.find_by_name("panther_blitz")
+  EnabledUnit.create!(restriction: blitz_restriction, unit: panther_blitz, ruleset: war_ruleset,
+                      man: 600, mun: 0, fuel: 520, pop: 15, resupply: 1, resupply_max: 3, company_max: 3, priority: 1)
+  
   stuh = Tank.find_by_name("stuh")
   EnabledUnit.create!(restriction: blitz_restriction, unit: stuh, ruleset: war_ruleset,
                       man: 320, mun: 0, fuel: 180, pop: 9, resupply: 2, resupply_max: 4, company_max: 6, priority: 1)

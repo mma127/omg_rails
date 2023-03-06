@@ -96,7 +96,9 @@ const companiesSlice = createSlice({
         companiesAdapter.setAll(state, action.payload)
       })
       .addCase(fetchCompanies.rejected, (state, action) => {
-        state.loadingCompaniesError = action.payload.error
+        if (!_.isNil(action.payload)) {
+          state.loadingCompaniesError = action.payload.error
+        }
       })
 
       .addCase(fetchCompanyById.pending, (state) => {

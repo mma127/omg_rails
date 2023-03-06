@@ -150,16 +150,27 @@ end
     result
   end
 
+  # HalfTrack - list of transport squads
+  # squad blocks - list of non-transport squads
   def build_platoon_block(platoon, team_index, player_index)
     callin_modifier = 1 # TODO callin_modifiers
-    glider = false
-    paradrop = false
-    infiltrate = false
-    halftrack = false
+    glider = "false,"
+    paradrop = ""
+    infiltrate = ""
+    halftrack = ""
 
+    squadnumber = 0
     squad_blocks = ""
     platoon.squads.each do |squad|
-      squad_blocks << build_squad_block(squad)
+      if squad.unit.is_a? Glider
+        glider = build_glider_squad_block(squad) # Should only have 1 glider per platoon
+      elsif squad.transporting_transported_squads.present?
+        halftrack << build_squad_block(squad)
+        # TODO PARADROP, INFILTRATE
+      else
+        squad_blocks << build_squad_block(squad)
+        squadnumber += 1
+      end
     end
 
     @ucs_contents << platoon.ucs_string(team_index, player_index)
@@ -170,11 +181,11 @@ end
           Pop = #{platoon.pop.to_i},
           CallInTimeModifier = #{callin_modifier},
           NotAvailUntil = 0,
-          Squadnumber = #{platoon.squads.size},
-          Glider = #{glider},
-          ParaDrop = #{paradrop},
-          Infiltrate = #{infiltrate},
-          HalfTrack = #{halftrack},\n#{squad_blocks}
+          Squadnumber = #{squadnumber},
+          Glider = #{glider}
+          ParaDrop = #{format_squad_list(paradrop)}
+          Infiltrate = #{format_squad_list(infiltrate)}
+          HalfTrack = #{format_squad_list(halftrack)}\n#{squad_blocks}
         },
     PLATOON
   end
@@ -187,23 +198,52 @@ end
   #     Upgrades = {},
   #     HalfTrack_Check = false
   #   },
+  #
+  # If HalfTrack_Check is true, also include HalfTrack_SGroup_Name of the transport squad id
+  #
   def build_squad_block(squad)
     upgrades = "" # TODO upgrades
-    halftrack_check = false
+    if squad.embarked_transported_squad.present?
+      halftrack_check = "true,"
+      transport_sgroup_name = "\n              Transport_SGroup_Name = 'SGroup#{squad.embarked_transported_squad.transport_squad_id}'"
+    else
+      halftrack_check = "false"
+      transport_sgroup_name = ""
+    end
     <<-SQUAD
           {
-            SGroup = SGroup_CreateIfNotFound("SGroup#{squad.id}"),
-            BP = OMGSBPS.#{squad.unit.const_name},
-            exp = #{squad.vet},
-            SquadPop = #{squad.pop.to_i},
-            Upgrades = {
-              #{upgrades}
+              SGroup = SGroup_CreateIfNotFound("SGroup#{squad.id}"),
+              BP = OMGSBPS.#{squad.unit.const_name},
+              exp = #{squad.vet},
+              SquadPop = #{squad.pop.to_i},
+              Upgrades = {
+                #{upgrades}
+              },
+              HalfTrack_Check = #{halftrack_check}#{transport_sgroup_name}
             },
-            HalfTrack_Check = #{halftrack_check}
-          },
     SQUAD
   end
 
+  #                 Glider = {
+  #                     BP = OMGEBP.CMW.INF_GLIDER,
+  #                     Upgrades = {},
+  #                     SquadPop = 0
+  #                 },
+  #
+  # If HalfTrack_Check is true, also include HalfTrack_SGroup_Name of the transport squad id
+  #
+  def build_glider_squad_block(squad)
+    upgrades = "" # TODO upgrades
+    <<-SQUAD
+          {
+              BP = OMGEBP.#{squad.unit.const_name},
+              SquadPop = #{squad.pop.to_i},
+              Upgrades = {
+                #{upgrades}
+              }
+            },
+    SQUAD
+  end
   def encode_sga(scar_contents)
     # tocData section
     iDirCount = 2
@@ -334,5 +374,17 @@ end
 
   def validate_battlefile_attached
     raise BattlefileGenerationValidationError.new "Battle #{@battle.id} does not have a battlefile attached" if @battle.battlefile.blank?
+  end
+
+  def format_squad_list(list)
+    if list.blank?
+      "false,"
+    else
+      <<-SQUAD
+{
+  #{list}
+          },
+      SQUAD
+    end
   end
 end

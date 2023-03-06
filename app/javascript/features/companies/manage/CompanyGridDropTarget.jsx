@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { DropTarget } from 'react-drag-drop-container';
-import { nanoid } from "@reduxjs/toolkit";
 import { Box, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import '../../../../assets/stylesheets/CompanyGridDropTarget.css'
 import { SquadCard } from "./SquadCard";
-import { createSquad } from "../../units/squad";
+import { useDispatch } from "react-redux";
+import { clearNotifySnackbar, showSnackbar } from "../../units/squadsSlice";
+import { GLIDER } from "../../../constants/units/types";
+import { AlertSnackbar } from "../AlertSnackbar";
 
 const useStyles = makeStyles(() => ({
   placementBox: {
@@ -27,78 +29,111 @@ const useStyles = makeStyles(() => ({
  * @param gridIndex: position of the box within the Company builder grid of drop targets
  * @param currentTab
  * @param squads
- * @param onHitCallback: Callback fired when this company grid drop target receives a hit and has an unit dropped in
+ * @param onNonTransportSquadCreate: Callback fired when this company grid drop target receives a hit and has an unit dropped in
+ * @param onTransportedSquadCreate
  * @param onUnitClick: Callback fired when the unit icon is clicked. Expect to pass squad identifier
  * @param onSquadDestroy
+ * @param onSquadMove
  * @param enabled: Flag for whether the drop target and any squad cards contained within are editable
  */
 export const CompanyGridDropTarget = ({
                                         gridIndex,
                                         currentTab,
                                         squads,
-                                        onHitCallback,
+                                        onNonTransportSquadCreate,
+                                        onTransportedSquadCreate,
                                         onUnitClick,
                                         onSquadDestroy,
+                                        onSquadMove,
                                         enabled
                                       }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
 
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+  const [snackbarContent, setSnackbarContent] = useState("")
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success")
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false)
+  }
 
-  // Is it necessary to maintain total cost of the drop target/platoon?
+  // TODO Is it necessary to maintain total cost of the drop target/platoon?
 
-  const onHit = (e) => {
+  /** Moved an availableUnit into this drop target for squad creation */
+  const onUnitHit = (e) => {
     if (!enabled) {
       console.log("Drop target is not enabled")
       return
     }
     const dragData = e.dragData
-    console.log(`${dragData.unitName} dropped into target ${gridIndex}`)
-    if (Object.keys(dragData).includes("uuid")) {
-      // Moved an existing squad into this drop target
-      const { uuid, id, unitId, availableUnitId, unitName, pop, man, mun, fuel, image, index, tab } = dragData
+    console.log(`${dragData.availableUnit.unitName} new unit dropped into target ${gridIndex}`)
 
-      // Remove it from its previous platoon index
-      onSquadDestroy(uuid, id, availableUnitId, pop, man, mun, fuel, index, tab)
-
-      // Need to add this squad to the current platoon index
-      onHitCallback({ ...dragData, vet: 0, index: gridIndex, tab: currentTab })
-    } else if (dragData.index !== gridIndex) {
-      const uuid = nanoid()
-      const newSquad = createSquad(uuid, null, dragData.unitId, dragData.availableUnitId, dragData.unitName,
-        dragData.unitDisplayName, dragData.pop, dragData.man, dragData.mun, dragData.fuel, dragData.image, gridIndex, currentTab)
-      onHitCallback(newSquad)
-    } else {
-      console.log(`skipping onHit for the same index ${gridIndex}`)
+    // Check if glider and no other gliders
+    if (dragData.unit.type === GLIDER) {
+      // Now check if any gliders in squads
+      if (_.values(squads).some(s => s.unitType === GLIDER)) {
+        setSnackbarContent("Only 1 Glider is allowed per platoon")
+        setSnackbarSeverity("warning")
+        setOpenSnackbar(true)
+        return
+      }
     }
+
+    // Creating a new squad without transport
+    onNonTransportSquadCreate(dragData.availableUnit, dragData.unit, gridIndex, currentTab)
   }
 
-  const onDestroyClick = (uuid, squadId, availableUnitId, pop, man, mun, fuel) => {
-    console.log(`Destroy squad: ${uuid}, ${squadId}, ${pop} with costs ${man}, ${mun}, ${fuel}`)
-    onSquadDestroy(uuid, squadId, availableUnitId, pop, man, mun, fuel, gridIndex, currentTab)
+  /** Moved an existing squad into this drop target */
+  const onSquadMoveHit = (e) => {
+    if (!enabled) {
+      console.log("Drop target is not enabled")
+      return
+    }
+    const dragData = e.dragData
+    console.log(`${dragData.unit.name} squad dropped into target ${gridIndex}`)
+
+    const { squad, unit, } = dragData
+    onSquadMove(squad, unit, gridIndex, currentTab)
+  }
+
+  const onDestroyClick = (squad, transportUuid = null) => {
+    onSquadDestroy(squad, transportUuid)
   }
 
   let gridPop = 0
   let squadCards = []
   if (squads) {
     for (const squad of Object.values(squads)) {
-      gridPop += parseFloat(squad.pop)
+      gridPop += parseFloat(squad.combinedPop) // Use combinedPop to include transported squads' pop
       squadCards.push(<SquadCard key={squad.uuid}
-                                 uuid={squad.uuid} squadId={squad.id} unitId={squad.unitId} availableUnitId={squad.availableUnitId}
-                                 unitName={squad.unitName} unitDisplayName={squad.unitDisplayName}
-                                 pop={squad.pop} man={squad.man} mun={squad.mun} fuel={squad.fuel} image={squad.image}
-                                 index={squad.index} tab={squad.tab} vet={squad.vet}
-                                 onUnitClick={onUnitClick} onDestroyClick={onDestroyClick} enabled={enabled} />)
+                                 uuid={squad.uuid}
+                                 index={gridIndex} tab={currentTab}
+                                 enabled={enabled}
+                                 onUnitClick={onUnitClick}
+                                 onDestroyClick={onDestroyClick}
+                                 onTransportedSquadCreate={onTransportedSquadCreate}
+                                 onSquadMove={onSquadMove}
+      />)
     }
   }
 
   return (
-    <DropTarget targetKey="unit" onHit={onHit}>
-      <Paper key={gridIndex} className={classes.placementBox}>
-        <Box sx={{ position: 'relative', p: 1 }}>
-          {squadCards}
-          <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }}>{gridPop}</Box>
-        </Box>
-      </Paper>
-    </DropTarget>
+    <>
+      <AlertSnackbar isOpen={openSnackbar}
+                     setIsOpen={setOpenSnackbar}
+                     handleClose={handleCloseSnackbar}
+                     severity={snackbarSeverity}
+                     content={snackbarContent} />
+      <DropTarget targetKey="unit" onHit={onUnitHit}>
+        <DropTarget targetKey="squad" onHit={onSquadMoveHit}>
+          <Paper key={gridIndex} className={classes.placementBox}>
+            <Box sx={{ position: 'relative', p: 1 }}>
+              {squadCards}
+              <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }}>{gridPop}</Box>
+            </Box>
+          </Paper>
+        </DropTarget>
+      </DropTarget>
+    </>
   )
 }

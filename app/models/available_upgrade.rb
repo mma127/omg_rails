@@ -22,4 +22,6 @@
 class AvailableUpgrade < ApplicationRecord
   belongs_to :company
   belongs_to :upgrade
+
+  has_many :squad_upgrades
 end

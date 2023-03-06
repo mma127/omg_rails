@@ -2,27 +2,20 @@ import React from 'react'
 import { useSelector } from "react-redux";
 import {
   selectEmplacementAvailableUnits,
+  selectGliderAvailableUnits,
   selectInfantryAvailableUnits,
   selectLightVehicleAvailableUnits,
   selectSupportTeamAvailableUnits,
   selectTankAvailableUnits
 } from "../../../units/availableUnitsSlice";
 import { AvailableUnitDroppable } from "../AvailableUnitDroppable";
-import { unitImageMapping } from "../../../../constants/units/all_factions";
 import { Box, Typography } from "@mui/material";
 
 
 const generateContentForUnitType = (availableUnits, onUnitSelect, enabled) => availableUnits.map(
   au => (<AvailableUnitDroppable
     key={au.id}
-    unitId={au.unitId}
-    unitName={au.unitName}
-    availableUnit={au}
-    label={au.unitDisplayName}
-    image={unitImageMapping[au.unitName]}
-    available={au.available}
-    resupply={au.resupply}
-    companyMax={au.companyMax}
+    availableUnitId={au.id}
     onUnitClick={onUnitSelect}
     enabled={enabled}
   />))
@@ -38,7 +31,7 @@ export const AvailableUnits = ({ onUnitSelect, enabled }) => {
   const lightVehicles = useSelector(selectLightVehicleAvailableUnits)
   const tanks = useSelector(selectTankAvailableUnits)
   const emplacements = useSelector(selectEmplacementAvailableUnits)
-  console.log(`Company edit is ${enabled}`)
+  const gliders = useSelector(selectGliderAvailableUnits)
 
   return (
     <>
@@ -58,10 +51,16 @@ export const AvailableUnits = ({ onUnitSelect, enabled }) => {
         <Typography variant="subtitle2" color="text.secondary" gutterBottom>Tanks</Typography>
         {generateContentForUnitType(tanks, onUnitSelect, enabled)}
       </Box> : null}
-      {emplacements.length > 0 ? <Box>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom>Emplacements</Typography>
-        {generateContentForUnitType(emplacements, onUnitSelect, enabled)}
-      </Box> : null}
+      <Box sx={{ display: 'flex' }}>
+        {emplacements.length > 0 ? <Box sx={{flexGrow: 1}}>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>Emplacements</Typography>
+          {generateContentForUnitType(emplacements, onUnitSelect, enabled)}
+        </Box> : null}
+        {gliders.length > 0 ? <Box sx={{flexGrow: 2}}>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>Gliders</Typography>
+          {generateContentForUnitType(gliders, onUnitSelect, enabled)}
+        </Box> : null}
+      </Box>
     </>
   )
 }

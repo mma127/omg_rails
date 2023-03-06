@@ -1,0 +1,6 @@
+export const INFANTRY = "Infantry"
+export const SUPPORT_TEAM = "SupportTeam"
+export const LIGHT_VEHICLE = "LightVehicle"
+export const TANK = "Tank"
+export const GLIDER = "Glider"
+export const EMPLACEMENT = "Emplacement"

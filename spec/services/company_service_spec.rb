@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe CompanyService do
   let!(:player) { create :player }
-  subject { described_class.new(player) }
+  subject(:instance) { described_class.new(player) }
 
   let(:name) { "My new company" }
   let!(:ruleset) { create :ruleset }
@@ -19,7 +19,7 @@ RSpec.describe CompanyService do
 
   describe "#create_company" do
     it "creates the Company with valid params" do
-      company = subject.create_company(doctrine, name)
+      company = instance.create_company(doctrine, name)
 
       expect(company).to be_valid
       expect(company.name).to eq name
@@ -33,22 +33,25 @@ RSpec.describe CompanyService do
     end
 
     it "builds the Company's AvailableUnits" do
-      company = subject.create_company(doctrine, name)
+      company = instance.create_company(doctrine, name)
       expect(company.available_units.size).to eq 3
     end
 
     it "raises a validation error when the Player has too many Companies of that side" do
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
-      expect { subject.create_company(doctrine, name) }.to raise_error(
-                                                             CompanyService::CompanyCreationValidationError,
-                                                             "Player #{player.id} has too many #{faction.side} companies, cannot create another one.")
+      expect { instance.create_company(doctrine, name) }
+        .to raise_error(
+              CompanyService::CompanyCreationValidationError,
+              "Player #{player.id} has too many #{faction.side} companies, cannot create another one.")
     end
   end
 
   describe "#update_company_squads" do
+    subject { instance.update_company_squads(company, squads_param) }
+
     context "when there are no existing Squads in the Company" do
-      let!(:company) { subject.create_company(doctrine, name) }
+      let!(:company) { instance.create_company(doctrine, name) }
       let!(:available_unit_1) { company.available_units.find_by(unit_id: unit1.id) }
       let!(:available_unit_2) { company.available_units.find_by(unit_id: unit2.id) }
       let!(:available_unit_3) { company.available_units.find_by(unit_id: unit3.id) }
@@ -61,7 +64,8 @@ RSpec.describe CompanyService do
             name: nil,
             vet: 0,
             tab: "core",
-            index: 0
+            index: 0,
+            uuid: "1"
           },
           {
             squad_id: nil,
@@ -70,7 +74,8 @@ RSpec.describe CompanyService do
             name: nil,
             vet: 0,
             tab: "core",
-            index: 0
+            index: 0,
+            uuid: '2'
           },
           {
             squad_id: nil,
@@ -79,7 +84,8 @@ RSpec.describe CompanyService do
             name: nil,
             vet: 0,
             tab: "core",
-            index: 1
+            index: 1,
+            uuid: "3"
           },
           {
             squad_id: nil,
@@ -88,7 +94,8 @@ RSpec.describe CompanyService do
             name: nil,
             vet: 0,
             tab: "infantry",
-            index: 0
+            index: 0,
+            uuid: "4"
           },
           {
             squad_id: nil,
@@ -97,7 +104,8 @@ RSpec.describe CompanyService do
             name: nil,
             vet: 0,
             tab: "infantry",
-            index: 1
+            index: 1,
+            uuid: "5"
           },
           {
             squad_id: nil,
@@ -106,7 +114,8 @@ RSpec.describe CompanyService do
             name: nil,
             vet: 0,
             tab: "infantry",
-            index: 2
+            index: 2,
+            uuid: "6"
           },
           {
             squad_id: nil,
@@ -115,7 +124,8 @@ RSpec.describe CompanyService do
             available_unit_id: available_unit_1.id,
             vet: 0,
             tab: "infantry",
-            index: 2
+            index: 2,
+            uuid: "7"
           },
           {
             squad_id: nil,
@@ -124,13 +134,14 @@ RSpec.describe CompanyService do
             name: nil,
             vet: 0,
             tab: "armour",
-            index: 1
+            index: 1,
+            uuid: "8"
           }
         ]
       }
 
       it "creates all input Squads for the Company" do
-        squads, _ = subject.update_company_squads(company, squads_param)
+        squads, _ = instance.update_company_squads(company, squads_param)
         expect(squads.size).to eq squads_param.size
 
         expect(squads.where(available_unit: available_unit_1).size).to eq 3
@@ -139,7 +150,7 @@ RSpec.describe CompanyService do
       end
 
       it "updates the Company's AvailableUnits available value" do
-        _, available_units = subject.update_company_squads(company, squads_param)
+        _, available_units = instance.update_company_squads(company, squads_param)
         expect(available_units.size).to eq 3
         expect(available_unit_1.reload.available).to eq 3
         expect(available_unit_2.reload.available).to eq 1
@@ -166,7 +177,7 @@ RSpec.describe CompanyService do
                                 index: 0 }
         squads_param << invalid_squad_param
         expect {
-          subject.update_company_squads(company, squads_param)
+          instance.update_company_squads(company, squads_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Given squad ids [#{unknown_squad_id}] that don't exist for the company #{company.id}"
@@ -184,7 +195,7 @@ RSpec.describe CompanyService do
                                 index: 0 }
         squads_param << invalid_squad_param
         expect {
-          subject.update_company_squads(company, squads_param)
+          instance.update_company_squads(company, squads_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Invalid unit id(s) given in company squad update: [#{unknown_unit_id}]"
@@ -203,7 +214,7 @@ RSpec.describe CompanyService do
                                 index: 0 }
         squads_param << invalid_squad_param
         expect {
-          subject.update_company_squads(company, squads_param)
+          instance.update_company_squads(company, squads_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Invalid available_unit_id(s) given in company #{company.id} squad update: [#{new_available_unit.id}]"
@@ -216,7 +227,7 @@ RSpec.describe CompanyService do
         end
         it "raises a validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources" do
           expect {
-            subject.update_company_squads(company.reload, squads_param)
+            instance.update_company_squads(company.reload, squads_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Invalid squad update, negative resource balance found: -600 manpower, -520 munitions, -120 fuel"
@@ -233,7 +244,7 @@ RSpec.describe CompanyService do
                                 tab: "core",
                                 index: 0 }
         expect {
-          subject.update_company_squads(company, [invalid_squad_param])
+          instance.update_company_squads(company, [invalid_squad_param])
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Platoon at [core 0] has 4.0 pop, must be between 7 and 25, inclusive"
@@ -250,7 +261,7 @@ RSpec.describe CompanyService do
                                 index: 1 }
         squads_param << invalid_squad_param
         expect {
-          subject.update_company_squads(company, squads_param)
+          instance.update_company_squads(company, squads_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Platoon at [armour 1] has 26.0 pop, must be between 7 and 25, inclusive"
@@ -260,322 +271,1334 @@ RSpec.describe CompanyService do
       it "raises a validation error if there's insufficient availability to create a squad of a certain unit" do
         available_unit_2.reload.update!(available: 1)
         expect {
-          subject.update_company_squads(company.reload, squads_param)
+          instance.update_company_squads(company.reload, squads_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Insufficient availability to create squads for available unit #{available_unit_2.id} in company #{company.id}: Existing count 0, payload count 4, available number 1"
              )
+      end
+
+      context "when there are transport uuids in the update" do
+        let!(:unit1) { create :unit, transport_squad_slots: 3, transport_model_slots: 12 }
+        let!(:unit2) { create :unit, model_count: 4 }
+        let!(:transport_allowed_unit) { create :transport_allowed_unit, transport: unit1, allowed_unit: unit2 }
+        let(:uuid1) { 'uuid1' }
+        let(:uuid2) { 'uuid2' }
+        let(:uuid3) { 'uuid3' }
+        let(:uuid4) { 'uuid4' }
+        let(:uuid5) { 'uuid5' }
+        let(:transportedSquadUuids1) { [uuid2] }
+        let(:transportedSquadUuids2) { [uuid4, uuid5] }
+        let!(:squads_param) do
+          [
+            {
+              squad_id: nil,
+              unit_id: unit1.id,
+              available_unit_id: available_unit_1.id,
+              name: nil,
+              vet: 0,
+              tab: "core",
+              index: 0,
+              uuid: uuid1,
+              transportedSquadUuids: transportedSquadUuids1
+            },
+            {
+              squad_id: nil,
+              unit_id: unit2.id,
+              available_unit_id: available_unit_2.id,
+              name: nil,
+              vet: 0,
+              tab: "core",
+              index: 0,
+              uuid: uuid2,
+              transportUuid: uuid1
+            },
+            {
+              squad_id: nil,
+              unit_id: unit2.id,
+              available_unit_id: available_unit_2.id,
+              name: nil,
+              vet: 0,
+              tab: "infantry",
+              index: 0,
+              uuid: "4"
+            },
+            {
+              squad_id: nil,
+              unit_id: unit2.id,
+              available_unit_id: available_unit_2.id,
+              name: nil,
+              vet: 0,
+              tab: "infantry",
+              index: 1,
+              uuid: "5"
+            },
+            {
+              squad_id: nil,
+              unit_id: unit1.id,
+              available_unit_id: available_unit_1.id,
+              name: nil,
+              vet: 0,
+              tab: "infantry",
+              index: 2,
+              uuid: uuid3,
+              transportedSquadUuids: transportedSquadUuids2
+            },
+            {
+              squad_id: nil,
+              unit_id: unit2.id,
+              name: nil,
+              available_unit_id: available_unit_2.id,
+              vet: 0,
+              tab: "infantry",
+              index: 2,
+              uuid: uuid4,
+              transportUuid: uuid3
+            },
+            {
+              squad_id: nil,
+              unit_id: unit2.id,
+              name: nil,
+              available_unit_id: available_unit_2.id,
+              vet: 0,
+              tab: "infantry",
+              index: 2,
+              uuid: uuid5,
+              transportUuid: uuid3
+            },
+            {
+              squad_id: nil,
+              unit_id: unit3.id,
+              available_unit_id: available_unit_3.id,
+              name: nil,
+              vet: 0,
+              tab: "armour",
+              index: 1,
+              uuid: "8"
+            }
+          ]
+        end
+
+        it "creates all squads" do
+          squads, _ = subject
+          expect(squads.size).to eq squads_param.size
+
+          expect(squads.where(available_unit: available_unit_1).size).to eq 2
+          expect(squads.where(available_unit: available_unit_2).size).to eq 5
+          expect(squads.where(available_unit: available_unit_3).size).to eq 1
+        end
+
+        it "creates transportedSquad records for the embarked squads" do
+          expect { subject }.to change { TransportedSquad.count }.by 3
+          transport1 = Squad.find_by(company: company, uuid: uuid1)
+          expect(transport1.squads_in_transport.count).to eq 1
+          expect(transport1.squads_in_transport.first.uuid).to eq uuid2
+
+          transport2 = Squad.find_by(company: company, uuid: uuid3)
+          expect(transport2.squads_in_transport.count).to eq 2
+          expect(transport2.squads_in_transport.first.uuid).to eq uuid4
+          expect(transport2.squads_in_transport.second.uuid).to eq uuid5
+        end
+
+        context "when the transport uuid relationships are invalid" do
+          let(:transportedSquadUuids1) { [] }
+          let(:transportedSquadUuids2) { [uuid4, uuid5] }
+          let!(:squads_param) do
+            [
+              {
+                squad_id: nil,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid1,
+                transportedSquadUuids: transportedSquadUuids1
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid2,
+                transportUuid: uuid1
+              },
+              {
+                squad_id: nil,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: uuid3,
+                transportedSquadUuids: transportedSquadUuids2
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                name: nil,
+                available_unit_id: available_unit_2.id,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: uuid4,
+                transportUuid: uuid5
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                name: nil,
+                available_unit_id: available_unit_2.id,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: uuid5,
+                transportUuid: uuid4
+              },
+            ]
+          end
+
+          it "creates all squads" do
+            squads, _ = subject
+            expect(squads.size).to eq squads_param.size
+
+            expect(squads.where(available_unit: available_unit_1).size).to eq 2
+            expect(squads.where(available_unit: available_unit_2).size).to eq 3
+            expect(squads.where(available_unit: available_unit_3).size).to eq 0
+          end
+
+          it "does not create any transportedSquad records" do
+            expect { subject }.to change { TransportedSquad.count }.by 0
+            transport1 = Squad.find_by(company: company, uuid: uuid1)
+            expect(transport1.squads_in_transport.count).to eq 0
+            transport2 = Squad.find_by(company: company, uuid: uuid3)
+            expect(transport2.squads_in_transport.count).to eq 0
+          end
+        end
+
+        context "when the transport is not allowed to embark the passenger unit" do
+          let!(:transport_allowed_unit) { nil }
+          it "creates all squads" do
+            squads, _ = subject
+            expect(squads.size).to eq squads_param.size
+
+            expect(squads.where(available_unit: available_unit_1).size).to eq 2
+            expect(squads.where(available_unit: available_unit_2).size).to eq 5
+            expect(squads.where(available_unit: available_unit_3).size).to eq 1
+          end
+
+          it "does not create any transportedSquad records" do
+            expect { subject }.to change { TransportedSquad.count }.by 0
+            transport1 = Squad.find_by(company: company, uuid: uuid1)
+            expect(transport1.squads_in_transport.count).to eq 0
+            transport2 = Squad.find_by(company: company, uuid: uuid3)
+            expect(transport2.squads_in_transport.count).to eq 0
+          end
+        end
+
+        context "when the transport does not have sufficient squad slots" do
+          let!(:unit1) { create :unit, transport_squad_slots: 1, transport_model_slots: 12 }
+          let!(:squads_param) do
+            [
+              {
+                squad_id: nil,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid1,
+                transportedSquadUuids: transportedSquadUuids1
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid2,
+                transportUuid: uuid1
+              },
+              {
+                squad_id: nil,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: uuid3,
+                transportedSquadUuids: transportedSquadUuids2
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                name: nil,
+                available_unit_id: available_unit_2.id,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: uuid4,
+                transportUuid: uuid3
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                name: nil,
+                available_unit_id: available_unit_2.id,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: uuid5,
+                transportUuid: uuid3
+              },
+            ]
+          end
+
+          it "creates all squads" do
+            squads, _ = subject
+            expect(squads.size).to eq squads_param.size
+
+            expect(squads.where(available_unit: available_unit_1).size).to eq 2
+            expect(squads.where(available_unit: available_unit_2).size).to eq 3
+            expect(squads.where(available_unit: available_unit_3).size).to eq 0
+          end
+
+          it "only creates TransportedSquad records that fit in squad slots" do
+            expect { subject }.to change { TransportedSquad.count }.by 2
+            transport1 = Squad.find_by(company: company, uuid: uuid1)
+            expect(transport1.squads_in_transport.count).to eq 1
+            expect(transport1.squads_in_transport.first.uuid).to eq uuid2
+
+            transport2 = Squad.find_by(company: company, uuid: uuid3)
+            expect(transport2.squads_in_transport.count).to eq 1
+            expect(transport2.squads_in_transport.first.uuid).to eq uuid4
+          end
+        end
+
+        context "when the transport does not have sufficient model slots" do
+          let!(:unit1) { create :unit, transport_squad_slots: 1, transport_model_slots: 5 }
+          let!(:squads_param) do
+            [
+              {
+                squad_id: nil,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid1,
+                transportedSquadUuids: transportedSquadUuids1
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid2,
+                transportUuid: uuid1
+              },
+              {
+                squad_id: nil,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: uuid3,
+                transportedSquadUuids: transportedSquadUuids2
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                name: nil,
+                available_unit_id: available_unit_2.id,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: uuid4,
+                transportUuid: uuid3
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                name: nil,
+                available_unit_id: available_unit_2.id,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: uuid5,
+                transportUuid: uuid3
+              },
+            ]
+          end
+
+          it "creates all squads" do
+            squads, _ = subject
+            expect(squads.size).to eq squads_param.size
+
+            expect(squads.where(available_unit: available_unit_1).size).to eq 2
+            expect(squads.where(available_unit: available_unit_2).size).to eq 3
+            expect(squads.where(available_unit: available_unit_3).size).to eq 0
+          end
+
+          it "only creates TransportedSquad records that fit in model slots" do
+            expect { subject }.to change { TransportedSquad.count }.by 2
+            transport1 = Squad.find_by(company: company, uuid: uuid1)
+            expect(transport1.squads_in_transport.count).to eq 1
+            expect(transport1.squads_in_transport.first.uuid).to eq uuid2
+
+            transport2 = Squad.find_by(company: company, uuid: uuid3)
+            expect(transport2.squads_in_transport.count).to eq 1
+            expect(transport2.squads_in_transport.first.uuid).to eq uuid4
+          end
+        end
       end
     end
 
     context "when there are existing Squads in the Company" do
       let!(:unit4) { create :unit }
       let!(:restriction_unit4) { create :enabled_unit, unit: unit4, pop: 8, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: ruleset }
-      let!(:company) { subject.create_company(doctrine, name) }
-      let!(:available_unit1) { company.available_units.find_by(unit_id: unit1.id) }
-      let!(:available_unit2) { company.available_units.find_by(unit_id: unit2.id) }
-      let!(:available_unit3) { company.available_units.find_by(unit_id: unit3.id) }
-      let!(:available_unit4) { company.available_units.find_by(unit_id: unit4.id) }
+      let!(:company) { instance.create_company(doctrine, name) } # Create the company here to include unit4
+      let!(:available_unit_1) { company.available_units.find_by(unit_id: unit1.id) }
+      let!(:available_unit_2) { company.available_units.find_by(unit_id: unit2.id) }
+      let!(:available_unit_3) { company.available_units.find_by(unit_id: unit3.id) }
+      let!(:available_unit_4) { company.available_units.find_by(unit_id: unit4.id) }
 
-      before do
-        squad1 = create :squad, company: company, available_unit: available_unit1, tab_category: "core", category_position: 0
-        squad2 = create :squad, company: company, available_unit: available_unit2, tab_category: "core", category_position: 0
-        squad3 = create :squad, company: company, available_unit: available_unit3, tab_category: "core", category_position: 0
-
-        squad4 = create :squad, company: company, available_unit: available_unit2, tab_category: "assault", category_position: 1
-
-        squad5 = create :squad, company: company, available_unit: available_unit1, tab_category: "infantry", category_position: 0
-        squad6 = create :squad, company: company, available_unit: available_unit1, tab_category: "infantry", category_position: 0
-
-        squad7 = create :squad, company: company, available_unit: available_unit2, tab_category: "infantry", category_position: 2
-
-        squad8 = create :squad, company: company, available_unit: available_unit2, tab_category: "infantry", category_position: 3
-        available_unit1.update!(available: 3)
-        available_unit2.update!(available: 1)
-        available_unit3.update!(available: 0)
-        # available_unit4 has available 1
-
-        # Unit1: Existing count: 3, Available: 3, Payload count: 3, Resupply max: 6
-        # Unit2: Existing count: 4, Available: 1, Payload count: 3, resupply max: 5
-        # Unit3: Existing count: 1, Available: 0, Payload count: 0, resupply_max: 1
-        # Unit4: Existing count: 0, Available: 1, Payload count: 1, resupply_max: 1
-
-        @squads_param = [
-          {
-            squad_id: squad1.id,
-            unit_id: unit1.id,
-            available_unit_id: available_unit1.id,
-            name: nil,
-            vet: 0,
-            tab: "core",
-            index: 0
-          },
-          {
-            squad_id: squad2.id,
-            unit_id: unit2.id,
-            available_unit_id: available_unit2.id,
-            name: nil,
-            vet: 0,
-            tab: "core",
-            index: 0
-          },
-          {
-            squad_id: nil,
-            unit_id: unit4.id,
-            available_unit_id: available_unit4.id,
-            name: nil,
-            vet: 0,
-            tab: "core",
-            index: 0
-          },
-          {
-            squad_id: squad5.id,
-            unit_id: unit1.id,
-            available_unit_id: available_unit1.id,
-            name: nil,
-            vet: 0,
-            tab: "infantry",
-            index: 0
-          },
-          {
-            squad_id: squad6.id,
-            unit_id: unit1.id,
-            available_unit_id: available_unit1.id,
-            name: nil,
-            vet: 0,
-            tab: "infantry",
-            index: 0
-          },
-          {
-            squad_id: squad7.id,
-            unit_id: unit2.id,
-            available_unit_id: available_unit2.id,
-            name: nil,
-            vet: 0,
-            tab: "infantry",
-            index: 2
-          },
-          {
-            squad_id: squad8.id,
-            unit_id: unit2.id,
-            available_unit_id: available_unit2.id,
-            name: nil,
-            vet: 0,
-            tab: "infantry",
-            index: 3
-          }
-        ]
-      end
-
-      it "creates all input Squads for the Company" do
-        squads, _ = subject.update_company_squads(company, @squads_param)
-        expect(squads.size).to eq @squads_param.size
-
-        expect(squads.where(available_unit: available_unit1).size).to eq 3
-        expect(squads.where(available_unit: available_unit2).size).to eq 3
-        expect(squads.where(available_unit: available_unit3).size).to eq 0
-        expect(squads.where(available_unit: available_unit4).size).to eq 1
-      end
-
-      it "updates the Company's AvailableUnits available value" do
-        _, available_units = subject.update_company_squads(company, @squads_param)
-        expect(available_units.size).to eq 4
-        expect(available_unit1.reload.available).to eq 3
-        expect(available_unit2.reload.available).to eq 2
-        expect(available_unit3.reload.available).to eq 1
-        expect(available_unit4.reload.available).to eq 0
-      end
-
-      it "raises a validation error if a Squad id is given that's not part of the Company" do
-        unknown_squad_id = 99999999
-        invalid_squad_param = { squad_id: unknown_squad_id,
-                                unit_id: unit1.id,
-                                available_unit_id: available_unit1.id,
-                                name: nil,
-                                vet: 0,
-                                tab: "core",
-                                index: 0 }
-        @squads_param << invalid_squad_param
-        expect {
-          subject.update_company_squads(company, @squads_param)
-        }.to raise_error(
-               CompanyService::CompanyUpdateValidationError,
-               "Given squad ids [#{unknown_squad_id}] that don't exist for the company #{company.id}"
-             )
-      end
-
-      it "raises a validation error if an invalid Unit id is given" do
-        unknown_unit_id = 99999999
-        invalid_squad_param = { squad_id: nil,
-                                unit_id: unknown_unit_id,
-                                available_unit_id: unknown_unit_id,
-                                name: nil,
-                                vet: 0,
-                                tab: "core",
-                                index: 0 }
-        @squads_param << invalid_squad_param
-        expect {
-          subject.update_company_squads(company, @squads_param)
-        }.to raise_error(
-               CompanyService::CompanyUpdateValidationError,
-               "Invalid unit id(s) given in company squad update: [#{unknown_unit_id}]"
-             )
-      end
-
-      it "raises a validation error if an Unit id is given that doesn't match any AvailableUnit in the Company" do
-        new_unit = create :unit
-        new_available_unit = create :available_unit, unit: new_unit
-        invalid_squad_param = { squad_id: nil,
-                                unit_id: new_unit.id,
-                                available_unit_id: new_available_unit.id,
-                                name: nil,
-                                vet: 0,
-                                tab: "core",
-                                index: 0 }
-        @squads_param << invalid_squad_param
-        expect {
-          subject.update_company_squads(company, @squads_param)
-        }.to raise_error(
-               CompanyService::CompanyUpdateValidationError,
-               "Invalid available_unit_id(s) given in company #{company.id} squad update: [#{new_available_unit.id}]"
-             )
-      end
-
-      context "when the resource quantities are small" do
+      context "without transports" do
         before do
-          ruleset.update!(starting_man: 200, starting_mun: 200, starting_fuel: 200)
+          squad1 = create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0
+          squad2 = create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 0
+          squad3 = create :squad, company: company, available_unit: available_unit_3, tab_category: "core", category_position: 0
+
+          squad4 = create :squad, company: company, available_unit: available_unit_2, tab_category: "assault", category_position: 1
+
+          squad5 = create :squad, company: company, available_unit: available_unit_1, tab_category: "infantry", category_position: 0
+          squad6 = create :squad, company: company, available_unit: available_unit_1, tab_category: "infantry", category_position: 0
+
+          squad7 = create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 2
+
+          squad8 = create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 3
+          available_unit_1.update!(available: 3)
+          available_unit_2.update!(available: 1)
+          available_unit_3.update!(available: 0)
+          # available_unit_4 has available 1
+
+          # Unit1: Existing count: 3, Available: 3, Payload count: 3, Resupply max: 6
+          # Unit2: Existing count: 4, Available: 1, Payload count: 3, resupply max: 5
+          # Unit3: Existing count: 1, Available: 0, Payload count: 0, resupply_max: 1
+          # Unit4: Existing count: 0, Available: 1, Payload count: 1, resupply_max: 1
+
+          @squads_param = [
+            {
+              squad_id: squad1.id,
+              unit_id: unit1.id,
+              available_unit_id: available_unit_1.id,
+              name: nil,
+              vet: 0,
+              tab: "core",
+              index: 0,
+              uuid: "1"
+            },
+            {
+              squad_id: squad2.id,
+              unit_id: unit2.id,
+              available_unit_id: available_unit_2.id,
+              name: nil,
+              vet: 0,
+              tab: "core",
+              index: 0,
+              uuid: "2"
+            },
+            {
+              squad_id: nil,
+              unit_id: unit4.id,
+              available_unit_id: available_unit_4.id,
+              name: nil,
+              vet: 0,
+              tab: "core",
+              index: 0,
+              uuid: "3"
+            },
+            {
+              squad_id: squad5.id,
+              unit_id: unit1.id,
+              available_unit_id: available_unit_1.id,
+              name: nil,
+              vet: 0,
+              tab: "infantry",
+              index: 0,
+              uuid: "4"
+            },
+            {
+              squad_id: squad6.id,
+              unit_id: unit1.id,
+              available_unit_id: available_unit_1.id,
+              name: nil,
+              vet: 0,
+              tab: "infantry",
+              index: 0,
+              uuid: "5"
+            },
+            {
+              squad_id: squad7.id,
+              unit_id: unit2.id,
+              available_unit_id: available_unit_2.id,
+              name: nil,
+              vet: 0,
+              tab: "infantry",
+              index: 2,
+              uuid: "6"
+            },
+            {
+              squad_id: squad8.id,
+              unit_id: unit2.id,
+              available_unit_id: available_unit_2.id,
+              name: nil,
+              vet: 0,
+              tab: "infantry",
+              index: 3,
+              uuid: "7"
+            }
+          ]
         end
-        it "raises a validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources" do
+
+        it "creates all input Squads for the Company" do
+          squads, _ = instance.update_company_squads(company, @squads_param)
+          expect(squads.size).to eq @squads_param.size
+
+          expect(squads.where(available_unit: available_unit_1).size).to eq 3
+          expect(squads.where(available_unit: available_unit_2).size).to eq 3
+          expect(squads.where(available_unit: available_unit_3).size).to eq 0
+          expect(squads.where(available_unit: available_unit_4).size).to eq 1
+        end
+
+        it "updates the Company's AvailableUnits available value" do
+          _, available_units = instance.update_company_squads(company, @squads_param)
+          expect(available_units.size).to eq 4
+          expect(available_unit_1.reload.available).to eq 3
+          expect(available_unit_2.reload.available).to eq 2
+          expect(available_unit_3.reload.available).to eq 1
+          expect(available_unit_4.reload.available).to eq 0
+        end
+
+        it "raises a validation error if a Squad id is given that's not part of the Company" do
+          unknown_squad_id = 99999999
+          invalid_squad_param = { squad_id: unknown_squad_id,
+                                  unit_id: unit1.id,
+                                  available_unit_id: available_unit_1.id,
+                                  name: nil,
+                                  vet: 0,
+                                  tab: "core",
+                                  index: 0 }
+          @squads_param << invalid_squad_param
           expect {
-            subject.update_company_squads(company.reload, @squads_param)
+            instance.update_company_squads(company, @squads_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
-                 "Invalid squad update, negative resource balance found: -500 manpower, -430 munitions, -80 fuel"
+                 "Given squad ids [#{unknown_squad_id}] that don't exist for the company #{company.id}"
+               )
+        end
+
+        it "raises a validation error if an invalid Unit id is given" do
+          unknown_unit_id = 99999999
+          invalid_squad_param = { squad_id: nil,
+                                  unit_id: unknown_unit_id,
+                                  available_unit_id: unknown_unit_id,
+                                  name: nil,
+                                  vet: 0,
+                                  tab: "core",
+                                  index: 0 }
+          @squads_param << invalid_squad_param
+          expect {
+            instance.update_company_squads(company, @squads_param)
+          }.to raise_error(
+                 CompanyService::CompanyUpdateValidationError,
+                 "Invalid unit id(s) given in company squad update: [#{unknown_unit_id}]"
+               )
+        end
+
+        it "raises a validation error if an Unit id is given that doesn't match any AvailableUnit in the Company" do
+          new_unit = create :unit
+          new_available_unit = create :available_unit, unit: new_unit
+          invalid_squad_param = { squad_id: nil,
+                                  unit_id: new_unit.id,
+                                  available_unit_id: new_available_unit.id,
+                                  name: nil,
+                                  vet: 0,
+                                  tab: "core",
+                                  index: 0 }
+          @squads_param << invalid_squad_param
+          expect {
+            instance.update_company_squads(company, @squads_param)
+          }.to raise_error(
+                 CompanyService::CompanyUpdateValidationError,
+                 "Invalid available_unit_id(s) given in company #{company.id} squad update: [#{new_available_unit.id}]"
+               )
+        end
+
+        context "when the resource quantities are small" do
+          before do
+            ruleset.update!(starting_man: 200, starting_mun: 200, starting_fuel: 200)
+          end
+          it "raises a validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources" do
+            expect {
+              instance.update_company_squads(company.reload, @squads_param)
+            }.to raise_error(
+                   CompanyService::CompanyUpdateValidationError,
+                   "Invalid squad update, negative resource balance found: -500 manpower, -430 munitions, -80 fuel"
+                 )
+          end
+        end
+
+        it "raises a validation error if a platoon has too little pop" do
+          invalid_squad_param = { squad_id: nil,
+                                  unit_id: unit1.id,
+                                  available_unit_id: available_unit_1.id,
+                                  name: nil,
+                                  vet: 0,
+                                  tab: "core",
+                                  index: 0 }
+          expect {
+            instance.update_company_squads(company, [invalid_squad_param])
+          }.to raise_error(
+                 CompanyService::CompanyUpdateValidationError,
+                 "Platoon at [core 0] has 4.0 pop, must be between 7 and 25, inclusive"
+               )
+        end
+
+        it "raises a validation error if a platoon has too much pop" do
+          invalid_squad_param = { squad_id: nil,
+                                  unit_id: unit3.id,
+                                  available_unit_id: available_unit_3.id,
+                                  name: nil,
+                                  vet: 0,
+                                  tab: "core",
+                                  index: 0 }
+          @squads_param << invalid_squad_param
+          expect {
+            instance.update_company_squads(company, @squads_param)
+          }.to raise_error(
+                 CompanyService::CompanyUpdateValidationError,
+                 "Platoon at [core 0] has 32.0 pop, must be between 7 and 25, inclusive"
+               )
+        end
+
+        it "raises a validation error if there's insufficient availability to create a squad of a certain unit" do
+          available_unit_4.update!(available: 0)
+          expect {
+            instance.update_company_squads(company.reload, @squads_param)
+          }.to raise_error(
+                 CompanyService::CompanyUpdateValidationError,
+                 "Insufficient availability to create squads for available unit #{available_unit_4.id} in company #{company.id}: Existing count 0, payload count 1, available number 0"
                )
         end
       end
 
-      it "raises a validation error if a platoon has too little pop" do
-        invalid_squad_param = { squad_id: nil,
-                                unit_id: unit1.id,
-                                available_unit_id: available_unit1.id,
-                                name: nil,
-                                vet: 0,
-                                tab: "core",
-                                index: 0 }
-        expect {
-          subject.update_company_squads(company, [invalid_squad_param])
-        }.to raise_error(
-               CompanyService::CompanyUpdateValidationError,
-               "Platoon at [core 0] has 4.0 pop, must be between 7 and 25, inclusive"
-             )
-      end
+      context "when there are transport uuids in the squads" do
+        let!(:unit1) { create :unit, transport_squad_slots: 3, transport_model_slots: 12 }
+        let!(:unit2) { create :unit, model_count: 4 }
+        let!(:transport_allowed_unit) { create :transport_allowed_unit, transport: unit1, allowed_unit: unit2 }
+        let(:uuid1) { 'uuid1' }
+        let(:uuid2) { 'uuid2' }
+        let(:uuid3) { 'uuid3' }
+        let(:uuid4) { 'uuid4' }
+        let(:uuid5) { 'uuid5' }
+        let(:uuid6) { 'uuid6' }
+        let(:uuid7) { 'uuid7' }
+        let(:uuid8) { 'uuid8' }
+        let(:new_uuid1) { 'nuuid1' }
+        let(:new_uuid2) { 'nuuid2' }
+        let(:new_uuid3) { 'nuuid3' }
+        let(:transportedSquadUuids1) { [uuid2] }
+        let(:transportedSquadUuids2) { [new_uuid1] }
+        let(:transportedSquadUuids3) { [new_uuid3] }
 
-      it "raises a validation error if a platoon has too much pop" do
-        invalid_squad_param = { squad_id: nil,
-                                unit_id: unit3.id,
-                                available_unit_id: available_unit3.id,
-                                name: nil,
-                                vet: 0,
-                                tab: "core",
-                                index: 0 }
-        @squads_param << invalid_squad_param
-        expect {
-          subject.update_company_squads(company, @squads_param)
-        }.to raise_error(
-               CompanyService::CompanyUpdateValidationError,
-               "Platoon at [core 0] has 32.0 pop, must be between 7 and 25, inclusive"
-             )
-      end
+        context "with no validation issues" do
+          let!(:squad1) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0, uuid: uuid1 }
+          let!(:squad2) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 0, uuid: uuid2 }
+          let!(:squad3) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 1, uuid: uuid3 }
+          let!(:squad4) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 1, uuid: uuid4 }
+          let!(:squad5) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 2, uuid: uuid5 }
+          let!(:squad6) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 2, uuid: uuid6 }
+          let!(:squad7) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 3, uuid: uuid7 }
+          let!(:squad8) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 3, uuid: uuid8 }
+          let!(:transported_squad1) { create :transported_squad, transport_squad: squad1, embarked_squad: squad2 }
+          let!(:transported_squad2) { create :transported_squad, transport_squad: squad3, embarked_squad: squad4 }
+          let!(:transported_squad3) { create :transported_squad, transport_squad: squad5, embarked_squad: squad6 }
+          let!(:transported_squad4) { create :transported_squad, transport_squad: squad7, embarked_squad: squad8 }
 
-      it "raises a validation error if there's insufficient availability to create a squad of a certain unit" do
-        available_unit4.update!(available: 0)
-        expect {
-          subject.update_company_squads(company.reload, @squads_param)
-        }.to raise_error(
-               CompanyService::CompanyUpdateValidationError,
-               "Insufficient availability to create squads for available unit #{available_unit4.id} in company #{company.id}: Existing count 0, payload count 1, available number 0"
-             )
+          # Transport 1 still has passenger 2, just changed index -> no change
+          # Transport 3 no longer exists, passenger 4 still exists -> destroyed transported_squad2
+          # Transport 5 exists, passenger 6 no longer exists, get new passenger nuuid1 -> destroyed transported_squad3, created new transported_squad
+          # Transport 7 no longer exists, passenger 8 no longer exists -> destroyed transported_squad 4
+          # New transport nuuid2, passenger nuuid3 -> created new transported_squad
+          let(:squads_param) do
+            [
+              {
+                squad_id: squad1.id,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid1,
+                transportedSquadUuids: transportedSquadUuids1
+              },
+              {
+                squad_id: squad2.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid2,
+                transportUuid: uuid1
+              },
+              {
+                squad_id: squad4.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid4
+              },
+              {
+                squad_id: squad5.id,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "infantry",
+                index: 0,
+                uuid: uuid5,
+                transportedSquadUuids: transportedSquadUuids2
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "infantry",
+                index: 0,
+                uuid: new_uuid1,
+                transportUuid: uuid5
+              },
+              {
+                squad_id: nil,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: new_uuid2,
+                transportedSquadUuids: transportedSquadUuids3
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "infantry",
+                index: 2,
+                uuid: new_uuid3,
+                transportUuid: new_uuid2
+              }
+            ]
+          end
+
+          subject { instance.update_company_squads(company, squads_param) }
+
+          before do
+            available_unit_1.update!(available: 2)
+            available_unit_2.update!(available: 1)
+            available_unit_3.update!(available: 0)
+          end
+
+          it "creates all input Squads for the Company" do
+            squads, _ = subject
+            expect(squads.size).to eq squads_param.size
+
+            expect(squads.where(available_unit: available_unit_1).size).to eq 3
+            expect(squads.where(available_unit: available_unit_2).size).to eq 4
+            expect(squads.where(available_unit: available_unit_3).size).to eq 0
+            expect(squads.where(available_unit: available_unit_4).size).to eq 0
+          end
+
+          it "updates the Company's AvailableUnits available value" do
+            _, available_units = subject
+            expect(available_units.size).to eq 4
+            expect(available_unit_1.reload.available).to eq 3
+            expect(available_unit_2.reload.available).to eq 1
+            expect(available_unit_3.reload.available).to eq 0
+            expect(available_unit_4.reload.available).to eq 1
+          end
+
+          it "creates TransportedSquads for any new transport links" do
+            expect(TransportedSquad.count).to eq 4
+            expect { subject }.to change { TransportedSquad.count }.by -1
+            new_transport = Squad.find_by(company: company, uuid: new_uuid2)
+            expect(new_transport.squads_in_transport.size).to eq 1
+            expect(new_transport.squads_in_transport.first.uuid).to eq new_uuid3
+          end
+
+          it "does not modify any unchanged TransportedSquad links" do
+            subject
+            expect(squad1.reload.squads_in_transport.count).to eq 1
+            expect(squad1.squads_in_transport.first).to eq squad2.reload
+          end
+
+          it "destroys TransportedSquads if the transport no longer exists" do
+            subject
+
+            expect(Squad.exists?(squad3.id)).to be false
+            expect(TransportedSquad.exists?(transport_squad: transported_squad2.transport_squad, embarked_squad: transported_squad2.embarked_squad)).to be false
+            expect(squad4.reload.embarked_transport).to be nil
+
+            expect(Squad.exists?(squad7.id)).to be false
+            expect(Squad.exists?(squad8.id)).to be false
+            expect(TransportedSquad.exists?(transport_squad: transported_squad4.transport_squad, embarked_squad: transported_squad4.embarked_squad)).to be false
+          end
+
+          it "destroys TransportedSquads if the embarked squad no longer exists" do
+            subject
+
+            expect(Squad.exists?(squad6.id)).to be false
+            expect(TransportedSquad.exists?(transport_squad: transported_squad3.transport_squad, embarked_squad: transported_squad3.embarked_squad)).to be false
+            expect(squad5.reload.squads_in_transport.count).to eq 1
+            expect(squad5.squads_in_transport.first.uuid).to eq new_uuid1
+          end
+        end
+
+        context "when the transport uuid relationships are invalid" do
+          let!(:squad1) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0, uuid: uuid1 }
+          let!(:squad2) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 0, uuid: uuid2 }
+          let!(:squad3) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 1, uuid: uuid3 }
+          let!(:squad4) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 1, uuid: uuid4 }
+          let!(:transported_squad1) { create :transported_squad, transport_squad: squad1, embarked_squad: squad2 }
+          let!(:transported_squad2) { create :transported_squad, transport_squad: squad3, embarked_squad: squad4 }
+          let(:transportedSquadUuids1) { [] }
+          let(:transportedSquadUuids2) { [uuid4, new_uuid1, new_uuid2] }
+
+          let(:squads_param) do
+            [
+              {
+                squad_id: squad1.id,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid1,
+                transportedSquadUuids: transportedSquadUuids1
+              },
+              {
+                squad_id: squad2.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid2,
+                transportUuid: uuid1
+              },
+              {
+                squad_id: squad3.id,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid3,
+                transportedSquadUuids: transportedSquadUuids2
+              },
+              {
+                squad_id: squad4.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid4,
+                transportUuid: nil
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: new_uuid1,
+                transportUuid: nil
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: new_uuid2,
+                transportUuid: uuid3
+              }
+            ]
+          end
+
+          before do
+            available_unit_1.update!(available: 4)
+            available_unit_2.update!(available: 3)
+          end
+
+          it "creates all squads" do
+            squads, _ = subject
+            expect(squads.size).to eq squads_param.size
+
+            expect(squads.where(available_unit: available_unit_1).size).to eq 2
+            expect(squads.where(available_unit: available_unit_2).size).to eq 4
+            expect(squads.where(available_unit: available_unit_3).size).to eq 0
+          end
+
+          it "removes invalid TransportedSquads" do
+            expect { subject }.to change { TransportedSquad.count }.by -1
+
+            expect(TransportedSquad.exists?(transport_squad: transported_squad1.transport_squad, embarked_squad: transported_squad1.embarked_squad)).to be false
+            expect(squad1.reload.squads_in_transport.count).to eq 0
+            expect(squad2.reload.embarked_transport).to be nil
+
+            expect(TransportedSquad.exists?(transport_squad: transported_squad2.transport_squad, embarked_squad: transported_squad2.embarked_squad)).to be false
+            expect(squad3.reload.squads_in_transport.count).to eq 1
+            expect(squad4.reload.embarked_transport).to be nil
+          end
+
+          it "only creates a valid TransportedSquad link" do
+            subject
+
+            expect(squad3.reload.squads_in_transport.count).to eq 1
+            expect(squad3.squads_in_transport.first.uuid).to eq new_uuid2
+            expect(Squad.find_by(company: company, uuid: new_uuid2).embarked_transport).to eq squad3
+          end
+        end
+
+        context "when the transport is not allowed to embark the passenger unit" do
+          let!(:transport_allowed_unit) { nil }
+          let!(:squad1) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0, uuid: uuid1 }
+          let!(:squad2) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 0, uuid: uuid2 }
+          let!(:squad3) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 1, uuid: uuid3 }
+          let!(:squad4) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 1, uuid: uuid4 }
+          let!(:transported_squad1) { create :transported_squad, transport_squad: squad1, embarked_squad: squad2 }
+          let!(:transported_squad2) { create :transported_squad, transport_squad: squad3, embarked_squad: squad4 }
+          let(:transportedSquadUuids1) { [uuid2] }
+          let(:transportedSquadUuids2) { [uuid4, new_uuid1] }
+
+          let(:squads_param) do
+            [
+              {
+                squad_id: squad1.id,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid1,
+                transportedSquadUuids: transportedSquadUuids1
+              },
+              {
+                squad_id: squad2.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid2,
+                transportUuid: uuid1
+              },
+              {
+                squad_id: squad3.id,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid3,
+                transportedSquadUuids: transportedSquadUuids2
+              },
+              {
+                squad_id: squad4.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid4,
+                transportUuid: uuid3
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: new_uuid1,
+                transportUuid: uuid3
+              }
+            ]
+          end
+
+          before do
+            available_unit_1.update!(available: 4)
+            available_unit_2.update!(available: 3)
+          end
+
+          it "creates all squads" do
+            squads, _ = subject
+            expect(squads.size).to eq squads_param.size
+
+            expect(squads.where(available_unit: available_unit_1).size).to eq 2
+            expect(squads.where(available_unit: available_unit_2).size).to eq 3
+            expect(squads.where(available_unit: available_unit_3).size).to eq 0
+          end
+
+          it "destroys existing TransportedSquad records and does not create any new ones" do
+            expect { subject }.to change { TransportedSquad.count }.by -2
+            expect(TransportedSquad.exists?(transport_squad: transported_squad1.transport_squad, embarked_squad: transported_squad1.embarked_squad)).to be false
+            expect(TransportedSquad.exists?(transport_squad: transported_squad2.transport_squad, embarked_squad: transported_squad2.embarked_squad)).to be false
+            expect(TransportedSquad.count).to eq 0
+          end
+        end
+
+        context "when the transport does not have sufficient squad slots" do
+          let!(:unit1) { create :unit, transport_squad_slots: 1, transport_model_slots: 12 }
+          let!(:squad1) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0, uuid: uuid1 }
+          let!(:squad2) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 0, uuid: uuid2 }
+          let!(:squad3) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 1, uuid: uuid3 }
+          let!(:squad4) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 1, uuid: uuid4 }
+          let!(:squad5) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 1, uuid: uuid5 }
+          let!(:transported_squad1) { create :transported_squad, transport_squad: squad1, embarked_squad: squad2 }
+          let!(:transported_squad2) { create :transported_squad, transport_squad: squad3, embarked_squad: squad4 }
+          let!(:transported_squad3) { create :transported_squad, transport_squad: squad3, embarked_squad: squad5 }
+          let(:transportedSquadUuids1) { [uuid2] }
+          let(:transportedSquadUuids2) { [uuid4, uuid5, new_uuid1] }
+
+          let(:squads_param) do
+            [
+              {
+                squad_id: squad1.id,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid1,
+                transportedSquadUuids: transportedSquadUuids1
+              },
+              {
+                squad_id: squad2.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid2,
+                transportUuid: uuid1
+              },
+              {
+                squad_id: squad3.id,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid3,
+                transportedSquadUuids: transportedSquadUuids2
+              },
+              {
+                squad_id: squad4.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid4,
+                transportUuid: uuid3
+              },
+              {
+                squad_id: squad5.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid5,
+                transportUuid: uuid3
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: new_uuid1,
+                transportUuid: uuid3
+              }
+            ]
+          end
+
+          before do
+            available_unit_1.update!(available: 4)
+            available_unit_2.update!(available: 2)
+          end
+
+          it "creates all squads" do
+            squads, _ = subject
+            expect(squads.size).to eq squads_param.size
+
+            expect(squads.where(available_unit: available_unit_1).size).to eq 2
+            expect(squads.where(available_unit: available_unit_2).size).to eq 4
+            expect(squads.where(available_unit: available_unit_3).size).to eq 0
+          end
+
+          it "destroys TransportedSquad records that don't fit the squad slots and does not create any new ones" do
+            expect { subject }.to change { TransportedSquad.count }.by -1
+            expect(TransportedSquad.exists?(transport_squad: transported_squad1.transport_squad, embarked_squad: transported_squad1.embarked_squad)).to be true
+            expect(TransportedSquad.exists?(transport_squad: transported_squad2.transport_squad, embarked_squad: transported_squad2.embarked_squad)).to be true
+            expect(TransportedSquad.exists?(transport_squad: transported_squad3.transport_squad, embarked_squad: transported_squad3.embarked_squad)).to be false
+            expect(squad3.reload.squads_in_transport.count).to eq 1
+            expect(squad3.reload.squads_in_transport.first).to eq squad4
+            expect(squad5.reload.embarked_transport).to be nil
+            expect(Squad.find_by(company: company, uuid: new_uuid1).embarked_transport).to be nil
+          end
+        end
+
+        context "when the transport does not have sufficient model slots" do
+          let!(:unit1) { create :unit, transport_squad_slots: 1, transport_model_slots: 5 }
+          let!(:squad1) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0, uuid: uuid1 }
+          let!(:squad2) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 0, uuid: uuid2 }
+          let!(:squad3) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 1, uuid: uuid3 }
+          let!(:squad4) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 1, uuid: uuid4 }
+          let!(:squad5) { create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 1, uuid: uuid5 }
+          let!(:transported_squad1) { create :transported_squad, transport_squad: squad1, embarked_squad: squad2 }
+          let!(:transported_squad2) { create :transported_squad, transport_squad: squad3, embarked_squad: squad4 }
+          let!(:transported_squad3) { create :transported_squad, transport_squad: squad3, embarked_squad: squad5 }
+          let(:transportedSquadUuids1) { [uuid2] }
+          let(:transportedSquadUuids2) { [uuid4, uuid5, new_uuid1] }
+
+          let(:squads_param) do
+            [
+              {
+                squad_id: squad1.id,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid1,
+                transportedSquadUuids: transportedSquadUuids1
+              },
+              {
+                squad_id: squad2.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 0,
+                uuid: uuid2,
+                transportUuid: uuid1
+              },
+              {
+                squad_id: squad3.id,
+                unit_id: unit1.id,
+                available_unit_id: available_unit_1.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid3,
+                transportedSquadUuids: transportedSquadUuids2
+              },
+              {
+                squad_id: squad4.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid4,
+                transportUuid: uuid3
+              },
+              {
+                squad_id: squad5.id,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: uuid5,
+                transportUuid: uuid3
+              },
+              {
+                squad_id: nil,
+                unit_id: unit2.id,
+                available_unit_id: available_unit_2.id,
+                name: nil,
+                vet: 0,
+                tab: "core",
+                index: 1,
+                uuid: new_uuid1,
+                transportUuid: uuid3
+              }
+            ]
+          end
+
+          before do
+            available_unit_1.update!(available: 4)
+            available_unit_2.update!(available: 2)
+          end
+
+          it "creates all squads" do
+            squads, _ = subject
+            expect(squads.size).to eq squads_param.size
+
+            expect(squads.where(available_unit: available_unit_1).size).to eq 2
+            expect(squads.where(available_unit: available_unit_2).size).to eq 4
+            expect(squads.where(available_unit: available_unit_3).size).to eq 0
+          end
+
+          it "destroys TransportedSquad records that don't fit the squad slots and does not create any new ones" do
+            expect { subject }.to change { TransportedSquad.count }.by -1
+            expect(TransportedSquad.exists?(transported_squad1.id)).to be true
+            expect(TransportedSquad.exists?(transport_squad: transported_squad1.transport_squad, embarked_squad: transported_squad1.embarked_squad)).to be true
+            expect(TransportedSquad.exists?(transport_squad: transported_squad2.transport_squad, embarked_squad: transported_squad2.embarked_squad)).to be true
+            expect(TransportedSquad.exists?(transport_squad: transported_squad3.transport_squad, embarked_squad: transported_squad3.embarked_squad)).to be false
+            expect(squad3.reload.squads_in_transport.count).to eq 1
+            expect(squad3.reload.squads_in_transport.first).to eq squad4
+            expect(squad5.reload.embarked_transport).to be nil
+            expect(Squad.find_by(company: company, uuid: new_uuid1).embarked_transport).to be nil
+          end
+        end
       end
     end
   end
 
   describe "#delete_company" do
     before do
-      @company = subject.create_company(doctrine, name)
-      @available_unit1 = @company.available_units.find_by(unit: unit1)
-      @available_unit2 = @company.available_units.find_by(unit: unit2)
-      @available_unit3 = @company.available_units.find_by(unit: unit3)
+      @company = instance.create_company(doctrine, name)
+      @available_unit_1 = @company.available_units.find_by(unit: unit1)
+      @available_unit_2 = @company.available_units.find_by(unit: unit2)
+      @available_unit_3 = @company.available_units.find_by(unit: unit3)
 
-      create :squad, company: @company, available_unit: @available_unit1, tab_category: "core", category_position: 0
-      create :squad, company: @company, available_unit: @available_unit2, tab_category: "core", category_position: 0
-      create :squad, company: @company, available_unit: @available_unit3, tab_category: "core", category_position: 3
+      create :squad, company: @company, available_unit: @available_unit_1, tab_category: "core", category_position: 0
+      create :squad, company: @company, available_unit: @available_unit_2, tab_category: "core", category_position: 0
+      create :squad, company: @company, available_unit: @available_unit_3, tab_category: "core", category_position: 3
     end
 
     it "destroys the Company" do
-      subject.delete_company(@company)
+      instance.delete_company(@company)
       expect { @company.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
     it "destroys the Company's AvailableUnits" do
       company_id = @company.id
-      subject.delete_company(@company)
+      instance.delete_company(@company)
       expect(AvailableUnit.where(company_id: company_id).size).to eq 0
     end
     it "destroys the Company's Squads" do
       company_id = @company.id
-      subject.delete_company(@company)
+      instance.delete_company(@company)
       expect(Squad.where(company_id: company_id).size).to eq 0
     end
   end
 
   describe "#recalculate_resources" do
     before do
-      @company = subject.create_company(doctrine, name)
-      @available_unit1 = @company.available_units.find_by(unit: unit1)
-      @available_unit2 = @company.available_units.find_by(unit: unit2)
-      @available_unit3 = @company.available_units.find_by(unit: unit3)
+      @company = instance.create_company(doctrine, name)
+      @available_unit_1 = @company.available_units.find_by(unit: unit1)
+      @available_unit_2 = @company.available_units.find_by(unit: unit2)
+      @available_unit_3 = @company.available_units.find_by(unit: unit3)
 
-      create :squad, company: @company, available_unit: @available_unit1, tab_category: "core", category_position: 0
-      create :squad, company: @company, available_unit: @available_unit2, tab_category: "core", category_position: 0
-      create :squad, company: @company, available_unit: @available_unit3, tab_category: "core", category_position: 3
+      create :squad, company: @company, available_unit: @available_unit_1, tab_category: "core", category_position: 0
+      create :squad, company: @company, available_unit: @available_unit_2, tab_category: "core", category_position: 0
+      create :squad, company: @company, available_unit: @available_unit_3, tab_category: "core", category_position: 3
     end
 
     it "calculates the correct resources remaining" do
-      man, mun, fuel, pop = subject.recalculate_resources(@company)
-      expect(man).to eq ruleset.starting_man - @available_unit1.man - @available_unit2.man - @available_unit3.man
-      expect(mun).to eq ruleset.starting_mun - @available_unit1.mun - @available_unit2.mun - @available_unit3.mun
-      expect(fuel).to eq ruleset.starting_fuel - @available_unit1.fuel - @available_unit2.fuel - @available_unit3.fuel
-      expect(pop).to eq @available_unit1.pop + @available_unit2.pop + @available_unit3.pop
+      man, mun, fuel, pop = instance.recalculate_resources(@company)
+      expect(man).to eq ruleset.starting_man - @available_unit_1.man - @available_unit_2.man - @available_unit_3.man
+      expect(mun).to eq ruleset.starting_mun - @available_unit_1.mun - @available_unit_2.mun - @available_unit_3.mun
+      expect(fuel).to eq ruleset.starting_fuel - @available_unit_1.fuel - @available_unit_2.fuel - @available_unit_3.fuel
+      expect(pop).to eq @available_unit_1.pop + @available_unit_2.pop + @available_unit_3.pop
     end
   end
 
   describe "#can_create_company" do
     it "can create when the player does not have the max number of companies for that side" do
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
-      expect(subject.send(:can_create_company, doctrine)).to be true
+      expect(instance.send(:can_create_company, doctrine)).to be true
     end
 
     it "cannot create when the player has the max number of companies for that side" do
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
-      expect(subject.send(:can_create_company, doctrine)).to be false
+      expect(instance.send(:can_create_company, doctrine)).to be false
     end
   end
 
   describe "#can_update_company" do
     it "returns true when the player is associated with the company" do
       company = create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
-      expect(subject.send(:can_update_company, company, false)).to be true
+      expect(instance.send(:can_update_company, company, false)).to be true
     end
     it "returns false when the player is not associated with the company" do
       player2 = create :player
       company = create :company, player: player2, faction: faction, doctrine: doctrine, ruleset: ruleset
-      expect(subject.send(:can_update_company, company, false)).to be false
+      expect(instance.send(:can_update_company, company, false)).to be false
     end
     it "returns true when the player is not associated with the company but the override is true" do
       player2 = create :player
       company = create :company, player: player2, faction: faction, doctrine: doctrine, ruleset: ruleset
-      expect(subject.send(:can_update_company, company, true)).to be true
+      expect(instance.send(:can_update_company, company, true)).to be true
     end
   end
 
@@ -583,19 +1606,19 @@ RSpec.describe CompanyService do
     it "passes when the incoming squad ids are not duplicated and are a subset of the existing squad ids" do
       incoming_ids = [1, 2, 3, 4]
       existing_ids = [1, 2, 3, 4, 5, 6]
-      expect { subject.send(:validate_incoming_squad_ids, incoming_ids, existing_ids, 1) }.
+      expect { instance.send(:validate_incoming_squad_ids, incoming_ids, existing_ids, 1) }.
         not_to raise_error
     end
     it "fails when the incoming squad ids have duplicates" do
       incoming_ids = [1, 2, 2, 3, 4, 4]
       existing_ids = []
-      expect { subject.send(:validate_incoming_squad_ids, incoming_ids, existing_ids, 1) }.
+      expect { instance.send(:validate_incoming_squad_ids, incoming_ids, existing_ids, 1) }.
         to raise_error(CompanyService::CompanyUpdateValidationError, "Duplicate squad ids found in payload squad ids: [2, 4]")
     end
     it "fails when the incoming squad ids are not duplicated but are not a subset of the existing squad ids" do
       incoming_ids = [1, 2, 3, 4, 7, 8]
       existing_ids = [1, 2, 3, 4, 5, 6]
-      expect { subject.send(:validate_incoming_squad_ids, incoming_ids, existing_ids, 1) }.
+      expect { instance.send(:validate_incoming_squad_ids, incoming_ids, existing_ids, 1) }.
         to raise_error(CompanyService::CompanyUpdateValidationError, "Given squad ids [7, 8] that don't exist for the company 1")
     end
   end
@@ -604,34 +1627,34 @@ RSpec.describe CompanyService do
     it "passes when the unique units match unique units" do
       uniq_unit_ids = [1, 2, 3]
       uniq_units_by_id = { 1 => Unit.new, 2 => Unit.new, 3 => Unit.new }
-      expect { subject.send(:validate_squad_units_exist, uniq_unit_ids, uniq_units_by_id) }.
+      expect { instance.send(:validate_squad_units_exist, uniq_unit_ids, uniq_units_by_id) }.
         not_to raise_error
     end
     it "fails when the unique units don't match unique units" do
       uniq_unit_ids = [1, 2, 3]
       uniq_units_by_id = { 1 => Unit.new, 2 => Unit.new }
-      expect { subject.send(:validate_squad_units_exist, uniq_unit_ids, uniq_units_by_id) }.
+      expect { instance.send(:validate_squad_units_exist, uniq_unit_ids, uniq_units_by_id) }.
         to raise_error(CompanyService::CompanyUpdateValidationError, "Invalid unit id(s) given in company squad update: [3]")
     end
   end
 
   describe "#validate_squad_available_units_exist" do
     let!(:company) { create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
-    let!(:available_unit1) { create :available_unit, company: company, unit: unit1 }
-    let!(:available_unit2) { create :available_unit, company: company, unit: unit2 }
+    let!(:available_unit_1) { create :available_unit, company: company, unit: unit1 }
+    let!(:available_unit_2) { create :available_unit, company: company, unit: unit2 }
 
     it "passes when all available unit ids match an available unit for the company" do
-      uniq_available_unit_ids_new = [available_unit1.id, available_unit2.id]
-      available_units = [available_unit1, available_unit2]
-      expect { subject.send(:validate_squad_available_units_exist, uniq_available_unit_ids_new, available_units, company.id) }.
+      uniq_available_unit_ids_new = [available_unit_1.id, available_unit_2.id]
+      available_units = [available_unit_1, available_unit_2]
+      expect { instance.send(:validate_squad_available_units_exist, uniq_available_unit_ids_new, available_units, company.id) }.
         not_to raise_error
     end
 
     it "fails when not all available unit ids match an available unit for the company" do
       unknown_id = 1234
-      uniq_available_unit_ids_new = [available_unit1.id, unknown_id]
-      available_units = [available_unit1, available_unit2]
-      expect { subject.send(:validate_squad_available_units_exist, uniq_available_unit_ids_new, available_units, company.id) }.
+      uniq_available_unit_ids_new = [available_unit_1.id, unknown_id]
+      available_units = [available_unit_1, available_unit_2]
+      expect { instance.send(:validate_squad_available_units_exist, uniq_available_unit_ids_new, available_units, company.id) }.
         to raise_error(CompanyService::CompanyUpdateValidationError,
                        "Invalid available_unit_id(s) given in company #{company.id} squad update: [#{unknown_id}]")
     end
@@ -639,48 +1662,48 @@ RSpec.describe CompanyService do
 
   describe "#validate_squad_units_available" do
     let!(:company) { create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
-    let!(:available_unit1) { create :available_unit, company: company, unit: unit1 }
-    let!(:available_unit2) { create :available_unit, company: company, unit: unit2 }
+    let!(:available_unit_1) { create :available_unit, company: company, unit: unit1 }
+    let!(:available_unit_2) { create :available_unit, company: company, unit: unit2 }
 
     it "passes when all unit ids match an available unit for the company" do
       uniq_unit_ids = [unit1.id, unit2.id]
-      available_units = [available_unit1, available_unit2]
-      expect { subject.send(:validate_squad_units_available, uniq_unit_ids, available_units, company.id) }.
+      available_units = [available_unit_1, available_unit_2]
+      expect { instance.send(:validate_squad_units_available, uniq_unit_ids, available_units, company.id) }.
         not_to raise_error
     end
 
     it "fails when not unit ids match an available unit for the company" do
       uniq_unit_ids = [unit1.id, unit2.id, unit3.id]
-      available_units = [available_unit1, available_unit2]
-      expect { subject.send(:validate_squad_units_available, uniq_unit_ids, available_units, company.id) }.
+      available_units = [available_unit_1, available_unit_2]
+      expect { instance.send(:validate_squad_units_available, uniq_unit_ids, available_units, company.id) }.
         to raise_error(CompanyService::CompanyUpdateValidationError, "Found unavailable unit ids [#{unit3.id}] for the company #{company.id}")
     end
   end
 
   describe "#build_empty_tab_index_pop" do
     it "builds a hash with tab categories as keys" do
-      result = subject.send(:build_empty_tab_index_pop)
+      result = instance.send(:build_empty_tab_index_pop)
       expect(result.keys).to match_array(Squad.tab_categories.values)
     end
     it "builds a hash where every value is an array of 8 zeros" do
-      result = subject.send(:build_empty_tab_index_pop)
+      result = instance.send(:build_empty_tab_index_pop)
       expect(result.values.select { |e| e != Array.new(8, 0) }.size).to eq 0
     end
   end
 
   describe "#calculate_squad_resources" do
     let(:company) { create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
-    let(:available_unit1) { create :available_unit, company: company, unit: unit1, man: 100, mun: 0, fuel: 40, pop: 2 }
-    let(:available_unit2) { create :available_unit, company: company, unit: unit2, man: 400, mun: 130, fuel: 0, pop: 8 }
-    let(:squads) { [{ unit_id: unit1.id, available_unit_id: available_unit1.id, tab: "core", index: 0 },
-                    { unit_id: unit1.id, available_unit_id: available_unit1.id, tab: "core", index: 0 },
-                    { unit_id: unit2.id, available_unit_id: available_unit2.id, tab: "infantry", index: 1 },
-                    { unit_id: unit2.id, available_unit_id: available_unit2.id, tab: "infantry", index: 2 }] }
-    let(:available_units_by_id) { { available_unit1.id => available_unit1, available_unit2.id => available_unit2 } }
+    let(:available_unit_1) { create :available_unit, company: company, unit: unit1, man: 100, mun: 0, fuel: 40, pop: 2 }
+    let(:available_unit_2) { create :available_unit, company: company, unit: unit2, man: 400, mun: 130, fuel: 0, pop: 8 }
+    let(:squads) { [{ unit_id: unit1.id, available_unit_id: available_unit_1.id, tab: "core", index: 0 },
+                    { unit_id: unit1.id, available_unit_id: available_unit_1.id, tab: "core", index: 0 },
+                    { unit_id: unit2.id, available_unit_id: available_unit_2.id, tab: "infantry", index: 1 },
+                    { unit_id: unit2.id, available_unit_id: available_unit_2.id, tab: "infantry", index: 2 }] }
+    let(:available_units_by_id) { { available_unit_1.id => available_unit_1, available_unit_2.id => available_unit_2 } }
     let(:platoon_pop_by_tab_and_index) { { "core": [0, 0, 0], "infantry": [0, 0, 0] }.with_indifferent_access }
 
     it "returns the correct resources" do
-      man, mun, fuel, pop = subject.send(:calculate_squad_resources, squads, available_units_by_id, platoon_pop_by_tab_and_index)
+      man, mun, fuel, pop = instance.send(:calculate_squad_resources, squads, available_units_by_id, platoon_pop_by_tab_and_index)
       expect(man).to eq(1000)
       expect(mun).to eq(260)
       expect(fuel).to eq(80)
@@ -688,7 +1711,7 @@ RSpec.describe CompanyService do
     end
 
     it "sets the correct platoon pop" do
-      subject.send(:calculate_squad_resources, squads, available_units_by_id, platoon_pop_by_tab_and_index)
+      instance.send(:calculate_squad_resources, squads, available_units_by_id, platoon_pop_by_tab_and_index)
       expect(platoon_pop_by_tab_and_index["core"].size).to eq 3
       expect(platoon_pop_by_tab_and_index["core"][0]).to eq 4
       expect(platoon_pop_by_tab_and_index["core"][1]).to eq 0
@@ -706,7 +1729,7 @@ RSpec.describe CompanyService do
     let(:starting_fuel) { 1400 }
     let(:ruleset) { create :ruleset, starting_man: starting_man, starting_mun: starting_mun, starting_fuel: starting_fuel }
     it "returns the correct resources" do
-      man, mun, fuel = subject.send(:get_total_available_resources, ruleset)
+      man, mun, fuel = instance.send(:get_total_available_resources, ruleset)
       expect(man).to eq starting_man
       expect(mun).to eq starting_mun
       expect(fuel).to eq starting_fuel
@@ -717,14 +1740,14 @@ RSpec.describe CompanyService do
     let(:ruleset) { create :ruleset, starting_man: 5000, starting_mun: 2000, starting_fuel: 1400 }
 
     it "returns resources remaining when the remaining resources are > 0" do
-      man, mun, fuel = subject.send(:calculate_remaining_resources, ruleset, 4500, 1200, 1400)
+      man, mun, fuel = instance.send(:calculate_remaining_resources, ruleset, 4500, 1200, 1400)
       expect(man).to eq 500
       expect(mun).to eq 800
       expect(fuel).to eq 0
     end
 
     it "raises an error when one or more resource remaining is less than 0" do
-      expect { subject.send(:calculate_remaining_resources, ruleset, 5500, 1200, 1400) }.
+      expect { instance.send(:calculate_remaining_resources, ruleset, 5500, 1200, 1400) }.
         to raise_error(CompanyService::CompanyUpdateValidationError,
                        "Invalid squad update, negative resource balance found: -500 manpower, 800 munitions, 0 fuel")
     end
@@ -733,20 +1756,20 @@ RSpec.describe CompanyService do
   describe "#validate_platoon_pop" do
     it "passes when all platoons have valid pop" do
       platoon_pop_by_tab_and_index = { "core": [0, 10, 0], "infantry": [12, 12, 8] }
-      expect { subject.send(:validate_platoon_pop, platoon_pop_by_tab_and_index) }.
+      expect { instance.send(:validate_platoon_pop, platoon_pop_by_tab_and_index) }.
         not_to raise_error
     end
 
     it "fails when a platoon has pop greater than zero but less than the minimum" do
       platoon_pop_by_tab_and_index = { "core": [1, 10, 0], "infantry": [12, 12, 8] }
-      expect { subject.send(:validate_platoon_pop, platoon_pop_by_tab_and_index) }.
+      expect { instance.send(:validate_platoon_pop, platoon_pop_by_tab_and_index) }.
         to raise_error(CompanyService::CompanyUpdateValidationError,
                        "Platoon at [core 0] has 1 pop, must be between 7 and 25, inclusive")
     end
 
     it "fails when a platoon has pop greater than the maximum" do
       platoon_pop_by_tab_and_index = { "core": [0, 10, 0], "infantry": [12, 27, 8] }
-      expect { subject.send(:validate_platoon_pop, platoon_pop_by_tab_and_index) }.
+      expect { instance.send(:validate_platoon_pop, platoon_pop_by_tab_and_index) }.
         to raise_error(CompanyService::CompanyUpdateValidationError,
                        "Platoon at [infantry 1] has 27 pop, must be between 7 and 25, inclusive")
     end
@@ -754,58 +1777,58 @@ RSpec.describe CompanyService do
 
   describe "#build_available_unit_deltas" do
     let(:company) { create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
-    let(:available_unit1) { create :available_unit, company: company, unit: unit1, available: 1 }
-    let(:available_unit2) { create :available_unit, company: company, unit: unit2, available: 1 }
-    let(:available_unit3) { create :available_unit, company: company, unit: unit3, available: 0 }
-    let(:squad1) { create :squad, company: company, available_unit: available_unit1, tab_category: "core", category_position: 0 }
-    let(:squad2) { create :squad, company: company, available_unit: available_unit1, tab_category: "core", category_position: 0 }
-    let(:squad3) { create :squad, company: company, available_unit: available_unit2, tab_category: "infantry", category_position: 0 }
-    let(:squad4) { create :squad, company: company, available_unit: available_unit3, tab_category: "infantry", category_position: 1 }
-    let(:existing_squads_by_available_unit_id) { { available_unit1.id => [squad1, squad2], available_unit2.id => [squad3], available_unit3.id => [squad4] } }
-    let(:payload_squad_by_available_unit_id) { { available_unit1.id => [{ unit_id: unit1.id, available_unit_id: available_unit1.id, tab: "core", index: 0 },
-                                                                        { unit_id: unit1.id, available_unit_id: available_unit1.id, tab: "core", index: 0 }],
-                                                 available_unit2.id => [{ unit_id: unit2.id, available_unit_id: available_unit2.id, tab: "infantry", index: 1 },
-                                                                        { unit_id: unit2.id, available_unit_id: available_unit2.id, tab: "infantry", index: 2 }] } }
-    let(:available_units_by_id) { { available_unit1.id => available_unit1, available_unit2.id => available_unit2, available_unit3.id => available_unit3 } }
+    let(:available_unit_1) { create :available_unit, company: company, unit: unit1, available: 1 }
+    let(:available_unit_2) { create :available_unit, company: company, unit: unit2, available: 1 }
+    let(:available_unit_3) { create :available_unit, company: company, unit: unit3, available: 0 }
+    let(:squad1) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0 }
+    let(:squad2) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0 }
+    let(:squad3) { create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 0 }
+    let(:squad4) { create :squad, company: company, available_unit: available_unit_3, tab_category: "infantry", category_position: 1 }
+    let(:existing_squads_by_available_unit_id) { { available_unit_1.id => [squad1, squad2], available_unit_2.id => [squad3], available_unit_3.id => [squad4] } }
+    let(:payload_squad_by_available_unit_id) { { available_unit_1.id => [{ unit_id: unit1.id, available_unit_id: available_unit_1.id, tab: "core", index: 0 },
+                                                                         { unit_id: unit1.id, available_unit_id: available_unit_1.id, tab: "core", index: 0 }],
+                                                 available_unit_2.id => [{ unit_id: unit2.id, available_unit_id: available_unit_2.id, tab: "infantry", index: 1 },
+                                                                         { unit_id: unit2.id, available_unit_id: available_unit_2.id, tab: "infantry", index: 2 }] } }
+    let(:available_units_by_id) { { available_unit_1.id => available_unit_1, available_unit_2.id => available_unit_2, available_unit_3.id => available_unit_3 } }
 
     it "builds the correct availability changes hash for only units in the payload squads" do
-      available_changes = subject.send(:build_available_unit_deltas, company, payload_squad_by_available_unit_id, existing_squads_by_available_unit_id, available_units_by_id)
+      available_changes = instance.send(:build_available_unit_deltas, company, payload_squad_by_available_unit_id, existing_squads_by_available_unit_id, available_units_by_id)
       expect(available_changes.size).to eq 2
-      expect(available_changes.keys).to match_array([available_unit1.id, available_unit2.id])
-      expect(available_changes[available_unit1.id]).to eq 0
-      expect(available_changes[available_unit2.id]).to eq -1
+      expect(available_changes.keys).to match_array([available_unit_1.id, available_unit_2.id])
+      expect(available_changes[available_unit_1.id]).to eq 0
+      expect(available_changes[available_unit_2.id]).to eq -1
     end
 
     context "when there is insufficient availability for a unit" do
       before do
-        available_unit2.update!(available: 0)
+        available_unit_2.update!(available: 0)
       end
 
       it "raises an error" do
-        expect { subject.send(:build_available_unit_deltas, company, payload_squad_by_available_unit_id, existing_squads_by_available_unit_id, available_units_by_id) }.
+        expect { instance.send(:build_available_unit_deltas, company, payload_squad_by_available_unit_id, existing_squads_by_available_unit_id, available_units_by_id) }.
           to raise_error(CompanyService::CompanyUpdateValidationError,
-                         "Insufficient availability to create squads for available unit #{available_unit2.id} in company #{company.id}: Existing count 1, payload count 2, available number 0")
+                         "Insufficient availability to create squads for available unit #{available_unit_2.id} in company #{company.id}: Existing count 1, payload count 2, available number 0")
       end
     end
   end
 
   describe "#add_existing_squads_to_remove" do
     let(:company) { create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
-    let(:available_unit1) { create :available_unit, company: company, unit: unit1, available: 1 }
-    let(:available_unit2) { create :available_unit, company: company, unit: unit2, available: 1 }
-    let(:available_unit3) { create :available_unit, company: company, unit: unit3, available: 0 }
-    let(:squad1) { create :squad, company: company, available_unit: available_unit1, tab_category: "core", category_position: 0 }
-    let(:squad2) { create :squad, company: company, available_unit: available_unit1, tab_category: "core", category_position: 0 }
-    let(:squad3) { create :squad, company: company, available_unit: available_unit2, tab_category: "infantry", category_position: 0 }
-    let(:squad4) { create :squad, company: company, available_unit: available_unit3, tab_category: "infantry", category_position: 1 }
-    let(:existing_squads_by_available_unit_id) { { available_unit1.id => [squad1, squad2], available_unit2.id => [squad3], available_unit3.id => [squad4] } }
-    let(:available_changes) { { available_unit1.id => -1, available_unit2.id => 0 } }
+    let(:available_unit_1) { create :available_unit, company: company, unit: unit1, available: 1 }
+    let(:available_unit_2) { create :available_unit, company: company, unit: unit2, available: 1 }
+    let(:available_unit_3) { create :available_unit, company: company, unit: unit3, available: 0 }
+    let(:squad1) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0 }
+    let(:squad2) { create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0 }
+    let(:squad3) { create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 0 }
+    let(:squad4) { create :squad, company: company, available_unit: available_unit_3, tab_category: "infantry", category_position: 1 }
+    let(:existing_squads_by_available_unit_id) { { available_unit_1.id => [squad1, squad2], available_unit_2.id => [squad3], available_unit_3.id => [squad4] } }
+    let(:available_changes) { { available_unit_1.id => -1, available_unit_2.id => 0 } }
 
     it "adds the existing squad to remove availability to available changes" do
-      subject.send(:add_existing_squads_to_remove, existing_squads_by_available_unit_id, available_changes)
+      instance.send(:add_existing_squads_to_remove, existing_squads_by_available_unit_id, available_changes)
       expect(available_changes.size).to eq 3
-      expect(available_changes.keys).to match_array([available_unit1.id, available_unit2.id, available_unit3.id])
-      expect(available_changes[available_unit3.id]).to eq 1
+      expect(available_changes.keys).to match_array([available_unit_1.id, available_unit_2.id, available_unit_3.id])
+      expect(available_changes[available_unit_3.id]).to eq 1
     end
   end
 end

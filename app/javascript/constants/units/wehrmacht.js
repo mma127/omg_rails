@@ -39,6 +39,7 @@ export const FLAMMENTRUPP = 'flammentrupp'
 export const FLAMMENWERFER = 'flammenwerfer'
 export const FORTRESS_PIONEERS = 'fortress_pioneers'
 export const GESCHUTZWAGEN = 'geschutzwagen'
+export const GESCHUTZWAGEN_BLITZ = 'geschutzwagen_blitz'
 export const GRENADIERS = 'grenadiers'
 export const HALFTRACK_AXIS = 'halftrack_axis'
 export const KCH = 'kch'
@@ -53,17 +54,22 @@ export const NEBELWERFER = 'nebelwerfer'
 export const OFFICER_DEF = 'officer_def'
 export const OFFICER_TERROR = 'officer_terror'
 export const OSTWIND = 'ostwind'
+export const OSTWIND_BLITZ = 'ostwind_blitz'
 export const P4 = 'p4'
+export const P4_BLITZ = 'p4_blitz'
 export const PAK38 = 'pak38'
 export const PANTHER_AXIS = 'panther_axis'
+export const PANTHER_BLITZ = 'panther_blitz'
 export const PANZER_ACE = 'panzer_ace'
 export const PIONEERS = 'pioneers'
 export const PUMA = 'puma'
+export const PUMA_BLITZ = 'puma_blitz'
 export const SABOTEURS = 'saboteurs'
 export const SCHWIMMWAGEN_AXIS = 'schwimmwagen_axis'
 export const SNIPER_AXIS = 'sniper_axis'
 export const STORMTROOPERS = 'stormtroopers'
 export const STUG = 'stug'
+export const STUG_BLITZ = 'stug_blitz'
 export const STUH = 'stuh'
 export const STURMPIONEERS = 'sturmpioneers'
 export const TIGER = 'tiger'
@@ -76,6 +82,7 @@ export const unitImageMapping = {
   [FLAMMENWERFER]: flammenwerfer,
   [FORTRESS_PIONEERS]: fortress_pioneers,
   [GESCHUTZWAGEN]: geschutzwagen,
+  [GESCHUTZWAGEN_BLITZ]: geschutzwagen,
   [GRENADIERS]: grenadiers,
   [HALFTRACK_AXIS]: halftrack_axis,
   [KCH]: kch,
@@ -90,17 +97,22 @@ export const unitImageMapping = {
   [OFFICER_DEF]: officer_def,
   [OFFICER_TERROR]: officer_terror,
   [OSTWIND]: ostwind,
+  [OSTWIND_BLITZ]: ostwind,
   [P4]: p4,
+  [P4_BLITZ]: p4,
   [PAK38]: pak38,
   [PANTHER_AXIS]: panther_axis,
+  [PANTHER_BLITZ]: panther_axis,
   [PANZER_ACE]: panzer_ace,
   [PIONEERS]: pioneers,
   [PUMA]: puma,
+  [PUMA_BLITZ]: puma,
   [SABOTEURS]: saboteurs,
   [SCHWIMMWAGEN_AXIS]: schwimmwagen_axis,
   [SNIPER_AXIS]: sniper_axis,
   [STORMTROOPERS]: stormtroopers,
   [STUG]: stug,
+  [STUG_BLITZ]: stug,
   [STUH]: stuh,
   [STURMPIONEERS]: sturmpioneers,
   [TIGER]: tiger,

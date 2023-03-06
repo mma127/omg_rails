@@ -1,8 +1,15 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { fetchCompanyById } from "../companies/companiesSlice";
-import { addSquad, resetSquadState, removeSquad, upsertSquads } from "./squadsSlice";
 import {
-  EMPLACEMENT,
+  addNonTransportedSquad,
+  resetSquadState,
+  removeSquad,
+  upsertSquads,
+  addTransportedSquad,
+  removeTransportedSquad
+} from "./squadsSlice";
+import {
+  EMPLACEMENT, GLIDER,
   INFANTRY,
   LIGHT_VEHICLE,
   SUPPORT_TEAM,
@@ -19,6 +26,7 @@ const initialState = availableUnitsAdapter.getInitialState({
   [LIGHT_VEHICLE]: [],
   [TANK]: [],
   [EMPLACEMENT]: [],
+  [GLIDER]: [],
   companyId: null,
   availableUnitsStatus: "idle",
   loadingAvailableUnitsError: null,
@@ -69,8 +77,16 @@ const availableUnitsSlice = createSlice({
         state.availableUnitsStatus = "idle"
         state.loadingAvailableUnitsError = action.payload.error
       })
-      .addCase(addSquad, (state, action) => {
+      .addCase(addNonTransportedSquad, (state, action) => {
         const { availableUnitId } = action.payload
+        const availableUnitEntity = state.entities[availableUnitId]
+        const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
+        availableUnitEntity.available -= 1
+        availableUnitTable.available -= 1
+        console.log(`${availableUnitEntity.unitName} availability reduced by 1 to ${availableUnitEntity.available}`)
+      })
+      .addCase(addTransportedSquad, (state, action) => {
+        const { newSquad: { availableUnitId }, _ } = action.payload
         const availableUnitEntity = state.entities[availableUnitId]
         const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
         availableUnitEntity.available -= 1
@@ -81,6 +97,14 @@ const availableUnitsSlice = createSlice({
         const { availableUnitId } = action.payload
         const availableUnitEntity = state.entities[availableUnitId]
         const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
+        availableUnitEntity.available += 1
+        availableUnitTable.available += 1
+        console.log(`${availableUnitEntity.unitName} availability increased by 1 to ${availableUnitEntity.available}`)
+      })
+      .addCase(removeTransportedSquad, (state, action) => {
+        const { squad } = action.payload
+        const availableUnitEntity = state.entities[squad.availableUnitId]
+        const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === squad.availableUnitId)
         availableUnitEntity.available += 1
         availableUnitTable.available += 1
         console.log(`${availableUnitEntity.unitName} availability increased by 1 to ${availableUnitEntity.available}`)
@@ -107,5 +131,6 @@ export const selectSupportTeamAvailableUnits = state => state.availableUnits[SUP
 export const selectLightVehicleAvailableUnits = state => state.availableUnits[LIGHT_VEHICLE]
 export const selectTankAvailableUnits = state => state.availableUnits[TANK]
 export const selectEmplacementAvailableUnits = state => state.availableUnits[EMPLACEMENT]
+export const selectGliderAvailableUnits = state => state.availableUnits[GLIDER]
 
 export const selectAvailableUnitsStatus = state => state.availableUnits.availableUnitsStatus
