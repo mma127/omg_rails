@@ -34,6 +34,13 @@ const useStyles = makeStyles(() => ({
   },
   tooltipHeader: {
     fontWeight: 'bold'
+  },
+  slotsDeleteWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    alignItems: "center",
+    justifyContent: "space-between"
   }
 }))
 
@@ -177,10 +184,14 @@ export const SquadCard = (
     if (transportedSquads.length > 0) {
       usedModelSlots = transportedSquads.map(s => s.totalModelCount).reduce((prev, next) => prev + next)
     }
-    transportContent = <TransportDropTarget transportedSquads={transportedSquads} unitCreateOnHit={unitCreateOnHit}
+    transportContent = <TransportDropTarget transportedSquads={transportedSquads}
+                                            unitCreateOnHit={unitCreateOnHit}
                                             squadMoveOnHit={squadMoveOnHit}
-                                            index={index} tab={tab} transportUuid={uuid} onUnitClick={onUnitClick}
-                                            transportSquadDelete={transportSquadDelete} enabled={enabled} />
+                                            index={index} tab={tab}
+                                            transportUuid={uuid}
+                                            onUnitClick={onUnitClick}
+                                            transportSquadDelete={transportSquadDelete}
+                                            enabled={enabled} />
 
     transportSlotsContent = <TransportSlots usedSquadSlots={usedSquadSlots}
                                             usedModelSlots={usedModelSlots}
@@ -219,17 +230,10 @@ export const SquadCard = (
           arrow
         >
           <Box sx={{ p: 1 }} className={classes.squadCardItems}>
-
             <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
                       onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName} />
             {transportContent}
-            <Box sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              height: '100%',
-              alignItems: "center",
-              justifyContent: "space-between"
-            }}>
+            <Box className={classes.slotsDeleteWrapper}>
               {deleteContent}
               {transportSlotsContent}
             </Box>
