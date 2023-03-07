@@ -51,6 +51,10 @@ class CompanyService
   # Takes the set of squads, validates that the company can upsert all of the squads, and persists them, overwriting old
   # squads as necessary. If an existing Squad is not in the new list of squads, it will be destroyed.
   #
+  # If squads have transportUuids, must have a matching squad with those squads' uuids in its transportedSquadUuid list.
+  # Construct TransportedSquad associating the transport to the embarked squads.
+  # If the transportUuid does not match, persist the squads without a TransportedSquad association.
+  #
   # Validates:
   # * The company belongs to the player, or an override is used
   # * The set of squad ids represent Squads belonging to the company
@@ -127,6 +131,9 @@ class CompanyService
 
     ##### At this point, we know the company can have the new squads as they are within price and availability
 
+    # Build transport mappings
+    uuid_to_transported_uuids, transport_related_uuids = build_transport_mappings(squads, uniq_units_new_by_id)
+
     ActiveRecord::Base.transaction do
       existing_squads_by_id = existing_squads.index_by(&:id)
 
@@ -135,12 +142,14 @@ class CompanyService
         if s[:squad_id].blank?
           ## Create new Squad records for squads without squad id
           available_unit = available_units_by_id[s[:available_unit_id]]
-          new_squads << Squad.new(company: company, vet: s[:vet], tab_category: s[:tab],
-                                  category_position: s[:index], available_unit: available_unit)
+          new_squads << Squad.new(company: company, vet: s[:vet], tab_category: s[:tab], uuid: s[:uuid],
+                                  category_position: s[:index], available_unit: available_unit,
+                                  total_model_count: s[:totalModelCount])
         else
           ## Update existing Squads
           existing_squad = existing_squads_by_id[s[:squad_id]]
-          existing_squad.update!(tab_category: s[:tab], category_position: s[:index], name: s[:name])
+          existing_squad.update!(tab_category: s[:tab], category_position: s[:index], name: s[:name],
+                                 total_model_count: s[:totalModelCount])
         end
       end
       Squad.import!(new_squads)
@@ -154,6 +163,33 @@ class CompanyService
         available_unit = available_units_by_id[available_unit_id]
         new_available_number = available_unit.available + delta
         available_unit.update!(available: [new_available_number, 0].max)
+      end
+
+      ## Construct TransportedSquads based on transportSquadUuid to uuid relationships
+      transported_squads = []
+      transport_related_squads = Squad.where(company: company, uuid: transport_related_uuids)
+      transport_related_squads_by_uuid = transport_related_squads.index_by(&:uuid)
+      uuid_to_transported_uuids.each do |transport_uuid, transported_uuids|
+        transport_squad = transport_related_squads_by_uuid[transport_uuid]
+        next unless transport_squad.present?
+
+        transported_uuids.each do |t_uuid|
+          passenger = transport_related_squads_by_uuid[t_uuid]
+          next unless passenger.present?
+          next unless transport_squad.category_position == passenger.category_position && transport_squad.tab_category == passenger.tab_category
+
+          # Established these squads exist and are in the same platoon
+          transported_squads << TransportedSquad.new(transport_squad: transport_squad, embarked_squad: passenger)
+        end
+      end
+      # First select all existing TransportedSquads from the create list
+      ts_to_keep = transported_squads.map do |ts|
+        TransportedSquad.where(transport_squad: ts.transport_squad, embarked_squad: ts.embarked_squad)
+      end.reduce(&:or)
+      # Destroy all TransportedSquads which are not in the list of ids to keep
+      TransportedSquad.joins(:transport_squad).where(transport_squad: { company_id: company.id }).where.not(id: ts_to_keep&.pluck(:id)).destroy_all
+      if transported_squads.present?
+        TransportedSquad.import!(transported_squads, on_duplicate_key_ignore: { conflict_target: [:transport_squad_id, :embarked_squad_id] })
       end
 
       company.update!(pop: pop_new, man: man_remaining, mun: mun_remaining, fuel: fuel_remaining)
@@ -370,5 +406,43 @@ class CompanyService
 
       available_changes[available_unit_id] = existing_unit_squads.size
     end
+  end
+
+  def build_transport_mappings(squads, uniq_units_new_by_id)
+    squads_by_uuid = squads.index_by { |s| s[:uuid] }
+    transport_allowed_unit_ids_by_transport_id = TransportAllowedUnit.relationship_map
+    uuid_to_transported_uuids = {}
+    transport_related_uuids = []
+    squads.each do |s|
+      next unless s[:transportedSquadUuids].present?
+
+      # Validate the relationship of transportUuid on passenger to transportedSquadUuids on transport are 2 way matching
+      # Validate the transport unit is allowed to transport the potential passenger unit
+      # Validate the transport squad has sufficient squad slots for the potential passenger squad
+      # Validate the transport squad has sufficient model slots for the potential passenger squad's model count
+      #
+      # If validation fails on any case, skip creating a transport link. The potential passenger squad will still be upserted into the platoon
+      #
+      # NOTE: Platoon pop has already been validated, do not need to do it per transport
+      s_unit = uniq_units_new_by_id[s[:unit_id]]
+      remaining_squad_slots = s_unit.transport_squad_slots
+      remaining_model_slots = s_unit.transport_model_slots
+      matching_transport_uuid = s[:transportedSquadUuids].select do |uuid|
+        potential_passenger = squads_by_uuid[uuid]
+        potential_pass_unit = uniq_units_new_by_id[potential_passenger[:unit_id]]
+        valid_passenger_relationship = potential_passenger[:transportUuid] == s[:uuid]
+        valid_transport_allowed_unit = transport_allowed_unit_ids_by_transport_id[s[:unit_id]].include? potential_passenger[:unit_id]
+        valid_squad_slots = (remaining_squad_slots -= 1) >= 0
+        valid_model_slots = (remaining_model_slots -= potential_pass_unit.model_count) >= 0
+
+        valid_passenger_relationship && valid_transport_allowed_unit && valid_squad_slots && valid_model_slots
+      end
+      if matching_transport_uuid.present?
+        uuid_to_transported_uuids[s[:uuid]] = matching_transport_uuid
+        transport_related_uuids << s[:uuid]
+        transport_related_uuids.concat(s[:transportedSquadUuids])
+      end
+    end
+    [uuid_to_transported_uuids, transport_related_uuids]
   end
 end

@@ -1,10 +1,14 @@
 import React from 'react'
+import { useSelector } from "react-redux";
 import { DragDropContainer } from "react-drag-drop-container";
 import { makeStyles } from "@mui/styles";
 import { Box, Tooltip, Typography } from "@mui/material";
 
 import { UnitCard } from "./UnitCard";
 import { formatResourceCost } from "../../../utils/company";
+import { selectAvailableUnitById } from "../../units/availableUnitsSlice";
+import { unitImageMapping } from "../../../constants/units/all_factions";
+import { selectUnitById } from "../../units/unitsSlice";
 
 const useStyles = makeStyles(() => ({
   dragDropContainer: {
@@ -19,61 +23,60 @@ const useStyles = makeStyles(() => ({
 /**
  * DragDrop container component to wrap an available unit card, populating dragData for the drop target
  *
- * @param label: unit label
- * @param image: unit image
- * @param onClick: callback fired when the unit card is clicked
+ * @param availableUnitId
+ * @param onUnitClick: callback fired when the unit card is clicked
+ * @param enabled
  */
 export const AvailableUnitDroppable = ({
-                                         unitId,
-                                         unitName,
-                                         label,
-                                         availableUnit,
-                                         image,
+                                         availableUnitId,
                                          onUnitClick,
-                                         available,
-                                         resupply,
-                                         companyMax,
                                          enabled
                                        }) => {
   const classes = useStyles()
+  const availableUnit = useSelector(state => selectAvailableUnitById(state, availableUnitId))
+  const unit = useSelector(state => selectUnitById(state, availableUnit.unitId))
+  const image = unitImageMapping[availableUnit.unitName]
 
   const cost = formatResourceCost({ man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel })
 
-  const notAvailable = available <= 0
+  const notAvailable = availableUnit.available <= 0
 
+  /** When dragging, we want to treat the current unit as selected for the details pane */
   const onDragStart = () => {
-    onUnitClick(unitId, availableUnit.id, image, unitName)
+    onUnitClick(availableUnit.unitId, availableUnit.id, image, availableUnit.unitName)
   }
 
   return (
-    <Tooltip
-      key={unitId}
-      title={
-        <>
-          {/*TODO use unit display name */}
-          <Typography variant="subtitle2" className={classes.tooltipHeader}>{label}</Typography>
-          <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
-          <Box><Typography variant="body"><b>Pop:</b> {parseFloat(availableUnit.pop)}</Typography></Box>
-          <Box><Typography variant="body"><b>Available:</b> {available}</Typography></Box>
-          <Box><Typography variant="body"><b>Resupply:</b> {resupply}</Typography></Box>
-        </>
-      }
-      // TransitionComponent={Zoom}
-      followCursor={true}
-      placement="bottom-start"
-      arrow
-    >
-      <Box className={classes.dragDropContainer}>
-        <DragDropContainer targetKey="unit"
-                           noDragging={notAvailable || !enabled}
-                           onDragStart={onDragStart}
-                           dragData={{
-                             unitId: unitId, availableUnitId: availableUnit.id, unitName: unitName, unitDisplayName: label,
-                             image: image, pop: availableUnit.pop, man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel
-                           }}>
-          <UnitCard unitId={unitId} availableUnitId={availableUnit.id} label={label} image={image} onUnitClick={onUnitClick} disabled={notAvailable} />
-        </DragDropContainer>
-      </Box>
-    </Tooltip>
+    <DragDropContainer targetKey="unit"
+                       noDragging={notAvailable || !enabled}
+                       onDragStart={onDragStart}
+                       dragData={{
+                         availableUnit: availableUnit,
+                         unit: unit
+                       }}>
+      <Tooltip
+        key={availableUnitId}
+        title={
+          <>
+            <Typography variant="subtitle2"
+                        className={classes.tooltipHeader}>
+              {availableUnit.unitDisplayName}
+            </Typography>
+            <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
+            <Box><Typography variant="body"><b>Pop:</b> {parseFloat(availableUnit.pop)}</Typography></Box>
+            <Box><Typography variant="body"><b>Available:</b> {availableUnit.available}</Typography></Box>
+            <Box><Typography variant="body"><b>Resupply:</b> {availableUnit.resupply}</Typography></Box>
+          </>
+        }
+        followCursor={true}
+        placement="bottom-start"
+        arrow
+      >
+        <Box className={classes.dragDropContainer}>
+          <UnitCard unitId={availableUnit.unitId} availableUnitId={availableUnit.id}
+                    onUnitClick={onUnitClick} disabled={notAvailable} />
+        </Box>
+      </Tooltip>
+    </DragDropContainer>
   )
 }

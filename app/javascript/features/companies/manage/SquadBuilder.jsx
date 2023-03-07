@@ -18,18 +18,27 @@ import {
 import { AvailableUnits } from "./available_units/AvailableUnits";
 import { AvailableUnitDetails } from "./AvailableUnitDetails";
 import {
-  addSquad, resetSquadState, clearNotifySnackbar,
+  addNonTransportedSquad,
+  resetSquadState,
+  clearNotifySnackbar,
+  showSnackbar,
   removeSquad,
   selectAntiArmourSquads,
   selectArmourSquads,
   selectAssaultSquads,
   selectCoreSquads,
   selectInfantrySquads,
-  selectSupportSquads, upsertSquads, fetchCompanySquads
+  selectSupportSquads,
+  upsertSquads,
+  fetchCompanySquads,
+  moveSquad,
+  addTransportedSquad,
+  removeTransportedSquad
 } from "../../units/squadsSlice";
 import { ErrorTypography } from "../../../components/ErrorTypography";
 import { AlertSnackbar } from "../AlertSnackbar";
 import { selectIsCompanyUnlocksChanged } from "./unlocks/companyUnlocksSlice";
+import { createSquad } from "../../units/squad";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -50,6 +59,7 @@ export const SquadBuilder = ({}) => {
   const [selectedUnitName, setSelectedUnitName] = useState(null)
 
   const notifySnackbar = useSelector(state => state.squads.notifySnackbar)
+  const snackbarMessage = useSelector(state => state.squads.snackbarMessage)
   const [openSnackbar, setOpenSnackbar] = useState(false)
 
   useEffect(() => {
@@ -125,7 +135,10 @@ export const SquadBuilder = ({}) => {
   // TODO use this to constrain the drag area
   const constraintsRef = useRef(null)
 
-  const handleCloseSnackbar = () => setOpenSnackbar(false)
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false)
+    dispatch(clearNotifySnackbar())
+  }
 
   const onTabChange = (newTab) => {
     console.log(`SquadBuilder changed to new tab ${newTab}`)
@@ -142,30 +155,49 @@ export const SquadBuilder = ({}) => {
     setSelectedUnitName(unitName)
   }
 
-  const onDropTargetHit = ({
-                             uuid,
-                             id,
-                             unitId,
-                             availableUnitId,
-                             unitName,
-                             pop,
-                             man,
-                             mun,
-                             fuel,
-                             image,
-                             index,
-                             tab,
-                             vet
-                           }) => {
-    console.log(`Added ${unitName}, pop ${pop}, costs ${man}MP ${mun}MU ${fuel}FU to category ${tab} position ${index}`)
-    dispatch(addUnitCost({ id: company.id, pop, man, mun, fuel }))
-    dispatch(addSquad({ uuid, id, unitId, availableUnitId, unitName, pop, man, mun, fuel, image, index, tab, vet }))
+  /** For a new non-transported squad, use the availableUnit and unit to construct a new squad object
+   * Update the company's resources with the new squad's base cost and add the squad to state */
+  const onNonTransportSquadCreate = (availableUnit, unit, index, tab) => {
+    const newSquad = createSquad(availableUnit, unit, index, tab)
+    dispatch(addUnitCost({
+      id: company.id,
+      pop: newSquad.pop,
+      man: newSquad.man,
+      mun: newSquad.mun,
+      fuel: newSquad.fuel
+    }))
+    dispatch(addNonTransportedSquad(newSquad))
   }
 
-  const onSquadDestroy = (uuid, id, availableUnitId, pop, man, mun, fuel, index, tab) => {
+  /** For a new transported squad, use the availableUnit and unit to construct a new squad object.
+   * Additionally include the transport's UUID to denote the transport relationship
+   * Update the company's resources with the new squad's base cost and add the squad to state */
+  const onTransportedSquadCreate = (availableUnit, unit, index, tab, transportUuid) => {
+    const newSquad = createSquad(availableUnit, unit, index, tab, transportUuid)
+    dispatch(addUnitCost({
+      id: company.id,
+      pop: newSquad.pop,
+      man: newSquad.man,
+      mun: newSquad.mun,
+      fuel: newSquad.fuel
+    }))
+    dispatch(addTransportedSquad({ newSquad, transportUuid }))
+  }
+
+  const onSquadDestroy = (squad, transportUuid = null) => {
     // TODO remove squad id from company if not null
-    dispatch(removeUnitCost({ id: company.id, pop, man, mun, fuel }))
-    dispatch(removeSquad({ uuid, availableUnitId, index, tab }))
+    dispatch(removeUnitCost({ id: company.id, pop: squad.pop, man: squad.man, mun: squad.mun, fuel: squad.fuel }))
+    if (_.isNull(transportUuid)) {
+      console.log(`Removing non-transport squad`)
+      dispatch(removeSquad(squad))
+    } else {
+      console.log(`Removing transported squad`)
+      dispatch(removeTransportedSquad({ squad, transportUuid }))
+    }
+  }
+
+  const onSquadMove = (squad, unit, newIndex, newTab, targetTransportUuid = null) => {
+    dispatch(moveSquad({ squad, unit, newIndex, newTab, targetTransportUuid }))
   }
 
   const saveSquads = () => {
@@ -256,45 +288,77 @@ export const SquadBuilder = ({}) => {
           <Grid item container spacing={2}>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={0} currentTab={currentTab} squads={currentTabPlatoons[0]}
-                                     onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                     onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
+                                     onNonTransportSquadCreate={onNonTransportSquadCreate}
+                                     onTransportedSquadCreate={onTransportedSquadCreate}
+                                     onUnitClick={onUnitSelect}
+                                     onSquadDestroy={onSquadDestroy}
+                                     onSquadMove={onSquadMove}
+                                     enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={1} currentTab={currentTab} squads={currentTabPlatoons[1]}
-                                     onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                     onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
+                                     onNonTransportSquadCreate={onNonTransportSquadCreate}
+                                     onTransportedSquadCreate={onTransportedSquadCreate}
+                                     onUnitClick={onUnitSelect}
+                                     onSquadDestroy={onSquadDestroy}
+                                     onSquadMove={onSquadMove}
+                                     enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={2} currentTab={currentTab} squads={currentTabPlatoons[2]}
-                                     onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                     onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
+                                     onNonTransportSquadCreate={onNonTransportSquadCreate}
+                                     onTransportedSquadCreate={onTransportedSquadCreate}
+                                     onUnitClick={onUnitSelect}
+                                     onSquadDestroy={onSquadDestroy}
+                                     onSquadMove={onSquadMove}
+                                     enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={3} currentTab={currentTab} squads={currentTabPlatoons[3]}
-                                     onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                     onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
+                                     onNonTransportSquadCreate={onNonTransportSquadCreate}
+                                     onTransportedSquadCreate={onTransportedSquadCreate}
+                                     onUnitClick={onUnitSelect}
+                                     onSquadDestroy={onSquadDestroy}
+                                     onSquadMove={onSquadMove}
+                                     enabled={editEnabled} />
             </Grid>
           </Grid>
           <Grid item container spacing={2}>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={4} currentTab={currentTab} squads={currentTabPlatoons[4]}
-                                     onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                     onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
+                                     onNonTransportSquadCreate={onNonTransportSquadCreate}
+                                     onTransportedSquadCreate={onTransportedSquadCreate}
+                                     onUnitClick={onUnitSelect}
+                                     onSquadDestroy={onSquadDestroy}
+                                     onSquadMove={onSquadMove}
+                                     enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={5} currentTab={currentTab} squads={currentTabPlatoons[5]}
-                                     onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                     onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
+                                     onNonTransportSquadCreate={onNonTransportSquadCreate}
+                                     onTransportedSquadCreate={onTransportedSquadCreate}
+                                     onUnitClick={onUnitSelect}
+                                     onSquadDestroy={onSquadDestroy}
+                                     onSquadMove={onSquadMove}
+                                     enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={6} currentTab={currentTab} squads={currentTabPlatoons[6]}
-                                     onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                     onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
+                                     onNonTransportSquadCreate={onNonTransportSquadCreate}
+                                     onTransportedSquadCreate={onTransportedSquadCreate}
+                                     onUnitClick={onUnitSelect}
+                                     onSquadDestroy={onSquadDestroy}
+                                     onSquadMove={onSquadMove}
+                                     enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={7} currentTab={currentTab} squads={currentTabPlatoons[7]}
-                                     onHitCallback={onDropTargetHit} onUnitClick={onUnitSelect}
-                                     onSquadDestroy={onSquadDestroy} enabled={editEnabled} />
+                                     onNonTransportSquadCreate={onNonTransportSquadCreate}
+                                     onTransportedSquadCreate={onTransportedSquadCreate}
+                                     onUnitClick={onUnitSelect}
+                                     onSquadDestroy={onSquadDestroy}
+                                     onSquadMove={onSquadMove}
+                                     enabled={editEnabled} />
             </Grid>
           </Grid>
         </Grid>

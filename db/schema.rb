@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_03_194040) do
+ActiveRecord::Schema.define(version: 2023_02_19_171538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -349,12 +349,12 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
 
   create_table "squad_upgrades", comment: "Upgrades purchased for squad", force: :cascade do |t|
     t.bigint "squad_id"
-    t.bigint "upgrade_id"
+    t.bigint "available_upgrade_id"
     t.boolean "is_free", comment: "Flag for whether this upgrade is free for the squad and has no availability cost"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["available_upgrade_id"], name: "index_squad_upgrades_on_available_upgrade_id"
     t.index ["squad_id"], name: "index_squad_upgrades_on_squad_id"
-    t.index ["upgrade_id"], name: "index_squad_upgrades_on_upgrade_id"
   end
 
   create_table "squads", force: :cascade do |t|
@@ -362,12 +362,37 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.bigint "available_unit_id"
     t.string "tab_category", null: false, comment: "Tab this squad is in"
     t.integer "category_position", null: false, comment: "Position within the tab the squad is in"
+    t.string "uuid", null: false, comment: "Unique uuid"
     t.decimal "vet", comment: "Squad's veterancy"
     t.string "name", comment: "Squad's custom name"
+    t.integer "total_model_count", comment: "Total model count of the unit and all upgrades"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["available_unit_id"], name: "index_squads_on_available_unit_id"
     t.index ["company_id"], name: "index_squads_on_company_id"
+    t.index ["uuid"], name: "index_squads_on_uuid", unique: true
+  end
+
+  create_table "transport_allowed_units", comment: "Association of transport units and the units they are allowed to transport", force: :cascade do |t|
+    t.bigint "transport_id", null: false
+    t.bigint "allowed_unit_id", null: false
+    t.string "internal_description", comment: "Internal description of this TransportAllowedUnit"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["allowed_unit_id"], name: "index_transport_allowed_units_on_allowed_unit_id"
+    t.index ["transport_id", "allowed_unit_id"], name: "idx_transport_allowed_units_uniq", unique: true
+    t.index ["transport_id"], name: "index_transport_allowed_units_on_transport_id"
+  end
+
+  create_table "transported_squads", comment: "Association of transport squad to embarked squad", force: :cascade do |t|
+    t.bigint "transport_squad_id", null: false
+    t.bigint "embarked_squad_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["embarked_squad_id"], name: "idx_transported_squads_embarked_squad_uniq", unique: true
+    t.index ["embarked_squad_id"], name: "index_transported_squads_on_embarked_squad_id"
+    t.index ["transport_squad_id", "embarked_squad_id"], name: "idx_transported_squads_assoc_uniq", unique: true
+    t.index ["transport_squad_id"], name: "index_transported_squads_on_transport_squad_id"
   end
 
   create_table "unit_games", force: :cascade do |t|
@@ -388,6 +413,7 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["new_unit_id"], name: "index_unit_swaps_on_new_unit_id"
     t.index ["old_unit_id"], name: "index_unit_swaps_on_old_unit_id"
+    t.index ["unlock_id", "new_unit_id"], name: "index_unit_swaps_on_unlock_id_and_new_unit_id", unique: true
     t.index ["unlock_id", "old_unit_id"], name: "index_unit_swaps_on_unlock_id_and_old_unit_id", unique: true
     t.index ["unlock_id"], name: "index_unit_swaps_on_unlock_id"
   end
@@ -400,6 +426,9 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.text "description", comment: "Display description of the unit"
     t.integer "upgrade_slots", default: 0, null: false, comment: "Slots used for per model weapon upgrades"
     t.integer "unitwide_upgrade_slots", default: 0, null: false, comment: "Unit wide weapon replacement slot"
+    t.integer "model_count", comment: "How many model entities this base unit consists of"
+    t.integer "transport_squad_slots", comment: "How many squads this unit can transport"
+    t.integer "transport_model_slots", comment: "How many models this unit can transport"
     t.boolean "is_airdrop", default: false, null: false, comment: "Is this unit airdroppable?"
     t.boolean "is_infiltrate", default: false, null: false, comment: "Is this unit able to infiltrate?"
     t.string "retreat_name", comment: "Name for retreating unit"
@@ -431,6 +460,8 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
     t.integer "fuel", comment: "Fuel cost"
     t.integer "upgrade_slots", comment: "Upgrade slot cost for per model upgrades"
     t.integer "unitwide_upgrade_slots", comment: "Upgrade slot cost for unit wide upgrades"
+    t.integer "model_count", comment: "How many model entities this unit replacement consists of"
+    t.integer "additional_model_count", comment: "How many model entities this upgrade adds to the base unit"
     t.boolean "is_building", comment: "Is this upgrade a building to be built"
     t.boolean "is_unit_replace", comment: "Does this upgrade replace units data"
     t.string "type", null: false, comment: "Type of Upgrade"
@@ -475,10 +506,14 @@ ActiveRecord::Schema.define(version: 2023_02_03_194040) do
   add_foreign_key "restrictions", "doctrines"
   add_foreign_key "restrictions", "factions"
   add_foreign_key "restrictions", "unlocks"
+  add_foreign_key "squad_upgrades", "available_upgrades"
   add_foreign_key "squad_upgrades", "squads"
-  add_foreign_key "squad_upgrades", "upgrades"
   add_foreign_key "squads", "available_units"
   add_foreign_key "squads", "companies"
+  add_foreign_key "transport_allowed_units", "units", column: "allowed_unit_id"
+  add_foreign_key "transport_allowed_units", "units", column: "transport_id"
+  add_foreign_key "transported_squads", "squads", column: "embarked_squad_id"
+  add_foreign_key "transported_squads", "squads", column: "transport_squad_id"
   add_foreign_key "unit_games", "games"
   add_foreign_key "unit_games", "units"
   add_foreign_key "unit_swaps", "units", column: "new_unit_id"

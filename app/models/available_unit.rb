@@ -113,5 +113,7 @@ class AvailableUnit < ApplicationRecord
     expose :mun
     expose :fuel
     expose :callin_modifier, as: :callinModifier
+
+    expose :unit, using: Unit::Entity, if: { type: :include_unit }
   end
 end

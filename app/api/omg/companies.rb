@@ -49,11 +49,11 @@ module OMG
           requires :id, type: Integer, desc: "Company ID"
         end
         get 'available_units' do
-          company = Company.find_by(id: params[:id], player: current_player)
+          company = Company.includes(available_units: :unit).find_by(id: params[:id], player: current_player)
           if company.blank?
             error! "Could not find company #{params[:id]} for the current player", 404
           end
-          present company.available_units
+          present company.available_units, type: :include_unit
         end
 
         desc 'Retrieve all squads for the company'
@@ -74,13 +74,17 @@ module OMG
         params do
           requires :id, type: Integer, desc: "Company ID"
           group :squads, type: Array, desc: "Company squads list" do
-            optional :squadId, type: Integer, as: :squad_id, desc: "Squad id, if exists. Empty for new squads"
+            optional :id, type: Integer, as: :squad_id, desc: "Squad id, if exists. Empty for new squads"
             requires :unitId, type: Integer, as: :unit_id, desc: "Squad's unit id"
             requires :availableUnitId, type: Integer, as: :available_unit_id, desc: "Squad's available unit id"
             optional :name, type: String, desc: "Squad's name"
             requires :vet, type: BigDecimal, desc: "Squad veterancy"
             requires :tab, type: String, values: Squad.tab_categories.values, desc: "Squad's tab category"
             requires :index, type: Integer, desc: "Squad's position within a tab category"
+            requires :uuid, type: String, desc: "Squad uuid"
+            optional :totalModelCount, type: Integer, desc: "Total model count of this squad, if applicable"
+            optional :transportedSquadUuids, type: Array, desc: "Optional list of uuids of squads this squad is transporting"
+            optional :transportUuid, type: String, desc: "Optional uuid of the transport squad this squad is embarked in"
           end
         end
         post 'squads' do
