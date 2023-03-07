@@ -15,6 +15,8 @@ import {
 } from "../../units/squadsSlice";
 import { createSquad } from "../../units/squad";
 import { nanoid } from "@reduxjs/toolkit";
+import { TransportSlots } from "./TransportSlots";
+import { TransportDropTarget } from "./TransportDropTarget";
 
 const useStyles = makeStyles(() => ({
   squadCard: {
@@ -32,12 +34,6 @@ const useStyles = makeStyles(() => ({
   },
   tooltipHeader: {
     fontWeight: 'bold'
-  },
-  transportHitBox: {
-    minHeight: 'calc(45px + 0.25rem + 16px)', // UnitCard height + 0.125rem margin x2 + 8px padding x2
-    minWidth: '4rem',
-    marginLeft: '0.5em',
-    marginRight: '0.25em'
   }
 }))
 
@@ -72,7 +68,6 @@ export const SquadCard = (
   }
 ) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
   let squad
   if (_.isNil(transportUuid)) {
     squad = useSelector(state => selectSquadInTabIndexUuid(state, tab, index, uuid))
@@ -182,34 +177,15 @@ export const SquadCard = (
     if (transportedSquads.length > 0) {
       usedModelSlots = transportedSquads.map(s => s.totalModelCount).reduce((prev, next) => prev + next)
     }
-    transportContent = (
-      <Box sx={{ display: 'flex' }}>
-        <DropTarget targetKey="unit" onHit={unitCreateOnHit}>
-          <DropTarget targetKey="squad" onHit={squadMoveOnHit}>
-            <Paper key={`${uuid}-transport`} className={classes.transportHitBox}>
-              <Box>
-                {transportedSquads.map(ts => <SquadCard key={ts.uuid}
-                                                        uuid={ts.uuid} index={index} tab={tab}
-                                                        transportUuid={uuid}
-                                                        onUnitClick={onUnitClick}
-                                                        onDestroyClick={transportSquadDelete}
-                                                        enabled={enabled} />)}
-              </Box>
-            </Paper>
-          </DropTarget>
-        </DropTarget>
-      </Box>
-    )
-    transportSlotsContent = (
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: "center" }}>
-        <Box sx={{fontSize: '0.75rem'}}>
-          {usedSquadSlots}/{unit.transportSquadSlots}
-        </Box>
-        <Box sx={{fontSize: '0.75rem'}}>
-          {usedModelSlots}/{unit.transportModelSlots}
-        </Box>
-      </Box>
-    )
+    transportContent = <TransportDropTarget transportedSquads={transportedSquads} unitCreateOnHit={unitCreateOnHit}
+                                            squadMoveOnHit={squadMoveOnHit}
+                                            index={index} tab={tab} transportUuid={uuid} onUnitClick={onUnitClick}
+                                            transportSquadDelete={transportSquadDelete} enabled={enabled} />
+
+    transportSlotsContent = <TransportSlots usedSquadSlots={usedSquadSlots}
+                                            usedModelSlots={usedModelSlots}
+                                            maxSquadSlots={unit.transportSquadSlots}
+                                            maxModelSlots={unit.transportModelSlots} />
   }
 
   // Use a specific drag handle class so the entire card doesn't drag. This allows nesting SquadCards of transported units
@@ -247,7 +223,13 @@ export const SquadCard = (
             <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
                       onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName} />
             {transportContent}
-            <Box sx={{display: 'flex', flexDirection: 'column', height: '100%', alignItems: "center", justifyContent: "space-between"}}>
+            <Box sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}>
               {deleteContent}
               {transportSlotsContent}
             </Box>
