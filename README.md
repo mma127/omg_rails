@@ -146,6 +146,6 @@ Create an alias with `alias reset_db='sh reset_db.sh'`
 #### Reset the DB
 Typically need to reset the DB if the seeds change and the entire DB needs to be reseeded.
 
-1. `heroku pg:reset` - resets the pg DB
+1. `heroku pg:reset` - resets the pg DB (can also use the Heroku UI)
 2. `heroku run rake db:migrate`
 3. `heroku run rake db:seed`
