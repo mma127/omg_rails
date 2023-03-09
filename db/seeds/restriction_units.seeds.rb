@@ -308,8 +308,8 @@ after :restrictions do
                       man: 260, mun: 0, fuel: 60, pop: 7, resupply: 2, resupply_max: 4, company_max: 4, priority: 1)
 
   ## Commandos
-  commandos = Doctrine.find_by_name("commandos")
-  commandos_restriction = Restriction.find_by_doctrine_id(commandos.id)
+  commandos_doc = Doctrine.find_by_name("commandos")
+  commandos_restriction = Restriction.find_by_doctrine_id(commandos_doc.id)
 
   commandos = Infantry.find_by_name("commandos")
   EnabledUnit.create!(restriction: commandos_restriction, unit: commandos, ruleset: war_ruleset,
@@ -341,11 +341,16 @@ after :restrictions do
   EnabledUnit.create!(restriction: commandos_restriction, unit: sas_jeep, ruleset: war_ruleset,
                       man: 240, mun: 0, fuel: 20, pop: 3, resupply: 3, resupply_max: 6, company_max: 6, priority: 1)
 
+  ### Glider Support restriction
+  glider_support_unlock = Unlock.find_by(name: "glider_support")
+  glider_support_doctrine_unlock = DoctrineUnlock.find_by(doctrine: commandos_doc, unlock: glider_support_unlock)
+  glider_support_restriction = Restriction.find_by(doctrine_unlock: glider_support_doctrine_unlock)
+
   infantry_glider = Glider.find_by_name("infantry_glider")
-  EnabledUnit.create!(restriction: commandos_restriction, unit: infantry_glider, ruleset: war_ruleset,
+  EnabledUnit.create!(restriction: glider_support_restriction, unit: infantry_glider, ruleset: war_ruleset,
                       man: 50, mun: 0, fuel: 0, pop: 0, resupply: 10, resupply_max: 10, company_max: 10, priority: 1)
   armor_glider = Glider.find_by_name("armor_glider")
-  EnabledUnit.create!(restriction: commandos_restriction, unit: armor_glider, ruleset: war_ruleset,
+  EnabledUnit.create!(restriction: glider_support_restriction, unit: armor_glider, ruleset: war_ruleset,
                       man: 100, mun: 0, fuel: 10, pop: 0, resupply: 10, resupply_max: 10, company_max: 10, priority: 1)
 
   #################################################################################
