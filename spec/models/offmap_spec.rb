@@ -10,18 +10,13 @@
 #  created_at                                   :datetime         not null
 #  updated_at                                   :datetime         not null
 #
-class Offmap < ApplicationRecord
-  has_many :company_offmaps
-  has_many :available_offmaps
+require "rails_helper"
 
-  def entity
-    Entity.new(self)
-  end
+RSpec.describe Offmap, type: :model do
+  let!(:offmap) { create :offmap }
 
-  class Entity < Grape::Entity
-    expose :id
-    expose :name
-    expose :display_name, as: :displayName
-    expose :description
+  describe 'associations' do
+    it { should have_many(:company_offmaps) }
+    it { should have_many(:available_offmaps) }
   end
 end

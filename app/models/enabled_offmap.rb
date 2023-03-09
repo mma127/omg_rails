@@ -25,9 +25,27 @@
 #  fk_rails_...  (restriction_id => restrictions.id)
 #  fk_rails_...  (ruleset_id => rulesets.id)
 #
-class RestrictionOffmap < ApplicationRecord
-  belongs_to :restriction
-  belongs_to :offmap
-  belongs_to :ruleset
-end
+class EnabledOffmap < RestrictionOffmap
+  validates :max, numericality: { greater_than_or_equal_to: 0 }
+  validates :mun, numericality: { greater_than_or_equal_to: 0 }
 
+  before_save :generate_internal_description
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :internal_description, as: :internalDescription
+    expose :max
+    expose :mun
+    expose :offmap, using: Offmap::Entity
+  end
+
+  private
+
+  def generate_internal_description
+    self.internal_description = "#{restriction.name} - #{offmap.display_name}"
+  end
+end
