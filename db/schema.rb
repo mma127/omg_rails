@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_19_171538) do
+ActiveRecord::Schema.define(version: 2023_03_09_014738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,18 @@ ActiveRecord::Schema.define(version: 2023_02_19_171538) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "available_offmaps", comment: "Offmap availability per company", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "offmap_id"
+    t.integer "available", default: 0, null: false, comment: "Number of this offmap available to purchase for the company"
+    t.integer "max", default: 0, null: false, comment: "Max number of this offmap that the company can hold"
+    t.integer "mun", default: 0, null: false, comment: "Munitions cost of this offmap"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_available_offmaps_on_company_id"
+    t.index ["offmap_id"], name: "index_available_offmaps_on_offmap_id"
   end
 
   create_table "available_units", comment: "Unit availability per company", force: :cascade do |t|
@@ -224,8 +236,9 @@ ActiveRecord::Schema.define(version: 2023_02_19_171538) do
 
   create_table "offmaps", force: :cascade do |t|
     t.string "name", comment: "Offmap name"
+    t.string "display_name", comment: "Offmap display name"
     t.string "const_name", comment: "Offmap const name for battlefile"
-    t.integer "mun", comment: "Munitions cost"
+    t.string "description", comment: "Offmap description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -256,20 +269,29 @@ ActiveRecord::Schema.define(version: 2023_02_19_171538) do
   create_table "restriction_callin_modifiers", comment: "Association of Restriction to CallinModifier", force: :cascade do |t|
     t.bigint "restriction_id"
     t.bigint "callin_modifier_id"
+    t.bigint "ruleset_id"
+    t.string "internal_description", null: false, comment: "What does this RestrictionCallinModifier do?"
+    t.string "type", null: false, comment: "What effect this restriction has on the callin modifier"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["callin_modifier_id"], name: "index_restriction_callin_modifiers_on_callin_modifier_id"
     t.index ["restriction_id"], name: "index_restriction_callin_modifiers_on_restriction_id"
+    t.index ["ruleset_id"], name: "index_restriction_callin_modifiers_on_ruleset_id"
   end
 
   create_table "restriction_offmaps", comment: "Association of Restriction to Offmap", force: :cascade do |t|
     t.bigint "restriction_id"
     t.bigint "offmap_id"
+    t.bigint "ruleset_id"
+    t.string "internal_description", null: false, comment: "What does this RestrictionOffmap do?"
+    t.string "type", null: false, comment: "What effect this restriction has on the offmap"
     t.integer "max", comment: "Maximum number purchasable"
+    t.integer "mun", comment: "Munitions cost"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["offmap_id"], name: "index_restriction_offmaps_on_offmap_id"
     t.index ["restriction_id"], name: "index_restriction_offmaps_on_restriction_id"
+    t.index ["ruleset_id"], name: "index_restriction_offmaps_on_ruleset_id"
   end
 
   create_table "restriction_units", comment: "Association of Restriction to Unit", force: :cascade do |t|
@@ -471,6 +493,8 @@ ActiveRecord::Schema.define(version: 2023_02_19_171538) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "available_offmaps", "companies"
+  add_foreign_key "available_offmaps", "offmaps"
   add_foreign_key "available_units", "companies"
   add_foreign_key "available_units", "units"
   add_foreign_key "available_upgrades", "companies"
@@ -494,8 +518,10 @@ ActiveRecord::Schema.define(version: 2023_02_19_171538) do
   add_foreign_key "doctrines", "factions"
   add_foreign_key "restriction_callin_modifiers", "callin_modifiers"
   add_foreign_key "restriction_callin_modifiers", "restrictions"
+  add_foreign_key "restriction_callin_modifiers", "rulesets"
   add_foreign_key "restriction_offmaps", "offmaps"
   add_foreign_key "restriction_offmaps", "restrictions"
+  add_foreign_key "restriction_offmaps", "rulesets"
   add_foreign_key "restriction_units", "restrictions"
   add_foreign_key "restriction_units", "rulesets"
   add_foreign_key "restriction_units", "units"

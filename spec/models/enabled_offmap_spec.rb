@@ -25,9 +25,19 @@
 #  fk_rails_...  (restriction_id => restrictions.id)
 #  fk_rails_...  (ruleset_id => rulesets.id)
 #
-class RestrictionOffmap < ApplicationRecord
-  belongs_to :restriction
-  belongs_to :offmap
-  belongs_to :ruleset
-end
+require "rails_helper"
 
+RSpec.describe EnabledOffmap, type: :model do
+  let!(:enabled_offmap) { create :enabled_offmap }
+
+  describe 'associations' do
+    it { should belong_to(:restriction) }
+    it { should belong_to(:offmap) }
+    it { should belong_to(:ruleset) }
+  end
+
+  describe 'validations' do
+    it { should validate_numericality_of(:max).is_greater_than_or_equal_to(0) }
+    it { should validate_numericality_of(:mun).is_greater_than_or_equal_to(0) }
+  end
+end
