@@ -20,7 +20,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 19,Mechanics,OMGDOCUPG.ALLY.ARMOUR.TR1.B1.T1,1,1,1,Jeeps and M3 Half-tracks (excluding quads) now have Bren Carrier Self-Repair.,2
 115,Patton's War,OMGDOCUPG.ALLY.ARMOUR.TR1.B1.T2,1,1,2,All platoons with tanks or vehicles (excluding Jeeps) will arrive on field instantly.,5
 189,Red Ones Go Faster,OMGDOCUPG.ALLY.ARMOUR.TR1.B1.T3,1,1,3,Halftracks gain overdrive and 50% faster turret rotation. Quad .50s gain overdrive and 25% faster turret rotation.,3
-116,Tracking the Tracks,OMGDOCUPG.ALLY.ARMOUR.TR1.B2.T2,1,3,2,"Mechanized Infantry, Snipers, Jeeps, and Armored Cars gain the &amp;quot;Tracking the Tracks&amp;quot; ability to use on enemy vehicles, which grants 1.2 received accuracy, penetration, and fog of war detection.",4
+116,Tracking the Tracks,OMGDOCUPG.ALLY.ARMOUR.TR1.B2.T2,1,3,2,"Mechanized Infantry, Snipers, Jeeps, and Armored Cars gain the Tracking the Tracks&amp ability to use on enemy vehicles, which grants x1.2 received accuracy, penetration, and fog of war detection.",4
 190,Alternative Rounds,OMGDOCUPG.ALLY.ARMOUR.TR1.B2.T3,1,3,3,Calliopes can fire an armour piercing barrage. Sherman 105 can fire bunker buster and smoke rounds.,3
 21,Specialized Optics,OMGDOCUPG.ALLY.ARMOUR.TR1.B3.T1,1,3,1,"M10s, M18s, M36, and Easy Eights now have +5 sight range.",3
 22,TC Can Do His Job!,OMGDOCUPG.ALLY.ARMOUR.TR2.B1.T1,2,1,1,Purchasing the 50 cal machine gun upgrade on vehicles now also increase line of sight by 5.,5
@@ -42,7 +42,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 134,Purple Heart Soldiers,OMGDOCUPG.ALLY.INFANTRY.TR1.B2.T2,1,2,2,"Riflemen equipped with BARs receive 0.85 received damage at 5 men, an additional 0.85 received damage at 3 men, and an additional 0.85 damage at 2 men.",4
 208,Machine Guns as Primary Weapon,OMGDOCUPG.ALLY.INFANTRY.TR1.B2.T3,1,2,3,"Shermans receive +20% reload time, but in return hull/coaxial machine guns receive +25% increased damage, -25% cooldown, +25% burst duration and +15 range. Turret MGs receive +5 range, +25% burst duration, -25% cooldown.",3
 13,Setting up the Field,OMGDOCUPG.ALLY.INFANTRY.TR2.B1.T1,2,1,1,Riflemen and Ambush Riflemen can build Barbed Wire and Sandbags.,3
-135,Mk. 3 Potato Grenade,OMGDOCUPG.ALLY.INFANTRY.TR2.B1.T2,2,1,2,&quot;Potato Grenade&quot; ability is now given to squads who purchase grenades. Throws a fake grenade at target.,1
+135,Mk. 3 Potato Grenade,OMGDOCUPG.ALLY.INFANTRY.TR2.B1.T2,2,1,2,Potato Grenade ability is now given to squads who purchase grenades. Throws a fake grenade at target.,1
 209,Tier 3 alpha,OMGDOCUPG.ALLY.INFANTRY.TR2.B1.T3,2,1,3,"",1000
 14,HVAP Shells,OMGDOCUPG.ALLY.INFANTRY.TR2.B2.T1,2,2,1,57mm Anti-tank Guns AP Rounds replaced with Advanced Anti-tank Gun AP Rounds.  Providing an additional +25% damage and 5 second ability duration. (REMOVE AT GUNS FROM COMPANY BEFORE PURCHASING),2
 136,Smoke Will Block Out the Sky,OMGDOCUPG.ALLY.INFANTRY.TR2.B2.T2,2,2,2,"Smoke Barrage is available for purchase. 13 Smoke Shells are dropped in the designated area over time. Recharging cooldown, 90 mu.",2
@@ -65,7 +65,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 112,Medical Expertise,OMGDOCUPG.AXIS.BLITZ.TR2.B2.T2,17,3,2,Medpacks no longer slow squads. Walking Wounded move normally in neutral and enemy territory.,6
 186,Shock Effect,OMGDOCUPG.AXIS.BLITZ.TR2.B2.T3,17,3,3,"After throwing a grenade, units gain sprint and +50% suppression for 3 seconds. Assault also gains +50% suppression.",2
 60,Assault,OMGDOCUPG.AXIS.BLITZ.TR2.B3.T1,17,3,1,"Assault available for purchase on Volks, Stormtroopers, Grenadiers, and KCH.",2
-61,Panzerkrieg,OMGDOCUPG.AXIS.BLITZ.TR3.B1.T1,18,1,1," Half-tracks now have the Overdrive ability. All Vehicles and Armored Cars gain 15% additional line of sight, maneuverability, and speed.",2
+61,Panzerkrieg,OMGDOCUPG.AXIS.BLITZ.TR3.B1.T1,18,1,1,"Half-tracks now have the Overdrive ability. All Vehicles and Armored Cars gain 15% additional line of sight, maneuverability, and speed.",2
 113,Rush to the Front!,OMGDOCUPG.AXIS.BLITZ.TR3.B1.T2,18,1,2,All Armor moves 20% faster for 15 seconds upon entering the field. All infantry sprint for 15 seconds upon entering the field.,3
 187,Tier 3 alpha,OMGDOCUPG.AXIS.BLITZ.TR3.B1.T3,18,1,3,"",1000
 114,Heavy Mortar Bombardment,OMGDOCUPG.AXIS.BLITZ.TR3.B2.T2,18,3,2,Heavy Mortar Bombardment barrage available for purchase. Lightly saturates an area with mortar shells for 45 seconds. 65 mu per use.,3
@@ -81,7 +81,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 123,Gun Crews,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B1.T2,11,1,2,"MG42 Teams, and Mortars gain the Sprint ability. Pak38s and Nebelwerfers move faster.",6
 197,Tier 3 alpha,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B1.T3,11,1,3,"",1000
 77,Heavy Support,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B2.T1,11,2,1,"Support weapons have +1 resupply. In addition, all support weapons have 15% more hitpoints on the weapon.",3
-124,Rocket Artillery,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B2.T2,11,2,2,&quot;Rocket Artillery&quot; barrages are available for purchase. 130 mu.,4
+124,Rocket Artillery,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B2.T2,11,2,2,Rocket Artillery barrages are available for purchase. 130 mu.,4
 198,Tier 3 alpha,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B2.T3,11,2,3,"",1000
 79,Registered Artillery,OMGDOCUPG.AXIS.DEFENSIVE.TR3.B1.T1,12,1,1,"Registered Artillery available for purchase, deploying defensive artillery barrages on allied bunkers. Recharging cooldown, 90 mu.",1
 125,Stronghold,OMGDOCUPG.AXIS.DEFENSIVE.TR3.B1.T2,12,1,2,All Bunkers gain 30% more health. Garrisoned infantry slowly heal and gain +5% accuracy per minute. Caps at +15%,5
@@ -90,7 +90,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 126,For the Fatherland,OMGDOCUPG.AXIS.DEFENSIVE.TR3.B2.T2,12,2,2,"For the Fatherland available for purchase, granting powerful defensive bonuses to infantry in friendly territory. Recharging cooldown, 150 mu.",3
 200,Tier 3 alpha (FP),OMGDOCUPG.AXIS.DEFENSIVE.TR3.B2.T3,12,2,3,Under development,1000
 64,Indoctrination,OMGDOCUPG.AXIS.TERROR.TR1.B1.T1,13,1,1,"Volksgrenadiers and Sturmpioneers gain +5% accuracy and -5% received suppression per man lost, +5hp on first casualty, -10% cooldown for every extra loss. Pioneers and Saboteurs take 0.85 received suppression.",4
-157,Heroes of the Wehrmacht,OMGDOCUPG.AXIS.TERROR.TR1.B1.T2,13,1,2, Knights Cross Holders and Terror Officers inspire nearby troops to fight better. They are 10% more accurate and receive 10% less damage.,6
+157,Heroes of the Wehrmacht,OMGDOCUPG.AXIS.TERROR.TR1.B1.T2,13,1,2,Knights Cross Holders and Terror Officers inspire nearby troops to fight better. They are 10% more accurate and receive 10% less damage.,6
 231,Robotics,OMGDOCUPG.AXIS.TERROR.TR1.B1.T3,13,1,3,Goliaths gain line of sight.,2
 158,Rain of Fire,OMGDOCUPG.AXIS.TERROR.TR1.B2.T2,13,3,2,"Hostile Infantry in the target area of Stuka and Nebelwerfer barrages may be slowed before the barrage hits. Nebelwerfer rockets now travel 50% faster, fire 33% faster, and have a 30% larger suppression radius. ",5
 232,In the Name of the King,OMGDOCUPG.AXIS.TERROR.TR1.B2.T3,13,3,3,Infantry within 30m of the King Tiger gain 20% increased accuracy.,4
@@ -120,7 +120,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 154,Glider Army,OMGDOCUPG.CMW.COMMANDO.TR2.B2.T2,35,2,2,Glider deployment timer reduced by half. Troops fireup for ten seconds after exiting gliders.,5
 228,Tier 3 alpha,OMGDOCUPG.CMW.COMMANDO.TR2.B2.T3,35,2,3,"",1000
 52,Priority Targets,OMGDOCUPG.CMW.COMMANDO.TR3.B1.T1,36,1,1,Lieutenants and Captains are granted an ability which tracks enemy units in the fog of war.,2
-155,Triangulation (4 VP),OMGDOCUPG.CMW.COMMANDO.TR3.B1.T2,36,1,2,Radio Triangulation Devices now available for purchase. Can be placed by Sappers and Commandos. 120 mu. [Bugged],100
+155,Triangulation,OMGDOCUPG.CMW.COMMANDO.TR3.B1.T2,36,1,2,Radio Triangulation Devices now available for purchase. Can be placed by Sappers and Commandos. 120 mu. [Bugged],100
 229,Tier 3 alpha,OMGDOCUPG.CMW.COMMANDO.TR3.B1.T3,36,1,3,"",1000
 53,Radio Disruption,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T1,36,2,1,"Units within 7.5 unit radius of Radio Disruption offmap ability gain camouflage temporarily for 5 seconds, but weapons are disabled. Applies only to your own units. Recharging cooldown, 100 mu.",1
 156,Proper Encryption,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T2,36,2,2,"Proper Encryption ability now available for purchase. Blurs enemy minimap and tactical map and reduces enemy units' sight by five meters while active. Recharging cooldown, 80 mu.",3
@@ -144,19 +144,19 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 144,Golden Wrenches,OMGDOCUPG.CMW.ENGINEERS.TR3.B2.T2,30,2,2,Sappers gain Golden Wrenches ability which instantly restores 100 health on tanks.,5
 218,Tier 3 alpha,OMGDOCUPG.CMW.ENGINEERS.TR3.B2.T3,30,2,3,"",1000
 37,Rifled Barrels,OMGDOCUPG.CMW.RCA.TR1.B1.T1,31,1,1,"25 Pounders, Priests, and Supercharged 3 Inch Mortars have 15% less scatter and 15% more accuracy.",3
-145,Supercharged Shells,OMGDOCUPG.CMW.RCA.TR1.B1.T2,31,1,2,"&quot;Supercharge&quot; upgrade availabe on Mortars, Priests, and 25 Pounders.",5
+145,Supercharged Shells,OMGDOCUPG.CMW.RCA.TR1.B1.T2,31,1,2,"Supercharge upgrade available on Mortars, Priests, and 25 Pounders.",5
 219,Has been moved,OMGDOCUPG.CMW.RCA.TR1.B1.T3,31,1,3,"",25
 38,Cancer Causing,OMGDOCUPG.CMW.RCA.TR1.B2.T1,31,2,1,[No longer purchaseable. Will be replaced] ,100
 146,Creeping Barrage,OMGDOCUPG.CMW.RCA.TR1.B2.T2,31,2,2,Creeping Barrage ability available for purchase. 90 mu per use. Cromwell Command Tanks are also given 1 use of Creeping Smoke Barrage.,4
-220,Observational Capacity,OMGDOCUPG.CMW.RCA.TR1.B2.T3,31,2,3,Captains &amp; LTs can lockdown to gain +15 LOS.,3
+220,Observational Capacity,OMGDOCUPG.CMW.RCA.TR1.B2.T3,31,2,3,Captains and LTs can lockdown to gain +15 LOS.,3
 40,General Hospital,OMGDOCUPG.CMW.RCA.TR2.B1.T1,32,1,1,Casualty Clearing Stations now grant Lieutenant aura buff.,1
 147,Advanced Sighting,OMGDOCUPG.CMW.RCA.TR2.B1.T2,32,1,2,"HMG teams, Bofors, and 17 pounders which are stationary for 10 seconds or longer gain 15% more sight, 35% more stealth detection, and 10% more accuracy.",4
 221,Tier 3 alpha,OMGDOCUPG.CMW.RCA.TR2.B1.T3,32,1,3,"",1000
 41,Ross Rifles,OMGDOCUPG.CMW.RCA.TR2.B2.T1,32,2,1,"Recon Sections now have +5 weapon range, as well as +10% accuracy (not stacking with LT aura).",3
-148,Grit and Determination,OMGDOCUPG.CMW.RCA.TR2.B2.T2,32,2,2,&quot;Grit and Determination&quot; now useable by Tommies and SSF. Ability breaks suppression and reduces weapon cooldown by 50%. Can only be used while garrisoned.,1
+148,Grit and Determination,OMGDOCUPG.CMW.RCA.TR2.B2.T2,32,2,2,Grit and Determination now usable by Tommies and SSF. Ability breaks suppression and reduces weapon cooldown by 50%. Can only be used while garrisoned.,1
 222,Tier 3 alpha,OMGDOCUPG.CMW.RCA.TR2.B2.T3,32,2,3,"",1000
 43,High Velocity Ammo,OMGDOCUPG.CMW.RCA.TR3.B1.T1,33,1,1,Stuarts and Staghounds now have +5 weapon range on their cannons. Does not stack with the range bonus from command tanks.,3
-149,Armored Discipline,OMGDOCUPG.CMW.RCA.TR3.B1.T2,33,1,2,Tank Commanders increase accuracy by 10%. &quot;Flank Speed&quot; increases penetration by 50%.,6
+149,Armored Discipline,OMGDOCUPG.CMW.RCA.TR3.B1.T2,33,1,2,Tank Commanders increase accuracy by 10%. Flank Speed increases penetration by 50%.,6
 223,Tier 3 alpha,OMGDOCUPG.CMW.RCA.TR3.B1.T3,33,1,3,"",1000
 44,Toolboxes,OMGDOCUPG.CMW.RCA.TR3.B2.T1,33,2,1,"Self Repair on Bren Carriers and Bren Gun Carriers now have 0.80 speed reduction instead of 0.35 speed reduction. In addition, the cooldown on Self Repair has been reduced by 15%.",1
 150,Carrier Tactics,OMGDOCUPG.CMW.RCA.TR3.B2.T2,33,2,2,Lockdown ability given to Bren Gun Carrier and Universal carrier which increases accuracy and suppression by 25%. Acceleration and max speed also increased 20%.,1
@@ -164,14 +164,14 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 100,Stuka Terror Dive,OMGDOCUPG.PE.LUFTWAFFE.TR1.B1.T1,25,1,1,Stuka Terror Dive Offmap available for purchase. Suppresses infantry in an area you select. 45 mu per use.,3
 175,Butterfly Bomblets,OMGDOCUPG.PE.LUFTWAFFE.TR1.B1.T2,25,1,2,Butterfly Bombs now available for purchase. 85 mu per use.,3
 249,Taking Notes On The Way Down,OMGDOCUPG.PE.LUFTWAFFE.TR1.B1.T3,25,1,3,Airborne units gain additional line of sight while paradropping.,2
-101,Elite Crews,OMGDOCUPG.PE.LUFTWAFFE.TR1.B2.T1,25,2,1,"P4IST and Wirbelwind acceleration, deceleration increased by 30%, and max speed by 20%. the P4IST also gets its turret rotation increased by 30%.",3
-176,Anti Tank Requisition,OMGDOCUPG.PE.LUFTWAFFE.TR1.B2.T2,25,2,2,"Fallshirmjagers may now purchase AT Rifles, or a single schreck. FallschirmjÃ¤gers and GebirgsjÃ¤gers can volley off two Panzerfaust uses in rapid succession. ",4
+101,Elite Crews,OMGDOCUPG.PE.LUFTWAFFE.TR1.B2.T1,25,2,1,"Panzer IV IST and Wirbelwind acceleration, deceleration increased by 30%, and max speed by 20%. the P4IST also gets its turret rotation increased by 30%.",3
+176,Anti Tank Requisition,OMGDOCUPG.PE.LUFTWAFFE.TR1.B2.T2,25,2,2,"Fallshirmjaegers may now purchase AT Rifles, or a single schreck. Fallschirmjaegers and Gebirgsjaegers can volley off two Panzerfaust uses in rapid succession. ",4
 250,Luftwaffe Dive Bomber,OMGDOCUPG.PE.LUFTWAFFE.TR1.B2.T3,25,2,3,Fast bomber that drops a single bomb with a large area of effect. 75 mu per use. Broken currrently,999
-103,Combat Arms Requisition,OMGDOCUPG.PE.LUFTWAFFE.TR2.B1.T1,26,1,1,"Luftwaffe Ground Forces may now purchase an LMG42, 2 G43s , or 2 Butterfly Mines. Fallschirmjagers can purchase 2 G43s.",4
+103,Combat Arms Requisition,OMGDOCUPG.PE.LUFTWAFFE.TR2.B1.T1,26,1,1,"Luftwaffe Ground Forces may now purchase an LMG42, 2 G43s, or 2 Butterfly Mines. Fallschirmjaegers can purchase 2 G43s.",4
 177,Erbsenmuster Camo,OMGDOCUPG.PE.LUFTWAFFE.TR2.B1.T2,26,1,2,"The Pak40, Marders and Scout Cars now cloak after locking down.",4
 251,Tier 3 alpha,OMGDOCUPG.PE.LUFTWAFFE.TR2.B1.T3,26,1,3,"",1000
 104,We'll Hide This... Half-Track,OMGDOCUPG.PE.LUFTWAFFE.TR2.B2.T1,26,2,1,Medic Half-Tracks now camouflage when deployed.,2
-178,Mobile Security,OMGDOCUPG.PE.LUFTWAFFE.TR2.B2.T2,26,2,2,Wirblewinds now have +5 weapon range. Scout Cars with &quot;Support Fire&quot; upgrade receive +5 weapon range when locked down.,5
+178,Mobile Security,OMGDOCUPG.PE.LUFTWAFFE.TR2.B2.T2,26,2,2,Wirbelwinds now have +5 weapon range. Scout Cars with Support Fire upgrade receive +5 weapon range when locked down.,5
 252,Tier 3 alpha,OMGDOCUPG.PE.LUFTWAFFE.TR2.B2.T3,26,2,3,"",1000
 106,Shift the Lines,OMGDOCUPG.PE.LUFTWAFFE.TR3.B1.T1,27,1,1,"Luftwaffe Ground Forces, Fallshirmjaegers and Gebirgsjaegers are granted the Sprint ability.",3
 179,Infiltration,OMGDOCUPG.PE.LUFTWAFFE.TR3.B1.T2,27,1,2,Fallshirmjaegers platoon can infiltrate out of buildings.,3
@@ -183,7 +183,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 163,Fiery Crescendo,OMGDOCUPG.PE.SCORCHED.TR1.B1.T2,22,1,2,"Hummels, Hotchkai with Stuka, and Sturmpanzers may now fire Incendiary Barrages.",5
 237,Counter Offensive,OMGDOCUPG.PE.SCORCHED.TR1.B1.T3,22,1,3,"Offmap available for purchase that provides all units outside friendly territory -25% damage and infantry units -25% received suppression. Recharging cooldown, 120 mu.",4
 83,Increased Payloads,OMGDOCUPG.PE.SCORCHED.TR1.B2.T1,22,2,1,"Hummels fire an extra shell on their normal barrage. In addition, Mortar Half-tracks fire two extra shells in its barrage ability.",3
-164,Surplus Armaments,OMGDOCUPG.PE.SCORCHED.TR1.B2.T2,22,2,2,Panzer IV ISTs' weapon range is increased by five and may purchase &quot;White Phosphorous&quot; rounds.,3
+164,Surplus Armaments,OMGDOCUPG.PE.SCORCHED.TR1.B2.T2,22,2,2,Panzer IV ISTs' weapon range is increased by five and may purchase White Phosphorous rounds.,3
 238,Molotov Cocktails,OMGDOCUPG.PE.SCORCHED.TR1.B2.T3,22,2,3,"Molotovs are unlocked for purchase on Ostfront Vets. A longer range sticky bomb style projectile that sets tanks on fire doing minor damage over time, -40% speed reduction, -75% sight.",4
 85,Steady Aim,OMGDOCUPG.PE.SCORCHED.TR2.B1.T1,23,1,1,Suppressive Volley Fire on G43s can be used while garrisoned in buildings and the Slow effect  lasts 15% longer.,3
 165,Ignoring the Wounds,OMGDOCUPG.PE.SCORCHED.TR2.B1.T2,23,1,2,Forward HQ ability unlocks and allows you to capture an occupied building which heals nearby infantry.On a long cooldown with unlimited uses.,5
