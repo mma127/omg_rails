@@ -32,11 +32,13 @@ after :restrictions do
     doctrine = Doctrine.find_by(name: row["doctrine"])
     if doctrine.present?
       unlock = Unlock.find_by(name: row["unlock"])
+      puts "-- Doctrine #{doctrine.name} and unlock #{unlock.name}"
       doctrine_unlock = DoctrineUnlock.find_by(unlock: unlock, doctrine: doctrine)
       restriction = Restriction.find_by(doctrine_unlock: doctrine_unlock)
       EnabledOffmap.create!(restriction: restriction, offmap: offmap, mun: row["mun"].to_i, max: row["max"].to_i, ruleset: ruleset)
     else
       faction = Faction.find_by(name: row["doctrine"])
+      puts "-- Faction #{faction.name}"
       restriction = Restriction.find_by(faction: faction)
       EnabledOffmap.create!(restriction: restriction, offmap: offmap, mun: row["mun"].to_i, max: row["max"].to_i, ruleset: ruleset)
     end
