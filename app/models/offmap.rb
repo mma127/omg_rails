@@ -32,5 +32,12 @@ class Offmap < ApplicationRecord
     expose :name
     expose :display_name, as: :displayName
     expose :description
+    expose :cooldown
+    expose :duration
+    expose :unlimited_uses, as: :unlimitedUses
+    expose :buffs
+    expose :debuffs
+    expose :weapon_rgd
+    expose :shells_fired
   end
 end
