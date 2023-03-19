@@ -35,16 +35,24 @@ class DoctrineUnlock < ApplicationRecord
 
   before_save :generate_internal_description
 
+  def restrictions
+    [restriction, unlock.restriction]
+  end
+
   def enabled_units
-    EnabledUnit.includes(:unit).where(restriction: [restriction, unlock.restriction])
+    EnabledUnit.includes(:unit).where(restriction: restrictions)
   end
 
   def disabled_units
-    DisabledUnit.includes(:unit).where(restriction: [restriction, unlock.restriction])
+    DisabledUnit.includes(:unit).where(restriction: restrictions)
   end
 
   def unit_swaps
     UnitSwap.includes(:old_unit, :new_unit).where(unlock: unlock)
+  end
+
+  def enabled_offmaps
+    EnabledOffmap.includes(:offmap).where(restriction: restrictions)
   end
 
   def entity
@@ -65,6 +73,7 @@ class DoctrineUnlock < ApplicationRecord
     expose :enabled_units, as: :enabledUnits, using: EnabledUnit::Entity, if: { type: :full }
     expose :disabled_units, as: :disabledUnits, using: DisabledUnit::Entity, if: { type: :full }
     expose :unit_swaps, as: :unitSwaps, using: UnitSwap::Entity, if: { type: :full }
+    expose :enabled_offmaps, as: :enabledOffmaps, using: EnabledOffmap::Entity, if: { type: :full }
   end
 
   private
