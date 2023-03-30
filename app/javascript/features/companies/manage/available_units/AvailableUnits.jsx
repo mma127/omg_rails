@@ -7,8 +7,8 @@ import {
   selectLightVehicleAvailableUnits,
   selectSupportTeamAvailableUnits,
   selectTankAvailableUnits
-} from "../../../units/availableUnitsSlice";
-import { AvailableUnitDroppable } from "../AvailableUnitDroppable";
+} from "./availableUnitsSlice";
+import { AvailableUnitDroppable } from "./AvailableUnitDroppable";
 import { Box, Typography } from "@mui/material";
 
 

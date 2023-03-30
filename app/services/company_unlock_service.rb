@@ -32,7 +32,11 @@ class CompanyUnlockService
 
     # TODO other RestrictionUnit cases
 
-    available_units_service = AvailableUnitsService.new(@company)
+    # Get EnabledOffmaps for these restrictions
+    enabled_offmaps = EnabledOffmap.includes(:offmap).where(restriction: [du_restriction, u_restriction])
+
+    available_units_service = AvailableUnitService.new(@company)
+    available_offmaps_service = AvailableOffmapService.new(@company)
 
     ActiveRecord::Base.transaction do
       # Add available_units for units to add
@@ -52,6 +56,9 @@ class CompanyUnlockService
       if disabled_units.present? || unit_swaps.present?
         update_company_resources
       end
+
+      # add available_offmaps for offmaps to add
+      available_offmaps_service.create_enabled_available_offmaps(enabled_offmaps)
 
       # Create a CompanyUnlock and reduce company vps
       pay_for_company_unlock(doctrine_unlock)
@@ -83,7 +90,7 @@ class CompanyUnlockService
     # Get UnitSwaps for the unlock
     unit_swaps = UnitSwap.includes(:old_unit, :new_unit).where(unlock: unlock)
 
-    available_units_service = AvailableUnitsService.new(@company)
+    available_units_service = AvailableUnitService.new(@company)
     ActiveRecord::Base.transaction do
       # Add available_units for previously_disabled_units (we are adding these back)
       available_units_service.recreate_disabled_from_doctrine_unlock(units_to_add_back, doctrine_unlock) unless units_to_add_back.blank?

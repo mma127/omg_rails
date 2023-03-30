@@ -27,4 +27,29 @@ class AvailableOffmap < ApplicationRecord
 
   validates :max, numericality: { greater_than_or_equal_to: 0 }
   validates :available, numericality: { greater_than_or_equal_to: 0 }
+
+  def offmap_name
+    offmap.name
+  end
+
+  def offmap_display_name
+    offmap.display_name
+  end
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :company_id, as: :companyId
+    expose :offmap_id, as: :offmapId
+    expose :offmap_name, as: :offmapName
+    expose :offmap_display_name, as: :offmapDisplayName
+    expose :available
+    expose :max
+    expose :mun
+
+    expose :offmap, using: Offmap::Entity, if: { type: :include_unit }
+  end
 end

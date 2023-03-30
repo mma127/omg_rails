@@ -37,7 +37,7 @@ class Offmap < ApplicationRecord
     expose :unlimited_uses, as: :unlimitedUses
     expose :buffs
     expose :debuffs
-    expose :weapon_rgd
-    expose :shells_fired
+    expose :weapon_rgd, as: :weaponRgd
+    expose :shells_fired, as: :shellsFired
   end
 end

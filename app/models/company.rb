@@ -40,6 +40,8 @@ class Company < ApplicationRecord
   belongs_to :ruleset
 
   has_many :available_units, dependent: :destroy
+  has_many :available_offmaps, dependent: :destroy
+
   has_many :squads, dependent: :destroy
   has_many :company_unlocks, dependent: :destroy
   has_many :doctrine_unlocks, through: :company_unlocks

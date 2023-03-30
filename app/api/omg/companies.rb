@@ -14,7 +14,7 @@ module OMG
 
       desc 'create new company for the player'
       params do
-        requires :doctrineId, type: Integer,  as: :doctrine_id, desc: "Doctrine ID"
+        requires :doctrineId, type: Integer, as: :doctrine_id, desc: "Doctrine ID"
         requires :name, type: String, desc: "Company name"
       end
       post do
@@ -44,30 +44,41 @@ module OMG
           present company
         end
 
-        desc "get all available units for the given company"
+        # might not need this, combine with retrieve squads
+        desc "get all available units, offmaps for the given company"
         params do
           requires :id, type: Integer, desc: "Company ID"
         end
-        get 'available_units' do
-          company = Company.includes(available_units: :unit).find_by(id: params[:id], player: current_player)
+        get 'availability' do
+          company = Company.includes(available_units: :unit, available_offmaps: :offmap).find_by(id: params[:id], player: current_player)
           if company.blank?
             error! "Could not find company #{params[:id]} for the current player", 404
           end
-          present company.available_units, type: :include_unit
+          availability = {
+            available_units: company.available_units,
+            available_offmaps: company.available_offmaps
+          }
+          present availability, with: Entities::Availability, type: :include_unit
         end
 
-        desc 'Retrieve all squads for the company'
+        desc 'Retrieve all squads, company offmaps, available units, available offmaps for the company'
         params do
           requires :id, type: Integer, desc: "Company ID"
         end
         get 'squads' do
           declared_params = declared(params)
-          company = Company.includes(:squads, :ruleset, :available_units).find_by(id: declared_params[:id], player: current_player)
+          company = Company.includes(:squads, :ruleset, { available_units: :unit, available_offmaps: :offmap, company_offmaps: :offmap })
+                           .find_by(id: declared_params[:id], player: current_player)
           if company.blank?
             error! "Could not find company #{params[:id]} for the current player", 404
           end
 
-          present company.squads
+          squads_response = { squads: company.squads,
+                              available_units: company.available_units,
+                              company_offmaps: company.company_offmaps,
+                              available_offmaps: company.available_offmaps
+          }
+          present squads_response, with: Entities::SquadsResponse, type: :include_unit
         end
 
         desc 'Save squads for the company and update available units'
@@ -86,22 +97,26 @@ module OMG
             optional :transportedSquadUuids, type: Array, desc: "Optional list of uuids of squads this squad is transporting"
             optional :transportUuid, type: String, desc: "Optional uuid of the transport squad this squad is embarked in"
           end
+          group :offmaps, type: Array, desc: "Company offmaps list" do
+            optional :id, type: Integer, as: :company_offmap_id, desc: "Company offmap id"
+            requires :availableOffmapId, type: Integer, as: :available_offmap_id, desc: "Available offmap id"
+          end
         end
         post 'squads' do
           begin
             declared_params = declared(params)
-            company = Company.includes(:squads, :ruleset, :available_units).find_by(id: declared_params[:id], player: current_player)
+            company = Company.includes(:squads, :ruleset, :available_units, { available_offmaps: :offmap, company_offmaps: :offmap })
+                             .find_by(id: declared_params[:id], player: current_player)
             company_service = CompanyService.new(current_player)
-            squads, available_units = company_service.update_company_squads(company, declared_params[:squads])
+            squads, available_units, company_offmaps, available_offmaps = company_service.update_company_squads(company, declared_params[:squads], declared_params[:offmaps])
 
-            squads_response = {squads: squads, available_units: available_units}
-            present squads_response, with: Entities::SquadsResponse
+            squads_response = { squads: squads, available_units: available_units, company_offmaps: company_offmaps, available_offmaps: available_offmaps }
+            present squads_response, with: Entities::SquadsResponse, type: :include_unit
           rescue StandardError => e
             Rails.logger.warn("Failed to create company for Player #{current_player.id}: #{e.message}\nParams #{declared_params}\nBacktrace: #{e.backtrace.first(15).join("\n")}")
             error! e.message, 400
           end
         end
-
 
         desc "delete the given company"
         params do

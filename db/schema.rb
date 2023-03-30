@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_09_014738) do
+ActiveRecord::Schema.define(version: 2023_03_26_042536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -159,11 +159,11 @@ ActiveRecord::Schema.define(version: 2023_03_09_014738) do
 
   create_table "company_offmaps", force: :cascade do |t|
     t.bigint "company_id"
-    t.bigint "offmap_id"
+    t.bigint "available_offmap_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["available_offmap_id"], name: "index_company_offmaps_on_available_offmap_id"
     t.index ["company_id"], name: "index_company_offmaps_on_company_id"
-    t.index ["offmap_id"], name: "index_company_offmaps_on_offmap_id"
   end
 
   create_table "company_resource_bonuses", force: :cascade do |t|
@@ -516,8 +516,8 @@ ActiveRecord::Schema.define(version: 2023_03_09_014738) do
   add_foreign_key "companies", "factions"
   add_foreign_key "companies", "players"
   add_foreign_key "companies", "rulesets"
+  add_foreign_key "company_offmaps", "available_offmaps"
   add_foreign_key "company_offmaps", "companies"
-  add_foreign_key "company_offmaps", "offmaps"
   add_foreign_key "company_resource_bonuses", "companies"
   add_foreign_key "company_resource_bonuses", "resource_bonuses"
   add_foreign_key "company_unlocks", "companies"
