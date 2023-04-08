@@ -88,8 +88,8 @@ end
 
     arrival = 5 # Hardcode for now, else momentum-based attacker wait time if attacking
 
-    abilities_block = "" # TODO add offmaps and other abilities
-    buildings_block = "" # TODO add buildings
+    abilities_block = build_abilities_block(company)
+    buildings_block = build_buildings_block(company)
     platoons_block = build_platoons_block(company)
 
     # Increment player index
@@ -116,6 +116,16 @@ end
     Player[pid].Platoons = {\n#{platoons_block}
     }
     COMPANY
+  end
+
+  def build_abilities_block(company)
+    unlock_consts = company.company_unlocks.map { |cu| cu.unlock.const_name }
+    unlock_consts.join(",\n")
+  end
+
+  def build_buildings_block(company)
+    offmap_consts = company.company_offmaps.map { |co| co.offmap.const_name }
+    offmap_consts.join(",\n")
   end
 
   # Player[pid].Platoons = {
@@ -244,6 +254,7 @@ end
             },
     SQUAD
   end
+
   def encode_sga(scar_contents)
     # tocData section
     iDirCount = 2

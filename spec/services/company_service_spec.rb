@@ -16,10 +16,15 @@ RSpec.describe CompanyService do
   let!(:restriction_unit1) { create :enabled_unit, unit: unit1, pop: 4, resupply: 4, resupply_max: 6, company_max: 10, restriction: restriction_faction, ruleset: ruleset }
   let!(:restriction_unit2) { create :enabled_unit, unit: unit2, pop: 7, resupply: 2, resupply_max: 5, company_max: 5, restriction: restriction_faction, ruleset: ruleset }
   let!(:restriction_unit3) { create :enabled_unit, unit: unit3, pop: 13, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: ruleset }
+  let(:offmap1) { create :offmap }
+  let(:offmap2) { create :offmap, unlimited_uses: false }
+  let!(:restriction_offmap1) { create :restriction_offmap, ruleset: ruleset, restriction: restriction_faction, offmap: offmap1, mun: 100, max: 1 }
+  let!(:restriction_offmap2) { create :restriction_offmap, ruleset: ruleset, restriction: restriction_doctrine, offmap: offmap2, mun: 120, max: 3 }
 
   describe "#create_company" do
+    subject { instance.create_company(doctrine, name) }
     it "creates the Company with valid params" do
-      company = instance.create_company(doctrine, name)
+      company = subject
 
       expect(company).to be_valid
       expect(company.name).to eq name
@@ -33,14 +38,23 @@ RSpec.describe CompanyService do
     end
 
     it "builds the Company's AvailableUnits" do
-      company = instance.create_company(doctrine, name)
+      company = subject
       expect(company.available_units.size).to eq 3
+    end
+
+    it "builds the Company's AvailableOffmaps" do
+      company = subject
+      expect(company.available_offmaps.size).to eq 2
+      expect(company.available_offmaps.first.offmap).to eq offmap1
+      expect(company.available_offmaps.first.available).to eq restriction_offmap1.max
+      expect(company.available_offmaps.second.offmap).to eq offmap2
+      expect(company.available_offmaps.second.available).to eq restriction_offmap2.max
     end
 
     it "raises a validation error when the Player has too many Companies of that side" do
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
-      expect { instance.create_company(doctrine, name) }
+      expect { subject }
         .to raise_error(
               CompanyService::CompanyCreationValidationError,
               "Player #{player.id} has too many #{faction.side} companies, cannot create another one.")
@@ -48,14 +62,18 @@ RSpec.describe CompanyService do
   end
 
   describe "#update_company_squads" do
-    subject { instance.update_company_squads(company, squads_param) }
+    let!(:offmaps_param) { [] }
 
-    context "when there are no existing Squads in the Company" do
+    subject { instance.update_company_squads(company, squads_param, offmaps_param) }
+
+    context "when the Company is empty" do
       let!(:company) { instance.create_company(doctrine, name) }
       let!(:available_unit_1) { company.available_units.find_by(unit_id: unit1.id) }
       let!(:available_unit_2) { company.available_units.find_by(unit_id: unit2.id) }
       let!(:available_unit_3) { company.available_units.find_by(unit_id: unit3.id) }
-      let!(:squads_param) {
+      let!(:available_offmap_1) { company.available_offmaps.find_by(offmap: offmap1) }
+      let!(:available_offmap_2) { company.available_offmaps.find_by(offmap: offmap2) }
+      let!(:squads_param) do
         [
           {
             squad_id: nil,
@@ -138,10 +156,22 @@ RSpec.describe CompanyService do
             uuid: "8"
           }
         ]
-      }
+      end
+      let!(:offmaps_param) do
+        [{
+           company_offmap_id: nil,
+           available_offmap_id: available_offmap_1.id
+         }, {
+           company_offmap_id: nil,
+           available_offmap_id: available_offmap_2.id
+         }, {
+           company_offmap_id: nil,
+           available_offmap_id: available_offmap_2.id
+         }]
+      end
 
       it "creates all input Squads for the Company" do
-        squads, _ = instance.update_company_squads(company, squads_param)
+        squads, _, _, _ = subject
         expect(squads.size).to eq squads_param.size
 
         expect(squads.where(available_unit: available_unit_1).size).to eq 3
@@ -150,17 +180,31 @@ RSpec.describe CompanyService do
       end
 
       it "updates the Company's AvailableUnits available value" do
-        _, available_units = instance.update_company_squads(company, squads_param)
+        _, available_units, _, _ = subject
         expect(available_units.size).to eq 3
         expect(available_unit_1.reload.available).to eq 3
         expect(available_unit_2.reload.available).to eq 1
         expect(available_unit_3.reload.available).to eq 0
       end
 
+      it "creates all input CompanyOffmaps for the Company" do
+        _, _, company_offmaps, _ = subject
+        expect(company_offmaps.size).to eq offmaps_param.size
+        expect(company_offmaps.where(available_offmap: available_offmap_1).size).to eq 1
+        expect(company_offmaps.where(available_offmap: available_offmap_2).size).to eq 2
+      end
+
+      it "updates the Company's AvailableOffmaps available value" do
+        _, _, _, available_offmaps = subject
+        expect(available_offmaps.size).to eq 2
+        expect(available_offmaps.find_by(offmap: offmap1).available).to eq 0
+        expect(available_offmaps.find_by(offmap: offmap2).available).to eq 1
+      end
+
       it "raises a validation error when the Company does not belong to the Player" do
         player2 = create :player
         expect {
-          CompanyService.new(player2).update_company_squads(company, squads_param)
+          CompanyService.new(player2).update_company_squads(company, squads_param, offmaps_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Player #{player2.id} cannot delete Company #{company.id}")
@@ -170,18 +214,27 @@ RSpec.describe CompanyService do
         unknown_squad_id = 99999999
         invalid_squad_param = { squad_id: unknown_squad_id,
                                 unit_id: unit1.id,
-                                available_unit_id: available_unit_1,
+                                available_unit_id: available_unit_1.id,
                                 name: nil,
                                 vet: 0,
                                 tab: "core",
                                 index: 0 }
         squads_param << invalid_squad_param
-        expect {
-          instance.update_company_squads(company, squads_param)
-        }.to raise_error(
-               CompanyService::CompanyUpdateValidationError,
-               "Given squad ids [#{unknown_squad_id}] that don't exist for the company #{company.id}"
-             )
+        expect { subject }
+          .to raise_error(
+                CompanyService::CompanyUpdateValidationError,
+                "Given squad ids [#{unknown_squad_id}] that don't exist for the company #{company.id}"
+              )
+      end
+
+      it "raises a validation error if a CompanyOffmap id is given that's not part of the Company" do
+        unknown_company_offmap_id = 9999999
+        invalid_company_offmap_param = { company_offmap_id: unknown_company_offmap_id, available_offmap_id: available_offmap_1.id }
+        offmaps_param << invalid_company_offmap_param
+        expect { subject }
+          .to raise_error(
+                CompanyService::CompanyUpdateValidationError,
+                "Given company offmap ids [#{unknown_company_offmap_id}] that don't exist for the company #{company.id}")
       end
 
       it "raises a validation error if an invalid Unit id is given" do
@@ -195,7 +248,7 @@ RSpec.describe CompanyService do
                                 index: 0 }
         squads_param << invalid_squad_param
         expect {
-          instance.update_company_squads(company, squads_param)
+          instance.update_company_squads(company, squads_param, offmaps_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Invalid unit id(s) given in company squad update: [#{unknown_unit_id}]"
@@ -214,10 +267,23 @@ RSpec.describe CompanyService do
                                 index: 0 }
         squads_param << invalid_squad_param
         expect {
-          instance.update_company_squads(company, squads_param)
+          instance.update_company_squads(company, squads_param, offmaps_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Invalid available_unit_id(s) given in company #{company.id} squad update: [#{new_available_unit.id}]"
+             )
+      end
+
+      it "raises a validation error if an AvailableOffmap id is given that doesn't match any AvailableOffmap in the Company" do
+        new_offmap = create :offmap
+        new_available_offmap = create :available_offmap, offmap: new_offmap # company will not be the same
+        invalid_offmap_param = { company_offmap_id: nil, available_offmap_id: new_available_offmap.id }
+        offmaps_param << invalid_offmap_param
+        expect {
+          subject
+        }.to raise_error(
+               CompanyService::CompanyUpdateValidationError,
+               "Invalid available_offmap_id(s) given in company #{company.id} squad update: [#{new_available_offmap.id}]"
              )
       end
 
@@ -227,10 +293,10 @@ RSpec.describe CompanyService do
         end
         it "raises a validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources" do
           expect {
-            instance.update_company_squads(company.reload, squads_param)
+            instance.update_company_squads(company.reload, squads_param, offmaps_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
-                 "Invalid squad update, negative resource balance found: -600 manpower, -520 munitions, -120 fuel"
+                 "Invalid squad update, negative resource balance found: -600 manpower, -860 munitions, -120 fuel"
                )
         end
       end
@@ -244,7 +310,7 @@ RSpec.describe CompanyService do
                                 tab: "core",
                                 index: 0 }
         expect {
-          instance.update_company_squads(company, [invalid_squad_param])
+          instance.update_company_squads(company, [invalid_squad_param], offmaps_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Platoon at [core 0] has 4.0 pop, must be between 7 and 25, inclusive"
@@ -261,7 +327,7 @@ RSpec.describe CompanyService do
                                 index: 1 }
         squads_param << invalid_squad_param
         expect {
-          instance.update_company_squads(company, squads_param)
+          instance.update_company_squads(company, squads_param, offmaps_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Platoon at [armour 1] has 26.0 pop, must be between 7 and 25, inclusive"
@@ -271,7 +337,7 @@ RSpec.describe CompanyService do
       it "raises a validation error if there's insufficient availability to create a squad of a certain unit" do
         available_unit_2.reload.update!(available: 1)
         expect {
-          instance.update_company_squads(company.reload, squads_param)
+          instance.update_company_squads(company.reload, squads_param, offmaps_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Insufficient availability to create squads for available unit #{available_unit_2.id} in company #{company.id}: Existing count 0, payload count 4, available number 1"
@@ -669,7 +735,7 @@ RSpec.describe CompanyService do
       end
     end
 
-    context "when there are existing Squads in the Company" do
+    context "when Company has Squads and CompanyOffmaps" do
       let!(:unit4) { create :unit }
       let!(:restriction_unit4) { create :enabled_unit, unit: unit4, pop: 8, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: ruleset }
       let!(:company) { instance.create_company(doctrine, name) } # Create the company here to include unit4
@@ -677,6 +743,8 @@ RSpec.describe CompanyService do
       let!(:available_unit_2) { company.available_units.find_by(unit_id: unit2.id) }
       let!(:available_unit_3) { company.available_units.find_by(unit_id: unit3.id) }
       let!(:available_unit_4) { company.available_units.find_by(unit_id: unit4.id) }
+      let!(:available_offmap_1) { company.available_offmaps.find_by(offmap: offmap1) }
+      let!(:available_offmap_2) { company.available_offmaps.find_by(offmap: offmap2) }
 
       context "without transports" do
         before do
@@ -701,6 +769,11 @@ RSpec.describe CompanyService do
           # Unit2: Existing count: 4, Available: 1, Payload count: 3, resupply max: 5
           # Unit3: Existing count: 1, Available: 0, Payload count: 0, resupply_max: 1
           # Unit4: Existing count: 0, Available: 1, Payload count: 1, resupply_max: 1
+
+          company_offmap1 = create :company_offmap, company: company, available_offmap: available_offmap_1
+          company_offmap2 = create :company_offmap, company: company, available_offmap: available_offmap_2
+          available_offmap_1.update!(available: 0)
+          available_offmap_2.update!(available: 2)
 
           @squads_param = [
             {
@@ -774,10 +847,22 @@ RSpec.describe CompanyService do
               uuid: "7"
             }
           ]
+          @offmaps_param = [
+            {
+              company_offmap_id: company_offmap1.id,
+              available_offmap_id: available_offmap_1.id
+            }, {
+              company_offmap_id: nil,
+              available_offmap_id: available_offmap_2.id
+            }, {
+              company_offmap_id: nil,
+              available_offmap_id: available_offmap_2.id
+            }
+          ]
         end
 
         it "creates all input Squads for the Company" do
-          squads, _ = instance.update_company_squads(company, @squads_param)
+          squads, _, _, _ = instance.update_company_squads(company, @squads_param, @offmaps_param)
           expect(squads.size).to eq @squads_param.size
 
           expect(squads.where(available_unit: available_unit_1).size).to eq 3
@@ -787,12 +872,30 @@ RSpec.describe CompanyService do
         end
 
         it "updates the Company's AvailableUnits available value" do
-          _, available_units = instance.update_company_squads(company, @squads_param)
+          _, available_units, _, _ = instance.update_company_squads(company, @squads_param, @offmaps_param)
           expect(available_units.size).to eq 4
           expect(available_unit_1.reload.available).to eq 3
           expect(available_unit_2.reload.available).to eq 2
           expect(available_unit_3.reload.available).to eq 1
           expect(available_unit_4.reload.available).to eq 0
+        end
+
+        it "creates all input CompanyOffmaps for the Company" do
+          company_offmap1 = company.company_offmaps.find_by(available_offmap: available_offmap_1)
+          company_offmap2 = company.company_offmaps.find_by(available_offmap: available_offmap_2)
+          _, _, company_offmaps, _ = instance.update_company_squads(company, @squads_param, @offmaps_param)
+          expect(company_offmaps.size).to eq @offmaps_param.size
+          expect(company_offmaps.where(available_offmap: available_offmap_1).size).to eq 1
+          expect(company_offmaps.where(available_offmap: available_offmap_2).size).to eq 2
+          expect(company_offmaps.where(available_offmap: available_offmap_1).pluck(:id)).to include company_offmap1.id
+          expect(company_offmaps.where(available_offmap: available_offmap_2).pluck(:id)).not_to include company_offmap2.id
+        end
+
+        it "updates the Company's AvailableOffmaps available value" do
+          _, _, _, available_offmaps = instance.update_company_squads(company, @squads_param, @offmaps_param)
+          expect(available_offmaps.size).to eq 2
+          expect(available_offmaps.find_by(offmap: offmap1).available).to eq 0
+          expect(available_offmaps.find_by(offmap: offmap2).available).to eq 1
         end
 
         it "raises a validation error if a Squad id is given that's not part of the Company" do
@@ -806,11 +909,31 @@ RSpec.describe CompanyService do
                                   index: 0 }
           @squads_param << invalid_squad_param
           expect {
-            instance.update_company_squads(company, @squads_param)
+            instance.update_company_squads(company, @squads_param, @offmaps_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Given squad ids [#{unknown_squad_id}] that don't exist for the company #{company.id}"
                )
+        end
+
+        it "raises a validation error if a duplicate CompanyOffmap id is given" do
+          duplicate_company_offmap_id = company.company_offmaps.find_by(available_offmap: available_offmap_1.id).id
+          invalid_company_offmap_param = { company_offmap_id: duplicate_company_offmap_id, available_offmap_id: available_offmap_1.id }
+          @offmaps_param << invalid_company_offmap_param
+          expect { instance.update_company_squads(company, @squads_param, @offmaps_param) }
+            .to raise_error(
+                  CompanyService::CompanyUpdateValidationError,
+                  "Duplicate company offmap ids found in payload company offmap ids: [#{duplicate_company_offmap_id}]")
+        end
+
+        it "raises a validation error if a CompanyOffmap id is given that's not part of the Company" do
+          unknown_company_offmap_id = 9999999
+          invalid_company_offmap_param = { company_offmap_id: unknown_company_offmap_id, available_offmap_id: available_offmap_1.id }
+          @offmaps_param << invalid_company_offmap_param
+          expect { instance.update_company_squads(company, @squads_param, @offmaps_param) }
+            .to raise_error(
+                  CompanyService::CompanyUpdateValidationError,
+                  "Given company offmap ids [#{unknown_company_offmap_id}] that don't exist for the company #{company.id}")
         end
 
         it "raises a validation error if an invalid Unit id is given" do
@@ -824,14 +947,14 @@ RSpec.describe CompanyService do
                                   index: 0 }
           @squads_param << invalid_squad_param
           expect {
-            instance.update_company_squads(company, @squads_param)
+            instance.update_company_squads(company, @squads_param, @offmaps_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Invalid unit id(s) given in company squad update: [#{unknown_unit_id}]"
                )
         end
 
-        it "raises a validation error if an Unit id is given that doesn't match any AvailableUnit in the Company" do
+        it "raises a validation error if an AvailableUnit id is given that doesn't match any AvailableUnit in the Company" do
           new_unit = create :unit
           new_available_unit = create :available_unit, unit: new_unit
           invalid_squad_param = { squad_id: nil,
@@ -843,10 +966,23 @@ RSpec.describe CompanyService do
                                   index: 0 }
           @squads_param << invalid_squad_param
           expect {
-            instance.update_company_squads(company, @squads_param)
+            instance.update_company_squads(company, @squads_param, @offmaps_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Invalid available_unit_id(s) given in company #{company.id} squad update: [#{new_available_unit.id}]"
+               )
+        end
+
+        it "raises a validation error if an AvailableOffmap id is given that doesn't match any AvailableOffmap in the Company" do
+          new_offmap = create :offmap
+          new_available_offmap = create :available_offmap, offmap: new_offmap # company will not be the same
+          invalid_offmap_param = { company_offmap_id: nil, available_offmap_id: new_available_offmap.id }
+          @offmaps_param << invalid_offmap_param
+          expect {
+            instance.update_company_squads(company, @squads_param, @offmaps_param)
+          }.to raise_error(
+                 CompanyService::CompanyUpdateValidationError,
+                 "Invalid available_offmap_id(s) given in company #{company.id} squad update: [#{new_available_offmap.id}]"
                )
         end
 
@@ -856,10 +992,10 @@ RSpec.describe CompanyService do
           end
           it "raises a validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources" do
             expect {
-              instance.update_company_squads(company.reload, @squads_param)
+              instance.update_company_squads(company.reload, @squads_param, @offmaps_param)
             }.to raise_error(
                    CompanyService::CompanyUpdateValidationError,
-                   "Invalid squad update, negative resource balance found: -500 manpower, -430 munitions, -80 fuel"
+                   "Invalid squad update, negative resource balance found: -500 manpower, -770 munitions, -80 fuel"
                  )
           end
         end
@@ -873,7 +1009,7 @@ RSpec.describe CompanyService do
                                   tab: "core",
                                   index: 0 }
           expect {
-            instance.update_company_squads(company, [invalid_squad_param])
+            instance.update_company_squads(company, [invalid_squad_param], @offmaps_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Platoon at [core 0] has 4.0 pop, must be between 7 and 25, inclusive"
@@ -890,7 +1026,7 @@ RSpec.describe CompanyService do
                                   index: 0 }
           @squads_param << invalid_squad_param
           expect {
-            instance.update_company_squads(company, @squads_param)
+            instance.update_company_squads(company, @squads_param, @offmaps_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Platoon at [core 0] has 32.0 pop, must be between 7 and 25, inclusive"
@@ -900,7 +1036,7 @@ RSpec.describe CompanyService do
         it "raises a validation error if there's insufficient availability to create a squad of a certain unit" do
           available_unit_4.update!(available: 0)
           expect {
-            instance.update_company_squads(company.reload, @squads_param)
+            instance.update_company_squads(company.reload, @squads_param, @offmaps_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Insufficient availability to create squads for available unit #{available_unit_4.id} in company #{company.id}: Existing count 0, payload count 1, available number 0"
@@ -1027,7 +1163,7 @@ RSpec.describe CompanyService do
             ]
           end
 
-          subject { instance.update_company_squads(company, squads_param) }
+          subject { instance.update_company_squads(company, squads_param, offmaps_param) }
 
           before do
             available_unit_1.update!(available: 2)
@@ -1524,6 +1660,8 @@ RSpec.describe CompanyService do
   end
 
   describe "#delete_company" do
+    subject { instance.delete_company(@company) }
+
     before do
       @company = instance.create_company(doctrine, name)
       @available_unit_1 = @company.available_units.find_by(unit: unit1)
@@ -1533,21 +1671,33 @@ RSpec.describe CompanyService do
       create :squad, company: @company, available_unit: @available_unit_1, tab_category: "core", category_position: 0
       create :squad, company: @company, available_unit: @available_unit_2, tab_category: "core", category_position: 0
       create :squad, company: @company, available_unit: @available_unit_3, tab_category: "core", category_position: 3
+
+      @available_offmap_1 = @company.available_offmaps.find_by(offmap: offmap1)
+      @available_offmap_2 = @company.available_offmaps.find_by(offmap: offmap2)
+      create :company_offmap, company: @company, available_offmap: @available_offmap_1
+      create :company_offmap, company: @company, available_offmap: @available_offmap_2
     end
 
     it "destroys the Company" do
-      instance.delete_company(@company)
+      expect { subject }.to change { Company.count }.by -1
       expect { @company.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
     it "destroys the Company's AvailableUnits" do
-      company_id = @company.id
-      instance.delete_company(@company)
-      expect(AvailableUnit.where(company_id: company_id).size).to eq 0
+      expect { subject }.to change { AvailableUnit.count }.by -3
+      expect(AvailableUnit.where(company_id: @company.id).size).to eq 0
     end
     it "destroys the Company's Squads" do
-      company_id = @company.id
-      instance.delete_company(@company)
-      expect(Squad.where(company_id: company_id).size).to eq 0
+      expect { subject }.to change { Squad.count }.by -3
+      expect(Squad.where(company_id: @company.id).size).to eq 0
+    end
+
+    it "destroys the Company's AvailableOffmaps" do
+      expect { subject }.to change { AvailableOffmap.count }.by -2
+      expect(AvailableOffmap.where(company_id: @company.id).size).to eq 0
+    end
+    it "destroys the Company's CompanyOffmaps" do
+      expect { subject }.to change { CompanyOffmap.count }.by -2
+      expect(CompanyOffmap.where(company_id: @company.id).size).to eq 0
     end
   end
 

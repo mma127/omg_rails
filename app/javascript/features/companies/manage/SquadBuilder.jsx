@@ -4,19 +4,19 @@ import { Alert, AlertTitle, Box, Button, CircularProgress, Container, Grid, Snac
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
-import { CompanyGridDropTarget } from "./CompanyGridDropTarget";
-import { SquadsGridTabs } from "./SquadsGridTabs";
+import { CompanyGridDropTarget } from "./squads/CompanyGridDropTarget";
+import { SquadsGridTabs } from "./squads/SquadsGridTabs";
 
 import { ANTI_ARMOUR, ARMOUR, ASSAULT, CORE, INFANTRY, SUPPORT } from "../../../constants/company";
-import { addUnitCost, fetchCompanyById, removeUnitCost, selectCompanyById } from "../companiesSlice";
+import { addCost, fetchCompanyById, removeCost, selectCompanyById } from "../companiesSlice";
 import {
   resetAvailableUnitState,
-  fetchCompanyAvailableUnits,
+  fetchCompanyAvailability,
   selectAllAvailableUnits,
   selectAvailableUnitsStatus
-} from "../../units/availableUnitsSlice"
+} from "./available_units/availableUnitsSlice"
 import { AvailableUnits } from "./available_units/AvailableUnits";
-import { AvailableUnitDetails } from "./AvailableUnitDetails";
+import { AvailableUnitDetails } from "./available_units/AvailableUnitDetails";
 import {
   addNonTransportedSquad,
   resetSquadState,
@@ -34,11 +34,17 @@ import {
   moveSquad,
   addTransportedSquad,
   removeTransportedSquad
-} from "../../units/squadsSlice";
-import { ErrorTypography } from "../../../components/ErrorTypography";
+} from "./units/squadsSlice";
 import { AlertSnackbar } from "../AlertSnackbar";
 import { selectIsCompanyUnlocksChanged } from "./unlocks/companyUnlocksSlice";
-import { createSquad } from "../../units/squad";
+import { createSquad } from "./units/squad";
+import { AvailableOffmaps } from "./available_offmaps/AvailableOffmaps";
+import { createCompanyOffmap } from "./company_offmaps/companyOffmap";
+import {
+  addNewCompanyOffmap, removeExistingCompanyOffmap, removeNewCompanyOffmap,
+  selectMergedCompanyOffmaps
+} from "./company_offmaps/companyOffmapsSlice";
+import { PurchasedOffmaps } from "./company_offmaps/PurchasedOffmaps";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -46,6 +52,14 @@ const useStyles = makeStyles(theme => ({
   },
   detailTitle: {
     fontWeight: 'bold'
+  },
+  saveWrapper: {
+    display: 'flex',
+    // alignItems: 'center',
+    marginTop: "8px"
+  },
+  saveButton: {
+    height: 'fit-content'
   }
 }))
 
@@ -61,6 +75,7 @@ export const SquadBuilder = ({}) => {
   const notifySnackbar = useSelector(state => state.squads.notifySnackbar)
   const snackbarMessage = useSelector(state => state.squads.snackbarMessage)
   const [openSnackbar, setOpenSnackbar] = useState(false)
+  const allOffmaps = useSelector(selectMergedCompanyOffmaps)
 
   useEffect(() => {
     setOpenSnackbar(notifySnackbar)
@@ -123,7 +138,7 @@ export const SquadBuilder = ({}) => {
   useEffect(() => {
     console.log("dispatching squad and available_unit fetch from SquadBuilder")
     dispatch(fetchCompanySquads({ companyId }))
-    dispatch(fetchCompanyAvailableUnits({ companyId }))
+    // dispatch(fetchCompanyAvailability({ companyId })) // Rolled up into fetchCompanySquads
 
     return () => {
       console.log("dispatching resetSquadState resetAvailableUnitState")
@@ -159,7 +174,7 @@ export const SquadBuilder = ({}) => {
    * Update the company's resources with the new squad's base cost and add the squad to state */
   const onNonTransportSquadCreate = (availableUnit, unit, index, tab) => {
     const newSquad = createSquad(availableUnit, unit, index, tab)
-    dispatch(addUnitCost({
+    dispatch(addCost({
       id: company.id,
       pop: newSquad.pop,
       man: newSquad.man,
@@ -174,7 +189,7 @@ export const SquadBuilder = ({}) => {
    * Update the company's resources with the new squad's base cost and add the squad to state */
   const onTransportedSquadCreate = (availableUnit, unit, index, tab, transportUuid) => {
     const newSquad = createSquad(availableUnit, unit, index, tab, transportUuid)
-    dispatch(addUnitCost({
+    dispatch(addCost({
       id: company.id,
       pop: newSquad.pop,
       man: newSquad.man,
@@ -186,7 +201,7 @@ export const SquadBuilder = ({}) => {
 
   const onSquadDestroy = (squad, transportUuid = null) => {
     // TODO remove squad id from company if not null
-    dispatch(removeUnitCost({ id: company.id, pop: squad.pop, man: squad.man, mun: squad.mun, fuel: squad.fuel }))
+    dispatch(removeCost({ id: company.id, pop: squad.pop, man: squad.man, mun: squad.mun, fuel: squad.fuel }))
     if (_.isNull(transportUuid)) {
       console.log(`Removing non-transport squad`)
       dispatch(removeSquad(squad))
@@ -201,20 +216,41 @@ export const SquadBuilder = ({}) => {
   }
 
   const saveSquads = () => {
-    dispatch(upsertSquads({ companyId }))
+    dispatch(upsertSquads({ companyId, offmaps: allOffmaps }))
+  }
+
+  const onOffmapSelect = (availableOffmap) => {
+    const newCompanyOffmap = createCompanyOffmap(null, availableOffmap)
+    dispatch(addCost({ id: company.id, pop: 0, man: 0, mun: newCompanyOffmap.mun, fuel: 0 }))
+    dispatch(addNewCompanyOffmap({ newCompanyOffmap }))
+  }
+
+  const onOffmapDestroyClick = (companyOffmap) => {
+    dispatch(removeCost({ id: company.id, pop: 0, man: 0, mun: companyOffmap.mun, fuel: 0 }))
+    if (_.isNull(companyOffmap.id)) {
+      dispatch(removeNewCompanyOffmap({ availableOffmapId: companyOffmap.availableOffmapId }))
+    } else {
+      dispatch(removeExistingCompanyOffmap({
+        id: companyOffmap.id,
+        availableOffmapId: companyOffmap.availableOffmapId
+      }))
+    }
   }
 
   const editEnabled = !company.activeBattleId
   const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
   const availableUnits = useSelector(selectAllAvailableUnits)
-  let availableUnitsContent
+  let availableUnitsContent,
+    availableOffmapsContent
   if (availableUnitsStatus === "pending") {
     console.log("Loading available units")
     availableUnitsContent = <CircularProgress />
+    availableOffmapsContent = null
   } else {
     console.log("Selected available units")
     console.log(availableUnits)
-    availableUnitsContent = <AvailableUnits companyId={companyId} onUnitSelect={onUnitSelect} enabled={editEnabled} />
+    availableUnitsContent = <AvailableUnits onUnitSelect={onUnitSelect} enabled={editEnabled} />
+    availableOffmapsContent = <AvailableOffmaps onSelect={onOffmapSelect} enabled={editEnabled} />
   }
 
   let snackbarSeverity = "success"
@@ -240,13 +276,24 @@ export const SquadBuilder = ({}) => {
                        content={snackbarContent} />
         <Grid container spacing={2} ref={constraintsRef}>
           <Grid item container spacing={2} className={classes.availableUnitsContainer}>
-            <Grid item md={6}>
-              {availableUnitsContent}
-              {/*TODO maybe populate by type, alphabetically or cost ASC */}
+            <Grid item container md={6}>
+              <Grid item xs={12}>
+                {availableUnitsContent}
+              </Grid>
+              <Grid item>
+                {availableOffmapsContent}
+              </Grid>
             </Grid>
-            <Grid item md={6} xs={12}>
-              <AvailableUnitDetails unitId={selectedUnitId} availableUnitId={selectedAvailableUnitId}
-                                    unitImage={selectedUnitImage} />
+            <Grid item container md={6} xs={12}>
+              <Grid item xs={12}>
+                <AvailableUnitDetails unitId={selectedUnitId} availableUnitId={selectedAvailableUnitId}
+                                      unitImage={selectedUnitImage} />
+                <Box className={classes.saveWrapper}>
+                  <Button variant="contained" color="secondary" size="small" onClick={saveSquads}
+                          disabled={!canSave} className={classes.saveButton}>Save</Button>
+                  {errorAlert}
+                </Box>
+              </Grid>
             </Grid>
           </Grid>
           <Grid item container spacing={2}>
@@ -271,15 +318,10 @@ export const SquadBuilder = ({}) => {
               <Typography variant="body2" gutterBottom>{company.fuel}</Typography>
             </Grid>
             <Grid item md={2} />
-            <Grid item container md={6}>
-              <Grid item md={2}>
-                <Button variant="contained" color="secondary" size="small" onClick={saveSquads}
-                        disabled={!canSave}>Save</Button>
-              </Grid>
-              <Grid item md={10}>
-                {errorAlert}
-                {/*<ErrorTypography>{errorMessage}</ErrorTypography>*/}
-              </Grid>
+            <Grid item md={6}>
+              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                          pr={1}>Purchased Offmaps</Typography>
+              <PurchasedOffmaps onDeleteClick={onOffmapDestroyClick} enabled={editEnabled} />
             </Grid>
           </Grid>
           <Grid item container spacing={2}>

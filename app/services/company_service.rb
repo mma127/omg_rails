@@ -41,9 +41,13 @@ class CompanyService
                                   ruleset: ruleset
     )
 
-    # Create AvailableUnits for Company
-    available_units_service = AvailableUnitsService.new(new_company)
+    # Create AvailableUnits for the Company
+    available_units_service = AvailableUnitService.new(new_company)
     available_units_service.build_new_company_available_units
+
+    # Create AvailableOffmaps for the Company
+    available_offmaps_service = AvailableOffmapService.new(new_company)
+    available_offmaps_service.build_new_company_available_offmaps
 
     new_company
   end
@@ -63,7 +67,7 @@ class CompanyService
   # * The company has sufficient manpower, munitions, and fuel resources to afford all given squads
   # * Each platoon of squads (squads grouped by tab and index) has pop between the MIN and MAX allowed
   # * The company has sufficient availability in AvailableUnits for every unique unit in the given squads
-  def update_company_squads(company, squads, override = false)
+  def update_company_squads(company, squads, offmaps, override = false)
     unless can_update_company(company, override)
       # Raise validation error if the company does not belong to the player
       raise CompanyUpdateValidationError.new("Player #{@player.id} cannot delete Company #{company.id}")
@@ -76,7 +80,13 @@ class CompanyService
     # Validates that all squad ids in the squads payload are unique and correspond to an existing squad id in the company
     validate_incoming_squad_ids(payload_squad_ids, existing_squad_ids, company.id)
 
-    ## Price every squad, sum up and validate against ruleset totals
+    existing_company_offmaps = company.company_offmaps
+    existing_co_offmap_ids = existing_company_offmaps.pluck(:id)
+    payload_co_offmap_ids = offmaps.select { |o| o[:company_offmap_id].present? }.pluck(:company_offmap_id)
+    # Validates that all company_offmap ids in the offmaps payload are unique and correspond to an existing company_offmap id in the company
+    validate_incoming_company_offmap_ids(payload_co_offmap_ids, existing_co_offmap_ids, company.id)
+
+    ## Price every squad and offmap, sum up and validate against ruleset totals
     ## Raise validation error if insufficient
 
     # Get unique squad units
@@ -106,9 +116,25 @@ class CompanyService
     # Calculate resources used by the input squads
     man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
 
+    ## Offmaps
+    # Get available_offmaps for the company
+    available_offmaps = company.available_offmaps
+    # Get unique offmaps payload available_offmap_ids
+    uniq_available_offmap_ids_new = offmaps.map { |o| o[:available_offmap_id] }.uniq
+    # Validate that all uniq_available_offmap_ids_new correspond to existing available_offmaps
+    validate_payload_available_offmaps_exist(uniq_available_offmap_ids_new, available_offmaps, company.id)
+    # Index available_offmaps by id
+    available_offmaps_by_id = available_offmaps.index_by(&:id)
+    # Calculate resources used by the payload offmaps
+    man_offmap, mun_offmap, fuel_offmap = calculate_offmap_resources(offmaps, available_offmaps_by_id)
+
+    man_final = man_new + man_offmap
+    mun_final = mun_new + mun_offmap
+    fuel_final = fuel_new + fuel_offmap
+
     # Calculate resources remaining when subtracting the squad resources from the company's total starting resources
     # Raise validation error if the new squads' cost is greater in one or more resource than the company's total starting resources
-    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, man_new, mun_new, fuel_new)
+    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, man_final, mun_final, fuel_final)
 
     # Raise validation error if a platoon (squads within a tab and index) has either less pop than the minimum or
     # more pop than the maximum allowed
@@ -129,7 +155,21 @@ class CompanyService
     # squads list
     add_existing_squads_to_remove(existing_squads_by_available_unit_id, available_changes)
 
-    ##### At this point, we know the company can have the new squads as they are within price and availability
+    ## Offmaps
+    # Get all existing company_offmaps for the company by available_offmap_id
+    existing_company_offmaps_by_available_offmap_id = existing_company_offmaps.group_by(&:available_offmap_id)
+    # Get payload offmaps by available_offmap_id
+    payload_offmaps_by_available_offmap_id = offmaps.group_by { |o| o[:available_offmap_id] }
+    ## Calculate delta in number of each offmap against the available number of that offmap
+    # Raise a validation error if insufficient
+    available_offmap_changes = build_available_offmap_deltas(company, payload_offmaps_by_available_offmap_id,
+                                                             existing_company_offmaps_by_available_offmap_id,
+                                                             available_offmaps_by_id)
+    # Check for any existing company offmaps that have offmaps that aren't in the payload offmaps list. These represent company_offmaps
+    # we will be destroying and offmaps that will give their availability back
+    add_existing_offmaps_to_remove(existing_company_offmaps_by_available_offmap_id, available_offmap_changes)
+
+    ##### At this point, we know the company can have the new squads and offmaps as they are within price and availability
 
     # Build transport mappings
     uuid_to_transported_uuids, transport_related_uuids = build_transport_mappings(squads, uniq_units_new_by_id)
@@ -192,11 +232,35 @@ class CompanyService
         TransportedSquad.import!(transported_squads, on_duplicate_key_ignore: { conflict_target: [:transport_squad_id, :embarked_squad_id] })
       end
 
+      ## Offmaps
+      new_company_offmaps = []
+      offmaps.each do |offmap|
+        if offmap[:company_offmap_id].blank?
+          # Create a new CompanyOffmap record for offmaps without company_offmap_id
+          available_offmap = available_offmaps_by_id[offmap[:available_offmap_id]]
+          new_company_offmaps << CompanyOffmap.new(company: company, available_offmap: available_offmap)
+
+          # Nothing to update for existing company_offmaps
+        end
+      end
+      CompanyOffmap.import!(new_company_offmaps)
+
+      # Determine set of existing CompanyOffmaps with id not in the new list of company offmaps. Delete these
+      company_offmap_ids_to_delete = existing_co_offmap_ids - payload_co_offmap_ids
+      CompanyOffmap.where(id: [company_offmap_ids_to_delete]).destroy_all if company_offmap_ids_to_delete.present?
+
+      # Update offmap available number
+      available_offmap_changes.each do |available_offmap_id, delta|
+        available_offmap = available_offmaps_by_id[available_offmap_id]
+        new_available_number = available_offmap.available + delta
+        available_offmap.update!(available: [new_available_number, 0].max)
+      end
+
       company.update!(pop: pop_new, man: man_remaining, mun: mun_remaining, fuel: fuel_remaining)
     end
 
     company.reload
-    [company.squads, company.available_units]
+    [company.squads, company.available_units, company.company_offmaps, company.available_offmaps]
   end
 
   def delete_company(company, override = false)
@@ -227,9 +291,17 @@ class CompanyService
     # Calculate resources used by the input squads
     man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
 
+    offmaps = company.company_offmaps.map { |co| { available_offmap_id: co.available_offmap_id } }
+    available_offmaps_by_id = company.available_offmaps.index_by(&:id)
+    man_offmap, mun_offmap, fuel_offmap = calculate_offmap_resources(offmaps, available_offmaps_by_id)
+
+    man_final = man_new + man_offmap
+    mun_final = mun_new + mun_offmap
+    fuel_final = fuel_new + fuel_offmap
+
     # Calculate resources remaining when subtracting the squad resources from the company's total starting resources
     # Raise validation error if the new squads' cost is greater in one or more resource than the company's total starting resources
-    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, man_new, mun_new, fuel_new)
+    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, man_final, mun_final, fuel_final)
 
     [man_remaining, mun_remaining, fuel_remaining, pop_new]
   end
@@ -264,6 +336,22 @@ class CompanyService
     end
   end
 
+  # Validates that all company offmap ids in the payload are unique and correspond to an existing company offmap id in the company
+  def validate_incoming_company_offmap_ids(payload_co_offmap_ids, existing_co_offmap_ids, company_id)
+    uniq_payload_co_offmap_ids = payload_co_offmap_ids.uniq
+    unless uniq_payload_co_offmap_ids.size == payload_co_offmap_ids.size
+      # Raise validation error if one or more company offmap ids are duplicated
+      raise CompanyUpdateValidationError.new("Duplicate company offmap ids found in payload company offmap ids: "\
+        "#{payload_co_offmap_ids.group_by { |e| e }.select { |_, v| v.size > 1 }.map(&:first)}")
+    end
+
+    unless (payload_co_offmap_ids - existing_co_offmap_ids).size == 0
+      # Raise validation error if one or more given company offmap ids do not belong to the company
+      raise CompanyUpdateValidationError.new("Given company offmap ids #{payload_co_offmap_ids - existing_co_offmap_ids}"\
+        " that don't exist for the company #{company_id}")
+    end
+  end
+
   # Validates that all unit ids correspond to existing units
   def validate_squad_units_exist(uniq_unit_ids_new, uniq_units_new_by_id)
     unless uniq_unit_ids_new.size == uniq_units_new_by_id.size
@@ -276,6 +364,13 @@ class CompanyService
     diff = uniq_available_unit_ids_new - available_units.pluck(:id).uniq
     unless diff.empty?
       raise CompanyUpdateValidationError.new("Invalid available_unit_id(s) given in company #{company_id} squad update: #{diff}")
+    end
+  end
+
+  def validate_payload_available_offmaps_exist(uniq_available_offmap_ids_new, available_offmaps, company_id)
+    diff = uniq_available_offmap_ids_new - available_offmaps.pluck(:id).uniq
+    unless diff.empty?
+      raise CompanyUpdateValidationError.new("Invalid available_offmap_id(s) given in company #{company_id} squad update: #{diff}")
     end
   end
 
@@ -321,6 +416,19 @@ class CompanyService
       pop_new += available_unit.pop
     end
     [man_new, mun_new, fuel_new, pop_new]
+  end
+
+  # Calculates manpower, munitions, fuel used by the input offmaps, based on costs of the corresponding AvailableOffmap
+  def calculate_offmap_resources(offmaps, available_offmaps_by_id)
+    man_offmap = 0
+    mun_offmap = 0
+    fuel_offmap = 0
+
+    offmaps.each do |offmap|
+      available_offmap = available_offmaps_by_id[offmap[:available_offmap_id]]
+      mun_offmap += available_offmap.mun
+    end
+    [man_offmap, mun_offmap, fuel_offmap]
   end
 
   # Calculate a company's total starting resources, including:
@@ -405,6 +513,42 @@ class CompanyService
       next if available_changes.include? available_unit_id
 
       available_changes[available_unit_id] = existing_unit_squads.size
+    end
+  end
+
+  ## Calculate delta in number of each offmap against the available number of that offmap
+  # Raise a validation error if insufficient
+  def build_available_offmap_deltas(company, payload_offmaps_by_available_offmap_id, existing_company_offmaps_by_available_offmap_id, available_offmaps_by_id)
+    available_changes = {}
+    payload_offmaps_by_available_offmap_id.each do |available_offmap_id, payload_offmaps|
+      if existing_company_offmaps_by_available_offmap_id.include? available_offmap_id
+        existing_count = existing_company_offmaps_by_available_offmap_id[available_offmap_id].size
+      else
+        existing_count = 0
+      end
+      payload_offmap_count = payload_offmaps.size
+      availability_delta = existing_count - payload_offmap_count
+      available_number = available_offmaps_by_id[available_offmap_id].available
+
+      unless -availability_delta <= available_number
+        raise CompanyUpdateValidationError.new("Insufficient availability to create squads for available offmap #{available_offmap_id} in company"\
+          " #{company.id}: Existing count #{existing_count}, payload count #{payload_offmap_count}, available number #{available_number}")
+      end
+
+      # save the delta to update later
+      available_changes[available_offmap_id] = availability_delta
+    end
+    available_changes
+  end
+
+  # Check for any existing company offmaps that have offmaps that aren't in the payload offmaps list.
+  # These represent company_offmaps we will be destroying and offmaps that will give their availability back.
+  # We need this step as build_available_offmap_deltas only looks at offmaps in the payload
+  def add_existing_offmaps_to_remove(existing_company_offmaps_by_available_offmap_id, available_offmap_changes)
+    existing_company_offmaps_by_available_offmap_id.each do |available_offmap_id, existing_company_offmaps|
+      next if available_offmap_changes.include? available_offmap_id
+
+      available_offmap_changes[available_offmap_id] = existing_company_offmaps.size
     end
   end
 

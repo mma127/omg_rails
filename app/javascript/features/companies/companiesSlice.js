@@ -69,7 +69,7 @@ const companiesSlice = createSlice({
   name: "companies",
   initialState,
   reducers: {
-    addUnitCost(state, action) {
+    addCost(state, action) {
       const { id, pop, man, mun, fuel } = action.payload
       const company = state.entities[id]
       if (company) {
@@ -79,7 +79,7 @@ const companiesSlice = createSlice({
         company.fuel -= fuel
       }
     },
-    removeUnitCost(state, action) {
+    removeCost(state, action) {
       const { id, pop, man, mun, fuel } = action.payload
       const company = state.entities[id]
       if (company) {
@@ -149,7 +149,7 @@ const companiesSlice = createSlice({
 
 export default companiesSlice.reducer
 
-export const { addUnitCost, removeUnitCost } = companiesSlice.actions
+export const { addCost, removeCost } = companiesSlice.actions
 
 export const {
   selectAll: selectAllCompanies,

@@ -21,6 +21,7 @@
 class CompanyUnlock < ApplicationRecord
   belongs_to :company
   belongs_to :doctrine_unlock
+  has_one :unlock, through: :doctrine_unlock
 
   def entity
     Entity.new(self)

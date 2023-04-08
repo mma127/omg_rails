@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCompanyById, selectCompanyById, resetNeedsRefresh } from "../../companiesSlice";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
-import { fetchCompanySquads, resetSquadState } from "../../../units/squadsSlice";
-import { fetchCompanyAvailableUnits, resetAvailableUnitState } from "../../../units/availableUnitsSlice";
+import { fetchCompanySquads, resetSquadState } from "../units/squadsSlice";
+import { fetchCompanyAvailability, resetAvailableUnitState } from "../available_units/availableUnitsSlice";
 import {
   fetchDoctrineUnlocksByDoctrineId,
   selectDoctrineUnlockRowsByDoctrineId,

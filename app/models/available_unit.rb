@@ -98,12 +98,7 @@ class AvailableUnit < ApplicationRecord
     expose :unit_id, as: :unitId
     expose :unit_name, as: :unitName
     expose :unit_display_name, as: :unitDisplayName
-    # expose :unit_description, as: :unitDescription
     expose :unit_type, as: :unitType
-    # expose :unit_upgrade_slots, as: :unitUpgradeSlots
-    # expose :unit_unitwide_upgrade_slots, as: :unitUnitwideUpgradeSlots
-    # expose :unit_is_airdrop, as: :unitIsAirdrop
-    # expose :unit_is_infiltrate, as: :unitIsInfiltrate
     expose :available
     expose :resupply
     expose :resupply_max, as: :resupplyMax
