@@ -20,7 +20,6 @@
 #  updated_at                                                        :datetime         not null
 #
 class Offmap < ApplicationRecord
-  has_many :company_offmaps
   has_many :available_offmaps
 
   def entity

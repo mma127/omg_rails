@@ -25,7 +25,6 @@ RSpec.describe Offmap, type: :model do
   let!(:offmap) { create :offmap }
 
   describe 'associations' do
-    it { should have_many(:company_offmaps) }
     it { should have_many(:available_offmaps) }
   end
 end
