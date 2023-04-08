@@ -6,7 +6,10 @@ RSpec.describe CompanyUnlockService do
   let!(:restriction_faction) { create :restriction, faction: faction }
   let!(:doctrine) { create :doctrine, faction: faction }
   let(:vps_current) { 10 }
-  let!(:company) { create :company, doctrine: doctrine, faction: faction, vps_current: vps_current }
+  let(:starting_man) { ruleset.starting_man }
+  let(:starting_mun) { ruleset.starting_mun }
+  let(:starting_fuel) { ruleset.starting_fuel }
+  let!(:company) { create :company, doctrine: doctrine, faction: faction, vps_current: vps_current, man: starting_man, mun: starting_mun, fuel: starting_fuel }
   let!(:unlock1) { create :unlock }
   let(:vp_cost) { 3 }
   let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, vp_cost: vp_cost }
@@ -14,6 +17,7 @@ RSpec.describe CompanyUnlockService do
   let!(:unit1) { create :unit }
   let!(:unit2) { create :unit }
   let!(:unit3) { create :unit }
+  let!(:offmap1) { create :offmap }
   let!(:default_available) { 10 }
   let!(:new_unit_available) { 4 }
   let(:man1) { 250 }
@@ -148,6 +152,23 @@ RSpec.describe CompanyUnlockService do
       end
     end
 
+    context "when offmaps are enabled for the company" do
+      let!(:du_enabled_offmap) { create :enabled_offmap, restriction: du_restriction, offmap: offmap1, ruleset: ruleset, mun: 120, max: 2 }
+
+      it "creates an AvailableOffmap for the enabled offmap" do
+        expect { subject }.to change { AvailableOffmap.count }.by 1
+        new_ao = AvailableOffmap.last
+        expect(new_ao.offmap_id).to eq offmap1.id
+        expect(new_ao.mun).to eq du_enabled_offmap.mun
+        expect(new_ao.max).to eq du_enabled_offmap.max
+      end
+
+      it "pays for the company unlock" do
+        subject
+        expect(company.reload.vps_current).to eq vps_current - vp_cost
+      end
+    end
+
     it "fails when the company does not have the matching doctrine for the given doctrine_unlock" do
       new_doctrine = create :doctrine
       company.update!(doctrine: new_doctrine)
@@ -182,6 +203,9 @@ RSpec.describe CompanyUnlockService do
       let!(:au) { create :available_unit, company: company, unit: unit1, man: man1, mun: mun1, fuel: fuel1, pop: pop1, available: resupply_max, resupply_max: resupply_max }
       let!(:squad1) { create :squad, company: company, available_unit: au }
       let!(:squad2) { create :squad, company: company, available_unit: au }
+      before do
+        company.update!(man: company.man - (au.man * 2), mun: company.mun - (au.mun * 2), fuel: company.fuel - (au.fuel * 2), pop: au.pop * 2)
+      end
 
       it "destroys the available_unit for the enabled unit" do
         expect { subject }.to change { AvailableUnit.count }.by -1
@@ -205,6 +229,14 @@ RSpec.describe CompanyUnlockService do
       it "refunds the cost for the company unlock" do
         subject
         expect(company.reload.vps_current).to eq vps_current + vp_cost
+      end
+
+      it "refunds the cost for the Squads" do
+        subject
+        expect(company.reload.man).to eq starting_man
+        expect(company.mun).to eq starting_mun
+        expect(company.fuel).to eq starting_fuel
+        expect(company.pop).to eq 0
       end
     end
 
@@ -231,6 +263,14 @@ RSpec.describe CompanyUnlockService do
       it "refunds the cost for the company unlock" do
         subject
         expect(company.reload.vps_current).to eq vps_current + vp_cost
+      end
+
+      it "does not change Company resources" do
+        subject
+        expect(company.reload.man).to eq starting_man
+        expect(company.mun).to eq starting_mun
+        expect(company.fuel).to eq starting_fuel
+        expect(company.pop).to eq 0
       end
     end
 
@@ -278,15 +318,49 @@ RSpec.describe CompanyUnlockService do
 
       it "recalculates resources" do
         subject
-        expect(company.reload.man).to eq ruleset.starting_man - (man1 * 2) - man2
-        expect(company.reload.mun).to eq ruleset.starting_mun - (mun1 * 2) - mun2
-        expect(company.reload.fuel).to eq ruleset.starting_fuel - (fuel1 * 2) - fuel2
-        expect(company.reload.pop).to eq pop1 * 2 + pop2
+        expect(company.reload.man).to eq starting_man - (man1 * 2) - man2
+        expect(company.mun).to eq starting_mun - (mun1 * 2) - mun2
+        expect(company.fuel).to eq starting_fuel - (fuel1 * 2) - fuel2
+        expect(company.pop).to eq pop1 * 2 + pop2
       end
 
       it "refunds the cost of the company unlock" do
         subject
         expect(company.reload.vps_current).to eq vps_current + vp_cost
+      end
+    end
+
+    context "when the doctrine unlock enables an offmap" do
+      let!(:du_enabled_offmap) { create :enabled_offmap, restriction: du_restriction, offmap: offmap1, ruleset: ruleset, mun: 120, max: 2 }
+      let!(:ao) { create :available_offmap, company: company, offmap: offmap1, mun: 120, max: 3, available: 0 }
+      let!(:company_offmap1) { create :company_offmap, company: company, available_offmap: ao }
+      let!(:company_offmap2) { create :company_offmap, company: company, available_offmap: ao }
+      let!(:company_offmap3) { create :company_offmap, company: company, available_offmap: ao }
+
+      before do
+        company.update!(mun: starting_mun - (ao.mun * 3))
+      end
+
+      it "destroys the AvailableOffmap for the enabled offmap" do
+        expect { subject }.to change { AvailableOffmap.count }.by -1
+        expect(AvailableOffmap.exists?(ao.id)).to be false
+      end
+
+      it "destroys any CompanyOffmaps for the AvailableOffmap of the enabled offmap" do
+        expect { subject }.to change { CompanyOffmap.count }.by -3
+        expect(CompanyOffmap.exists?(company_offmap1.id)).to be false
+        expect(CompanyOffmap.exists?(company_offmap2.id)).to be false
+        expect(CompanyOffmap.exists?(company_offmap3.id)).to be false
+      end
+
+      it "refunds the cost for the company unlock" do
+        subject
+        expect(company.reload.vps_current).to eq vps_current + vp_cost
+      end
+
+      it "refunds the cost for the CompanyOffmaps" do
+        subject
+        expect(company.reload.mun).to eq starting_mun
       end
     end
 

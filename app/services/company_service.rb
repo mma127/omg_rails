@@ -82,7 +82,7 @@ class CompanyService
 
     existing_company_offmaps = company.company_offmaps
     existing_co_offmap_ids = existing_company_offmaps.pluck(:id)
-    payload_co_offmap_ids = offmaps.select { |s| s[:company_offmap_id].present? }.pluck(:company_offmap_id)
+    payload_co_offmap_ids = offmaps.select { |o| o[:company_offmap_id].present? }.pluck(:company_offmap_id)
     # Validates that all company_offmap ids in the offmaps payload are unique and correspond to an existing company_offmap id in the company
     validate_incoming_company_offmap_ids(payload_co_offmap_ids, existing_co_offmap_ids, company.id)
 
@@ -291,9 +291,17 @@ class CompanyService
     # Calculate resources used by the input squads
     man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
 
+    offmaps = company.company_offmaps.map { |co| { available_offmap_id: co.available_offmap_id } }
+    available_offmaps_by_id = company.available_offmaps.index_by(&:id)
+    man_offmap, mun_offmap, fuel_offmap = calculate_offmap_resources(offmaps, available_offmaps_by_id)
+
+    man_final = man_new + man_offmap
+    mun_final = mun_new + mun_offmap
+    fuel_final = fuel_new + fuel_offmap
+
     # Calculate resources remaining when subtracting the squad resources from the company's total starting resources
     # Raise validation error if the new squads' cost is greater in one or more resource than the company's total starting resources
-    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, man_new, mun_new, fuel_new)
+    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, man_final, mun_final, fuel_final)
 
     [man_remaining, mun_remaining, fuel_remaining, pop_new]
   end

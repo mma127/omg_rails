@@ -90,10 +90,16 @@ class CompanyUnlockService
     # Get UnitSwaps for the unlock
     unit_swaps = UnitSwap.includes(:old_unit, :new_unit).where(unlock: unlock)
 
-    available_units_service = AvailableUnitService.new(@company)
+    # Get EnabledOffmaps for those restrictions
+    previously_enabled_offmaps = EnabledOffmap.includes(:offmap).where(restriction: [du_restriction, u_restriction])
+    # Get Offmaps for the previously_enabled_offmaps
+    offmaps_to_remove = previously_enabled_offmaps.map { |eo| eo.offmap }
+
+    available_unit_service = AvailableUnitService.new(@company)
+    available_offmap_service = AvailableOffmapService.new(@company)
     ActiveRecord::Base.transaction do
       # Add available_units for previously_disabled_units (we are adding these back)
-      available_units_service.recreate_disabled_from_doctrine_unlock(units_to_add_back, doctrine_unlock) unless units_to_add_back.blank?
+      available_unit_service.recreate_disabled_from_doctrine_unlock(units_to_add_back, doctrine_unlock) unless units_to_add_back.blank?
 
       # Perform reverse unit swap (assumes each unit is only mapped to 1 other unit)
       unless unit_swaps.blank?
@@ -103,10 +109,14 @@ class CompanyUnlockService
 
       # Destroy available_units for enabled_units
       # Destroy squads containing units to enable that weren't swapped
-      available_units_service.remove_available_units(units_to_remove) unless units_to_remove.blank?
+      available_unit_service.remove_available_units(units_to_remove) unless units_to_remove.blank?
+
+      # Destroy available_offmaps for enabled_offmaps
+      # Destroy CompanyOffmaps containing offmaps to enable
+      available_offmap_service.remove_available_offmaps(offmaps_to_remove) unless offmaps_to_remove.blank?
 
       # Recalculate company resources
-      if previously_enabled_units.present? || unit_swaps.present?
+      if previously_enabled_units.present? || unit_swaps.present? || previously_enabled_offmaps.present?
         update_company_resources
       end
 

@@ -94,4 +94,26 @@ RSpec.describe AvailableOffmapService do
       end
     end
   end
+
+  describe "#remove_available_offmaps" do
+    let!(:available_offmap1) { create :available_offmap, offmap: offmap1, company: company }
+    let!(:available_offmap2) { create :available_offmap, offmap: offmap2, company: company }
+    let!(:company_offmap1) { create :company_offmap, company: company, available_offmap: available_offmap1 }
+    let!(:company_offmap2) { create :company_offmap, company: company, available_offmap: available_offmap1 }
+    let!(:company_offmap3) { create :company_offmap, company: company, available_offmap: available_offmap2 }
+    let(:offmaps_to_remove) { [offmap1] }
+
+    it "removes AvailableOffmaps matching the given Offmaps" do
+      expect { subject.send(:remove_available_offmaps, offmaps_to_remove) }.to change { AvailableOffmap.count }.by(-1)
+      expect(AvailableOffmap.exists?(available_offmap1.id)).to be false
+      expect(available_offmap2.destroyed?).to be false
+    end
+
+    it "removes squads associated with the removed available_units" do
+      expect { subject.send(:remove_available_offmaps, offmaps_to_remove) }.to change { CompanyOffmap.count }.by(-2)
+      expect(CompanyOffmap.exists?(company_offmap1.id)).to be false
+      expect(CompanyOffmap.exists?(company_offmap2.id)).to be false
+      expect(company_offmap3.destroyed?).to be false
+    end
+  end
 end

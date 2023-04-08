@@ -26,6 +26,12 @@ class AvailableOffmapService
     AvailableOffmap.import!(available_offmaps)
   end
 
+  # Given offmaps to remove, remove all AvailableOffmaps (all types) from the company associated with those offmaps.
+  # Destroy CompanyOffmaps using those AvailableOffmaps
+  def remove_available_offmaps(offmaps_to_remove)
+    available_offmaps = AvailableOffmap.where(company: @company, offmap: offmaps_to_remove)
+    available_offmaps.destroy_all # CompanyOffmaps destroyed via dependent destroy
+  end
 
   private
 

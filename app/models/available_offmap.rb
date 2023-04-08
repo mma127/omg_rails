@@ -24,6 +24,7 @@
 class AvailableOffmap < ApplicationRecord
   belongs_to :company
   belongs_to :offmap
+  has_many :company_offmaps, dependent: :destroy
 
   validates :max, numericality: { greater_than_or_equal_to: 0 }
   validates :available, numericality: { greater_than_or_equal_to: 0 }
