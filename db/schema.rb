@@ -131,8 +131,9 @@ ActiveRecord::Schema.define(version: 2023_03_26_042536) do
 
   create_table "callin_modifiers", force: :cascade do |t|
     t.decimal "modifier", comment: "Modifies callin time"
-    t.string "type", comment: "Type of modification"
+    t.string "modifier_type", comment: "Type of modification"
     t.integer "priority", comment: "Priority in which the modifier is applied, from 1 -> 100"
+    t.string "description", comment: "Description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

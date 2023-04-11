@@ -23,21 +23,15 @@
 #  fk_rails_...  (restriction_id => restrictions.id)
 #  fk_rails_...  (ruleset_id => rulesets.id)
 #
-class RestrictionCallinModifier < ApplicationRecord
-  belongs_to :restriction
-  belongs_to :callin_modifier
-  belongs_to :ruleset
+class EnabledCallinModifier < RestrictionCallinModifier
 
-  validates :restriction, presence: true
-  validates :callin_modifier, presence: true
-  validates :ruleset, presence: true
+  def entity
+    Entity.new(self)
+  end
 
-  before_save :generate_internal_description
-
-  private
-
-  def generate_internal_description
-    self.internal_description = "#{restriction.description} | #{callin_modifier.description}"
+  class Entity < Grape::Entity
+    expose :id
+    expose :internal_description, as: :internalDescription
+    expose :callin_modifier, using: CallinModifier::Entity
   end
 end
-
