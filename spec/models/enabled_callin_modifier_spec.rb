@@ -23,21 +23,20 @@
 #  fk_rails_...  (restriction_id => restrictions.id)
 #  fk_rails_...  (ruleset_id => rulesets.id)
 #
-class RestrictionCallinModifier < ApplicationRecord
-  belongs_to :restriction
-  belongs_to :callin_modifier
-  belongs_to :ruleset
+require "rails_helper"
 
-  validates :restriction, presence: true
-  validates :callin_modifier, presence: true
-  validates :ruleset, presence: true
+RSpec.describe EnabledCallinModifier, type: :model do
+  let!(:enabled_callin_modifier) { create :enabled_callin_modifier}
 
-  before_save :generate_internal_description
+  describe 'associations' do
+    it { should belong_to(:restriction) }
+    it { should belong_to(:callin_modifier) }
+    it { should belong_to(:ruleset) }
+  end
 
-  private
-
-  def generate_internal_description
-    self.internal_description = "#{restriction.description} | #{callin_modifier.description}"
+  describe 'validations' do
+    it { should validate_presence_of(:restriction) }
+    it { should validate_presence_of(:callin_modifier) }
+    it { should validate_presence_of(:ruleset) }
   end
 end
-
