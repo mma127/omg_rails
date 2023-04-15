@@ -21,6 +21,7 @@ import { StaticUnitIcon } from "./StaticUnitIcon";
 import { OffmapIcon } from "../offmaps/OffmapIcon";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { UnlockDetails } from "./UnlockDetails";
+import { selectCompanyById } from "../../companiesSlice";
 
 const useStyles = makeStyles(theme => ({
   unlockContainer: {
@@ -57,13 +58,17 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock }) => {
+export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const isSaving = useSelector(state => state.companyUnlocks.isSaving)
+  const company = useSelector(state => selectCompanyById(state, companyId))
 
   const unlock = doctrineUnlock.unlock
   const isOwned = !_.isNil(companyUnlock)
+  const canPurchase = company.vpsCurrent >= doctrineUnlock.vpCost
+
+  const disablePurchase = isSaving || !canPurchase
 
   const purchase = () => {
     dispatch(purchaseUnlock({ doctrineUnlockId: doctrineUnlock.id }))
@@ -86,7 +91,7 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock }) => {
   } else {
     buttonContent = (
       <Button variant="contained" color="secondary" size="small" onClick={purchase} className={classes.button}
-              disabled={isSaving}>
+              disabled={disablePurchase}>
         <Typography variant="button" display="block">
           {doctrineUnlock.vpCost} VP
         </Typography>

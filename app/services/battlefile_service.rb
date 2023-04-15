@@ -11,7 +11,12 @@ class BattlefileService
 
   def initialize(battle_id)
     @battle_id = battle_id
-    @battle = Battle.includes(battle_players: [company: [:player, :doctrine, :faction, squads: [available_unit: :unit]]]).find(battle_id)
+    @battle = Battle.includes(battle_players:
+                                [company:
+                                   [:player, :doctrine, :faction, :offmaps,
+                                    callin_modifiers: [:callin_modifier_required_units, :callin_modifier_allowed_units],
+                                    squads: [available_unit: :unit]]])
+                    .find(battle_id)
   end
 
   # To download with temp url: Rails.application.routes.url_helpers.rails_blob_url(Battle.last.battlefile)
@@ -149,11 +154,12 @@ end
     platoons_table = CompanyHelper.get_platoon_table(company)
     team_index = company.faction.side_integer
     player_index = company.faction.side == Faction.sides[:allied] ? @allied_player_index : @axis_player_index
+    callin_modifiers = company.callin_modifiers
 
     result = ""
     platoons_table.each do |tab_category, platoons|
       platoons.each do |category_position, platoon|
-        result << build_platoon_block(platoon, team_index, player_index)
+        result << build_platoon_block(platoon, team_index, player_index, callin_modifiers)
       end
     end
 
@@ -162,8 +168,8 @@ end
 
   # HalfTrack - list of transport squads
   # squad blocks - list of non-transport squads
-  def build_platoon_block(platoon, team_index, player_index)
-    callin_modifier = 1 # TODO callin_modifiers
+  def build_platoon_block(platoon, team_index, player_index, callin_modifiers)
+    callin_modifier = calculate_callin_modifier_total(platoon.squads, callin_modifiers)
     glider = "false,"
     paradrop = ""
     infiltrate = ""
@@ -198,6 +204,37 @@ end
           HalfTrack = #{format_squad_list(halftrack)}\n#{squad_blocks}
         },
     PLATOON
+  end
+
+  def calculate_callin_modifier_total(squads, callin_modifiers)
+    squad_unit_ids = squads.map { |s| s.unit_id }.uniq
+    callin_modifiers.reduce(1) do |acc, cm|
+      acc * maybe_apply_callin_modifier(squad_unit_ids, cm)
+    end
+  end
+
+  # For each callin_modifier,
+  # validate required units
+  # * If not empty, one of the squads must be a unit in required units
+  # Validate allowed units
+  # * If not empty, every squad must be a unit in allowed units
+  def maybe_apply_callin_modifier(squad_unit_ids, callin_modifier)
+    return 1 unless validate_callin_modifier_required(callin_modifier.required_unit_ids, squad_unit_ids)
+    return 1 unless validate_callin_modifier_allowed(callin_modifier.allowed_unit_ids, squad_unit_ids)
+
+    callin_modifier.modifier
+  end
+
+  def validate_callin_modifier_required(required_unit_ids, squad_unit_ids)
+    return true if required_unit_ids.blank?
+
+    squad_unit_ids.any? { |unit_id| required_unit_ids.include? unit_id }
+  end
+
+  def validate_callin_modifier_allowed(allowed_unit_ids, squad_unit_ids)
+    return true if allowed_unit_ids.blank?
+
+    squad_unit_ids.all? { |unit_id| allowed_unit_ids.include? unit_id }
   end
 
   #  {

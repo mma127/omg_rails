@@ -2,11 +2,12 @@
 #
 # Table name: callin_modifier_required_units
 #
-#  id                 :bigint           not null, primary key
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  callin_modifier_id :bigint
-#  unit_id            :bigint
+#  id                                                  :bigint           not null, primary key
+#  unit_name(Denormalized unit name for faster access) :string
+#  created_at                                          :datetime         not null
+#  updated_at                                          :datetime         not null
+#  callin_modifier_id                                  :bigint
+#  unit_id                                             :bigint
 #
 # Indexes
 #
@@ -25,6 +26,8 @@ class CallinModifierRequiredUnit < ApplicationRecord
   validates_presence_of :callin_modifier
   validates_presence_of :unit
 
+  before_save :save_unit_name
+
   def entity
     Entity.new(self)
   end
@@ -33,6 +36,13 @@ class CallinModifierRequiredUnit < ApplicationRecord
     expose :id
     expose :callin_modifier_id, as: :callinModifierId
     expose :unit_id, as: :unitId
+    expose :unit_name, as: :unitName
+  end
+
+  private
+
+  def save_unit_name
+    self.unit_name = unit.display_name
   end
 end
 

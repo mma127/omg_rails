@@ -67,16 +67,22 @@ module OMG
         end
         get 'squads' do
           declared_params = declared(params)
-          company = Company.includes(:squads, :ruleset, { available_units: :unit, available_offmaps: :offmap, company_offmaps: :offmap })
+          company = Company.includes(:squads, :ruleset,
+                                     { available_units: :unit,
+                                       available_offmaps: :offmap,
+                                       company_offmaps: :offmap,
+                                       company_callin_modifiers: :callin_modifier })
                            .find_by(id: declared_params[:id], player: current_player)
           if company.blank?
             error! "Could not find company #{params[:id]} for the current player", 404
           end
 
-          squads_response = { squads: company.squads,
-                              available_units: company.available_units,
-                              company_offmaps: company.company_offmaps,
-                              available_offmaps: company.available_offmaps
+          squads_response = {
+            squads: company.squads,
+            available_units: company.available_units,
+            company_offmaps: company.company_offmaps,
+            available_offmaps: company.available_offmaps,
+            callin_modifiers: company.callin_modifiers
           }
           present squads_response, with: Entities::SquadsResponse, type: :include_unit
         end

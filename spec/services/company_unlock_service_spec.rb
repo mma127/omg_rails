@@ -18,6 +18,7 @@ RSpec.describe CompanyUnlockService do
   let!(:unit2) { create :unit }
   let!(:unit3) { create :unit }
   let!(:offmap1) { create :offmap }
+  let!(:callin_modifier) { create :callin_modifier }
   let!(:default_available) { 10 }
   let!(:new_unit_available) { 4 }
   let(:man1) { 250 }
@@ -161,6 +162,21 @@ RSpec.describe CompanyUnlockService do
         expect(new_ao.offmap_id).to eq offmap1.id
         expect(new_ao.mun).to eq du_enabled_offmap.mun
         expect(new_ao.max).to eq du_enabled_offmap.max
+      end
+
+      it "pays for the company unlock" do
+        subject
+        expect(company.reload.vps_current).to eq vps_current - vp_cost
+      end
+    end
+
+    context "when callin modifier is enabled for the company" do
+      let!(:du_enabled_callin_modifier) { create :enabled_callin_modifier, restriction: du_restriction, callin_modifier: callin_modifier, ruleset: ruleset }
+
+      it "creates a CompanyCallinModifier for the enabled callin modifier" do
+        expect { subject }.to change { CompanyCallinModifier.count }.by 1
+        new_ccm = CompanyCallinModifier.last
+        expect(new_ccm.callin_modifier).to eq callin_modifier
       end
 
       it "pays for the company unlock" do
@@ -361,6 +377,21 @@ RSpec.describe CompanyUnlockService do
       it "refunds the cost for the CompanyOffmaps" do
         subject
         expect(company.reload.mun).to eq starting_mun
+      end
+    end
+
+    context "when the doctrine unlock enables an callin modifier" do
+      let!(:du_enabled_callin_modifier) { create :enabled_callin_modifier, restriction: du_restriction, callin_modifier: callin_modifier, ruleset: ruleset }
+      let!(:ccm) { create :company_callin_modifier, company: company, callin_modifier: callin_modifier }
+
+      it "destroys the CompanyCallinModifier for the enabled offmap" do
+        expect { subject }.to change { CompanyCallinModifier.count }.by -1
+        expect(CompanyCallinModifier.exists?(ccm.id)).to be false
+      end
+
+      it "refunds the cost for the company unlock" do
+        subject
+        expect(company.reload.vps_current).to eq vps_current + vp_cost
       end
     end
 

@@ -116,9 +116,9 @@ after :doctrines do
   LightVehicle.create!(name: "sas_jeep", const_name: "CMW.SAS_JEEP", display_name: "SAS Jeep",
                        model_count: 6)
 
-  Glider.create!(name: "infantry_glider", const_name: "CMW.INF_GLIDER", display_name: "Infantry Glider (2 Infantry Slots)",
+  Glider.create!(name: "infantry_glider", const_name: "CMW.INF_GLIDER", display_name: "Infantry Glider",
                  transport_squad_slots: 2, transport_model_slots: 12)
-  Glider.create!(name: "armor_glider", const_name: "CMW.TET_GLIDER", display_name: "Armor Glider (4 Infantry Slots or 2 Vehicle Slots)",
+  Glider.create!(name: "armor_glider", const_name: "CMW.TET_GLIDER", display_name: "Armor Glider",
                  transport_squad_slots: 4, transport_model_slots: 18)
 
   ## RSE

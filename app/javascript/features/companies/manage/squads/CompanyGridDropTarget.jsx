@@ -4,15 +4,21 @@ import { Box, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import '../../../../../assets/stylesheets/CompanyGridDropTarget.css'
 import { SquadCard } from "./SquadCard";
-import { useDispatch } from "react-redux";
-import { clearNotifySnackbar, showSnackbar } from "../units/squadsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearNotifySnackbar, selectCallinModifiers, showSnackbar } from "../units/squadsSlice";
 import { GLIDER } from "../../../../constants/units/types";
 import { AlertSnackbar } from "../../AlertSnackbar";
+import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
 
 const useStyles = makeStyles(() => ({
   placementBox: {
     minHeight: '15rem',
     minWidth: '4rem'
+  },
+  popCMBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   }
 }))
 
@@ -53,6 +59,9 @@ export const CompanyGridDropTarget = ({
   const [openSnackbar, setOpenSnackbar] = useState(false)
   const [snackbarContent, setSnackbarContent] = useState("")
   const [snackbarSeverity, setSnackbarSeverity] = useState("success")
+
+  const callinModifiers = useSelector(selectCallinModifiers)
+
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false)
   }
@@ -100,10 +109,22 @@ export const CompanyGridDropTarget = ({
     onSquadDestroy(squad, transportUuid)
   }
 
+  const insertSquadUnitIds = (unitIds, squad) => {
+    unitIds.push(squad.unitId)
+    if(squad.hasOwnProperty("transportedSquads")) {
+      getTransportedUnitIds(unitIds, squad)
+    }
+  }
+  const getTransportedUnitIds = (unitIds, transportSquad) => {
+    _.values(transportSquad.transportedSquads).forEach(squad => unitIds.push(squad.unitId))
+  }
+
   let gridPop = 0
   let squadCards = []
+  const unitIds = []
   if (squads) {
     for (const squad of Object.values(squads)) {
+      insertSquadUnitIds(unitIds, squad)
       gridPop += parseFloat(squad.combinedPop) // Use combinedPop to include transported squads' pop
       squadCards.push(<SquadCard key={squad.uuid}
                                  uuid={squad.uuid}
@@ -115,6 +136,11 @@ export const CompanyGridDropTarget = ({
                                  onSquadMove={onSquadMove}
       />)
     }
+  }
+
+  let callinModifierContent
+  if (!_.isNil(callinModifiers) && callinModifiers.length > 0) {
+    callinModifierContent = <CallinModifierIcon callinModifiers={callinModifiers} unitIds={unitIds} />
   }
 
   return (
@@ -129,7 +155,10 @@ export const CompanyGridDropTarget = ({
           <Paper key={gridIndex} className={classes.placementBox}>
             <Box sx={{ position: 'relative', p: 1 }}>
               {squadCards}
-              <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }}>{gridPop}</Box>
+              <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }} className={classes.popCMBox}>
+                {gridPop}
+                {callinModifierContent}
+              </Box>
             </Box>
           </Paper>
         </DropTarget>

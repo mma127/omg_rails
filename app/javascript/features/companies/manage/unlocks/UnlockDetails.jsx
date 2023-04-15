@@ -7,6 +7,7 @@ import { OffmapIcon } from "../offmaps/OffmapIcon";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { SUPPORT_TEAMS } from "../../../../constants/unlocks/americans";
 import { UnlockOffmap } from "./UnlockOffmap";
+import { UnlockCallinModifier } from "./UnlockCallinModifier";
 
 const useStyles = makeStyles(() => ({
   background: {
@@ -18,6 +19,11 @@ const useStyles = makeStyles(() => ({
     '&:last-child': {
       paddingBottom: "8px"
     }
+  },
+  wellContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   }
 }))
 
@@ -79,12 +85,26 @@ const buildEnabledOffmaps = enabledOffmaps => {
   )
 }
 
+const buildEnabledCallinModifiers = (enabledCallinModifiers, classes) => {
+  if (enabledCallinModifiers.length === 0) {
+    return null
+  }
+
+  return (
+    <Box className={classes.wellContainer}>
+      <Typography variant="subtitle2" color="success.dark">Callin Modifier</Typography>
+      {enabledCallinModifiers.map(ecm => (<UnlockCallinModifier enabledCallinModifier={ecm} key={ecm.id} />))}
+    </Box>
+  )
+}
+
 export const UnlockDetails = ({ doctrineUnlock }) => {
   const classes = useStyles()
   const enabledUnits = doctrineUnlock.enabledUnits
   const disabledUnits = doctrineUnlock.disabledUnits
   const unitSwaps = doctrineUnlock.unitSwaps
   const enabledOffmaps = doctrineUnlock.enabledOffmaps
+  const enabledCallinModifiers = doctrineUnlock.enabledCallinModifiers
 
   const detailsContent = (
     <>
@@ -92,6 +112,7 @@ export const UnlockDetails = ({ doctrineUnlock }) => {
       {buildDisabledUnits(disabledUnits)}
       {buildUnitSwaps(unitSwaps)}
       {buildEnabledOffmaps(enabledOffmaps)}
+      {buildEnabledCallinModifiers(enabledCallinModifiers, classes)}
     </>
   )
 

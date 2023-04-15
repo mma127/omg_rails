@@ -7,7 +7,7 @@ after :restrictions do
   op = DoctrineUnlock.find_by!(doctrine: blitz, unlock: unlock)
   op_r = Restriction.find_by!(doctrine_unlock: op)
   op_cm = CallinModifier.create!(modifier: 0.25, modifier_type: CallinModifier::modifier_types[:multiplicative],
-                                 priority: 1, description: "Callin Modifier x0.25 Volks & Grens")
+                                 priority: 1, description: "Callin Modifier x0.25 Volks & Grens", unlock_name: unlock.display_name)
   EnabledCallinModifier.create!(restriction: op_r, callin_modifier: op_cm, ruleset: ruleset)
 
   volks = Unit.find_by(name: "volksgrenadiers")
@@ -21,7 +21,7 @@ after :restrictions do
   wp = DoctrineUnlock.find_by!(doctrine: airborne, unlock: unlock)
   wp_r = Restriction.find_by!(doctrine_unlock: wp)
   wp_cm = CallinModifier.create!(modifier: 0.5, modifier_type: CallinModifier::modifier_types[:multiplicative],
-                                 priority: 1, description: "Callin Modifier x0.5 Airborne units")
+                                 priority: 1, description: "Callin Modifier x0.5 Airborne units", unlock_name: unlock.display_name)
   EnabledCallinModifier.create!(restriction: wp_r, callin_modifier: wp_cm, ruleset: ruleset)
 
   airborne_unit = Unit.find_by!(name: "airborne")
@@ -43,7 +43,7 @@ after :restrictions do
   qrf = DoctrineUnlock.find_by!(doctrine: commandos, unlock: unlock)
   qrf_r = Restriction.find_by!(doctrine_unlock: qrf)
   qrf_cm = CallinModifier.create!(modifier: 0.25, modifier_type: CallinModifier::modifier_types[:multiplicative],
-                                  priority: 1, description: "Callin Modifier x0.25, Commando units")
+                                  priority: 1, description: "Callin Modifier x0.25, Commando units", unlock_name: unlock.display_name)
   EnabledCallinModifier.create!(restriction: qrf_r, callin_modifier: qrf_cm, ruleset: ruleset)
 
   commandos_unit = Unit.find_by!(name: "commandos")
@@ -68,13 +68,13 @@ after :restrictions do
   ga = DoctrineUnlock.find_by!(doctrine: commandos, unlock: unlock)
   ga_r = Restriction.find_by!(doctrine_unlock: ga)
   ga_cm = CallinModifier.create!(modifier: 0.5, modifier_type: CallinModifier::modifier_types[:multiplicative],
-                                  priority: 1, description: "Callin Modifier x0.5, Gliders + any")
+                                  priority: 1, description: "Callin Modifier x0.5, Gliders + any", unlock_name: unlock.display_name)
   EnabledCallinModifier.create!(restriction: ga_r, callin_modifier: ga_cm, ruleset: ruleset)
 
   infantry_glider = Unit.find_by!(name: "infantry_glider")
   armor_glider = Unit.find_by!(name: "armor_glider")
-  CallinModifierRequiredUnit.create!(callin_modifier: qrf_cm, unit: infantry_glider)
-  CallinModifierRequiredUnit.create!(callin_modifier: qrf_cm, unit: armor_glider)
+  CallinModifierRequiredUnit.create!(callin_modifier: ga_cm, unit: infantry_glider)
+  CallinModifierRequiredUnit.create!(callin_modifier: ga_cm, unit: armor_glider)
 
   # Patton's War
   armor = Doctrine.find_by!(name: "armor")
@@ -82,7 +82,7 @@ after :restrictions do
   pw = DoctrineUnlock.find_by!(doctrine: armor, unlock: unlock)
   pw_r = Restriction.find_by!(doctrine_unlock: pw)
   pw_cm = CallinModifier.create!(modifier: 0.1, modifier_type: CallinModifier::modifier_types[:multiplicative],
-                                 priority: 1, description: "Callin Modifier x0.1, Vehicle/Tank + any")
+                                 priority: 1, description: "Callin Modifier x0.1, Vehicle/Tank + any", unlock_name: unlock.display_name)
   EnabledCallinModifier.create!(restriction: pw_r, callin_modifier: pw_cm, ruleset: ruleset)
 
   halftrack_allied = Unit.find_by!(name: "halftrack_allied")

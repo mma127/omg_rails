@@ -2,13 +2,14 @@
 #
 # Table name: callin_modifiers
 #
-#  id                                                                 :bigint           not null, primary key
-#  description(Description)                                           :string
-#  modifier(Modifies callin time)                                     :decimal(, )
-#  modifier_type(Type of modification)                                :string
-#  priority(Priority in which the modifier is applied, from 1 -> 100) :integer
-#  created_at                                                         :datetime         not null
-#  updated_at                                                         :datetime         not null
+#  id                                                                   :bigint           not null, primary key
+#  description(Description)                                             :string
+#  modifier(Modifies callin time)                                       :decimal(, )
+#  modifier_type(Type of modification)                                  :string
+#  priority(Priority in which the modifier is applied, from 1 -> 100)   :integer
+#  unlock_name(Name of the unlock associated with this callin modifier) :string
+#  created_at                                                           :datetime         not null
+#  updated_at                                                           :datetime         not null
 #
 class CallinModifier < ApplicationRecord
   has_many :restriction_callin_modifiers
@@ -37,8 +38,16 @@ class CallinModifier < ApplicationRecord
     callin_modifier_required_units.pluck(:unit_id)
   end
 
+  def required_unit_names
+    callin_modifier_required_units.pluck(:unit_name).sort.join(", ")
+  end
+
   def allowed_unit_ids
     callin_modifier_allowed_units.pluck(:unit_id)
+  end
+
+  def allowed_unit_names
+    callin_modifier_allowed_units.pluck(:unit_name).sort.join(", ")
   end
 
   def entity
@@ -48,9 +57,12 @@ class CallinModifier < ApplicationRecord
   class Entity < Grape::Entity
     expose :id
     expose :description
+    expose :unlock_name, as: :unlockName
     expose :modifier
     expose :modifier_type, as: :modifierType
-    expose :required_unit_ids, as: :requiredUnits
-    expose :allowed_unit_ids, as: :allowedUnits
+    expose :required_unit_ids, as: :requiredUnitIds
+    expose :allowed_unit_ids, as: :allowedUnitIds
+    expose :required_unit_names, as: :requiredUnitNames
+    expose :allowed_unit_names, as: :allowedUnitNames
   end
 end

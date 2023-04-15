@@ -43,12 +43,17 @@ RSpec.describe Company, type: :model do
     it { should belong_to(:ruleset) }
 
     it { should have_many(:available_units) }
+    it { should have_many(:available_offmaps) }
+
     it { should have_many(:squads) }
     it { should have_many(:company_unlocks) }
     it { should have_many(:doctrine_unlocks) }
     it { should have_many(:company_offmaps) }
     it { should have_many(:offmaps) }
+    it { should have_many(:company_callin_modifiers) }
+    it { should have_many(:callin_modifiers) }
     it { should have_many(:company_resource_bonuses) }
+    it { should have_many(:battle_players) }
   end
 
   describe 'validations' do
