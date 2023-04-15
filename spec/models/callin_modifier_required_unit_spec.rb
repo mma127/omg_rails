@@ -2,11 +2,12 @@
 #
 # Table name: callin_modifier_required_units
 #
-#  id                 :bigint           not null, primary key
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  callin_modifier_id :bigint
-#  unit_id            :bigint
+#  id                                                  :bigint           not null, primary key
+#  unit_name(Denormalized unit name for faster access) :string
+#  created_at                                          :datetime         not null
+#  updated_at                                          :datetime         not null
+#  callin_modifier_id                                  :bigint
+#  unit_id                                             :bigint
 #
 # Indexes
 #

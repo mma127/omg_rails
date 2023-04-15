@@ -16,6 +16,7 @@ const initialState = squadsAdapter.getInitialState({
   squadsError: null,
   isChanged: false,
   notifySnackbar: false,
+  callinModifiers: [],
   pop: 0,
   man: 0,
   mun: 0,
@@ -292,6 +293,7 @@ const squadsSlice = createSlice({
           state[tabName] = newTabs[tabName]
         }
 
+        state.callinModifiers = action.payload.callinModifiers
         state.squadsStatus = "idle"
       })
       .addCase(fetchCompanySquads.rejected, (state, action) => {
@@ -363,3 +365,5 @@ export const selectSquadInTabIndexTransportUuid = (state, tab, index, transportU
   const transport = state.squads[tab][index][transportUuid]
   return transport.transportedSquads[uuid]
 }
+
+export const selectCallinModifiers = state => state.squads.callinModifiers

@@ -14,21 +14,21 @@ import {
 import { DoctrineUnlock } from "./DoctrineUnlock";
 import { selectCompanyUnlockIds, selectCompanyUnlocksByDoctrineUnlockId } from "./companyUnlocksSlice";
 
-const buildUnlock = (doctrineUnlock, companyUnlocksByDoctrineUnlockId) => {
+const buildUnlock = (doctrineUnlock, companyUnlocksByDoctrineUnlockId, companyId) => {
   const companyUnlock = _.get(companyUnlocksByDoctrineUnlockId, doctrineUnlock.id, null)
 
   return (
     <Grid item xs={2} key={`grid-${doctrineUnlock.tree}-${doctrineUnlock.branch}-${doctrineUnlock.row}`}>
-      <DoctrineUnlock doctrineUnlock={doctrineUnlock} companyUnlock={companyUnlock} />
+      <DoctrineUnlock doctrineUnlock={doctrineUnlock} companyUnlock={companyUnlock} companyId={companyId} />
     </Grid>
   )
 }
 
-const buildUnlockRow = (i, unlockRow, companyUnlocksByDoctrineUnlockId) => {
+const buildUnlockRow = (i, unlockRow, companyUnlocksByDoctrineUnlockId, companyId) => {
   return (
     <Grid item container spacing={2} key={`row-${i}`}>
       {
-        unlockRow.map(u => buildUnlock(u, companyUnlocksByDoctrineUnlockId))
+        unlockRow.map(u => buildUnlock(u, companyUnlocksByDoctrineUnlockId, companyId))
       }
     </Grid>
   )
@@ -91,7 +91,7 @@ export const CompanyUnlocks = () => {
   let content
   if (!_.isEmpty(doctrineUnlockRows)) {
     const keys = Object.keys(doctrineUnlockRows).sort()
-    content = keys.map(i => buildUnlockRow(i, doctrineUnlockRows[i], companyUnlocksByDoctrineUnlockId))
+    content = keys.map(i => buildUnlockRow(i, doctrineUnlockRows[i], companyUnlocksByDoctrineUnlockId, companyId))
   } else {
     content = (
       <Box></Box>

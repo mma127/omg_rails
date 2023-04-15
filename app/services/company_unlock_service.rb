@@ -35,8 +35,12 @@ class CompanyUnlockService
     # Get EnabledOffmaps for these restrictions
     enabled_offmaps = EnabledOffmap.includes(:offmap).where(restriction: [du_restriction, u_restriction])
 
+    # Get EnabledCallinModifiers for those restrictions
+    enabled_callin_modifiers = EnabledCallinModifier.includes(:callin_modifier).where(restriction: [du_restriction, u_restriction])
+
     available_units_service = AvailableUnitService.new(@company)
     available_offmaps_service = AvailableOffmapService.new(@company)
+    company_callin_modifier_service = CompanyCallinModifierService.new(@company)
 
     ActiveRecord::Base.transaction do
       # Add available_units for units to add
@@ -59,6 +63,9 @@ class CompanyUnlockService
 
       # add available_offmaps for offmaps to add
       available_offmaps_service.create_enabled_available_offmaps(enabled_offmaps)
+
+      # create company_callin_modifiers for callin_modifiers enabled
+      company_callin_modifier_service.create_company_callin_modifiers(enabled_callin_modifiers)
 
       # Create a CompanyUnlock and reduce company vps
       pay_for_company_unlock(doctrine_unlock)
@@ -95,8 +102,15 @@ class CompanyUnlockService
     # Get Offmaps for the previously_enabled_offmaps
     offmaps_to_remove = previously_enabled_offmaps.map { |eo| eo.offmap }
 
+    # Get EnabledCallinModifiers for those restrictions
+    previously_enabled_callin_modifiers = EnabledCallinModifier.includes(:callin_modifier).where(restriction: [du_restriction, u_restriction])
+    # Get CallinModifiers for the previously_enabled_callin_modifiers
+    callin_modifiers_to_remove = previously_enabled_callin_modifiers.map { |ecm| ecm.callin_modifier }
+
     available_unit_service = AvailableUnitService.new(@company)
     available_offmap_service = AvailableOffmapService.new(@company)
+    company_callin_modifier_service = CompanyCallinModifierService.new(@company)
+
     ActiveRecord::Base.transaction do
       # Add available_units for previously_disabled_units (we are adding these back)
       available_unit_service.recreate_disabled_from_doctrine_unlock(units_to_add_back, doctrine_unlock) unless units_to_add_back.blank?
@@ -114,6 +128,9 @@ class CompanyUnlockService
       # Destroy available_offmaps for enabled_offmaps
       # Destroy CompanyOffmaps containing offmaps to enable
       available_offmap_service.remove_available_offmaps(offmaps_to_remove) unless offmaps_to_remove.blank?
+
+      # Destroy CompanyCallinModifiers containing callin_mdifiers_to_remove
+      company_callin_modifier_service.remove_callin_modifiers(callin_modifiers_to_remove) unless callin_modifiers_to_remove.blank?
 
       # Recalculate company resources
       if previously_enabled_units.present? || unit_swaps.present? || previously_enabled_offmaps.present?

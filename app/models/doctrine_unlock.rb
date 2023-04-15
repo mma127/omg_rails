@@ -55,6 +55,12 @@ class DoctrineUnlock < ApplicationRecord
     EnabledOffmap.includes(:offmap).where(restriction: restrictions)
   end
 
+  def enabled_callin_modifiers
+    EnabledCallinModifier
+      .includes(callin_modifier: [:callin_modifier_required_units, :callin_modifier_allowed_units])
+      .where(restriction: restrictions)
+  end
+
   def entity
     Entity.new(self)
   end
@@ -74,6 +80,7 @@ class DoctrineUnlock < ApplicationRecord
     expose :disabled_units, as: :disabledUnits, using: DisabledUnit::Entity, if: { type: :full }
     expose :unit_swaps, as: :unitSwaps, using: UnitSwap::Entity, if: { type: :full }
     expose :enabled_offmaps, as: :enabledOffmaps, using: EnabledOffmap::Entity, if: { type: :full }
+    expose :enabled_callin_modifiers, as: :enabledCallinModifiers, using: EnabledCallinModifier::Entity, if: { type: :full }
   end
 
   private

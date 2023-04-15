@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_26_042536) do
+ActiveRecord::Schema.define(version: 2023_04_13_024755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(version: 2023_03_26_042536) do
   create_table "callin_modifier_allowed_units", comment: "Units allowed in a callin for a callin modifier to take effect", force: :cascade do |t|
     t.bigint "callin_modifier_id"
     t.bigint "unit_id"
+    t.string "unit_name", comment: "Denormalized unit name for faster access"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["callin_modifier_id"], name: "index_callin_modifier_allowed_units_on_callin_modifier_id"
@@ -123,6 +124,7 @@ ActiveRecord::Schema.define(version: 2023_03_26_042536) do
   create_table "callin_modifier_required_units", comment: "Unit required for the callin modifier to be applied", force: :cascade do |t|
     t.bigint "callin_modifier_id"
     t.bigint "unit_id"
+    t.string "unit_name", comment: "Denormalized unit name for faster access"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["callin_modifier_id"], name: "index_callin_modifier_required_units_on_callin_modifier_id"
@@ -134,6 +136,7 @@ ActiveRecord::Schema.define(version: 2023_03_26_042536) do
     t.string "modifier_type", comment: "Type of modification"
     t.integer "priority", comment: "Priority in which the modifier is applied, from 1 -> 100"
     t.string "description", comment: "Description"
+    t.string "unlock_name", comment: "Name of the unlock associated with this callin modifier"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -156,6 +159,15 @@ ActiveRecord::Schema.define(version: 2023_03_26_042536) do
     t.index ["faction_id"], name: "index_companies_on_faction_id"
     t.index ["player_id"], name: "index_companies_on_player_id"
     t.index ["ruleset_id"], name: "index_companies_on_ruleset_id"
+  end
+
+  create_table "company_callin_modifiers", comment: "Mapping of company to available callin modifiers", force: :cascade do |t|
+    t.bigint "company_id"
+    t.bigint "callin_modifier_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["callin_modifier_id"], name: "index_company_callin_modifiers_on_callin_modifier_id"
+    t.index ["company_id"], name: "index_company_callin_modifiers_on_company_id"
   end
 
   create_table "company_offmaps", force: :cascade do |t|
@@ -517,6 +529,8 @@ ActiveRecord::Schema.define(version: 2023_03_26_042536) do
   add_foreign_key "companies", "factions"
   add_foreign_key "companies", "players"
   add_foreign_key "companies", "rulesets"
+  add_foreign_key "company_callin_modifiers", "callin_modifiers"
+  add_foreign_key "company_callin_modifiers", "companies"
   add_foreign_key "company_offmaps", "available_offmaps"
   add_foreign_key "company_offmaps", "companies"
   add_foreign_key "company_resource_bonuses", "companies"

@@ -2,13 +2,14 @@
 #
 # Table name: callin_modifiers
 #
-#  id                                                                 :bigint           not null, primary key
-#  description(Description)                                           :string
-#  modifier(Modifies callin time)                                     :decimal(, )
-#  modifier_type(Type of modification)                                :string
-#  priority(Priority in which the modifier is applied, from 1 -> 100) :integer
-#  created_at                                                         :datetime         not null
-#  updated_at                                                         :datetime         not null
+#  id                                                                   :bigint           not null, primary key
+#  description(Description)                                             :string
+#  modifier(Modifies callin time)                                       :decimal(, )
+#  modifier_type(Type of modification)                                  :string
+#  priority(Priority in which the modifier is applied, from 1 -> 100)   :integer
+#  unlock_name(Name of the unlock associated with this callin modifier) :string
+#  created_at                                                           :datetime         not null
+#  updated_at                                                           :datetime         not null
 #
 require "rails_helper"
 

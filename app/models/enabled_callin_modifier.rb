@@ -32,6 +32,6 @@ class EnabledCallinModifier < RestrictionCallinModifier
   class Entity < Grape::Entity
     expose :id
     expose :internal_description, as: :internalDescription
-    expose :callin_modifier, using: CallinModifier::Entity
+    expose :callin_modifier, as: :callinModifier, using: CallinModifier::Entity
   end
 end

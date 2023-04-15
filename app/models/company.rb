@@ -47,6 +47,8 @@ class Company < ApplicationRecord
   has_many :doctrine_unlocks, through: :company_unlocks
   has_many :company_offmaps, dependent: :destroy
   has_many :offmaps, through: :available_offmaps
+  has_many :company_callin_modifiers, dependent: :destroy
+  has_many :callin_modifiers, through: :company_callin_modifiers
   has_many :company_resource_bonuses, dependent: :destroy
   has_many :battle_players
 
