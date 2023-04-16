@@ -8,6 +8,17 @@ version of the unit (as opposed to free or other special cases), to swap to.
 Since now it's possible to have multiple `AvailableUnits` for a `Company` and `Unit`, company squad updates need to pass 
 `available_unit_id` as the identifier of what was purchased as `unit_id` will not be sufficiently specific.
 
+### Unit Modifications
+There are certain subclasses of `RestrictionUnit` that when unlocked by a company unlock purchase, will be applied against the `BaseAvailableUnit` of the associated unit.
+
+The fields affected are enumerated in `RestrictionUnit::MODIFY_FIELDS`.
+
+The priority of the record will determine where in the order it is applied, from 1 to 100, with 1 applied first and 100 last.
+
+Cases:
+* `ModifiedReplaceUnit` - any non-nil fields on this record will replace that of the `BaseAvailableUnit`
+* `ModifiedAddUnit` - any non-nil fields on this record will be added to that of the `BaseAvailableUnit`. The value can be negative.
+
 ## Transport
 1. New model `TransportAllowedUnit` represents one to many of transport units to units they are permitted to transport
 2. New model `TransportedSquad` represents a specific relationship between a transport `Squad` and an embarked `Squad`. Currently this should be 1 level of transport only.

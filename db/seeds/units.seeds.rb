@@ -276,6 +276,7 @@ after :doctrines do
   ## TH
   LightVehicle.create!(name: "kettenkrad_th", const_name: "PE.KETTENRAD", display_name: "Tank Hunters Kettengrad")
   LightVehicle.create!(name: "schwimmwagen_th", const_name: "PE.SCHWIMMWAGEN", display_name: "Tank Hunters Schwimmwagon")
+  LightVehicle.create!(name: "vampire_th", const_name: "PE.TH_VAMPIRE", display_name: "Vampire Halftrack Fully Aware")
 
   Tank.create!(name: "hetzer", const_name: "PE.HETZER", display_name: "Hetzer")
   Tank.create!(name: "jagdpanther", const_name: "PE.JAGDPANTHER", display_name: "Jagdpanther")

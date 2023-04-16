@@ -72,6 +72,7 @@ export const STUG_ACE_PE = 'stug_ace_pe'
 export const STUP = 'stup'
 export const TANK_BUSTERS = 'tank_busters'
 export const VAMPIRE_HALFTRACK = 'vampire_halftrack'
+export const VAMPIRE_HALFTRACK_TH = 'vampire_th'
 export const WIRBELWIND = 'wirbelwind'
 
 export const unitImageMapping = {
@@ -111,5 +112,6 @@ export const unitImageMapping = {
   [STUP]: stup,
   [TANK_BUSTERS]: tank_busters,
   [VAMPIRE_HALFTRACK]: vampire_halftrack,
+  [VAMPIRE_HALFTRACK_TH]: vampire_halftrack,
   [WIRBELWIND]: wirbelwind,
 }
