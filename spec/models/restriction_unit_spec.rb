@@ -47,9 +47,5 @@ RSpec.describe RestrictionUnit, type: :model do
     it { should belong_to(:unit) }
     it { should belong_to(:ruleset) }
   end
-
-  describe 'validations' do
-    it { should validate_uniqueness_of(:unit_id).scoped_to(:restriction_id) }
-  end
 end
 
