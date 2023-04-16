@@ -103,6 +103,11 @@ after :restrictions do
                       man: 350, mun: 0, fuel: 180, pop: 8, resupply: 2, resupply_max: 4, company_max: 4, priority: 1,
                       upgrade_slots: 0)
 
+  ### Here to Clean Up This Mess modification
+  here_to_clean_unlock = Unlock.find_by!(name: "here_to_clean_up_this_mess")
+  here_to_clean_doctrine_unlock = DoctrineUnlock.find_by!(doctrine: infantry, unlock: here_to_clean_unlock)
+  here_to_clean_restriction = here_to_clean_doctrine_unlock.restriction
+  ModifiedReplaceUnit.create!(restriction: here_to_clean_restriction, unit: rangers, ruleset: war_ruleset, mun: 0, priority: 50)
 
   ## Airborne
   airborne_doc = Doctrine.find_by_name("airborne")
@@ -118,9 +123,9 @@ after :restrictions do
                       unitwide_upgrade_slots: 1, upgrade_slots: 4)
 
   ### Support Teams Unit Swap
-  support_teams_unlock = Unlock.find_by(name: "support_teams")
-  support_teams_doctrine_unlock = DoctrineUnlock.find_by(doctrine: airborne_doc, unlock: support_teams_unlock)
-  support_teams_restriction = Restriction.find_by(doctrine_unlock: support_teams_doctrine_unlock)
+  support_teams_unlock = Unlock.find_by!(name: "support_teams")
+  support_teams_doctrine_unlock = DoctrineUnlock.find_by!(doctrine: airborne_doc, unlock: support_teams_unlock)
+  support_teams_restriction = Restriction.find_by!(doctrine_unlock: support_teams_doctrine_unlock)
   airborne_hmg = SupportTeam.find_by_name("airborne_hmg")
   EnabledUnit.create!(restriction: support_teams_restriction, unit: airborne_hmg, ruleset: war_ruleset,
                       man: 300, mun: 40, fuel: 0, pop: 3, resupply: 3, resupply_max: 6, company_max: 6, priority: 1,
@@ -455,6 +460,13 @@ after :restrictions do
   EnabledUnit.create!(restriction: defensive_restriction, unit: flak88_def, ruleset: war_ruleset,
                       man: 550, mun: 0, fuel: 250, pop: 8, resupply: 1, resupply_max: 3, company_max: 3, priority: 1)
 
+  #### Heavy Support modification
+  heavy_support_unlock = Unlock.find_by!(name: "heavy_support")
+  heavy_support_doctrine_unlock = DoctrineUnlock.find_by!(doctrine: defensive, unlock: heavy_support_unlock)
+  heavy_support_restriction = heavy_support_doctrine_unlock.restriction
+  ModifiedAddUnit.create!(restriction: heavy_support_restriction, unit: mg42, ruleset: war_ruleset, resupply: 1, priority: 50)
+  ModifiedAddUnit.create!(restriction: heavy_support_restriction, unit: mortar_axis, ruleset: war_ruleset, resupply: 1, priority: 50)
+  ModifiedAddUnit.create!(restriction: heavy_support_restriction, unit: pak38, ruleset: war_ruleset, resupply: 1, priority: 50)
 
   ## BLITZ
   blitz = Doctrine.find_by_name("blitz")
@@ -696,4 +708,15 @@ after :restrictions do
   EnabledUnit.create!(restriction: tank_hunters_restriction, unit: stug_ace_pe, ruleset: war_ruleset,
                       man: 280, mun: 45, fuel: 230, pop: 10, resupply: 1, resupply_max: 1, company_max: 1, priority: 1)
 
+  #### Fully Aware Unit swap
+  fully_aware_unlock = Unlock.find_by!(name: "fully_aware")
+  fully_aware_doctrine_unlock = DoctrineUnlock.find_by!(doctrine: tank_hunters, unlock: fully_aware_unlock)
+  fully_aware_restriction = Restriction.find_by!(doctrine_unlock: fully_aware_doctrine_unlock)
+  vampire_th = Unit.find_by!(name: "vampire_th")
+  EnabledUnit.create!(restriction: fully_aware_restriction, unit: vampire_th, ruleset: war_ruleset,
+                      man: 240, mun: 0, fuel: 40, pop: 3, resupply: 2, resupply_max: 4, company_max: 5, priority: 1)
+
+  DisabledUnit.create!(restriction: fully_aware_restriction, unit: vampire_halftrack, ruleset: war_ruleset)
+
+  UnitSwap.create!(unlock: fully_aware_unlock, old_unit: vampire_halftrack, new_unit: vampire_th)
 end

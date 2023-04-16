@@ -3,10 +3,10 @@
 # Table name: restriction_units
 #
 #  id                                                                                    :bigint           not null, primary key
-#  callin_modifier(Base callin modifier, default is 1)                                   :decimal(, )      default(1.0)
+#  callin_modifier(Base callin modifier)                                                 :decimal(, )
 #  company_max(Maximum number of the unit a company can hold)                            :integer
-#  description(What does this RestrictionUnit do?)                                       :string           not null
 #  fuel(Fuel cost)                                                                       :integer
+#  internal_description(What does this RestrictionUnit do?)                              :string           not null
 #  man(Manpower cost)                                                                    :integer
 #  mun(Munition cost)                                                                    :integer
 #  pop(Population cost)                                                                  :decimal(, )
@@ -14,8 +14,8 @@
 #  resupply(Per game resupply)                                                           :integer
 #  resupply_max(How much resupply is available from saved up resupplies, <= company max) :integer
 #  type(What effect this restriction has on the unit)                                    :string           not null
-#  unitwide_upgrade_slots(Unit wide weapon replacement slot)                             :integer          default(0), not null
-#  upgrade_slots(Slots used for per model weapon upgrades)                               :integer          default(0), not null
+#  unitwide_upgrade_slots(Unit wide weapon replacement slot)                             :integer
+#  upgrade_slots(Slots used for per model weapon upgrades)                               :integer
 #  created_at                                                                            :datetime         not null
 #  updated_at                                                                            :datetime         not null
 #  restriction_id                                                                        :bigint
@@ -29,7 +29,7 @@
 #  index_restriction_units_on_ruleset_id                     (ruleset_id)
 #  index_restriction_units_on_unit_id                        (unit_id)
 #  index_restriction_units_on_unit_id_and_ruleset_id         (unit_id,ruleset_id)
-#  index_restriction_units_restriction_unit_ruleset          (restriction_id,unit_id,ruleset_id) UNIQUE
+#  index_restriction_units_restriction_unit_ruleset_type     (restriction_id,unit_id,ruleset_id,type) UNIQUE
 #
 # Foreign Keys
 #
@@ -46,10 +46,6 @@ RSpec.describe RestrictionUnit, type: :model do
     it { should belong_to(:restriction) }
     it { should belong_to(:unit) }
     it { should belong_to(:ruleset) }
-  end
-
-  describe 'validations' do
-    it { should validate_uniqueness_of(:unit_id).scoped_to(:restriction_id) }
   end
 end
 

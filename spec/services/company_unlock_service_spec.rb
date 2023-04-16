@@ -9,11 +9,14 @@ RSpec.describe CompanyUnlockService do
   let(:starting_man) { ruleset.starting_man }
   let(:starting_mun) { ruleset.starting_mun }
   let(:starting_fuel) { ruleset.starting_fuel }
-  let!(:company) { create :company, doctrine: doctrine, faction: faction, vps_current: vps_current, man: starting_man, mun: starting_mun, fuel: starting_fuel }
+  let!(:company) { create :company, doctrine: doctrine, faction: faction, ruleset: ruleset, vps_current: vps_current, man: starting_man, mun: starting_mun, fuel: starting_fuel }
   let!(:unlock1) { create :unlock }
+  let!(:unlock2) { create :unlock }
   let(:vp_cost) { 3 }
   let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, vp_cost: vp_cost }
   let!(:du_restriction) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock }
+  let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, vp_cost: vp_cost, tree: 1, branch: 1, row: 2 }
+  let!(:du_restriction2) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2 }
   let!(:unit1) { create :unit }
   let!(:unit2) { create :unit }
   let!(:unit3) { create :unit }
@@ -145,6 +148,46 @@ RSpec.describe CompanyUnlockService do
         expect(company.reload.mun).to eq ruleset.starting_mun - (mun1 * 2) - (mun2 * 2)
         expect(company.reload.fuel).to eq ruleset.starting_fuel - (fuel1 * 2) - (fuel2 * 2)
         expect(company.reload.pop).to eq pop1 * 2 + pop2 * 2
+      end
+
+      it "pays for the company unlock" do
+        subject
+        expect(company.reload.vps_current).to eq vps_current - vp_cost
+      end
+    end
+
+    context "when units are modified for the company only" do
+      let(:add_man) { 100 }
+      let(:add_fuel) { 25 }
+      let(:add_pop) { -1 }
+      let(:replace_fuel) { 0 }
+      let(:replace_resupply) { 5 }
+      let!(:doc_restriction) { create :restriction, :with_doctrine, doctrine: doctrine }
+      let!(:doc_enabled_unit) { create :enabled_unit, restriction: doc_restriction, unit: unit1, ruleset: ruleset,
+                                       man: man1, mun: mun1, fuel: fuel1, pop: pop1, resupply: resupply_max, resupply_max: resupply_max }
+      let!(:au) { create :base_available_unit, company: company, unit: unit1, man: man1, mun: mun1, fuel: fuel1, pop: pop1,
+                         resupply: resupply_max, resupply_max: resupply_max}
+
+      let!(:du_modified_replace_unit) { create :modified_replace_unit, restriction: du_restriction, unit: unit1, ruleset: ruleset,
+                                               fuel: replace_fuel, resupply: replace_resupply, priority: 50 }
+      let!(:du_modified_add_unit) { create :modified_add_unit, restriction: du_restriction, unit: unit1, ruleset: ruleset,
+                                           man: add_man, fuel: add_fuel, pop: add_pop, priority: 60 }
+
+      it "applies modifications to the available unit, in order of priority" do
+        subject
+        expect(au.reload.man).to eq man1 + add_man
+        expect(au.mun).to eq mun1
+        expect(au.fuel).to eq replace_fuel + add_fuel
+        expect(au.pop).to eq pop1 + add_pop
+        expect(au.resupply).to eq replace_resupply
+        expect(au.resupply_max).to eq resupply_max
+      end
+
+      it "recalculates resources" do
+        company_service_double = double
+        allow(CompanyService).to receive(:new).and_return company_service_double
+        expect(company_service_double).to receive(:recalculate_and_update_resources)
+        subject
       end
 
       it "pays for the company unlock" do
@@ -341,6 +384,55 @@ RSpec.describe CompanyUnlockService do
       end
 
       it "refunds the cost of the company unlock" do
+        subject
+        expect(company.reload.vps_current).to eq vps_current + vp_cost
+      end
+    end
+
+    context "when units are modified for the company only" do
+      let!(:company_unlock2) { create :company_unlock, company: company, doctrine_unlock: doctrine_unlock2 }
+      let(:add_man) { 100 }
+      let(:add_fuel) { 25 }
+      let(:add_pop) { -1 }
+      let(:replace_fuel) { 0 }
+      let(:replace_resupply) { 5 }
+      let!(:doc_restriction) { create :restriction, :with_doctrine, doctrine: doctrine }
+      let!(:doc_enabled_unit) { create :enabled_unit, restriction: doc_restriction, unit: unit1, ruleset: ruleset,
+                                       man: man1, mun: mun1, fuel: fuel1, pop: pop1, resupply: resupply_max, resupply_max: resupply_max }
+      let!(:au) { create :base_available_unit, company: company, unit: unit1, man: man1 + add_man, mun: mun1, fuel: replace_fuel + add_fuel, pop: pop1 + add_pop,
+                         resupply: replace_resupply, resupply_max: resupply_max}
+
+      let!(:du_modified_replace_unit) { create :modified_replace_unit, restriction: du_restriction, unit: unit1, ruleset: ruleset,
+                                               fuel: replace_fuel, resupply: replace_resupply, priority: 50 }
+      let!(:du_modified_add_unit) { create :modified_add_unit, restriction: du_restriction2, unit: unit1, ruleset: ruleset,
+                                           man: add_man, fuel: add_fuel, pop: add_pop, priority: 60 }
+
+      let!(:squad1) { create :squad, company: company, available_unit: au }
+      let!(:squad2) { create :squad, company: company, available_unit: au }
+
+      before do
+        company.update!(man: company.man - (au.man * 2), mun: company.mun - (au.mun * 2), fuel: company.fuel - (au.fuel * 2), pop: au.pop * 2)
+      end
+
+      it "removes the modification but reapplies all other modifications not being removed" do
+        subject
+        expect(au.reload.man).to eq man1 + add_man
+        expect(au.mun).to eq mun1
+        expect(au.fuel).to eq fuel1 + add_fuel
+        expect(au.pop).to eq pop1 + add_pop
+        expect(au.resupply).to eq resupply_max
+        expect(au.resupply_max).to eq resupply_max
+      end
+
+      it "recalculates the cost for the Squads" do
+        subject
+        expect(company.reload.man).to eq starting_man - (au.reload.man * 2)
+        expect(company.mun).to eq starting_mun - (au.mun * 2)
+        expect(company.fuel).to eq starting_fuel - (au.fuel * 2)
+        expect(company.pop).to eq au.pop * 2
+      end
+
+      it "pays for the company unlock" do
         subject
         expect(company.reload.vps_current).to eq vps_current + vp_cost
       end

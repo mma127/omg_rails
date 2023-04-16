@@ -1,8 +1,10 @@
 class AvailableUnitService
   class AvailableUnitsValidationError < StandardError; end
+  class EnabledUnitNotFoundError < StandardError; end
+  class UnsupportedModificationError < StandardError; end
 
   def initialize(company)
-    @company = company
+    @company = Company.includes(:player, :faction, :doctrine, doctrine_unlocks: :unlock).find(company.id)
     @player = company.player
     @faction = company.faction
     @doctrine = company.doctrine
@@ -81,6 +83,32 @@ class AvailableUnitService
     available_units.destroy_all # squads destroyed via dependent destroy
   end
 
+  def add_unit_modifications(modified_units_to_apply, doctrine_unlock)
+    # Get list of unique units affected by the NEW modifications only (do not need to update units not affected)
+    units_affected = modified_units_to_apply.map(&:unit).uniq
+
+    # Get all restrictions for all doctrine unlocks and unlocks of the company
+    doctrine_unlock_ids = @company.doctrine_unlocks.pluck(:id) << doctrine_unlock.id
+    unlock_ids = @company.unlocks.pluck(:id) << doctrine_unlock.unlock_id
+    du_u_restrictions = Restriction.where(doctrine_unlock_id: doctrine_unlock_ids)
+                                   .or(Restriction.where(unlock_id: unlock_ids))
+
+    reapply_unit_modifications(units_affected, du_u_restrictions)
+  end
+
+  def remove_unit_modifications(modified_units_to_remove, doctrine_unlock)
+    # Get list of unique units affected by the modifications to remove only (do not need to update units not affected)
+    units_affected = modified_units_to_remove.map(&:unit).uniq
+
+    # Get all restrictions for all doctrine unlocks and unlocks of the company without the doctrine unlock being removed
+    doctrine_unlock_ids = @company.doctrine_unlocks.pluck(:id).without(doctrine_unlock.id)
+    unlock_ids = @company.unlocks.pluck(:id).without(doctrine_unlock.unlock_id)
+    du_u_restrictions = Restriction.where(doctrine_unlock_id: doctrine_unlock_ids)
+                                   .or(Restriction.where(unlock_id: unlock_ids))
+
+    reapply_unit_modifications(units_affected, du_u_restrictions)
+  end
+
   private
 
   # Calculates the basic set of units available for the company's faction and doctrine
@@ -100,11 +128,11 @@ class AvailableUnitService
   end
 
   def get_enabled_unit_hash(restriction)
-    EnabledUnit.where(restriction: restriction).index_by(&:unit_id)
+    EnabledUnit.where(restriction: restriction, ruleset: @company.ruleset).index_by(&:unit_id)
   end
 
   def get_disabled_unit_hash(restriction)
-    DisabledUnit.where(restriction: restriction).index_by(&:unit_id)
+    DisabledUnit.where(restriction: restriction, ruleset: @company.ruleset).index_by(&:unit_id)
   end
 
   def merge_allowed_units(existing_units_hash, restricted_units_hash)
@@ -128,6 +156,91 @@ class AvailableUnitService
                           company_max: restriction_unit.company_max, pop: restriction_unit.pop,
                           man: restriction_unit.man, mun: restriction_unit.mun, fuel: restriction_unit.fuel,
                           callin_modifier: restriction_unit.callin_modifier)
+  end
+
+  # Apply any modification RestrictionUnits associated with the given restrictions against any BaseEnabledUnits for the list of units
+  # Since we expect there will be pre-existing BaseEnabledUnits, we want to calculate from scratch what the state of the BaseEnabledUnit
+  # is, then overwrite the existing BaseEnableUnits' fields with those values.
+  def reapply_unit_modifications(units, restrictions)
+    # Get all modified units for the given restrictions of the company
+    all_modified_units = RestrictionUnit.modified.where(restriction: restrictions)
+
+    # For each unit affected
+    units.each do |ua|
+      # Recalculate unmodified BaseAvailableUnit
+      new_base_available_unit = get_unmodified_base_available_unit(ua, restrictions)
+
+      # Ordered list of modified units for the unit, ascending
+      ordered_modified_units = all_modified_units.where(unit: ua).order(:priority)
+
+      # Apply modifications to the unmodified BaseAvailableUnit, in priority order ascending
+      new_base_available_unit = apply_modified_units(new_base_available_unit, ordered_modified_units)
+
+      # Get existing BaseAvailableUnit
+      existing_base_available_unit = BaseAvailableUnit.find_by!(company: @company, unit: ua)
+
+      # Apply modify field attributes to the existing BaseAvailableUnit
+      overwrite_modify_unit_fields(existing_base_available_unit, new_base_available_unit)
+    end
+  end
+
+  def get_unmodified_base_available_unit(unit, du_u_restrictions)
+    du_u_enabled_unit = EnabledUnit.find_by(restriction: du_u_restrictions, unit: unit, ruleset: @company.ruleset)
+    return instantiate_base_available_unit(du_u_enabled_unit) if du_u_enabled_unit.present?
+
+    doctrine_enabled_unit = EnabledUnit.find_by(restriction: @doctrine.restriction, unit: unit, ruleset: @company.ruleset)
+    return instantiate_base_available_unit(doctrine_enabled_unit) if doctrine_enabled_unit.present?
+
+    faction_enabled_unit = EnabledUnit.find_by(restriction: @faction.restriction, unit: unit, ruleset: @company.ruleset)
+    return instantiate_base_available_unit(faction_enabled_unit) if faction_enabled_unit.present?
+
+    raise EnabledUnitNotFoundError.new("Could not determine an unmodified EnabledUnit for unit #{unit.id} in company #{@company.id}")
+  end
+
+  def apply_modified_units(base_available_unit, modified_units)
+    modified_units.each do |mu|
+      apply_modified_unit(base_available_unit, mu)
+    end
+    base_available_unit
+  end
+
+  def apply_modified_unit(base_available_unit, modified_unit)
+    case modified_unit.class.name
+    when ModifiedReplaceUnit.name
+      apply_modified_replace_unit(base_available_unit, modified_unit)
+    when ModifiedAddUnit.name
+      apply_modified_add_unit(base_available_unit, modified_unit)
+    else
+      raise UnsupportedModificationError.new("Unsupported unit modification for class #{modified_unit&.class} and id #{modified_unit&.id}")
+    end
+  end
+
+  def apply_modified_replace_unit(available_unit, modified_replace_unit)
+    RestrictionUnit::MODIFY_FIELDS.each do |attr|
+      next unless modified_replace_unit[attr].present?
+
+      available_unit[attr] = modified_replace_unit[attr]
+    end
+    available_unit
+  end
+
+  def apply_modified_add_unit(available_unit, modified_add_unit)
+    RestrictionUnit::MODIFY_FIELDS.each do |attr|
+      next unless modified_add_unit[attr].present?
+
+      new_value = [available_unit[attr] + modified_add_unit[attr], 0].max # Don't want negative costs/resupply
+      available_unit[attr] = new_value
+    end
+    available_unit
+  end
+
+  def overwrite_modify_unit_fields(existing_available_unit, new_available_unit)
+    RestrictionUnit::MODIFY_FIELDS.each do |attr|
+      next unless existing_available_unit[attr] != new_available_unit[attr]
+
+      existing_available_unit[attr] = new_available_unit[attr]
+    end
+    existing_available_unit.save!
   end
 
   def validate_empty_available_units

@@ -329,14 +329,14 @@ ActiveRecord::Schema.define(version: 2023_04_13_024755) do
     t.integer "resupply", comment: "Per game resupply"
     t.integer "resupply_max", comment: "How much resupply is available from saved up resupplies, <= company max"
     t.integer "company_max", comment: "Maximum number of the unit a company can hold"
-    t.decimal "callin_modifier", default: "1.0", comment: "Base callin modifier, default is 1"
+    t.decimal "callin_modifier", comment: "Base callin modifier"
     t.integer "priority", comment: "Priority order to apply the modification from 1 -> 100"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "upgrade_slots", default: 0, null: false, comment: "Slots used for per model weapon upgrades"
-    t.integer "unitwide_upgrade_slots", default: 0, null: false, comment: "Unit wide weapon replacement slot"
+    t.integer "upgrade_slots", comment: "Slots used for per model weapon upgrades"
+    t.integer "unitwide_upgrade_slots", comment: "Unit wide weapon replacement slot"
     t.index ["restriction_id", "ruleset_id"], name: "index_restriction_units_on_restriction_id_and_ruleset_id"
-    t.index ["restriction_id", "unit_id", "ruleset_id"], name: "index_restriction_units_restriction_unit_ruleset", unique: true
+    t.index ["restriction_id", "unit_id", "ruleset_id", "type"], name: "index_restriction_units_restriction_unit_ruleset_type", unique: true
     t.index ["restriction_id"], name: "index_restriction_units_on_restriction_id"
     t.index ["ruleset_id"], name: "index_restriction_units_on_ruleset_id"
     t.index ["unit_id", "ruleset_id"], name: "index_restriction_units_on_unit_id_and_ruleset_id"

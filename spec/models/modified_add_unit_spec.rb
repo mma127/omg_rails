@@ -37,22 +37,9 @@
 #  fk_rails_...  (ruleset_id => rulesets.id)
 #  fk_rails_...  (unit_id => units.id)
 #
-class DisabledUnit < RestrictionUnit
-  before_save :generate_internal_description
+require "rails_helper"
 
-  def entity
-    Entity.new(self)
-  end
+RSpec.describe ModifiedAddUnit, type: :model do
 
-  class Entity < Grape::Entity
-    expose :id
-    expose :internal_description, as: :internalDescription
-    expose :unit, using: Unit::Entity
-  end
 
-  private
-
-  def generate_internal_description
-    self.internal_description = "#{restriction.name} - #{unit.display_name} - DISABLED"
-  end
 end

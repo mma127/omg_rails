@@ -37,22 +37,31 @@
 #  fk_rails_...  (ruleset_id => rulesets.id)
 #  fk_rails_...  (unit_id => units.id)
 #
-class DisabledUnit < RestrictionUnit
+class ModifiedReplaceUnit < RestrictionUnit
+  validates :man, numericality: true, allow_blank: true
+  validates :mun, numericality: true, allow_blank: true
+  validates :fuel, numericality: true, allow_blank: true
+  validates :pop, numericality: true, allow_blank: true
+  validates :callin_modifier, numericality: true, allow_blank: true
+  validates :resupply, numericality: true, allow_blank: true
+  validates :resupply_max, numericality: true, allow_blank: true
+  validates :company_max, numericality: true, allow_blank: true
+
   before_save :generate_internal_description
-
-  def entity
-    Entity.new(self)
-  end
-
-  class Entity < Grape::Entity
-    expose :id
-    expose :internal_description, as: :internalDescription
-    expose :unit, using: Unit::Entity
-  end
 
   private
 
   def generate_internal_description
-    self.internal_description = "#{restriction.name} - #{unit.display_name} - DISABLED"
+    self.internal_description = "#{restriction.name} - #{unit.display_name} [#{get_changes}]"
+  end
+
+  def get_changes
+    RestrictionUnit::MODIFY_FIELDS.reduce("") do |acc, attr|
+      next acc unless self[attr].present?
+
+      next acc << "#{attr} -> #{self[attr]}" if acc.blank?
+
+      acc << ", #{attr} -> #{self[attr]}"
+    end
   end
 end
