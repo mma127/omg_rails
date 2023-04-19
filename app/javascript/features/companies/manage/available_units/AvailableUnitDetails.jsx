@@ -7,7 +7,7 @@ import { fetchUnitById, selectUnitById } from "../units/unitsSlice";
 import {
   selectAvailableUnitById,
   selectAllAvailableUnits,
-  selectAvailableUnitsStatus
+  selectAvailableUnitsStatus, selectSelectedAvailableUnitId
 } from "./availableUnitsSlice";
 import { unitImageMapping } from "../../../../constants/units/all_factions";
 import { formatResourceCost } from "../../../../utils/company";
@@ -23,7 +23,8 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const AvailableUnitDetails = ({ availableUnitId }) => {
+export const AvailableUnitDetails = () => {
+  const availableUnitId = useSelector(selectSelectedAvailableUnitId)
   console.log(`AvailableUnitId Details - ${availableUnitId}`)
   const classes = useStyles()
   const dispatch = useDispatch()

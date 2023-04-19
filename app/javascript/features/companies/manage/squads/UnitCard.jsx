@@ -32,7 +32,7 @@ export const UnitCard = ({ unitId, availableUnitId, onUnitClick, disabled, dragH
   const image = unitImageMapping[unit.name]
 
   const handleClick = () => {
-    onUnitClick(unitId, availableUnitId, image, unit.name)
+    onUnitClick(availableUnitId)
   }
 
   /** TODO onUnitClick needs to be squad aware */

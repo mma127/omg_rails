@@ -7,7 +7,12 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 
-import { fetchCompanyById, selectCompanyById } from "../companiesSlice";
+import {
+  fetchCompanyById,
+  selectCompanyActiveBattleId,
+  selectCompanyById,
+  selectCompanyDoctrineId, selectCompanyName
+} from "../companiesSlice";
 
 import { SquadBuilder } from "./SquadBuilder";
 import { CompanyUnlocks } from "./unlocks/CompanyUnlocks";
@@ -64,8 +69,10 @@ export const CompanyManager = () => {
 
   let params = useParams()
   const companyId = params.companyId
-  const company = useSelector(state => selectCompanyById(state, companyId))
-  const doctrine = useSelector(state => selectDoctrineById(state, company.doctrineId))
+  const activeBattleId = useSelector(state => selectCompanyActiveBattleId(state, companyId))
+  const doctrineId = useSelector(state => selectCompanyDoctrineId(state, companyId))
+  const companyName = useSelector(state => selectCompanyName(state, companyId))
+  const doctrine = useSelector(state => selectDoctrineById(state, doctrineId))
 
   useEffect(() => {
     console.log("dispatching company fetch from CompanyManager")
@@ -73,7 +80,7 @@ export const CompanyManager = () => {
   }, [companyId])
 
 
-  const editEnabled = !company.activeBattleId
+  const editEnabled = !activeBattleId
   let companyLockedContent = ""
   if (!editEnabled) {
     companyLockedContent = <Alert severity={"warning"}>
@@ -92,7 +99,7 @@ export const CompanyManager = () => {
           </Box>
         </Grid>
         <Grid item md={6} xs={12} className={`${classes.titleItem} ${classes.companyName}`}>
-          <Typography variant="h5" gutterBottom>{company.name}</Typography>
+          <Typography variant="h5" gutterBottom>{companyName}</Typography>
         </Grid>
       </Grid>
       <Box className={classes.contentContainer}>

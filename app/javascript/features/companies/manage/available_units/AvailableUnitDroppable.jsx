@@ -41,7 +41,7 @@ export const AvailableUnitDroppable = ({
 
   /** When dragging, we want to treat the current unit as selected for the details pane */
   const onDragStart = () => {
-    onUnitClick(availableUnit.unitId, availableUnit.id, image, availableUnit.unitName)
+    onUnitClick(availableUnit.id)
   }
 
   return (

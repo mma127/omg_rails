@@ -155,3 +155,11 @@ export const {
   selectAll: selectAllCompanies,
   selectById: selectCompanyById
 } = companiesAdapter.getSelectors(state => state.companies)
+
+export const selectCompanyPop = (state, companyId) => state.companies.entities[companyId].pop
+export const selectCompanyMan = (state, companyId) => state.companies.entities[companyId].man
+export const selectCompanyMun = (state, companyId) => state.companies.entities[companyId].mun
+export const selectCompanyFuel = (state, companyId) => state.companies.entities[companyId].fuel
+export const selectCompanyActiveBattleId = (state, companyId) => state.companies.entities[companyId].activeBattleId
+export const selectCompanyDoctrineId = (state, companyId) => state.companies.entities[companyId].doctrineId
+export const selectCompanyName = (state, companyId) => state.companies.entities[companyId].name

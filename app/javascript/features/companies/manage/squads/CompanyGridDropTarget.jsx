@@ -5,10 +5,17 @@ import { makeStyles } from "@mui/styles";
 import '../../../../../assets/stylesheets/CompanyGridDropTarget.css'
 import { SquadCard } from "./SquadCard";
 import { useDispatch, useSelector } from "react-redux";
-import { clearNotifySnackbar, selectCallinModifiers, showSnackbar } from "../units/squadsSlice";
+import {
+  clearNotifySnackbar, selectAntiArmourSquads, selectArmourSquads,
+  selectAssaultSquads,
+  selectCallinModifiers,
+  selectCoreSquads, selectInfantrySquads, selectSquadsInTabIndex, selectSupportSquads,
+  showSnackbar
+} from "../units/squadsSlice";
 import { GLIDER } from "../../../../constants/units/types";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
+import { ANTI_ARMOUR, ARMOUR, ASSAULT, CORE, INFANTRY, SUPPORT } from "../../../../constants/company";
 
 const useStyles = makeStyles(() => ({
   placementBox: {
@@ -45,7 +52,6 @@ const useStyles = makeStyles(() => ({
 export const CompanyGridDropTarget = ({
                                         gridIndex,
                                         currentTab,
-                                        squads,
                                         onNonTransportSquadCreate,
                                         onTransportedSquadCreate,
                                         onUnitClick,
@@ -55,6 +61,9 @@ export const CompanyGridDropTarget = ({
                                       }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
+
+  console.log(`Rendering tab ${currentTab} and index ${gridIndex}`)
+  const squads = useSelector(state => selectSquadsInTabIndex(state, currentTab, gridIndex))
 
   const [openSnackbar, setOpenSnackbar] = useState(false)
   const [snackbarContent, setSnackbarContent] = useState("")

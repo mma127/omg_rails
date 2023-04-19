@@ -360,6 +360,8 @@ export const selectArmourSquads = state => state.squads[ARMOUR]
 export const selectAntiArmourSquads = state => state.squads[ANTI_ARMOUR]
 export const selectSupportSquads = state => state.squads[SUPPORT]
 
+export const selectSquadsInTabIndex = (state, tab, index) => state.squads[tab][index]
+
 export const selectSquadInTabIndexUuid = (state, tab, index, uuid) => state.squads[tab][index][uuid]
 export const selectSquadInTabIndexTransportUuid = (state, tab, index, transportUuid, uuid) => {
   const transport = state.squads[tab][index][transportUuid]

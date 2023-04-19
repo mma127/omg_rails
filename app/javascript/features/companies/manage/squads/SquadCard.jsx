@@ -203,7 +203,7 @@ export const SquadCard = (
   let dragHandleClassName = `unit-card-drag-handle-${uuid}`
   return (
     <DragDropContainer targetKey="squad"
-                       onDragStart={() => onUnitClick(squad.unitId, squad.availableUnitId, squad.image, unit.name)}
+                       onDragStart={() => onUnitClick(squad.availableUnitId)}
                        noDragging={!enabled}
                        dragHandleClassName={dragHandleClassName}
                        dragData={
