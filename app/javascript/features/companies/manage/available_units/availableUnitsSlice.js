@@ -30,7 +30,8 @@ const initialState = availableUnitsAdapter.getInitialState({
   loadingAvailableUnitsError: null,
   creatingStatus: "idle",
   creatingError: null,
-  deletingError: null
+  deletingError: null,
+  selectedAvailableUnitId: null
 })
 
 const getSortedUnitsForType = (availableUnits, unitType) => {
@@ -57,7 +58,10 @@ const availableUnitsSlice = createSlice({
   name: "availableUnits",
   initialState,
   reducers: {
-    resetAvailableUnitState: () => initialState
+    resetAvailableUnitState: () => initialState,
+    setSelectedAvailableUnitId: (state, action) => {
+      state.selectedAvailableUnitId = action.payload
+    }
   },
   extraReducers(builder) {
     builder
@@ -108,7 +112,7 @@ const availableUnitsSlice = createSlice({
 
 export default availableUnitsSlice.reducer
 
-export const { resetAvailableUnitState } = availableUnitsSlice.actions
+export const { resetAvailableUnitState, setSelectedAvailableUnitId } = availableUnitsSlice.actions
 
 export const {
   selectAll: selectAllAvailableUnits,
@@ -123,3 +127,5 @@ export const selectEmplacementAvailableUnits = state => state.availableUnits[EMP
 export const selectGliderAvailableUnits = state => state.availableUnits[GLIDER]
 
 export const selectAvailableUnitsStatus = state => state.availableUnits.availableUnitsStatus
+
+export const selectSelectedAvailableUnitId = state => state.availableUnits.selectedAvailableUnitId
