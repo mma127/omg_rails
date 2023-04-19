@@ -1,4 +1,4 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit";
 import { fetchCompanySquads, upsertSquads } from "../units/squadsSlice";
 
 const companyOffmapsAdapter = createEntityAdapter()
@@ -60,6 +60,8 @@ export const {
 
 export const selectNewCompanyOffmaps = state => state.companyOffmaps.newCompanyOffmaps
 
-export const selectMergedCompanyOffmaps = state => {
-  return _.values(state.companyOffmaps.entities).concat(_.values(state.companyOffmaps.newCompanyOffmaps).flat())
-}
+const selectCompanyOffmapEntities = state => state.companyOffmaps.entities
+const selectCompanyOffmapNew = state => state.companyOffmaps.newCompanyOffmaps
+export const selectMergedCompanyOffmaps = createSelector([selectCompanyOffmapEntities, selectCompanyOffmapNew], (entities, newEntities) => {
+  _.values(entities).concat(_.values(newEntities).flat())
+})

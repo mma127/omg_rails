@@ -8,7 +8,7 @@ import { CompanyGridDropTarget } from "./squads/CompanyGridDropTarget";
 import { SquadsGridTabs } from "./squads/SquadsGridTabs";
 
 import { ANTI_ARMOUR, ARMOUR, ASSAULT, CORE, INFANTRY, SUPPORT } from "../../../constants/company";
-import { addCost, removeCost, selectCompanyById } from "../companiesSlice";
+import { addCost, removeCost, selectCompanyActiveBattleId, selectCompanyById } from "../companiesSlice";
 import {
   resetAvailableUnitState,
   selectAvailableUnitsStatus,
@@ -45,6 +45,7 @@ import {
   selectMergedCompanyOffmaps
 } from "./company_offmaps/companyOffmapsSlice";
 import { PurchasedOffmaps } from "./company_offmaps/PurchasedOffmaps";
+import { CompanyResources } from "./CompanyResources";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -82,7 +83,7 @@ export const SquadBuilder = ({}) => {
 
   let params = useParams()
   const companyId = params.companyId
-  const company = useSelector(state => selectCompanyById(state, companyId))
+  const activeBattleId = useSelector(state => selectCompanyActiveBattleId(state, companyId))
 
   const squadsStatus = useSelector(state => state.squads.squadsStatus)
   const isChanged = useSelector(state => state.squads.isChanged)
@@ -129,7 +130,7 @@ export const SquadBuilder = ({}) => {
   const onNonTransportSquadCreate = (availableUnit, unit, index, tab) => {
     const newSquad = createSquad(availableUnit, unit, index, tab)
     dispatch(addCost({
-      id: company.id,
+      id: companyId,
       pop: newSquad.pop,
       man: newSquad.man,
       mun: newSquad.mun,
@@ -144,7 +145,7 @@ export const SquadBuilder = ({}) => {
   const onTransportedSquadCreate = (availableUnit, unit, index, tab, transportUuid) => {
     const newSquad = createSquad(availableUnit, unit, index, tab, transportUuid)
     dispatch(addCost({
-      id: company.id,
+      id: companyId,
       pop: newSquad.pop,
       man: newSquad.man,
       mun: newSquad.mun,
@@ -155,7 +156,7 @@ export const SquadBuilder = ({}) => {
 
   const onSquadDestroy = (squad, transportUuid = null) => {
     // TODO remove squad id from company if not null
-    dispatch(removeCost({ id: company.id, pop: squad.pop, man: squad.man, mun: squad.mun, fuel: squad.fuel }))
+    dispatch(removeCost({ id: companyId, pop: squad.pop, man: squad.man, mun: squad.mun, fuel: squad.fuel }))
     if (_.isNull(transportUuid)) {
       dispatch(removeSquad(squad))
     } else {
@@ -173,12 +174,12 @@ export const SquadBuilder = ({}) => {
 
   const onOffmapSelect = (availableOffmap) => {
     const newCompanyOffmap = createCompanyOffmap(null, availableOffmap)
-    dispatch(addCost({ id: company.id, pop: 0, man: 0, mun: newCompanyOffmap.mun, fuel: 0 }))
+    dispatch(addCost({ id: companyId, pop: 0, man: 0, mun: newCompanyOffmap.mun, fuel: 0 }))
     dispatch(addNewCompanyOffmap({ newCompanyOffmap }))
   }
 
   const onOffmapDestroyClick = (companyOffmap) => {
-    dispatch(removeCost({ id: company.id, pop: 0, man: 0, mun: companyOffmap.mun, fuel: 0 }))
+    dispatch(removeCost({ id: companyId, pop: 0, man: 0, mun: companyOffmap.mun, fuel: 0 }))
     if (_.isNull(companyOffmap.id)) {
       dispatch(removeNewCompanyOffmap({ availableOffmapId: companyOffmap.availableOffmapId }))
     } else {
@@ -189,7 +190,7 @@ export const SquadBuilder = ({}) => {
     }
   }
 
-  const editEnabled = !company.activeBattleId
+  const editEnabled = !activeBattleId
   const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
   let availableUnitsContent,
     availableOffmapsContent
@@ -244,26 +245,7 @@ export const SquadBuilder = ({}) => {
             </Grid>
           </Grid>
           <Grid item container spacing={2}>
-            <Grid item xs={2} md={1}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                          pr={1}>Population</Typography>
-              <Typography variant="body2" gutterBottom>{company.pop}</Typography>
-            </Grid>
-            <Grid item xs={2} md={1}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                          pr={1}>Manpower</Typography>
-              <Typography variant="body2" gutterBottom>{company.man}</Typography>
-            </Grid>
-            <Grid item xs={2} md={1}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                          pr={1}>Munitions</Typography>
-              <Typography variant="body2" gutterBottom>{company.mun}</Typography>
-            </Grid>
-            <Grid item xs={2} md={1}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                          pr={1}>Fuel</Typography>
-              <Typography variant="body2" gutterBottom>{company.fuel}</Typography>
-            </Grid>
+            <CompanyResources companyId={companyId} />
             <Grid item md={2} />
             <Grid item md={6}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
