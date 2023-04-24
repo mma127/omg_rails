@@ -32,18 +32,14 @@
 #  fk_rails_...  (ruleset_id => rulesets.id)
 #  fk_rails_...  (upgrade_id => upgrades.id)
 #
-class EnabledUpgrade < RestrictionUpgrade
-  validates_numericality_of :man
-  validates_numericality_of :mun
-  validates_numericality_of :fuel
-  validates_numericality_of :pop
-  validates_numericality_of :uses
+require "rails_helper"
 
-  before_save :generate_internal_description
+RSpec.describe ModifiedReplaceUpgrade, type: :model do
+  let!(:modified_replace_upgrade) { create :modified_replace_upgrade }
 
-  private
-
-  def generate_internal_description
-    self.internal_description = "#{restriction.name} - #{upgrade.display_name}"
+  describe 'associations' do
+    it { should belong_to(:restriction) }
+    it { should belong_to(:upgrade) }
+    it { should belong_to(:ruleset) }
   end
 end

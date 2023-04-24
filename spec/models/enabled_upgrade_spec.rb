@@ -19,9 +19,12 @@
 #
 # Indexes
 #
-#  index_restriction_upgrades_on_restriction_id  (restriction_id)
-#  index_restriction_upgrades_on_ruleset_id      (ruleset_id)
-#  index_restriction_upgrades_on_upgrade_id      (upgrade_id)
+#  idx_restriction_upgrades_ruleset_type_uniq                   (restriction_id,upgrade_id,ruleset_id,type) UNIQUE
+#  index_restriction_upgrades_on_restriction_id                 (restriction_id)
+#  index_restriction_upgrades_on_ruleset_id                     (ruleset_id)
+#  index_restriction_upgrades_on_ruleset_id_and_restriction_id  (ruleset_id,restriction_id)
+#  index_restriction_upgrades_on_ruleset_id_and_upgrade_id      (ruleset_id,upgrade_id)
+#  index_restriction_upgrades_on_upgrade_id                     (upgrade_id)
 #
 # Foreign Keys
 #
@@ -43,7 +46,7 @@ RSpec.describe EnabledUpgrade, type: :model do
 
 
   it "generates and saves the internal_description" do
-    upgrade = create :upgrade, display_name: "Medkit"
+    upgrade = create :consumable, display_name: "Medkit"
     restriction = create :restriction, name: "American army"
     ruleset = create :ruleset
     enabled_upgrade = create :enabled_upgrade, restriction: restriction, upgrade: upgrade, ruleset: ruleset

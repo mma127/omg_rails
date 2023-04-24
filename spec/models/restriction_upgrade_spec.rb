@@ -19,9 +19,12 @@
 #
 # Indexes
 #
-#  index_restriction_upgrades_on_restriction_id  (restriction_id)
-#  index_restriction_upgrades_on_ruleset_id      (ruleset_id)
-#  index_restriction_upgrades_on_upgrade_id      (upgrade_id)
+#  idx_restriction_upgrades_ruleset_type_uniq                   (restriction_id,upgrade_id,ruleset_id,type) UNIQUE
+#  index_restriction_upgrades_on_restriction_id                 (restriction_id)
+#  index_restriction_upgrades_on_ruleset_id                     (ruleset_id)
+#  index_restriction_upgrades_on_ruleset_id_and_restriction_id  (ruleset_id,restriction_id)
+#  index_restriction_upgrades_on_ruleset_id_and_upgrade_id      (ruleset_id,upgrade_id)
+#  index_restriction_upgrades_on_upgrade_id                     (upgrade_id)
 #
 # Foreign Keys
 #

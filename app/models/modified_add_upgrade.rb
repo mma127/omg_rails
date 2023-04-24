@@ -32,18 +32,27 @@
 #  fk_rails_...  (ruleset_id => rulesets.id)
 #  fk_rails_...  (upgrade_id => upgrades.id)
 #
-class EnabledUpgrade < RestrictionUpgrade
-  validates_numericality_of :man
-  validates_numericality_of :mun
-  validates_numericality_of :fuel
-  validates_numericality_of :pop
-  validates_numericality_of :uses
+class ModifiedAddUpgrade < RestrictionUpgrade
+  validates :man, numericality: true, allow_blank: true
+  validates :mun, numericality: true, allow_blank: true
+  validates :fuel, numericality: true, allow_blank: true
+  validates :pop, numericality: true, allow_blank: true
 
   before_save :generate_internal_description
 
   private
 
   def generate_internal_description
-    self.internal_description = "#{restriction.name} - #{upgrade.display_name}"
+    self.internal_description = "#{restriction.name} - #{upgrade.display_name} [#{get_changes}]"
+  end
+
+  def get_changes
+    RestrictionUpgrade::MODIFY_FIELDS.reduce("") do |acc, attr|
+      next acc unless self[attr].present?
+
+      next acc << "#{attr} #{self[attr]}" if acc.blank?
+
+      acc << ", #{attr} #{self[attr]}"
+    end
   end
 end

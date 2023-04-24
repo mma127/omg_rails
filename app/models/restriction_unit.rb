@@ -39,7 +39,7 @@
 #
 class RestrictionUnit < ApplicationRecord
   MODIFY_FIELDS = [:man, :mun, :fuel, :pop, :callin_modifier, :resupply, :resupply_max, :company_max, :upgrade_slots, :unitwide_upgrade_slots].freeze
-  MODIFY_CLASSES = [ModifiedReplaceUnit.name, ModifiedAddUnit.name]
+  MODIFY_CLASSES = %w[ModifiedReplaceUnit ModifiedAddUnit].freeze
 
   belongs_to :restriction
   belongs_to :unit

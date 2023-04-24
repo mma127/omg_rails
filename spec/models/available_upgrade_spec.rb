@@ -28,9 +28,14 @@
 #  fk_rails_...  (company_id => companies.id)
 #  fk_rails_...  (upgrade_id => upgrades.id)
 #
-class AvailableUpgrade < ApplicationRecord
-  belongs_to :company
-  belongs_to :upgrade
+require "rails_helper"
 
-  has_many :squad_upgrades
+RSpec.describe AvailableUpgrade, type: :model do
+  let!(:available_upgrade) { create :available_upgrade}
+
+  describe 'associations' do
+    it { should belong_to(:company) }
+    it { should belong_to(:upgrade) }
+    it { should have_many(:squad_upgrades) }
+  end
 end
