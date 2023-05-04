@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_23_235506) do
+ActiveRecord::Schema.define(version: 2023_05_04_012231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -522,6 +522,20 @@ ActiveRecord::Schema.define(version: 2023_04_23_235506) do
     t.index ["name"], name: "index_unlocks_on_name", unique: true
   end
 
+  create_table "upgrade_swaps", comment: "Association of old and new upgrades to swap for in an unlock", force: :cascade do |t|
+    t.bigint "unlock_id", null: false
+    t.bigint "old_upgrade_id", null: false
+    t.bigint "new_upgrade_id", null: false
+    t.string "internal_description", comment: "Internal description of this UpgradeSwap"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["new_upgrade_id"], name: "index_upgrade_swaps_on_new_upgrade_id"
+    t.index ["old_upgrade_id"], name: "index_upgrade_swaps_on_old_upgrade_id"
+    t.index ["unlock_id", "new_upgrade_id"], name: "index_upgrade_swaps_on_unlock_id_and_new_upgrade_id", unique: true
+    t.index ["unlock_id", "old_upgrade_id"], name: "index_upgrade_swaps_on_unlock_id_and_old_upgrade_id", unique: true
+    t.index ["unlock_id"], name: "index_upgrade_swaps_on_unlock_id"
+  end
+
   create_table "upgrades", force: :cascade do |t|
     t.string "const_name", comment: "Upgrade const name used by the battlefile"
     t.string "name", null: false, comment: "Unique upgrade name"
@@ -596,4 +610,7 @@ ActiveRecord::Schema.define(version: 2023_04_23_235506) do
   add_foreign_key "unit_swaps", "units", column: "new_unit_id"
   add_foreign_key "unit_swaps", "units", column: "old_unit_id"
   add_foreign_key "unit_swaps", "unlocks"
+  add_foreign_key "upgrade_swaps", "unlocks"
+  add_foreign_key "upgrade_swaps", "upgrades", column: "new_upgrade_id"
+  add_foreign_key "upgrade_swaps", "upgrades", column: "old_upgrade_id"
 end
