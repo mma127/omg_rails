@@ -5,5 +5,3 @@ FactoryBot.define do
     association :ruleset
   end
 end
-
-

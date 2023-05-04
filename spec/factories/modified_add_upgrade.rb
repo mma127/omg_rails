@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :modified_replace_unit do
+  factory :modified_add_upgrade do
     association :restriction
-    association :unit
+    association :upgrade
     association :ruleset
   end
 end

@@ -15,5 +15,9 @@ class CreateRestrictionUpgrades < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+
+    add_index :restriction_upgrades, [:restriction_id, :upgrade_id, :ruleset_id, :type], unique: true, name: "idx_restriction_upgrades_ruleset_type_uniq"
+    add_index :restriction_upgrades, [:ruleset_id, :restriction_id]
+    add_index :restriction_upgrades, [:ruleset_id, :upgrade_id]
   end
 end

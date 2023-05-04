@@ -6,7 +6,7 @@ class CreateAvailableUnits < ActiveRecord::Migration[6.1]
       t.string :type, null: false, comment: "Type of available unit"
       t.integer :available, default: 0, null: false, comment: "Number of this unit available to purchase for the company"
       t.integer :resupply, default: 0, null: false, comment: "Per game resupply"
-      t.integer :resupply_max, default: 0, null: false, comment: "How much resupply is available from saved up resupplies, <= company ma"
+      t.integer :resupply_max, default: 0, null: false, comment: "How much resupply is available from saved up resupplies, <= company max"
       t.integer :company_max, default: 0, null: false, comment: "Maximum number of the unit a company can hold"
       t.decimal :pop, null: false, comment: "Calculated pop cost of this unit for the company"
       t.integer :man, null: false, comment: "Calculated man cost of this unit for the company"

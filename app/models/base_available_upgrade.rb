@@ -28,9 +28,6 @@
 #  fk_rails_...  (company_id => companies.id)
 #  fk_rails_...  (upgrade_id => upgrades.id)
 #
-class AvailableUpgrade < ApplicationRecord
-  belongs_to :company
-  belongs_to :upgrade
+class BaseAvailableUpgrade < AvailableUpgrade
 
-  has_many :squad_upgrades
 end

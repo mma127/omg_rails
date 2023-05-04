@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_13_024755) do
+ActiveRecord::Schema.define(version: 2023_04_23_235506) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 2023_04_13_024755) do
     t.string "type", null: false, comment: "Type of available unit"
     t.integer "available", default: 0, null: false, comment: "Number of this unit available to purchase for the company"
     t.integer "resupply", default: 0, null: false, comment: "Per game resupply"
-    t.integer "resupply_max", default: 0, null: false, comment: "How much resupply is available from saved up resupplies, <= company ma"
+    t.integer "resupply_max", default: 0, null: false, comment: "How much resupply is available from saved up resupplies, <= company max"
     t.integer "company_max", default: 0, null: false, comment: "Maximum number of the unit a company can hold"
     t.decimal "pop", null: false, comment: "Calculated pop cost of this unit for the company"
     t.integer "man", null: false, comment: "Calculated man cost of this unit for the company"
@@ -75,12 +75,30 @@ ActiveRecord::Schema.define(version: 2023_04_13_024755) do
     t.index ["unit_id"], name: "index_available_units_on_unit_id"
   end
 
+  create_table "available_upgrade_units", comment: "Association between AvailableUpgrade and Units that may purchase them", force: :cascade do |t|
+    t.bigint "available_upgrade_id"
+    t.bigint "unit_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["available_upgrade_id"], name: "index_available_upgrade_units_on_available_upgrade_id"
+    t.index ["unit_id"], name: "index_available_upgrade_units_on_unit_id"
+  end
+
   create_table "available_upgrades", comment: "Upgrade availability per company", force: :cascade do |t|
     t.bigint "company_id"
     t.bigint "upgrade_id"
+    t.string "type", null: false, comment: "Type of available upgrade"
     t.integer "available", comment: "Number of this upgrade available to purchase for the company"
+    t.integer "resupply", comment: "Per game resupply"
+    t.integer "resupply_max", comment: "How much resupply is available from saved up resupplies, <= company max"
+    t.integer "company_max", comment: "Maximum number of the unit a company can hold"
+    t.decimal "pop", null: false, comment: "Calculated pop cost of this upgrade for the company"
+    t.integer "man", null: false, comment: "Calculated man cost of this upgrade for the company"
+    t.integer "mun", null: false, comment: "Calculated mun cost of this upgrade for the company"
+    t.integer "fuel", null: false, comment: "Calculated fuel cost of this upgrade for the company"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id", "upgrade_id", "type"], name: "index_available_upgrades_on_company_id_and_upgrade_id_and_type", unique: true
     t.index ["company_id"], name: "index_available_upgrades_on_company_id"
     t.index ["upgrade_id"], name: "index_available_upgrades_on_upgrade_id"
   end
@@ -343,6 +361,15 @@ ActiveRecord::Schema.define(version: 2023_04_13_024755) do
     t.index ["unit_id"], name: "index_restriction_units_on_unit_id"
   end
 
+  create_table "restriction_upgrade_units", comment: "Association between RestrictionUpgrade and Units", force: :cascade do |t|
+    t.bigint "restriction_upgrade_id"
+    t.bigint "unit_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["restriction_upgrade_id"], name: "index_restriction_upgrade_units_on_restriction_upgrade_id"
+    t.index ["unit_id"], name: "index_restriction_upgrade_units_on_unit_id"
+  end
+
   create_table "restriction_upgrades", force: :cascade do |t|
     t.bigint "restriction_id"
     t.bigint "upgrade_id"
@@ -357,7 +384,10 @@ ActiveRecord::Schema.define(version: 2023_04_13_024755) do
     t.integer "priority", comment: "Priority of this restriction"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["restriction_id", "upgrade_id", "ruleset_id", "type"], name: "idx_restriction_upgrades_ruleset_type_uniq", unique: true
     t.index ["restriction_id"], name: "index_restriction_upgrades_on_restriction_id"
+    t.index ["ruleset_id", "restriction_id"], name: "index_restriction_upgrades_on_ruleset_id_and_restriction_id"
+    t.index ["ruleset_id", "upgrade_id"], name: "index_restriction_upgrades_on_ruleset_id_and_upgrade_id"
     t.index ["ruleset_id"], name: "index_restriction_upgrades_on_ruleset_id"
     t.index ["upgrade_id"], name: "index_restriction_upgrades_on_upgrade_id"
   end
@@ -497,17 +527,10 @@ ActiveRecord::Schema.define(version: 2023_04_13_024755) do
     t.string "name", null: false, comment: "Unique upgrade name"
     t.string "display_name", null: false, comment: "Display upgrade name"
     t.string "description", comment: "Upgrade description"
-    t.integer "uses", comment: "Number of uses this upgrade provides"
-    t.integer "pop", comment: "Population cost"
-    t.integer "man", comment: "Manpower cost"
-    t.integer "mun", comment: "Munition cost"
-    t.integer "fuel", comment: "Fuel cost"
     t.integer "upgrade_slots", comment: "Upgrade slot cost for per model upgrades"
     t.integer "unitwide_upgrade_slots", comment: "Upgrade slot cost for unit wide upgrades"
     t.integer "model_count", comment: "How many model entities this unit replacement consists of"
     t.integer "additional_model_count", comment: "How many model entities this upgrade adds to the base unit"
-    t.boolean "is_building", comment: "Is this upgrade a building to be built"
-    t.boolean "is_unit_replace", comment: "Does this upgrade replace units data"
     t.string "type", null: false, comment: "Type of Upgrade"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -519,6 +542,8 @@ ActiveRecord::Schema.define(version: 2023_04_13_024755) do
   add_foreign_key "available_offmaps", "offmaps"
   add_foreign_key "available_units", "companies"
   add_foreign_key "available_units", "units"
+  add_foreign_key "available_upgrade_units", "available_upgrades"
+  add_foreign_key "available_upgrade_units", "units"
   add_foreign_key "available_upgrades", "companies"
   add_foreign_key "available_upgrades", "upgrades"
   add_foreign_key "callin_modifier_allowed_units", "callin_modifiers"
@@ -549,6 +574,8 @@ ActiveRecord::Schema.define(version: 2023_04_13_024755) do
   add_foreign_key "restriction_units", "restrictions"
   add_foreign_key "restriction_units", "rulesets"
   add_foreign_key "restriction_units", "units"
+  add_foreign_key "restriction_upgrade_units", "restriction_upgrades"
+  add_foreign_key "restriction_upgrade_units", "units"
   add_foreign_key "restriction_upgrades", "restrictions"
   add_foreign_key "restriction_upgrades", "rulesets"
   add_foreign_key "restriction_upgrades", "upgrades"

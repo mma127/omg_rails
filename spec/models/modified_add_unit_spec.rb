@@ -40,6 +40,11 @@
 require "rails_helper"
 
 RSpec.describe ModifiedAddUnit, type: :model do
+  let!(:modified_add_unit) { create :modified_add_unit }
 
-
+  describe 'associations' do
+    it { should belong_to(:restriction) }
+    it { should belong_to(:unit) }
+    it { should belong_to(:ruleset) }
+  end
 end
