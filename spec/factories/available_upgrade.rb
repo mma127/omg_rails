@@ -8,5 +8,6 @@ FactoryBot.define do
 
     association :company
     association :upgrade
+    association :unit
   end
 end

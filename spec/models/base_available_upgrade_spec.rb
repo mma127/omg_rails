@@ -36,6 +36,7 @@ RSpec.describe BaseAvailableUpgrade, type: :model do
   describe 'associations' do
     it { should belong_to(:company) }
     it { should belong_to(:upgrade) }
+    it { should belong_to(:unit) }
     it { should have_many(:squad_upgrades) }
   end
 end
