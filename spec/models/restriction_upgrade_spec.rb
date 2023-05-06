@@ -41,5 +41,7 @@ RSpec.describe RestrictionUpgrade, type: :model do
     it { should belong_to(:restriction) }
     it { should belong_to(:upgrade) }
     it { should belong_to(:ruleset) }
+    it { should have_many(:restriction_upgrade_units) }
+    it { should have_many(:units) }
   end
 end

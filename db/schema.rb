@@ -75,31 +75,21 @@ ActiveRecord::Schema.define(version: 2023_05_04_012231) do
     t.index ["unit_id"], name: "index_available_units_on_unit_id"
   end
 
-  create_table "available_upgrade_units", comment: "Association between AvailableUpgrade and Units that may purchase them", force: :cascade do |t|
-    t.bigint "available_upgrade_id"
-    t.bigint "unit_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["available_upgrade_id"], name: "index_available_upgrade_units_on_available_upgrade_id"
-    t.index ["unit_id"], name: "index_available_upgrade_units_on_unit_id"
-  end
-
-  create_table "available_upgrades", comment: "Upgrade availability per company", force: :cascade do |t|
+  create_table "available_upgrades", comment: "Upgrade availability per company and unit", force: :cascade do |t|
     t.bigint "company_id"
     t.bigint "upgrade_id"
+    t.bigint "unit_id"
     t.string "type", null: false, comment: "Type of available upgrade"
-    t.integer "available", comment: "Number of this upgrade available to purchase for the company"
-    t.integer "resupply", comment: "Per game resupply"
-    t.integer "resupply_max", comment: "How much resupply is available from saved up resupplies, <= company max"
-    t.integer "company_max", comment: "Maximum number of the unit a company can hold"
     t.decimal "pop", null: false, comment: "Calculated pop cost of this upgrade for the company"
     t.integer "man", null: false, comment: "Calculated man cost of this upgrade for the company"
     t.integer "mun", null: false, comment: "Calculated mun cost of this upgrade for the company"
     t.integer "fuel", null: false, comment: "Calculated fuel cost of this upgrade for the company"
+    t.integer "uses", comment: "Uses of this upgrade"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id", "upgrade_id", "type"], name: "index_available_upgrades_on_company_id_and_upgrade_id_and_type", unique: true
+    t.index ["company_id", "upgrade_id", "unit_id", "type"], name: "idx_available_upgrade_uniq", unique: true
     t.index ["company_id"], name: "index_available_upgrades_on_company_id"
+    t.index ["unit_id"], name: "index_available_upgrades_on_unit_id"
     t.index ["upgrade_id"], name: "index_available_upgrades_on_upgrade_id"
   end
 
@@ -556,9 +546,8 @@ ActiveRecord::Schema.define(version: 2023_05_04_012231) do
   add_foreign_key "available_offmaps", "offmaps"
   add_foreign_key "available_units", "companies"
   add_foreign_key "available_units", "units"
-  add_foreign_key "available_upgrade_units", "available_upgrades"
-  add_foreign_key "available_upgrade_units", "units"
   add_foreign_key "available_upgrades", "companies"
+  add_foreign_key "available_upgrades", "units"
   add_foreign_key "available_upgrades", "upgrades"
   add_foreign_key "callin_modifier_allowed_units", "callin_modifiers"
   add_foreign_key "callin_modifier_allowed_units", "units"

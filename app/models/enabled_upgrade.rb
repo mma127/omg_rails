@@ -33,6 +33,11 @@
 #  fk_rails_...  (upgrade_id => upgrades.id)
 #
 class EnabledUpgrade < RestrictionUpgrade
+  attribute :man, default: 0
+  attribute :mun, default: 0
+  attribute :fuel, default: 0
+  attribute :pop, default: 0
+
   validates_numericality_of :man
   validates_numericality_of :mun
   validates_numericality_of :fuel

@@ -27,29 +27,35 @@ class CompanyService
     # Starting vps
     vps = @player.vps + ruleset.starting_vps
 
-    # Create Company entity
-    new_company = Company.create!(name: name,
-                                  player: @player,
-                                  doctrine: doctrine,
-                                  faction: doctrine.faction,
-                                  vps_earned: vps,
-                                  vps_current: vps,
-                                  man: ruleset.starting_man,
-                                  mun: ruleset.starting_mun,
-                                  fuel: ruleset.starting_fuel,
-                                  pop: 0,
-                                  ruleset: ruleset
-    )
+    ActiveRecord::Base.transaction do
+      # Create Company entity
+      new_company = Company.create!(name: name,
+                                    player: @player,
+                                    doctrine: doctrine,
+                                    faction: doctrine.faction,
+                                    vps_earned: vps,
+                                    vps_current: vps,
+                                    man: ruleset.starting_man,
+                                    mun: ruleset.starting_mun,
+                                    fuel: ruleset.starting_fuel,
+                                    pop: 0,
+                                    ruleset: ruleset
+      )
 
-    # Create AvailableUnits for the Company
-    available_units_service = AvailableUnitService.new(new_company)
-    available_units_service.build_new_company_available_units
+      # Create AvailableUnits for the Company
+      available_units_service = AvailableUnitService.new(new_company)
+      available_units_service.build_new_company_available_units
 
-    # Create AvailableOffmaps for the Company
-    available_offmaps_service = AvailableOffmapService.new(new_company)
-    available_offmaps_service.build_new_company_available_offmaps
+      # Create AvailableOffmaps for the Company
+      available_offmaps_service = AvailableOffmapService.new(new_company)
+      available_offmaps_service.build_new_company_available_offmaps
 
-    new_company
+      # Create AvailableUpgrades for the company
+      available_upgrade_service = AvailableUpgradeService.new(new_company)
+      available_upgrade_service.build_new_company_available_upgrades
+
+      new_company
+    end
   end
 
   # Takes the set of squads, validates that the company can upsert all of the squads, and persists them, overwriting old

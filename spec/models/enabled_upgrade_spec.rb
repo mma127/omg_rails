@@ -44,6 +44,13 @@ RSpec.describe EnabledUpgrade, type: :model do
     it { should validate_numericality_of(:uses) }
   end
 
+  it "saves default values for man, mun, fuel, pop" do
+    enabled_upgrade = EnabledUpgrade.new
+    expect(enabled_upgrade.man).to eq 0
+    expect(enabled_upgrade.mun).to eq 0
+    expect(enabled_upgrade.fuel).to eq 0
+    expect(enabled_upgrade.pop).to eq 0
+  end
 
   it "generates and saves the internal_description" do
     upgrade = create :consumable, display_name: "Medkit"
