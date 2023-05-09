@@ -10,6 +10,7 @@ class CreateAvailableUpgrades < ActiveRecord::Migration[6.1]
       t.integer :mun, null: false, comment: "Calculated mun cost of this upgrade for the company"
       t.integer :fuel, null: false, comment: "Calculated fuel cost of this upgrade for the company"
       t.integer :uses, comment: "Uses of this upgrade"
+      t.integer :max, comment: "Maximum number of this upgrade purchasable by a unit"
 
       t.timestamps
     end

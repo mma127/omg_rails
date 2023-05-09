@@ -33,6 +33,9 @@
 #  fk_rails_...  (upgrade_id => upgrades.id)
 #
 class EnabledUpgrade < RestrictionUpgrade
+  # Buildings and consumables should be use limited
+  REQUIRES_USES = [Upgrades::Consumable.name, Upgrades::Building.name].freeze
+
   attribute :man, default: 0
   attribute :mun, default: 0
   attribute :fuel, default: 0
@@ -42,11 +45,15 @@ class EnabledUpgrade < RestrictionUpgrade
   validates_numericality_of :mun
   validates_numericality_of :fuel
   validates_numericality_of :pop
-  validates_numericality_of :uses
+  validates :uses, presence: true, numericality: true, if: :validate_uses_for_consumable_building
 
   before_save :generate_internal_description
 
   private
+
+  def validate_uses_for_consumable_building
+    REQUIRES_USES.include? upgrade&.type
+  end
 
   def generate_internal_description
     self.internal_description = "#{restriction.name} - #{upgrade.display_name}"

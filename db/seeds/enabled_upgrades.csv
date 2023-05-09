@@ -1,0 +1,43 @@
+upgrade,const,display_name,description,type,faction_restriction,doctrine_restriction,unlock_restriction,man,mun,fuel,pop,uses,slots,unitwide_slots,max,model_count,add_model_count,unit
+ally_grenade,ALLY.GRENADE,Grenades,Line infantry grenades,consumable,americans,,,0,35,0,0,2,0,0,1,,,riflemen
+ranger_grenade,ALLY.GRENADE,Grenades,Elite infantry grenades,consumable,americans,,,0,40,0,0,2,0,0,1,,,airborne
+ranger_grenade,ALLY.GRENADE,Grenades,Elite infantry grenades,consumable,americans,,,0,40,0,0,2,0,0,1,,,assault_airborne
+bar,ALLY.BAR,BAR,A single Browning Automatic Rifle,single_weapon,americans,,,0,55,0,0,0,1,0,1,,,riflemen
+sticky_bombs,ALLY.STICKY,Sticky Bombs,Anti-tank grenades that stick to targets,consumable,americans,,,0,55,0,0,3,0,0,1,,,riflemen
+ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,americans,,,0,10,0,0,1,0,0,1,,,riflemen
+ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,americans,,,0,10,0,0,1,0,0,1,,,assault_airborne
+ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,americans,,,0,10,0,0,1,0,0,1,,,airborne
+ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,americans,,,0,10,0,0,1,0,0,1,,,engineers
+bar_suppression,ALLY.SUPPRESSION,BAR with Suppression Fire,"A single Browning Automatic Rifle with the Suppression Fire ability. When activated, quickly suppresses the target infantry squad",single_weapon,americans,,,0,85,0,0,0,1,0,1,,,riflemen
+satchel_charge,ALLY.SATCHEL,Satchel Charges,Large packages of thrown explosives on a five-second timer,consumable,,airborne,,0,60,0,0,2,0,0,1,,,airborne
+satchel_charge,ALLY.SATCHEL,Satchel Charges,Large packages of thrown explosives on a five-second timer,consumable,,airborne,,0,60,0,0,2,0,0,1,,,assault_airborne
+four_thompsons,ALLY.FOUR_THOMPSONS,Thompsons,Four Thompson submachine guns,single_weapon,,airborne,,0,110,0,0,0,0,1,1,,,assault_airborne
+recoilless_rifles,ALLY.RECOILLES_RIFLE,Recoilless Rifles,Two long range hand-held anti tank weapons,single_weapon,,airborne,,0,165,0,0,0,4,0,1,,,airborne
+ally_flamethrower,ALLY.FLAME_THROWER,Flamethrower,A single anti-infantry flamethrower,single_weapon,americans,,,0,60,0,0,0,0,0,1,,,engineers
+ally_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,americans,,,0,10,0,0,0,0,0,1,,,engineers
+timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,americans,,,0,30,0,0,2,0,0,1,,,engineers
+mg_nest,ALLY.MG_NEST,HMG Nest,.30 cal machine gun emplacement,building,americans,,,0,60,0,0,1,1,0,,,,engineers
+medic_station,ALLY.MEDIC_STATION,Medic Station,"Tent that spawns medics to collect injured soldiers. Once six have been collected, spawns a new Riflemen squad",building,americans,,,0,60,0,0,1,0,0,,,,engineers
+triage_center,ALLY.TRIAGE_CENTER,Triage Center,Building that heals nearby infantry,building,americans,,,0,160,0,0,1,0,0,,,,engineers
+ally_mines,ALLY.MINES,Mines,Camouflaged explosives that detonate on enemy contact. ,consumable,americans,,,0,35,0,0,2,0,0,1,,,engineers
+57mm_ap_rounds,ALLY.AT_AP_ROUNDS,AP Rounds,Increases armor penetration and damage for 10 seconds,ability,americans,,,0,60,0,0,0,1,0,1,,,57mm_atg
+m8_side_skirts,ALLY.M8_SIDE_SKIRTS,Side Skirts,Side skirts that double the M8's health,passive,americans,,,100,0,20,0,0,0,0,1,,,greyhound
+m8_50_cal,ALLY.M8_50_CAL,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,americans,,,0,50,0,0,0,0,0,1,,,greyhound
+m8_mines,ALLY.M8_MINES,Greyhound Mines,"Camouflaged explosives that detonate on enemy contact, more powerful than engineer-laid mines",consumable,americans,,,0,40,0,0,1,1,0,1,,,greyhound
+t17_wp,ALLY.T17WHITE,White Phosphorus Round,"Fire a white phosphorus round at a target vehicle, blinding and slowing it",ability,americans,,,0,40,0,0,0,2,0,1,,,t17
+t17_sandbags,ALLY.T17SAND,Sandbags,Increases T17 health,passive,americans,,,60,0,10,0,0,0,0,1,,,t17
+bulldozer,ALLY.BULLDOZER,Bulldozer,Bulldozer that can plow through tank traps and hedge rows. Increases tank health,ability,americans,,,0,35,0,0,0,2,0,1,,,sherman_croc
+sherman_upgun,ALLY.SHERMAN_UPGUN,76mm Upgun,"Upgrades the Sherman's main gun, granting increased anti-tank performance at the cost of reduced splash damage",passive,americans,,,0,0,40,0,0,0,0,1,,,sherman
+sherman_50_cal,ALLY.SHERMAN_MG,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,americans,,,0,75,0,0,0,0,0,1,,,sherman
+sherman_50_cal,ALLY.SHERMAN_MG,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,,airborne,flamethrower_envy,0,75,0,0,0,0,0,1,,,sherman_croc
+ally_tank_smoke,ALLY.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,americans,,,0,15,0,0,15,0,0,1,,,sherman
+mine_flail,ALLY.SHERMAN_FLAIL,Mine Flail,Activatable mine flail that destroys mines safely,ability,americans,,,0,35,0,0,0,2,0,1,,,sherman
+m18_50_cal,ALLY.M18FIFTY,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,americans,,,0,50,0,0,0,1,0,1,,,m18
+m18_stag_50,CMW.STAG50,Staghound .50 Cal,Powerful top-mounted .50 cal machine gun,single_weapon,,airborne,hellhounds,0,80,0,0,0,1,0,1,,,m18
+four_ranger_garands,ALLY.FOUR_M1_GARAND,Four M1 Ranger Garands,Replace base M1 Carbines with four M1 Ranger Garands,squad_weapon,,airborne,long_range_options,0,0,0,0,0,0,1,1,,,airborne
+four_ranger_garands,ALLY.FOUR_M1_GARAND,Four M1 Ranger Garands,Replace base M1 Carbines with four M1 Ranger Garands,squad_weapon,,airborne,long_range_options,0,0,0,0,0,0,1,1,,,assault_airborne
+m1919_lmg,ALLY.M1919_LMG,M1919 LMG,"A single M1919 LMG, strong at longer ranges",single_weapon,,airborne,long_range_options,0,80,0,0,0,3,0,2,,,airborne
+four_m1a1_carbines,ALLY.M1A1_CARBINES,Four M1A1 Carbines,Replace base M1 Carbines with improved M1A1 Carbines,squad_weapon,,airborne,improved_carbines,0,0,0,0,0,0,1,1,,,airborne
+four_m1a1_carbines,ALLY.M1A1_CARBINES,Four M1A1 Carbines,Replace base M1 Carbines with improved M1A1 Carbines,squad_weapon,,airborne,improved_carbines,0,0,0,0,0,0,1,1,,,assault_airborne
+four_m2_carbines,ALLY.M2_CARBINES,Four M2 Carbines,"Four M2 Carbines, powerful at close range",squad_weapon,,airborne,improved_carbines,0,110,0,0,0,0,1,1,,,assault_airborne
+long_range_radios,ALLY.PARATROOPERS_NO_SUPPLY,Long Range Radios,Radios allowing capture of unconnected territory,unit_replacement,,airborne,behind_enemy_lines,30,0,0,0,0,0,0,1,6,,airborne

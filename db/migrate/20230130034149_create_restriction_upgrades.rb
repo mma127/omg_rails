@@ -7,6 +7,7 @@ class CreateRestrictionUpgrades < ActiveRecord::Migration[6.1]
       t.string :internal_description, comment: "What does this RestrictionUpgrade do?"
       t.string :type, null: false, comment: "What effect this restriction has on the upgrade"
       t.integer :uses, comment: "Number of uses this upgrade provides"
+      t.integer :max, comment: "Maximum number of purchases per unit"
       t.integer :pop, comment: "Population cost"
       t.integer :man, comment: "Manpower cost"
       t.integer :mun, comment: "Munition cost"

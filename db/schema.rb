@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 2023_05_04_012231) do
     t.integer "mun", null: false, comment: "Calculated mun cost of this upgrade for the company"
     t.integer "fuel", null: false, comment: "Calculated fuel cost of this upgrade for the company"
     t.integer "uses", comment: "Uses of this upgrade"
+    t.integer "max", comment: "Maximum number of this upgrade purchasable by a unit"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id", "upgrade_id", "unit_id", "type"], name: "idx_available_upgrade_uniq", unique: true
@@ -367,6 +368,7 @@ ActiveRecord::Schema.define(version: 2023_05_04_012231) do
     t.string "internal_description", comment: "What does this RestrictionUpgrade do?"
     t.string "type", null: false, comment: "What effect this restriction has on the upgrade"
     t.integer "uses", comment: "Number of uses this upgrade provides"
+    t.integer "max", comment: "Maximum number of purchases per unit"
     t.integer "pop", comment: "Population cost"
     t.integer "man", comment: "Manpower cost"
     t.integer "mun", comment: "Munition cost"

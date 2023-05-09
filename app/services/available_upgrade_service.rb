@@ -113,7 +113,7 @@ class AvailableUpgradeService
   def instantiate_base_available_upgrade(restriction_upgrade, unit_id)
     BaseAvailableUpgrade.new(upgrade: restriction_upgrade.upgrade, unit_id: unit_id, company: @company,
                              pop: restriction_upgrade.pop, man: restriction_upgrade.man, mun: restriction_upgrade.mun,
-                             fuel: restriction_upgrade.fuel, uses: restriction_upgrade.uses)
+                             fuel: restriction_upgrade.fuel, uses: restriction_upgrade.uses, max: restriction_upgrade.max)
   end
 
   def validate_empty_available_upgrades
