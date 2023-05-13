@@ -431,7 +431,7 @@ class CompanyService
       fuel_new += available_unit.fuel
 
       squad_pop = available_unit.pop
-      squad[:upgrades].each do |su|
+      squad[:upgrades]&.each do |su|
         available_upgrade = available_upgrades_by_id[su[:available_upgrade_id]]
         man_new += available_upgrade.man
         mun_new += available_upgrade.mun
