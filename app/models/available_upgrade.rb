@@ -33,5 +33,5 @@ class AvailableUpgrade < ApplicationRecord
   belongs_to :upgrade
   belongs_to :unit
 
-  has_many :squad_upgrades
+  has_many :squad_upgrades, dependent: :destroy
 end

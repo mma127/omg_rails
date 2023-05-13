@@ -33,7 +33,7 @@
 #  fk_rails_...  (upgrade_id => upgrades.id)
 #
 class RestrictionUpgrade < ApplicationRecord
-  MODIFY_FIELDS = [:man, :mun, :fuel, :pop].freeze
+  MODIFY_FIELDS = [:man, :mun, :fuel, :pop, :uses].freeze
   MODIFY_CLASSES = %w[ModifiedReplaceUpgrade ModifiedAddUpgrade].freeze
 
   belongs_to :restriction
@@ -42,6 +42,6 @@ class RestrictionUpgrade < ApplicationRecord
   has_many :restriction_upgrade_units
   has_many :units, through: :restriction_upgrade_units
 
-  scope :modified, -> { where(type: RestrictionUnit::MODIFY_CLASSES)}
+  scope :modified, -> { where(type: RestrictionUpgrade::MODIFY_CLASSES)}
 
 end

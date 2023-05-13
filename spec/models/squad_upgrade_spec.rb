@@ -19,11 +19,18 @@
 #  fk_rails_...  (available_upgrade_id => available_upgrades.id)
 #  fk_rails_...  (squad_id => squads.id)
 #
-class SquadUpgrade < ApplicationRecord
-  belongs_to :squad
-  belongs_to :available_upgrade
-  has_one :upgrade, through: :available_upgrade
+require "rails_helper"
 
-  validates :squad, presence: true
-  validates :available_upgrade, presence: true
+RSpec.describe SquadUpgrade, type: :model do
+  let!(:squad_upgrade) { create :squad_upgrade }
+
+  describe 'associations' do
+    it { should belong_to(:squad) }
+    it { should belong_to(:available_upgrade) }
+  end
+
+  describe 'validations' do
+    it { should validate_presence_of(:squad) }
+    it { should validate_presence_of(:available_upgrade) }
+  end
 end

@@ -119,8 +119,15 @@ class CompanyService
     # Build hash of tab and index to pop
     platoon_pop_by_tab_and_index = build_empty_tab_index_pop
 
+    # Get available upgrades for the company - cost is stored there
+    available_upgrades = company.available_upgrades
+    # Validations
+    # TODO
+    # Index available upgrades by id
+    available_upgrades_by_id = available_upgrades.index_by(&:id)
+
     # Calculate resources used by the input squads
-    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
+    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, available_upgrades_by_id, platoon_pop_by_tab_and_index)
 
     ## Offmaps
     # Get available_offmaps for the company
@@ -288,14 +295,19 @@ class CompanyService
   def recalculate_resources(company)
     # Index available units by id
     available_units_by_id = company.reload.available_units.index_by(&:id)
+    # Index available upgrades by id
+    available_upgrades_by_id = company.available_upgrades.index_by(&:id)
 
     # Build hash of tab and index to pop
     platoon_pop_by_tab_and_index = build_empty_tab_index_pop
 
-    squads = company.squads.map { |s| { tab: s.tab_category, index: s.category_position, available_unit_id: s.available_unit_id } }
+    squads = company.squads.map do |s|
+      squad_upgrades = s.squad_upgrades.map { |su| { id: su.id, available_upgrade_id: su.available_upgrade_id, is_free: su.is_free } }
+      { tab: s.tab_category, index: s.category_position, available_unit_id: s.available_unit_id, squad_upgrades: squad_upgrades }
+    end
 
     # Calculate resources used by the input squads
-    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
+    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, available_upgrades_by_id, platoon_pop_by_tab_and_index)
 
     offmaps = company.company_offmaps.map { |co| { available_offmap_id: co.available_offmap_id } }
     available_offmaps_by_id = company.available_offmaps.index_by(&:id)
@@ -405,7 +417,7 @@ class CompanyService
   # Calculates manpower, munitions, fuel, and pop used by the input squads, based on costs of the corresponding
   # AvailableUnit for the squad's unit id. Also increments the pop of the platoon_pop_by_tab_and_index value for the
   # tab and index the squad is in.
-  def calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
+  def calculate_squad_resources(squads, available_units_by_id, available_upgrades_by_id, platoon_pop_by_tab_and_index)
     # TODO include upgrade prices
     # TODO include resource bonuses
     man_new = 0
@@ -418,8 +430,18 @@ class CompanyService
       man_new += available_unit.man
       mun_new += available_unit.mun
       fuel_new += available_unit.fuel
-      platoon_pop_by_tab_and_index[squad[:tab]][squad[:index]] += available_unit.pop
-      pop_new += available_unit.pop
+
+      squad_pop = available_unit.pop
+      squad[:squad_upgrades].each do |su|
+        available_upgrade = available_upgrades_by_id[su[:available_upgrade_id]]
+        man_new += available_upgrade.man
+        mun_new += available_upgrade.mun
+        fuel_new += available_upgrade.fuel
+        squad_pop += available_upgrade.pop
+      end
+
+      platoon_pop_by_tab_and_index[squad[:tab]][squad[:index]] += squad_pop
+      pop_new += squad_pop
     end
     [man_new, mun_new, fuel_new, pop_new]
   end
