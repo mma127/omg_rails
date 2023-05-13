@@ -364,15 +364,16 @@ RSpec.describe CompanyUnlockService do
       it "swaps the AvailableUpgrade out in the relevant SquadUpgrades" do
         expect(squad_upgrade1.upgrade_id).to eq upgrade1.id
         expect { subject }.to change { SquadUpgrade.count }.by 0 # Does not remove any
-        expect(squad_upgrade1.reload.upgrade_id).to eq upgrade2.id
+        au = AvailableUpgrade.find_by(company: company, upgrade: upgrade2, unit: unit1)
+        expect(squad_upgrade1.reload.available_upgrade_id).to eq au.id
       end
 
       it "recalculates resources" do
         subject
         expect(company.reload.man).to eq ruleset.starting_man - 2 * man1 - man3
-        expect(company.reload.mun).to eq ruleset.starting_mun - 2 * mun1 - mun3
-        expect(company.reload.fuel).to eq ruleset.starting_fuel - 2 * fuel1 - fuel3
-        expect(company.reload.pop).to eq 2 * pop1 + pop3
+        expect(company.mun).to eq ruleset.starting_mun - 2 * mun1 - mun3
+        expect(company.fuel).to eq ruleset.starting_fuel - 2 * fuel1 - fuel3
+        expect(company.pop).to eq 2 * pop1 + pop3
       end
 
       it "pays for the company unlock" do

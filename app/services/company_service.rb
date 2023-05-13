@@ -303,7 +303,7 @@ class CompanyService
 
     squads = company.squads.map do |s|
       squad_upgrades = s.squad_upgrades.map { |su| { id: su.id, available_upgrade_id: su.available_upgrade_id, is_free: su.is_free } }
-      { tab: s.tab_category, index: s.category_position, available_unit_id: s.available_unit_id, squad_upgrades: squad_upgrades }
+      { tab: s.tab_category, index: s.category_position, available_unit_id: s.available_unit_id, upgrades: squad_upgrades }
     end
 
     # Calculate resources used by the input squads
@@ -418,7 +418,6 @@ class CompanyService
   # AvailableUnit for the squad's unit id. Also increments the pop of the platoon_pop_by_tab_and_index value for the
   # tab and index the squad is in.
   def calculate_squad_resources(squads, available_units_by_id, available_upgrades_by_id, platoon_pop_by_tab_and_index)
-    # TODO include upgrade prices
     # TODO include resource bonuses
     man_new = 0
     mun_new = 0
@@ -432,7 +431,7 @@ class CompanyService
       fuel_new += available_unit.fuel
 
       squad_pop = available_unit.pop
-      squad[:upgrades]&.each do |su|
+      squad[:upgrades].each do |su|
         available_upgrade = available_upgrades_by_id[su[:available_upgrade_id]]
         man_new += available_upgrade.man
         mun_new += available_upgrade.mun
