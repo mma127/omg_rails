@@ -27,16 +27,33 @@
 require "rails_helper"
 
 RSpec.describe UpgradeSwap, type: :model do
-  let!(:upgrade_swap) { create :upgrade_swap}
+  let!(:upgrade_swap) { create :upgrade_swap }
 
   describe 'associations' do
     it { should belong_to(:unlock) }
     it { should belong_to(:old_upgrade) }
     it { should belong_to(:new_upgrade) }
+    it { should have_many(:upgrade_swap_units) }
   end
 
   it "should construct a internal_description" do
     expect(upgrade_swap.internal_description)
       .to eq "#{upgrade_swap.unlock.display_name} | #{upgrade_swap.old_upgrade.display_name} -> #{upgrade_swap.new_upgrade.display_name}"
+  end
+
+  context "#unit_ids" do
+    let!(:unit1) { create :unit }
+    let!(:unit2) { create :unit }
+    let!(:unit3) { create :unit }
+
+    before do
+      create :upgrade_swap_unit, upgrade_swap: upgrade_swap, unit: unit1
+      create :upgrade_swap_unit, upgrade_swap: upgrade_swap, unit: unit2
+      create :upgrade_swap_unit, upgrade_swap: upgrade_swap, unit: unit3
+    end
+
+    it "should return a list of unit ids associated with the upgrade swap" do
+      expect(upgrade_swap.reload.unit_ids).to match_array [unit1.id, unit2.id, unit3.id]
+    end
   end
 end

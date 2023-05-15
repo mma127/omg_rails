@@ -47,7 +47,7 @@ class CompanyUnlockService
     disabled_upgrades = DisabledUpgrade.includes(:upgrade, :units).where(restriction_params)
 
     # Get UpgradeSwaps for the unlock
-    upgrade_swaps = UpgradeSwap.includes(:old_upgrade, :new_upgrade).where(unlock: unlock)
+    upgrade_swaps = UpgradeSwap.includes(:old_upgrade, :new_upgrade, :upgrade_swap_units).where(unlock: unlock)
 
     # Get Modified Upgrades for the unlock
     modified_upgrades_to_apply = RestrictionUpgrade.modified.where(restriction_params)
@@ -153,7 +153,7 @@ class CompanyUnlockService
     # Get DisabledUpgrades for those restrictions
     previously_disabled_upgrades = DisabledUpgrade.includes(:upgrade, :units).where(restriction_params)
     # Get UpgradeSwaps for the unlock
-    upgrade_swaps = UpgradeSwap.includes(:old_upgrade, :new_upgrade).where(unlock: unlock)
+    upgrade_swaps = UpgradeSwap.includes(:old_upgrade, :new_upgrade, :upgrade_swap_units).where(unlock: unlock)
     # Get Modified Upgrades for the unlock
     modified_upgrades_to_remove = RestrictionUpgrade.modified.where(restriction_params)
 
@@ -280,7 +280,10 @@ class CompanyUnlockService
       # Found a squad upgrade with an old upgrade, replace with new upgrade
       Rails.logger.info("Found old upgrade #{squad_upgrade.upgrade.id} in squad_upgrade #{squad_upgrade.id}")
       upgrade_swap = old_upgrade_to_upgrade_swap[squad_upgrade.upgrade]
+      unit_ids = upgrade_swap.unit_ids
       squad_unit_id = squad_upgrade.squad.available_unit.unit_id
+
+      next unless unit_ids.include? squad_unit_id
 
       if reverse
         replacement_upgrade_id = upgrade_swap.old_upgrade_id
