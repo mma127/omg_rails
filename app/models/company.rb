@@ -41,6 +41,7 @@ class Company < ApplicationRecord
 
   has_many :available_units, dependent: :destroy
   has_many :available_offmaps, dependent: :destroy
+  has_many :available_upgrades, dependent: :destroy
 
   has_many :squads, dependent: :destroy
   has_many :company_unlocks, dependent: :destroy

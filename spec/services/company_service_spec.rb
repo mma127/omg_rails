@@ -20,6 +20,19 @@ RSpec.describe CompanyService do
   let(:offmap2) { create :offmap, unlimited_uses: false }
   let!(:restriction_offmap1) { create :restriction_offmap, ruleset: ruleset, restriction: restriction_faction, offmap: offmap1, mun: 100, max: 1 }
   let!(:restriction_offmap2) { create :restriction_offmap, ruleset: ruleset, restriction: restriction_doctrine, offmap: offmap2, mun: 120, max: 3 }
+  let(:upgrade1) { create :upgrade }
+  let(:upgrade2) { create :upgrade }
+  let(:upgrade3) { create :upgrade }
+  let!(:enabled_upgrade1) { create :enabled_upgrade, upgrade: upgrade1, pop: 0, man: 0, mun: 35, fuel: 0, uses: 2, restriction: restriction_faction, ruleset: ruleset }
+  let!(:enabled_upgrade2) { create :enabled_upgrade, upgrade: upgrade2, pop: 2, man: 100, mun: 20, fuel: 0, uses: 0, restriction: restriction_faction, ruleset: ruleset }
+  let!(:enabled_upgrade3) { create :enabled_upgrade, upgrade: upgrade3, pop: 0, man: 0, mun: 0, fuel: 50, uses: 0, restriction: restriction_doctrine, ruleset: ruleset }
+
+  before do
+    create :restriction_upgrade_unit, restriction_upgrade: enabled_upgrade1, unit: unit1
+    create :restriction_upgrade_unit, restriction_upgrade: enabled_upgrade1, unit: unit2
+    create :restriction_upgrade_unit, restriction_upgrade: enabled_upgrade2, unit: unit2
+    create :restriction_upgrade_unit, restriction_upgrade: enabled_upgrade3, unit: unit3
+  end
 
   describe "#create_company" do
     subject { instance.create_company(doctrine, name) }
@@ -49,6 +62,15 @@ RSpec.describe CompanyService do
       expect(company.available_offmaps.first.available).to eq restriction_offmap1.max
       expect(company.available_offmaps.second.offmap).to eq offmap2
       expect(company.available_offmaps.second.available).to eq restriction_offmap2.max
+    end
+
+    it "builds the Company's AvailableUpgrades" do
+      company = subject
+      expect(company.available_upgrades.count).to eq 4
+      expect(company.available_upgrades.find_by(upgrade: upgrade1, unit: unit1)).not_to be nil
+      expect(company.available_upgrades.find_by(upgrade: upgrade1, unit: unit2)).not_to be nil
+      expect(company.available_upgrades.find_by(upgrade: upgrade2, unit: unit2)).not_to be nil
+      expect(company.available_upgrades.find_by(upgrade: upgrade3, unit: unit3)).not_to be nil
     end
 
     it "raises a validation error when the Player has too many Companies of that side" do
@@ -83,7 +105,8 @@ RSpec.describe CompanyService do
             vet: 0,
             tab: "core",
             index: 0,
-            uuid: "1"
+            uuid: "1",
+            upgrades: []
           },
           {
             squad_id: nil,
@@ -93,7 +116,8 @@ RSpec.describe CompanyService do
             vet: 0,
             tab: "core",
             index: 0,
-            uuid: '2'
+            uuid: '2',
+            upgrades: []
           },
           {
             squad_id: nil,
@@ -103,7 +127,8 @@ RSpec.describe CompanyService do
             vet: 0,
             tab: "core",
             index: 1,
-            uuid: "3"
+            uuid: "3",
+            upgrades: []
           },
           {
             squad_id: nil,
@@ -113,7 +138,8 @@ RSpec.describe CompanyService do
             vet: 0,
             tab: "infantry",
             index: 0,
-            uuid: "4"
+            uuid: "4",
+            upgrades: []
           },
           {
             squad_id: nil,
@@ -123,7 +149,8 @@ RSpec.describe CompanyService do
             vet: 0,
             tab: "infantry",
             index: 1,
-            uuid: "5"
+            uuid: "5",
+            upgrades: []
           },
           {
             squad_id: nil,
@@ -133,7 +160,8 @@ RSpec.describe CompanyService do
             vet: 0,
             tab: "infantry",
             index: 2,
-            uuid: "6"
+            uuid: "6",
+            upgrades: []
           },
           {
             squad_id: nil,
@@ -143,7 +171,8 @@ RSpec.describe CompanyService do
             vet: 0,
             tab: "infantry",
             index: 2,
-            uuid: "7"
+            uuid: "7",
+            upgrades: []
           },
           {
             squad_id: nil,
@@ -153,7 +182,8 @@ RSpec.describe CompanyService do
             vet: 0,
             tab: "armour",
             index: 1,
-            uuid: "8"
+            uuid: "8",
+            upgrades: []
           }
         ]
       end
@@ -366,7 +396,8 @@ RSpec.describe CompanyService do
               tab: "core",
               index: 0,
               uuid: uuid1,
-              transportedSquadUuids: transportedSquadUuids1
+              transportedSquadUuids: transportedSquadUuids1,
+              upgrades: []
             },
             {
               squad_id: nil,
@@ -377,7 +408,8 @@ RSpec.describe CompanyService do
               tab: "core",
               index: 0,
               uuid: uuid2,
-              transportUuid: uuid1
+              transportUuid: uuid1,
+              upgrades: []
             },
             {
               squad_id: nil,
@@ -387,7 +419,8 @@ RSpec.describe CompanyService do
               vet: 0,
               tab: "infantry",
               index: 0,
-              uuid: "4"
+              uuid: "4",
+              upgrades: []
             },
             {
               squad_id: nil,
@@ -397,7 +430,8 @@ RSpec.describe CompanyService do
               vet: 0,
               tab: "infantry",
               index: 1,
-              uuid: "5"
+              uuid: "5",
+              upgrades: []
             },
             {
               squad_id: nil,
@@ -408,7 +442,8 @@ RSpec.describe CompanyService do
               tab: "infantry",
               index: 2,
               uuid: uuid3,
-              transportedSquadUuids: transportedSquadUuids2
+              transportedSquadUuids: transportedSquadUuids2,
+              upgrades: []
             },
             {
               squad_id: nil,
@@ -419,7 +454,8 @@ RSpec.describe CompanyService do
               tab: "infantry",
               index: 2,
               uuid: uuid4,
-              transportUuid: uuid3
+              transportUuid: uuid3,
+              upgrades: []
             },
             {
               squad_id: nil,
@@ -430,7 +466,8 @@ RSpec.describe CompanyService do
               tab: "infantry",
               index: 2,
               uuid: uuid5,
-              transportUuid: uuid3
+              transportUuid: uuid3,
+              upgrades: []
             },
             {
               squad_id: nil,
@@ -440,7 +477,8 @@ RSpec.describe CompanyService do
               vet: 0,
               tab: "armour",
               index: 1,
-              uuid: "8"
+              uuid: "8",
+              upgrades: []
             }
           ]
         end
@@ -480,7 +518,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1
+                transportedSquadUuids: transportedSquadUuids1,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -491,7 +530,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid2,
-                transportUuid: uuid1
+                transportUuid: uuid1,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -502,7 +542,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: uuid3,
-                transportedSquadUuids: transportedSquadUuids2
+                transportedSquadUuids: transportedSquadUuids2,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -513,7 +554,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: uuid4,
-                transportUuid: uuid5
+                transportUuid: uuid5,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -524,7 +566,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: uuid5,
-                transportUuid: uuid4
+                transportUuid: uuid4,
+                upgrades: []
               },
             ]
           end
@@ -580,7 +623,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1
+                transportedSquadUuids: transportedSquadUuids1,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -591,7 +635,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid2,
-                transportUuid: uuid1
+                transportUuid: uuid1,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -602,7 +647,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: uuid3,
-                transportedSquadUuids: transportedSquadUuids2
+                transportedSquadUuids: transportedSquadUuids2,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -613,7 +659,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: uuid4,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -624,7 +671,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: uuid5,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               },
             ]
           end
@@ -663,7 +711,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1
+                transportedSquadUuids: transportedSquadUuids1,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -674,7 +723,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid2,
-                transportUuid: uuid1
+                transportUuid: uuid1,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -685,7 +735,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: uuid3,
-                transportedSquadUuids: transportedSquadUuids2
+                transportedSquadUuids: transportedSquadUuids2,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -696,7 +747,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: uuid4,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -707,7 +759,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: uuid5,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               },
             ]
           end
@@ -784,7 +837,8 @@ RSpec.describe CompanyService do
               vet: 0,
               tab: "core",
               index: 0,
-              uuid: "1"
+              uuid: "1",
+              upgrades: []
             },
             {
               squad_id: squad2.id,
@@ -794,7 +848,8 @@ RSpec.describe CompanyService do
               vet: 0,
               tab: "core",
               index: 0,
-              uuid: "2"
+              uuid: "2",
+              upgrades: []
             },
             {
               squad_id: nil,
@@ -804,7 +859,8 @@ RSpec.describe CompanyService do
               vet: 0,
               tab: "core",
               index: 0,
-              uuid: "3"
+              uuid: "3",
+              upgrades: []
             },
             {
               squad_id: squad5.id,
@@ -814,7 +870,8 @@ RSpec.describe CompanyService do
               vet: 0,
               tab: "infantry",
               index: 0,
-              uuid: "4"
+              uuid: "4",
+              upgrades: []
             },
             {
               squad_id: squad6.id,
@@ -824,7 +881,8 @@ RSpec.describe CompanyService do
               vet: 0,
               tab: "infantry",
               index: 0,
-              uuid: "5"
+              uuid: "5",
+              upgrades: []
             },
             {
               squad_id: squad7.id,
@@ -834,7 +892,8 @@ RSpec.describe CompanyService do
               vet: 0,
               tab: "infantry",
               index: 2,
-              uuid: "6"
+              uuid: "6",
+              upgrades: []
             },
             {
               squad_id: squad8.id,
@@ -844,7 +903,8 @@ RSpec.describe CompanyService do
               vet: 0,
               tab: "infantry",
               index: 3,
-              uuid: "7"
+              uuid: "7",
+              upgrades: []
             }
           ]
           @offmaps_param = [
@@ -1093,7 +1153,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1
+                transportedSquadUuids: transportedSquadUuids1,
+                upgrades: []
               },
               {
                 squad_id: squad2.id,
@@ -1104,7 +1165,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid2,
-                transportUuid: uuid1
+                transportUuid: uuid1,
+                upgrades: []
               },
               {
                 squad_id: squad4.id,
@@ -1114,7 +1176,8 @@ RSpec.describe CompanyService do
                 vet: 0,
                 tab: "core",
                 index: 1,
-                uuid: uuid4
+                uuid: uuid4,
+                upgrades: []
               },
               {
                 squad_id: squad5.id,
@@ -1125,7 +1188,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 0,
                 uuid: uuid5,
-                transportedSquadUuids: transportedSquadUuids2
+                transportedSquadUuids: transportedSquadUuids2,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -1136,7 +1200,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 0,
                 uuid: new_uuid1,
-                transportUuid: uuid5
+                transportUuid: uuid5,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -1147,7 +1212,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: new_uuid2,
-                transportedSquadUuids: transportedSquadUuids3
+                transportedSquadUuids: transportedSquadUuids3,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -1158,7 +1224,8 @@ RSpec.describe CompanyService do
                 tab: "infantry",
                 index: 2,
                 uuid: new_uuid3,
-                transportUuid: new_uuid2
+                transportUuid: new_uuid2,
+                upgrades: []
               }
             ]
           end
@@ -1247,7 +1314,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1
+                transportedSquadUuids: transportedSquadUuids1,
+                upgrades: []
               },
               {
                 squad_id: squad2.id,
@@ -1258,7 +1326,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid2,
-                transportUuid: uuid1
+                transportUuid: uuid1,
+                upgrades: []
               },
               {
                 squad_id: squad3.id,
@@ -1269,7 +1338,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid3,
-                transportedSquadUuids: transportedSquadUuids2
+                transportedSquadUuids: transportedSquadUuids2,
+                upgrades: []
               },
               {
                 squad_id: squad4.id,
@@ -1280,7 +1350,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid4,
-                transportUuid: nil
+                transportUuid: nil,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -1291,7 +1362,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: new_uuid1,
-                transportUuid: nil
+                transportUuid: nil,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -1302,7 +1374,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: new_uuid2,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               }
             ]
           end
@@ -1364,7 +1437,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1
+                transportedSquadUuids: transportedSquadUuids1,
+                upgrades: []
               },
               {
                 squad_id: squad2.id,
@@ -1375,7 +1449,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid2,
-                transportUuid: uuid1
+                transportUuid: uuid1,
+                upgrades: []
               },
               {
                 squad_id: squad3.id,
@@ -1386,7 +1461,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid3,
-                transportedSquadUuids: transportedSquadUuids2
+                transportedSquadUuids: transportedSquadUuids2,
+                upgrades: []
               },
               {
                 squad_id: squad4.id,
@@ -1397,7 +1473,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid4,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -1408,7 +1485,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: new_uuid1,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               }
             ]
           end
@@ -1459,7 +1537,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1
+                transportedSquadUuids: transportedSquadUuids1,
+                upgrades: []
               },
               {
                 squad_id: squad2.id,
@@ -1470,7 +1549,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid2,
-                transportUuid: uuid1
+                transportUuid: uuid1,
+                upgrades: []
               },
               {
                 squad_id: squad3.id,
@@ -1481,7 +1561,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid3,
-                transportedSquadUuids: transportedSquadUuids2
+                transportedSquadUuids: transportedSquadUuids2,
+                upgrades: []
               },
               {
                 squad_id: squad4.id,
@@ -1492,7 +1573,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid4,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               },
               {
                 squad_id: squad5.id,
@@ -1503,7 +1585,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid5,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -1514,7 +1597,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: new_uuid1,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               }
             ]
           end
@@ -1569,7 +1653,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1
+                transportedSquadUuids: transportedSquadUuids1,
+                upgrades: []
               },
               {
                 squad_id: squad2.id,
@@ -1580,7 +1665,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 0,
                 uuid: uuid2,
-                transportUuid: uuid1
+                transportUuid: uuid1,
+                upgrades: []
               },
               {
                 squad_id: squad3.id,
@@ -1591,7 +1677,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid3,
-                transportedSquadUuids: transportedSquadUuids2
+                transportedSquadUuids: transportedSquadUuids2,
+                upgrades: []
               },
               {
                 squad_id: squad4.id,
@@ -1602,7 +1689,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid4,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               },
               {
                 squad_id: squad5.id,
@@ -1613,7 +1701,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: uuid5,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               },
               {
                 squad_id: nil,
@@ -1624,7 +1713,8 @@ RSpec.describe CompanyService do
                 tab: "core",
                 index: 1,
                 uuid: new_uuid1,
-                transportUuid: uuid3
+                transportUuid: uuid3,
+                upgrades: []
               }
             ]
           end
@@ -1850,10 +1940,12 @@ RSpec.describe CompanyService do
                     { unit_id: unit2.id, available_unit_id: available_unit_2.id, tab: "infantry", index: 1 },
                     { unit_id: unit2.id, available_unit_id: available_unit_2.id, tab: "infantry", index: 2 }] }
     let(:available_units_by_id) { { available_unit_1.id => available_unit_1, available_unit_2.id => available_unit_2 } }
+    let(:available_upgrades_by_id) { {} }
     let(:platoon_pop_by_tab_and_index) { { "core": [0, 0, 0], "infantry": [0, 0, 0] }.with_indifferent_access }
 
+    subject { instance.send(:calculate_squad_resources, squads, available_units_by_id, available_upgrades_by_id, platoon_pop_by_tab_and_index) }
     it "returns the correct resources" do
-      man, mun, fuel, pop = instance.send(:calculate_squad_resources, squads, available_units_by_id, platoon_pop_by_tab_and_index)
+      man, mun, fuel, pop = subject
       expect(man).to eq(1000)
       expect(mun).to eq(260)
       expect(fuel).to eq(80)
@@ -1861,7 +1953,7 @@ RSpec.describe CompanyService do
     end
 
     it "sets the correct platoon pop" do
-      instance.send(:calculate_squad_resources, squads, available_units_by_id, platoon_pop_by_tab_and_index)
+      subject
       expect(platoon_pop_by_tab_and_index["core"].size).to eq 3
       expect(platoon_pop_by_tab_and_index["core"][0]).to eq 4
       expect(platoon_pop_by_tab_and_index["core"][1]).to eq 0

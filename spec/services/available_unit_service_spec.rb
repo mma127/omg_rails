@@ -193,7 +193,7 @@ RSpec.describe AvailableUnitService do
 
   describe "#recreate_disabled_from_doctrine_unlock" do
     let(:units_disabled) { [unit1, unit2, unit3] } # These were previously disabled but unit2 has a disable_unit on the doctrine
-    let!(:doctrine_unlock) { create :doctrine_unlock }
+    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine }
     let(:du_restriction) { doctrine_unlock.restriction }
 
     before do
@@ -215,7 +215,7 @@ RSpec.describe AvailableUnitService do
     context "when the available_units are also affected by a doctrine_unlock enabling one" do
       before do
         # Create doctrine unlock that enables unit2
-        doctrine_unlock2 = create :doctrine_unlock
+        doctrine_unlock2 = create :doctrine_unlock, doctrine: doctrine, branch: 2
         restriction_du2 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2
         create :enabled_unit, unit: unit2, restriction: restriction_du2, ruleset: ruleset
         company_unlock2 = create :company_unlock, company: company, doctrine_unlock: doctrine_unlock2

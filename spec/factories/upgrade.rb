@@ -4,6 +4,6 @@ FactoryBot.define do
     display_name { 'Upgrade Display Name' }
     const_name { 'Upgrade Const Name' }
 
-    type { "Consumable" }
+    type { "Upgrades::Consumable" }
   end
 end

@@ -4,8 +4,10 @@ FactoryBot.define do
     man { 0 }
     mun { 50 }
     fuel { 0 }
+    uses { 0 }
 
     association :company
     association :upgrade
+    association :unit
   end
 end

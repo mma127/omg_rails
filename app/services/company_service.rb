@@ -27,29 +27,35 @@ class CompanyService
     # Starting vps
     vps = @player.vps + ruleset.starting_vps
 
-    # Create Company entity
-    new_company = Company.create!(name: name,
-                                  player: @player,
-                                  doctrine: doctrine,
-                                  faction: doctrine.faction,
-                                  vps_earned: vps,
-                                  vps_current: vps,
-                                  man: ruleset.starting_man,
-                                  mun: ruleset.starting_mun,
-                                  fuel: ruleset.starting_fuel,
-                                  pop: 0,
-                                  ruleset: ruleset
-    )
+    ActiveRecord::Base.transaction do
+      # Create Company entity
+      new_company = Company.create!(name: name,
+                                    player: @player,
+                                    doctrine: doctrine,
+                                    faction: doctrine.faction,
+                                    vps_earned: vps,
+                                    vps_current: vps,
+                                    man: ruleset.starting_man,
+                                    mun: ruleset.starting_mun,
+                                    fuel: ruleset.starting_fuel,
+                                    pop: 0,
+                                    ruleset: ruleset
+      )
 
-    # Create AvailableUnits for the Company
-    available_units_service = AvailableUnitService.new(new_company)
-    available_units_service.build_new_company_available_units
+      # Create AvailableUnits for the Company
+      available_units_service = AvailableUnitService.new(new_company)
+      available_units_service.build_new_company_available_units
 
-    # Create AvailableOffmaps for the Company
-    available_offmaps_service = AvailableOffmapService.new(new_company)
-    available_offmaps_service.build_new_company_available_offmaps
+      # Create AvailableOffmaps for the Company
+      available_offmaps_service = AvailableOffmapService.new(new_company)
+      available_offmaps_service.build_new_company_available_offmaps
 
-    new_company
+      # Create AvailableUpgrades for the company
+      available_upgrade_service = AvailableUpgradeService.new(new_company)
+      available_upgrade_service.build_new_company_available_upgrades
+
+      new_company
+    end
   end
 
   # Takes the set of squads, validates that the company can upsert all of the squads, and persists them, overwriting old
@@ -113,8 +119,15 @@ class CompanyService
     # Build hash of tab and index to pop
     platoon_pop_by_tab_and_index = build_empty_tab_index_pop
 
+    # Get available upgrades for the company - cost is stored there
+    available_upgrades = company.available_upgrades
+    # Validations
+    # TODO
+    # Index available upgrades by id
+    available_upgrades_by_id = available_upgrades.index_by(&:id)
+
     # Calculate resources used by the input squads
-    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
+    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, available_upgrades_by_id, platoon_pop_by_tab_and_index)
 
     ## Offmaps
     # Get available_offmaps for the company
@@ -282,14 +295,19 @@ class CompanyService
   def recalculate_resources(company)
     # Index available units by id
     available_units_by_id = company.reload.available_units.index_by(&:id)
+    # Index available upgrades by id
+    available_upgrades_by_id = company.available_upgrades.index_by(&:id)
 
     # Build hash of tab and index to pop
     platoon_pop_by_tab_and_index = build_empty_tab_index_pop
 
-    squads = company.squads.map { |s| { tab: s.tab_category, index: s.category_position, available_unit_id: s.available_unit_id } }
+    squads = company.squads.map do |s|
+      squad_upgrades = s.squad_upgrades.map { |su| { id: su.id, available_upgrade_id: su.available_upgrade_id, is_free: su.is_free } }
+      { tab: s.tab_category, index: s.category_position, available_unit_id: s.available_unit_id, upgrades: squad_upgrades }
+    end
 
     # Calculate resources used by the input squads
-    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
+    man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, available_upgrades_by_id, platoon_pop_by_tab_and_index)
 
     offmaps = company.company_offmaps.map { |co| { available_offmap_id: co.available_offmap_id } }
     available_offmaps_by_id = company.available_offmaps.index_by(&:id)
@@ -399,8 +417,7 @@ class CompanyService
   # Calculates manpower, munitions, fuel, and pop used by the input squads, based on costs of the corresponding
   # AvailableUnit for the squad's unit id. Also increments the pop of the platoon_pop_by_tab_and_index value for the
   # tab and index the squad is in.
-  def calculate_squad_resources(squads, available_units_by_id, platoon_pop_by_tab_and_index)
-    # TODO include upgrade prices
+  def calculate_squad_resources(squads, available_units_by_id, available_upgrades_by_id, platoon_pop_by_tab_and_index)
     # TODO include resource bonuses
     man_new = 0
     mun_new = 0
@@ -412,8 +429,18 @@ class CompanyService
       man_new += available_unit.man
       mun_new += available_unit.mun
       fuel_new += available_unit.fuel
-      platoon_pop_by_tab_and_index[squad[:tab]][squad[:index]] += available_unit.pop
-      pop_new += available_unit.pop
+
+      squad_pop = available_unit.pop
+      squad[:upgrades]&.each do |su|
+        available_upgrade = available_upgrades_by_id[su[:available_upgrade_id]]
+        man_new += available_upgrade.man
+        mun_new += available_upgrade.mun
+        fuel_new += available_upgrade.fuel
+        squad_pop += available_upgrade.pop
+      end
+
+      platoon_pop_by_tab_and_index[squad[:tab]][squad[:index]] += squad_pop
+      pop_new += squad_pop
     end
     [man_new, mun_new, fuel_new, pop_new]
   end
