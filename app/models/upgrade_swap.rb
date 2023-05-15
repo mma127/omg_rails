@@ -28,8 +28,14 @@ class UpgradeSwap < ApplicationRecord
   belongs_to :unlock
   belongs_to :old_upgrade, class_name: "Upgrade"
   belongs_to :new_upgrade, class_name: "Upgrade"
+  has_many :upgrade_swap_units
+  has_many :units, through: :upgrade_swap_units
 
   before_save :generate_internal_description
+
+  def unit_ids
+    upgrade_swap_units.pluck(:unit_id)
+  end
 
   def entity
     Entity.new(self)

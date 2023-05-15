@@ -68,6 +68,9 @@ after :upgrades do
     old_upgrade = Upgrade.find_by!(name: row['old_upgrade'])
     new_upgrade = Upgrade.find_by!(name: row['new_upgrade'])
     unlock = Unlock.find_by!(name: row['unlock_restriction'])
-    UpgradeSwap.create!(unlock: unlock, old_upgrade: old_upgrade, new_upgrade: new_upgrade)
+    unit = Unit.find_by!(name: row['unit'])
+
+    upgrade_swap = UpgradeSwap.find_or_create_by!(unlock: unlock, old_upgrade: old_upgrade, new_upgrade: new_upgrade)
+    UpgradeSwapUnit.create!(upgrade_swap: upgrade_swap, unit: unit)
   end
 end

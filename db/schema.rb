@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_04_012231) do
+ActiveRecord::Schema.define(version: 2023_05_15_015147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -514,6 +514,16 @@ ActiveRecord::Schema.define(version: 2023_05_04_012231) do
     t.index ["name"], name: "index_unlocks_on_name", unique: true
   end
 
+  create_table "upgrade_swap_units", comment: "Association of upgrade swap to affected units", force: :cascade do |t|
+    t.bigint "upgrade_swap_id", null: false
+    t.bigint "unit_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["unit_id"], name: "index_upgrade_swap_units_on_unit_id"
+    t.index ["upgrade_swap_id", "unit_id"], name: "index_upgrade_swap_units_on_upgrade_swap_id_and_unit_id", unique: true
+    t.index ["upgrade_swap_id"], name: "index_upgrade_swap_units_on_upgrade_swap_id"
+  end
+
   create_table "upgrade_swaps", comment: "Association of old and new upgrades to swap for in an unlock", force: :cascade do |t|
     t.bigint "unlock_id", null: false
     t.bigint "old_upgrade_id", null: false
@@ -601,6 +611,8 @@ ActiveRecord::Schema.define(version: 2023_05_04_012231) do
   add_foreign_key "unit_swaps", "units", column: "new_unit_id"
   add_foreign_key "unit_swaps", "units", column: "old_unit_id"
   add_foreign_key "unit_swaps", "unlocks"
+  add_foreign_key "upgrade_swap_units", "units"
+  add_foreign_key "upgrade_swap_units", "upgrade_swaps"
   add_foreign_key "upgrade_swaps", "unlocks"
   add_foreign_key "upgrade_swaps", "upgrades", column: "new_upgrade_id"
   add_foreign_key "upgrade_swaps", "upgrades", column: "old_upgrade_id"

@@ -336,44 +336,53 @@ RSpec.describe CompanyUnlockService do
       let!(:du_disabled_upgrade) { create :disabled_upgrade, restriction: du_restriction, upgrade: upgrade1, ruleset: ruleset }
       let!(:upgrade_swap) { create :upgrade_swap, unlock: unlock1, old_upgrade: upgrade1, new_upgrade: upgrade2 }
       let!(:available_unit1) { create :base_available_unit, company: company, unit: unit1, man: man1, mun: mun1, fuel: fuel1, pop: pop1 }
+      let!(:available_unit2) { create :base_available_unit, company: company, unit: unit2, man: man2, mun: mun2, fuel: fuel2, pop: pop2 }
       let!(:squad1) { create :squad, company: company, available_unit: available_unit1 }
-      let!(:squad2) { create :squad, company: company, available_unit: available_unit1 }
+      let!(:squad2) { create :squad, company: company, available_unit: available_unit2 }
       let!(:available_upgrade1) { create :base_available_upgrade, company: company, upgrade: upgrade1, unit: unit1 }
-      let!(:available_upgrade2) { create :base_available_upgrade, company: company, upgrade: upgrade1, unit: unit2 }
+      let!(:available_upgrade2) { create :base_available_upgrade, company: company, upgrade: upgrade1, unit: unit2, man: man4, mun: mun4, fuel: fuel4, pop: pop4 }
       let!(:squad_upgrade1) { create :squad_upgrade, squad: squad1, available_upgrade: available_upgrade1 }
+      let!(:squad_upgrade2) { create :squad_upgrade, squad: squad2, available_upgrade: available_upgrade2 }
 
       before do
         create :restriction_upgrade_unit, restriction_upgrade: du_enabled_upgrade, unit: unit1
-        create :restriction_upgrade_unit, restriction_upgrade: du_enabled_upgrade, unit: unit2
         create :restriction_upgrade_unit, restriction_upgrade: du_disabled_upgrade, unit: unit1
-        create :restriction_upgrade_unit, restriction_upgrade: du_disabled_upgrade, unit: unit2
+        create :upgrade_swap_unit, upgrade_swap: upgrade_swap, unit: unit1
       end
 
       it "creates an AvailableUpgrade for the enabled upgrade" do
-        expect { subject }.to change { AvailableUpgrade.count }.by 0 # -2 + 2
+        expect { subject }.to change { AvailableUpgrade.count }.by 0 # -1 + 1
         expect(AvailableUpgrade.find_by(company: company, upgrade: upgrade2, unit: unit1)).to be_present
-        expect(AvailableUpgrade.find_by(company: company, upgrade: upgrade2, unit: unit2)).to be_present
+        expect(AvailableUpgrade.find_by(company: company, upgrade: upgrade2, unit: unit2)).not_to be_present # only upgrade for unit1 created
       end
 
       it "removes the AvailableUpgrade for the disabled upgrade" do
         subject
         expect(AvailableUpgrade.exists?(available_upgrade1.id)).to be false
-        expect(AvailableUpgrade.exists?(available_upgrade2.id)).to be false
+        expect(AvailableUpgrade.exists?(available_upgrade2.id)).to be true #only upgrade for unit1 removed
       end
 
       it "swaps the AvailableUpgrade out in the relevant SquadUpgrades" do
         expect(squad_upgrade1.upgrade_id).to eq upgrade1.id
+        expect(squad_upgrade2.upgrade_id).to eq upgrade1.id
         expect { subject }.to change { SquadUpgrade.count }.by 0 # Does not remove any
         au = AvailableUpgrade.find_by(company: company, upgrade: upgrade2, unit: unit1)
         expect(squad_upgrade1.reload.available_upgrade_id).to eq au.id
+        expect(squad_upgrade2.reload.upgrade_id).to eq upgrade1.id
+      end
+
+      it "does not swap the AvailableUpgrade out when the squad unit isn't associated with the UpgradeSwap" do
+        expect(squad_upgrade2.upgrade_id).to eq upgrade1.id
+        subject
+        expect(squad_upgrade2.reload.upgrade_id).to eq upgrade1.id
       end
 
       it "recalculates resources" do
         subject
-        expect(company.reload.man).to eq ruleset.starting_man - 2 * man1 - man3
-        expect(company.mun).to eq ruleset.starting_mun - 2 * mun1 - mun3
-        expect(company.fuel).to eq ruleset.starting_fuel - 2 * fuel1 - fuel3
-        expect(company.pop).to eq 2 * pop1 + pop3
+        expect(company.reload.man).to eq ruleset.starting_man - man1 - man2 - man3 - man4
+        expect(company.mun).to eq ruleset.starting_mun - mun1 - mun2 - mun3 - mun4
+        expect(company.fuel).to eq ruleset.starting_fuel - fuel1 - fuel2 - fuel3 - fuel4
+        expect(company.pop).to eq pop1 + pop2 + pop3 + pop4
       end
 
       it "pays for the company unlock" do
@@ -782,7 +791,7 @@ RSpec.describe CompanyUnlockService do
       let!(:available_unit2) { create :base_available_unit, company: company, unit: unit2, man: man2, mun: mun2, fuel: fuel2, pop: pop2 }
       let!(:squad1) { create :squad, available_unit: available_unit1, company: company }
       let!(:squad2) { create :squad, available_unit: available_unit2, company: company }
-      let!(:squad_upgrade1) { create :squad_upgrade, squad: squad1, available_upgrade: available_upgrade1 }
+      let!(:squad_upgrade1) { create :squad_upgrade, squad: squad1, available_upgrade: available_upgrade3 }
       let!(:squad_upgrade2) { create :squad_upgrade, squad: squad2, available_upgrade: available_upgrade4 }
 
       before do
@@ -790,6 +799,7 @@ RSpec.describe CompanyUnlockService do
         create :restriction_upgrade_unit, restriction_upgrade: doc_enabled_upgrade1, unit: unit2
         create :restriction_upgrade_unit, restriction_upgrade: doc_enabled_upgrade2, unit: unit1
         create :restriction_upgrade_unit, restriction_upgrade: doc_enabled_upgrade2, unit: unit2
+        create :upgrade_swap_unit, upgrade_swap: upgrade_swap, unit: unit2
       end
 
       it "does not change BaseAvailableUpgrades" do
@@ -799,19 +809,23 @@ RSpec.describe CompanyUnlockService do
       end
 
       it "swaps the upgrade in the SquadUpgrade" do
-        expect(squad_upgrade1.available_upgrade_id).to eq available_upgrade1.id
         expect(squad_upgrade2.available_upgrade_id).to eq available_upgrade4.id
         expect { subject }.not_to change { SquadUpgrade.count }
-        expect(squad_upgrade1.reload.available_upgrade_id).to eq available_upgrade1.id
         expect(squad_upgrade2.reload.available_upgrade_id).to eq available_upgrade2.id
+      end
+
+      it "doesn't swap the AvailableUpgrade when the squad's unit is not associated with the upgrade swap" do
+        expect(squad_upgrade1.available_upgrade_id).to eq available_upgrade3.id
+        subject
+        expect(squad_upgrade1.reload.available_upgrade_id).to eq available_upgrade3.id
       end
 
       it "recalculates resources" do
         subject
-        expect(company.reload.man).to eq starting_man - man1 - man2 - 2 * man3
-        expect(company.mun).to eq starting_mun - mun1 - mun2 - 2 * mun3
-        expect(company.fuel).to eq starting_fuel - fuel1 - fuel2 - 2 * fuel3
-        expect(company.pop).to eq pop1 + pop2 + 2 * fuel3
+        expect(company.reload.man).to eq starting_man - man1 - man2 - man3 - man4
+        expect(company.mun).to eq starting_mun - mun1 - mun2 - mun3 - mun4
+        expect(company.fuel).to eq starting_fuel - fuel1 - fuel2 - fuel3 - fuel4
+        expect(company.pop).to eq pop1 + pop2 + pop3 + pop4
       end
 
       it "refunds the cost of the company unlock" do
@@ -856,6 +870,7 @@ RSpec.describe CompanyUnlockService do
         create :restriction_upgrade_unit, restriction_upgrade: doc_enabled_upgrade, unit: unit2
         create :restriction_upgrade_unit, restriction_upgrade: du_disabled_upgrade, unit: unit1
         create :restriction_upgrade_unit, restriction_upgrade: du_enabled_upgrade, unit: unit1
+        create :upgrade_swap_unit, upgrade_swap: upgrade_swap, unit: unit1
       end
 
       it "creates BaseAvailableUpgrades for the previously disabled upgrade/unit" do
@@ -874,6 +889,7 @@ RSpec.describe CompanyUnlockService do
       it "removes the BaseAvailableUpgrade for the previously enabled upgrade/unit" do
         subject
         expect(BaseAvailableUpgrade.exists?(available_upgrade1.id)).to be false
+        expect(BaseAvailableUpgrade.exists?(available_upgrade2.id)).to be true
       end
 
       it "updates SquadUpgrades containing the previously enabled upgrade for the new upgrade" do
