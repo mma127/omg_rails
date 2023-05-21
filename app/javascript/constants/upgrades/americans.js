@@ -27,6 +27,8 @@ import t17_sandbags from '../../../assets/images/doctrines/americans/upgrades/t1
 import t17_wp from '../../../assets/images/doctrines/americans/upgrades/t17_wp.png'
 import triage_center from '../../../assets/images/doctrines/americans/upgrades/triage_center.png'
 
+import m18_stag_50 from '../../../assets/images/doctrines/british/upgrades/stag_50_cal.png'
+
 import mine_detector from '../../../assets/images/doctrines/common/upgrades/mine_detector.png'
 import mines from '../../../assets/images/doctrines/common/upgrades/mines.png'
 import smoke_grenade from '../../../assets/images/doctrines/common/upgrades/smoke_grenade.png'
@@ -37,7 +39,7 @@ export const ALLY_FLAMETHROWER = 'ally_flamethrower'
 export const ALLY_GRENADE = 'ally_grenade'
 export const ALLY_MINE_DETECTOR = 'ally_mine_detector'
 export const ALLY_MINES = 'ally_mines'
-export const ALLY_SMOKE_GRENADE = 'ally_smoke_grande'
+export const ALLY_SMOKE_GRENADE = 'ally_smoke_grenade'
 export const ALLY_TANK_SMOKE = 'ally_tank_smoke'
 export const ALLY_TIMED_DEMO = 'ally_timed_demo'
 export const BAR = 'bar'
@@ -52,10 +54,12 @@ export const M8_50_CAL = 'm8_50_cal'
 export const M8_MINES = 'm8_mines'
 export const M8_SIDE_SKIRTS = 'm8_side_skirts'
 export const M18_50_CAL = 'm18_50_cal'
+export const M18_STAG_50 = 'm18_stag_50'
 export const M1919_LMG = 'm1919_lmg'
 export const MEDIC_STATION = 'medic_station'
 export const MG_NEST = 'mg_nest'
 export const MINE_FLAIL = 'mine_flail'
+export const RANGER_GRENADE = 'ranger_grenade'
 export const RECOILLESS_RIFLES = 'recoilless_rifles'
 export const SATCHEL_CHARGE = 'satchel_charge'
 export const SHERMAN_50_CAL = 'sherman_50_cal'
@@ -86,10 +90,12 @@ export const upgradeImageMapping = {
   [M8_MINES]: m8_mines,
   [M8_SIDE_SKIRTS]: m8_side_skirts,
   [M18_50_CAL]: m18_50_cal,
+  [M18_STAG_50]: m18_stag_50,
   [M1919_LMG]: m1919_lmg,
   [MEDIC_STATION]: medic_station,
   [MG_NEST]: mg_nest,
   [MINE_FLAIL]: mine_flail,
+  [RANGER_GRENADE]: ally_grenade,
   [RECOILLESS_RIFLES]: recoilless_rifles,
   [SATCHEL_CHARGE]: satchel_charge,
   [SHERMAN_50_CAL]: sherman_50_cal,

@@ -2,8 +2,6 @@ import React from 'react'
 import { Card, CardMedia } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { offmapImageMapping } from "../../../../constants/offmaps/all_factions";
-import { OffmapTooltip } from "./OffmapTooltip";
-import { OffmapTooltipContent } from "./OffmapTooltipContent";
 
 const useStyles = makeStyles(() => ({
   offmapCard: {

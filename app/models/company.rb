@@ -51,6 +51,7 @@ class Company < ApplicationRecord
   has_many :offmaps, through: :available_offmaps
   has_many :company_callin_modifiers, dependent: :destroy
   has_many :callin_modifiers, through: :company_callin_modifiers
+  has_many :upgrades, through: :available_upgrades
   has_many :company_resource_bonuses, dependent: :destroy
   has_many :battle_players
 
