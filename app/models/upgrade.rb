@@ -23,5 +23,21 @@
 class Upgrade < ApplicationRecord
 
   validates :model_count, presence: false
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :name
+    expose :display_name, as: :displayName
+    expose :description
+    expose :type
+    expose :upgrade_slots, as: :upgradeSlots
+    expose :unitwide_upgrade_slots, as: :unitwideUpgradeSlots
+    expose :model_count, as: :modelCount
+    expose :additional_model_count, as: :additionalModelCount
+  end
 end
 

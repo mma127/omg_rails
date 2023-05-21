@@ -71,7 +71,8 @@ module OMG
                                      { available_units: :unit,
                                        available_offmaps: :offmap,
                                        company_offmaps: :offmap,
-                                       company_callin_modifiers: :callin_modifier })
+                                       company_callin_modifiers: :callin_modifier,
+                                       available_upgrades: :upgrade })
                            .find_by(id: declared_params[:id], player: current_player)
           if company.blank?
             error! "Could not find company #{params[:id]} for the current player", 404
@@ -82,7 +83,9 @@ module OMG
             available_units: company.available_units,
             company_offmaps: company.company_offmaps,
             available_offmaps: company.available_offmaps,
-            callin_modifiers: company.callin_modifiers
+            callin_modifiers: company.callin_modifiers,
+            available_upgrades: company.available_upgrades,
+            upgrades: company.upgrades
           }
           present squads_response, with: Entities::SquadsResponse, type: :include_unit
         end

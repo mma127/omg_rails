@@ -34,4 +34,33 @@ class AvailableUpgrade < ApplicationRecord
   belongs_to :unit
 
   has_many :squad_upgrades, dependent: :destroy
+
+  def upgrade_name
+    upgrade.name
+  end
+
+  def upgrade_display_name
+    upgrade.display_name
+  end
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :company_id, as: :companyId
+    expose :upgrade_id, as: :upgradeId
+    expose :upgrade_name, as: :upgradeName
+    expose :upgrade_display_name, as: :upgradeDisplayName
+    expose :unit_id, as: :unitId
+    expose :type
+    expose :uses
+    expose :man
+    expose :mun
+    expose :fuel
+    expose :pop
+
+    expose :upgrade, using: Upgrade::Entity, if: { type: :include_upgrade }
+  end
 end

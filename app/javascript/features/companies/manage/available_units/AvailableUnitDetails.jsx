@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react'
 import { Box, CircularProgress, Grid, Paper, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUnitById, selectUnitById } from "../units/unitsSlice";
 import {
-  selectAvailableUnitById,
-  selectAllAvailableUnits,
-  selectAvailableUnitsStatus, selectSelectedAvailableUnitId
+  selectAvailableUnitById, selectSelectedAvailableUnitId
 } from "./availableUnitsSlice";
 import { unitImageMapping } from "../../../../constants/units/all_factions";
 import { formatResourceCost } from "../../../../utils/company";
+import { selectAvailableUpgradesByUnitId } from "../available_upgrades/availableUpgradesSlice";
+import { AvailableUpgrades } from "../available_upgrades/AvailableUpgrades";
 
 
 const useStyles = makeStyles(theme => ({
@@ -82,6 +81,11 @@ export const AvailableUnitDetails = () => {
               <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                           pr={1}>Company Max</Typography>
               <Typography variant="body2" gutterBottom>{availableUnit.companyMax}</Typography>
+            </Grid>
+          </Grid>
+          <Grid item container spacing={2}>
+            <Grid item>
+              <AvailableUpgrades unitId={unitId} enabled={false} />
             </Grid>
           </Grid>
         </Grid>
