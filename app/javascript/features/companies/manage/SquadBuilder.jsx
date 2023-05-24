@@ -30,7 +30,7 @@ import {
   selectAssaultSquads,
   selectCoreSquads,
   selectInfantrySquads,
-  selectSupportSquads,
+  selectSupportSquads, setSelectedSquadAccess, setSelectedSquadId,
   upsertSquads
 } from "./units/squadsSlice";
 import { AlertSnackbar } from "../AlertSnackbar";
@@ -114,15 +114,24 @@ export const SquadBuilder = ({}) => {
   }
 
   const onTabChange = (newTab) => {
-    console.log(`SquadBuilder changed to new tab ${newTab}`)
     setCurrentTab(newTab)
+    dispatch(setSelectedAvailableUnitId(null))
+    dispatch(setSelectedSquadAccess({ tab: null, index: null, uuid: null }))
   }
 
   const onUnitSelect = (availableUnitId) => {
     /** Called when a unit is selected. Populates the unit stats box with relevant data
+     */
+    dispatch(setSelectedAvailableUnitId(availableUnitId))
+    dispatch(setSelectedSquadAccess({ tab: null, index: null, uuid: null }))
+  }
+
+  const onSquadSelect = (availableUnitId, tab, index, uuid) => {
+    /** Called when a squad is selected. Populates the unit stats box with relevant data
      * TODO if a squad is clicked, should take upgrades into account
      */
     dispatch(setSelectedAvailableUnitId(availableUnitId))
+    dispatch(setSelectedSquadAccess({ tab, index, uuid }))
   }
 
   /** For a new non-transported squad, use the availableUnit and unit to construct a new squad object
@@ -137,6 +146,7 @@ export const SquadBuilder = ({}) => {
       fuel: newSquad.fuel
     }))
     dispatch(addNonTransportedSquad(newSquad))
+    onSquadSelect(availableUnit.id, tab, index, newSquad.uuid)
   }
 
   /** For a new transported squad, use the availableUnit and unit to construct a new squad object.
@@ -152,6 +162,7 @@ export const SquadBuilder = ({}) => {
       fuel: newSquad.fuel
     }))
     dispatch(addTransportedSquad({ newSquad, transportUuid }))
+    onSquadSelect(availableUnit.id, tab, index, newSquad.uuid)
   }
 
   const onSquadDestroy = (squad, transportUuid = null) => {
@@ -261,7 +272,7 @@ export const SquadBuilder = ({}) => {
               <CompanyGridDropTarget gridIndex={0} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
-                                     onUnitClick={onUnitSelect}
+                                     onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      enabled={editEnabled} />
@@ -270,7 +281,7 @@ export const SquadBuilder = ({}) => {
               <CompanyGridDropTarget gridIndex={1} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
-                                     onUnitClick={onUnitSelect}
+                                     onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      enabled={editEnabled} />
@@ -279,7 +290,7 @@ export const SquadBuilder = ({}) => {
               <CompanyGridDropTarget gridIndex={2} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
-                                     onUnitClick={onUnitSelect}
+                                     onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      enabled={editEnabled} />
@@ -288,7 +299,7 @@ export const SquadBuilder = ({}) => {
               <CompanyGridDropTarget gridIndex={3} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
-                                     onUnitClick={onUnitSelect}
+                                     onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      enabled={editEnabled} />
@@ -299,7 +310,7 @@ export const SquadBuilder = ({}) => {
               <CompanyGridDropTarget gridIndex={4} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
-                                     onUnitClick={onUnitSelect}
+                                     onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      enabled={editEnabled} />
@@ -308,7 +319,7 @@ export const SquadBuilder = ({}) => {
               <CompanyGridDropTarget gridIndex={5} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
-                                     onUnitClick={onUnitSelect}
+                                     onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      enabled={editEnabled} />
@@ -317,7 +328,7 @@ export const SquadBuilder = ({}) => {
               <CompanyGridDropTarget gridIndex={6} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
-                                     onUnitClick={onUnitSelect}
+                                     onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      enabled={editEnabled} />
@@ -326,7 +337,7 @@ export const SquadBuilder = ({}) => {
               <CompanyGridDropTarget gridIndex={7} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
-                                     onUnitClick={onUnitSelect}
+                                     onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      enabled={editEnabled} />

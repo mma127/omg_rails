@@ -33,10 +33,6 @@ export const AvailableUnitDroppable = ({
   const classes = useStyles()
   const availableUnit = useSelector(state => selectAvailableUnitById(state, availableUnitId))
   const unit = useSelector(state => selectUnitById(state, availableUnit.unitId))
-  const image = unitImageMapping[availableUnit.unitName]
-
-  const cost = formatResourceCost({ man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel })
-
   const notAvailable = availableUnit.available <= 0
 
   /** When dragging, we want to treat the current unit as selected for the details pane */

@@ -10,6 +10,7 @@ import { unitImageMapping } from "../../../../constants/units/all_factions";
 import { formatResourceCost } from "../../../../utils/company";
 import { selectAvailableUpgradesByUnitId } from "../available_upgrades/availableUpgradesSlice";
 import { AvailableUpgrades } from "../available_upgrades/AvailableUpgrades";
+import { selectSelectedSquad, selectSelectedSquadId } from "../units/squadsSlice";
 
 
 const useStyles = makeStyles(theme => ({
@@ -31,6 +32,7 @@ export const AvailableUnitDetails = () => {
   const availableUnit = useSelector(state => selectAvailableUnitById(state, availableUnitId))
   const unitId = availableUnit?.unitId
   const selectedUnitDetails = useSelector(state => selectUnitById(state, unitId))
+  const selectedSquad = useSelector(selectSelectedSquad)
 
   useEffect(() => {
     // Dispatch a fetch if the unit id is valid and the selector failed to find a matching unit
@@ -41,6 +43,18 @@ export const AvailableUnitDetails = () => {
   let content
   if (selectedUnitDetails && availableUnit) {
     const cost = formatResourceCost({ man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel })
+
+    let squadContent
+    if (selectedSquad) {
+      squadContent = (
+        <Grid item container spacing={2}>
+          <Grid item>
+            Selected squad {selectedSquad?.uuid}
+          </Grid>
+        </Grid>
+      )
+    }
+
     content = (
       <Box p={2}>
         <Grid container spacing={2}>
@@ -83,11 +97,12 @@ export const AvailableUnitDetails = () => {
               <Typography variant="body2" gutterBottom>{availableUnit.companyMax}</Typography>
             </Grid>
           </Grid>
-          <Grid item container spacing={2}>
+          <Grid item container>
             <Grid item>
-              <AvailableUpgrades unitId={unitId} enabled={false} />
+              <AvailableUpgrades unitId={unitId} />
             </Grid>
           </Grid>
+          {squadContent}
         </Grid>
 
       </Box>
