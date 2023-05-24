@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { selectAllAvailableUpgrades, selectAvailableUpgradesByUnitId } from "./availableUpgradesSlice";
 import { Box, Typography } from "@mui/material";
 import { AvailableUpgradeClickable } from "./AvailableUpgradeClickable";
+import { selectSelectedSquad } from "../units/squadsSlice";
 
 const generateContent = (au, onSelect, enabled) =>
   <AvailableUpgradeClickable
@@ -16,8 +17,11 @@ const generateContent = (au, onSelect, enabled) =>
  * Show all available upgrades for the given company
  * @constructor
  */
-export const AvailableUpgrades = ({ unitId, onSelect, enabled }) => {
+export const AvailableUpgrades = ({ unitId, onSelect }) => {
   const availableUpgrades = useSelector(state => selectAvailableUpgradesByUnitId(state, unitId))
+  const selectedSquad = useSelector(selectSelectedSquad)
+
+  const enabled = !!selectedSquad
 
   return (
     <>

@@ -26,7 +26,10 @@ const initialState = squadsAdapter.getInitialState({
   [INFANTRY]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
   [ARMOUR]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
   [ANTI_ARMOUR]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
-  [SUPPORT]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} }
+  [SUPPORT]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
+  selectedSquadTab: null,
+  selectedSquadIndex: null,
+  selectedSquadUuid: null
 })
 
 export const fetchCompanySquads = createAsyncThunk("squads/fetchCompanySquads", async ({ companyId }, { rejectWithValue }) => {
@@ -278,6 +281,11 @@ const squadsSlice = createSlice({
     },
     showSnackbar: (state, action) => {
       state.notifySnackbar = true
+    },
+    setSelectedSquadAccess: (state, action) => {
+      state.selectedSquadTab = action.payload.tab
+      state.selectedSquadIndex = action.payload.index
+      state.selectedSquadUuid = action.payload.uuid
     }
   },
   extraReducers(builder) {
@@ -345,7 +353,8 @@ export const {
   moveSquad,
   resetSquadState,
   clearNotifySnackbar,
-  showSnackbar
+  showSnackbar,
+  setSelectedSquadAccess
 } = squadsSlice.actions
 
 export const {
@@ -369,3 +378,13 @@ export const selectSquadInTabIndexTransportUuid = (state, tab, index, transportU
 }
 
 export const selectCallinModifiers = state => state.squads.callinModifiers
+
+export const selectSelectedSquad = state => {
+  const tab = state.squads.selectedSquadTab,
+    index = state.squads.selectedSquadIndex,
+    uuid = state.squads.selectedSquadUuid;
+  if (!_.isNil(tab) && !_.isNil(index) && !_.isNil(uuid)) {
+    return state.squads[tab][index][uuid]
+  }
+  return null
+}

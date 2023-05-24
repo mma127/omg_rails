@@ -44,7 +44,7 @@ const useStyles = makeStyles(() => ({
  * @param squads
  * @param onNonTransportSquadCreate: Callback fired when this company grid drop target receives a hit and has an unit dropped in
  * @param onTransportedSquadCreate
- * @param onUnitClick: Callback fired when the unit icon is clicked. Expect to pass squad identifier
+ * @param onSquadClick: Callback fired when the squad unit icon is clicked. Expect to pass squad identifier
  * @param onSquadDestroy
  * @param onSquadMove
  * @param enabled: Flag for whether the drop target and any squad cards contained within are editable
@@ -54,7 +54,7 @@ export const CompanyGridDropTarget = ({
                                         currentTab,
                                         onNonTransportSquadCreate,
                                         onTransportedSquadCreate,
-                                        onUnitClick,
+                                        onSquadClick,
                                         onSquadDestroy,
                                         onSquadMove,
                                         enabled
@@ -139,7 +139,7 @@ export const CompanyGridDropTarget = ({
                                  uuid={squad.uuid}
                                  index={gridIndex} tab={currentTab}
                                  enabled={enabled}
-                                 onUnitClick={onUnitClick}
+                                 onSquadClick={onSquadClick}
                                  onDestroyClick={onDestroyClick}
                                  onTransportedSquadCreate={onTransportedSquadCreate}
                                  onSquadMove={onSquadMove}

@@ -55,7 +55,7 @@ const useStyles = makeStyles(() => ({
  * @param uuid
  * @param index
  * @param tab
- * @param onUnitClick: callback fired when the squad card is clicked anywhere except the destroy icon
+ * @param onSquadClick: callback fired when the squad card is clicked anywhere except the destroy icon
  * @param onDestroyClick: callback fired when the destroy icon is clicked
  * @param enabled: Flag for whether the card is editable
  * @param onTransportedSquadCreate
@@ -67,7 +67,7 @@ export const SquadCard = (
     index,
     tab,
     transportUuid = null,
-    onUnitClick,
+    onSquadClick,
     onDestroyClick,
     enabled,
     onTransportedSquadCreate,
@@ -164,6 +164,10 @@ export const SquadCard = (
     onDestroyClick(deleteSquad, uuid)
   }
 
+  const onUnitClick = (availableUnitId) => {
+    onSquadClick(availableUnitId, squad.tab, squad.index, squad.uuid)
+  }
+
   let deleteContent = ""
   if (enabled) {
     deleteContent = <DeleteOutlineIcon
@@ -189,7 +193,7 @@ export const SquadCard = (
                                             squadMoveOnHit={squadMoveOnHit}
                                             index={index} tab={tab}
                                             transportUuid={uuid}
-                                            onUnitClick={onUnitClick}
+                                            onSquadClick={onSquadClick}
                                             transportSquadDelete={transportSquadDelete}
                                             enabled={enabled} />
 
@@ -203,7 +207,7 @@ export const SquadCard = (
   let dragHandleClassName = `unit-card-drag-handle-${uuid}`
   return (
     <DragDropContainer targetKey="squad"
-                       onDragStart={() => onUnitClick(squad.availableUnitId)}
+                       onDragStart={() => onSquadClick(squad.availableUnitId, squad.tab, squad.index, squad.uuid)}
                        noDragging={!enabled}
                        dragHandleClassName={dragHandleClassName}
                        dragData={
