@@ -25,12 +25,7 @@ import {
   removeSquad,
   removeTransportedSquad,
   resetSquadState,
-  selectAntiArmourSquads,
-  selectArmourSquads,
-  selectAssaultSquads,
-  selectCoreSquads,
-  selectInfantrySquads,
-  selectSupportSquads, setSelectedSquadAccess, setSelectedSquadId,
+  setSelectedSquadAccess,
   upsertSquads
 } from "./units/squadsSlice";
 import { AlertSnackbar } from "../AlertSnackbar";
@@ -42,10 +37,15 @@ import {
   addNewCompanyOffmap,
   removeExistingCompanyOffmap,
   removeNewCompanyOffmap,
-  selectMergedCompanyOffmaps
 } from "./company_offmaps/companyOffmapsSlice";
 import { PurchasedOffmaps } from "./company_offmaps/PurchasedOffmaps";
 import { CompanyResources } from "./CompanyResources";
+import {createSquadUpgrade} from "./squad_upgrades/squadUpgrade";
+import {
+  addNewSquadUpgrade,
+  removeSquadUpgrade,
+} from "./squad_upgrades/squadUpgradesSlice";
+import { SaveCompanyButton } from "./SaveCompanyButton";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -73,7 +73,6 @@ export const SquadBuilder = ({}) => {
   const notifySnackbar = useSelector(state => state.squads.notifySnackbar)
   const snackbarMessage = useSelector(state => state.squads.snackbarMessage)
   const [openSnackbar, setOpenSnackbar] = useState(false)
-  const allOffmaps = useSelector(selectMergedCompanyOffmaps)
 
   useEffect(() => {
     setOpenSnackbar(notifySnackbar)
@@ -86,10 +85,8 @@ export const SquadBuilder = ({}) => {
   const activeBattleId = useSelector(state => selectCompanyActiveBattleId(state, companyId))
 
   const squadsStatus = useSelector(state => state.squads.squadsStatus)
-  const isChanged = useSelector(state => state.squads.isChanged)
   const squadsError = useSelector(state => state.squads.squadsError)
   const isSaving = squadsStatus === 'pending'
-  const canSave = !isSaving && isChanged
   const errorMessage = isSaving ? "" : squadsError
 
   const isCompanyUnlocksChange = useSelector(selectIsCompanyUnlocksChanged)
@@ -116,22 +113,22 @@ export const SquadBuilder = ({}) => {
   const onTabChange = (newTab) => {
     setCurrentTab(newTab)
     dispatch(setSelectedAvailableUnitId(null))
-    dispatch(setSelectedSquadAccess({ tab: null, index: null, uuid: null }))
+    dispatch(setSelectedSquadAccess({ tab: null, index: null, uuid: null, transportUuid: null }))
   }
 
   const onUnitSelect = (availableUnitId) => {
     /** Called when a unit is selected. Populates the unit stats box with relevant data
      */
     dispatch(setSelectedAvailableUnitId(availableUnitId))
-    dispatch(setSelectedSquadAccess({ tab: null, index: null, uuid: null }))
+    dispatch(setSelectedSquadAccess({ tab: null, index: null, uuid: null, transportUuid: null }))
   }
 
-  const onSquadSelect = (availableUnitId, tab, index, uuid) => {
+  const onSquadSelect = (availableUnitId, tab, index, uuid, transportUuid) => {
     /** Called when a squad is selected. Populates the unit stats box with relevant data
      * TODO if a squad is clicked, should take upgrades into account
      */
     dispatch(setSelectedAvailableUnitId(availableUnitId))
-    dispatch(setSelectedSquadAccess({ tab, index, uuid }))
+    dispatch(setSelectedSquadAccess({ tab, index, uuid, transportUuid }))
   }
 
   /** For a new non-transported squad, use the availableUnit and unit to construct a new squad object
@@ -146,7 +143,7 @@ export const SquadBuilder = ({}) => {
       fuel: newSquad.fuel
     }))
     dispatch(addNonTransportedSquad(newSquad))
-    onSquadSelect(availableUnit.id, tab, index, newSquad.uuid)
+    onSquadSelect(availableUnit.id, tab, index, newSquad.uuid, null)
   }
 
   /** For a new transported squad, use the availableUnit and unit to construct a new squad object.
@@ -162,7 +159,7 @@ export const SquadBuilder = ({}) => {
       fuel: newSquad.fuel
     }))
     dispatch(addTransportedSquad({ newSquad, transportUuid }))
-    onSquadSelect(availableUnit.id, tab, index, newSquad.uuid)
+    onSquadSelect(availableUnit.id, tab, index, newSquad.uuid, transportUuid)
   }
 
   const onSquadDestroy = (squad, transportUuid = null) => {
@@ -180,7 +177,7 @@ export const SquadBuilder = ({}) => {
   }
 
   const saveSquads = () => {
-    dispatch(upsertSquads({ companyId, offmaps: allOffmaps }))
+    dispatch(upsertSquads({ companyId }))
   }
 
   const onOffmapSelect = (availableOffmap) => {
@@ -201,6 +198,23 @@ export const SquadBuilder = ({}) => {
     }
   }
 
+  const onAvailableUpgradeClick = (availableUpgrade, upgrade, squad) => {
+    const newSquadUpgrade = createSquadUpgrade(availableUpgrade, upgrade, squad)
+    dispatch(addCost({
+      id: companyId,
+      pop: newSquadUpgrade.pop,
+      man: newSquadUpgrade.man,
+      mun: newSquadUpgrade.mun,
+      fuel: newSquadUpgrade.fuel
+    }))
+    dispatch(addNewSquadUpgrade({ newSquadUpgrade }))
+  }
+
+  const onSquadUpgradeDestroyClick = (squadUpgrade) => {
+    dispatch(removeCost({ id: companyId, pop: squadUpgrade.pop || 0, man: squadUpgrade.man, mun: squadUpgrade.mun, fuel: squadUpgrade.fuel }))
+    dispatch(removeSquadUpgrade({ squadUpgrade }))
+  }
+
   const editEnabled = !activeBattleId
   const availableUnitsStatus = useSelector(selectAvailableUnitsStatus)
   let availableUnitsContent,
@@ -215,10 +229,6 @@ export const SquadBuilder = ({}) => {
 
   let snackbarSeverity = "success"
   let snackbarContent = "Saved successfully"
-  let errorAlert
-  if (errorMessage?.length > 0) {
-    errorAlert = <Alert severity="error">{errorMessage}</Alert>
-  }
   if (notifySnackbar) {
     if (errorMessage?.length > 0) {
       snackbarSeverity = "error"
@@ -246,12 +256,8 @@ export const SquadBuilder = ({}) => {
             </Grid>
             <Grid item container md={6} xs={12}>
               <Grid item xs={12}>
-                <AvailableUnitDetails />
-                <Box className={classes.saveWrapper}>
-                  <Button variant="contained" color="secondary" size="small" onClick={saveSquads}
-                          disabled={!canSave} className={classes.saveButton}>Save</Button>
-                  {errorAlert}
-                </Box>
+                <AvailableUnitDetails onAvailableUpgradeClick={onAvailableUpgradeClick} />
+                <SaveCompanyButton saveSquads={saveSquads} />
               </Grid>
             </Grid>
           </Grid>
@@ -275,6 +281,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
@@ -284,6 +291,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
@@ -293,6 +301,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
@@ -302,6 +311,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled} />
             </Grid>
           </Grid>
@@ -313,6 +323,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
@@ -322,6 +333,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
@@ -331,6 +343,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled} />
             </Grid>
             <Grid item xs={3}>
@@ -340,6 +353,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled} />
             </Grid>
           </Grid>

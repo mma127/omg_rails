@@ -6,8 +6,9 @@ import { loadSquad } from "./squad";
 import {
   addNewCompanyOffmap,
   removeExistingCompanyOffmap,
-  removeNewCompanyOffmap
+  removeNewCompanyOffmap, selectMergedCompanyOffmaps
 } from "../company_offmaps/companyOffmapsSlice";
+import { selectFlatSquadUpgrades } from "../squad_upgrades/squadUpgradesSlice";
 
 const squadsAdapter = createEntityAdapter()
 
@@ -29,7 +30,8 @@ const initialState = squadsAdapter.getInitialState({
   [SUPPORT]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
   selectedSquadTab: null,
   selectedSquadIndex: null,
-  selectedSquadUuid: null
+  selectedSquadUuid: null,
+  selectedSquadTransportUuid: null
 })
 
 export const fetchCompanySquads = createAsyncThunk("squads/fetchCompanySquads", async ({ companyId }, { rejectWithValue }) => {
@@ -43,10 +45,14 @@ export const fetchCompanySquads = createAsyncThunk("squads/fetchCompanySquads", 
 
 export const upsertSquads = createAsyncThunk(
   "squads/upsertSquads",
-  async ({ companyId, offmaps }, { getState, rejectWithValue }) => {
-    const squads = selectCurrentSquads(getState())
+  async ({ companyId }, { getState, rejectWithValue }) => {
+    const state = getState()
+    const offmaps = selectMergedCompanyOffmaps(state)
+    const squadUpgrades = selectFlatSquadUpgrades(state)
+    const squads = selectCurrentSquads(state)
+
     try {
-      const response = await axios.post(`/companies/${companyId}/squads`, { squads, offmaps })
+      const response = await axios.post(`/companies/${companyId}/squads`, { squads, offmaps, squadUpgrades })
       return response.data
     } catch (err) {
       return rejectWithValue(err.response.data)
@@ -286,6 +292,7 @@ const squadsSlice = createSlice({
       state.selectedSquadTab = action.payload.tab
       state.selectedSquadIndex = action.payload.index
       state.selectedSquadUuid = action.payload.uuid
+      state.selectedSquadTransportUuid = action.payload.transportUuid
     }
   },
   extraReducers(builder) {
@@ -382,9 +389,14 @@ export const selectCallinModifiers = state => state.squads.callinModifiers
 export const selectSelectedSquad = state => {
   const tab = state.squads.selectedSquadTab,
     index = state.squads.selectedSquadIndex,
-    uuid = state.squads.selectedSquadUuid;
+    uuid = state.squads.selectedSquadUuid,
+    transportUuid = state.squads.selectedSquadTransportUuid;
   if (!_.isNil(tab) && !_.isNil(index) && !_.isNil(uuid)) {
-    return state.squads[tab][index][uuid]
+    if (!_.isNil(transportUuid)) {
+      return state.squads[tab][index][transportUuid].transportedSquads[uuid]
+    } else {
+      return state.squads[tab][index][uuid]
+    }
   }
   return null
 }

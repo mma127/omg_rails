@@ -17,6 +17,9 @@ import { createSquad } from "../units/squad";
 import { nanoid } from "@reduxjs/toolkit";
 import { TransportSlots } from "./TransportSlots";
 import { TransportDropTarget } from "./TransportDropTarget";
+import { SquadUpgrades } from "../squad_upgrades/SquadUpgrades";
+import { removeSquadUpgrade } from "../squad_upgrades/squadUpgradesSlice";
+import { removeCost } from "../../companiesSlice";
 
 const useStyles = makeStyles(() => ({
   squadCard: {
@@ -72,6 +75,7 @@ export const SquadCard = (
     enabled,
     onTransportedSquadCreate,
     onSquadMove,
+    onSquadUpgradeDestroyClick,
   }
 ) => {
   const classes = useStyles()
@@ -165,7 +169,7 @@ export const SquadCard = (
   }
 
   const onUnitClick = (availableUnitId) => {
-    onSquadClick(availableUnitId, squad.tab, squad.index, squad.uuid)
+    onSquadClick(availableUnitId, squad.tab, squad.index, squad.uuid, transportUuid)
   }
 
   let deleteContent = ""
@@ -173,7 +177,7 @@ export const SquadCard = (
     deleteContent = <DeleteOutlineIcon
       onClick={() => onDestroyClick(squad)}
       className={classes.deleteIcon}
-      color="error" />
+      color="error"/>
   }
 
   let transportContent
@@ -195,19 +199,20 @@ export const SquadCard = (
                                             transportUuid={uuid}
                                             onSquadClick={onSquadClick}
                                             transportSquadDelete={transportSquadDelete}
-                                            enabled={enabled} />
+                                            onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
+                                            enabled={enabled}/>
 
     transportSlotsContent = <TransportSlots usedSquadSlots={usedSquadSlots}
                                             usedModelSlots={usedModelSlots}
                                             maxSquadSlots={unit.transportSquadSlots}
-                                            maxModelSlots={unit.transportModelSlots} />
+                                            maxModelSlots={unit.transportModelSlots}/>
   }
 
   // Use a specific drag handle class so the entire card doesn't drag. This allows nesting SquadCards of transported units
   let dragHandleClassName = `unit-card-drag-handle-${uuid}`
   return (
     <DragDropContainer targetKey="squad"
-                       onDragStart={() => onSquadClick(squad.availableUnitId, squad.tab, squad.index, squad.uuid)}
+                       onDragStart={() => onSquadClick(squad.availableUnitId, squad.tab, squad.index, squad.uuid, transportUuid)}
                        noDragging={!enabled}
                        dragHandleClassName={dragHandleClassName}
                        dragData={
@@ -235,7 +240,9 @@ export const SquadCard = (
         >
           <Box sx={{ p: 1 }} className={classes.squadCardItems}>
             <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
-                      onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName} />
+                      onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
+            <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeDestroyClick}
+                           enabled={enabled}/>
             {transportContent}
             <Box className={classes.slotsDeleteWrapper}>
               {deleteContent}

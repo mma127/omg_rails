@@ -4,18 +4,11 @@ import { Box, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import '../../../../../assets/stylesheets/CompanyGridDropTarget.css'
 import { SquadCard } from "./SquadCard";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  clearNotifySnackbar, selectAntiArmourSquads, selectArmourSquads,
-  selectAssaultSquads,
-  selectCallinModifiers,
-  selectCoreSquads, selectInfantrySquads, selectSquadsInTabIndex, selectSupportSquads,
-  showSnackbar
-} from "../units/squadsSlice";
+import { useSelector } from "react-redux";
+import { selectCallinModifiers, selectSquadsInTabIndex } from "../units/squadsSlice";
 import { GLIDER } from "../../../../constants/units/types";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
-import { ANTI_ARMOUR, ARMOUR, ASSAULT, CORE, INFANTRY, SUPPORT } from "../../../../constants/company";
 
 const useStyles = makeStyles(() => ({
   placementBox: {
@@ -57,10 +50,10 @@ export const CompanyGridDropTarget = ({
                                         onSquadClick,
                                         onSquadDestroy,
                                         onSquadMove,
+                                        onSquadUpgradeDestroyClick,
                                         enabled
                                       }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
 
   console.log(`Rendering tab ${currentTab} and index ${gridIndex}`)
   const squads = useSelector(state => selectSquadsInTabIndex(state, currentTab, gridIndex))
@@ -143,6 +136,7 @@ export const CompanyGridDropTarget = ({
                                  onDestroyClick={onDestroyClick}
                                  onTransportedSquadCreate={onTransportedSquadCreate}
                                  onSquadMove={onSquadMove}
+                                 onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
       />)
     }
   }

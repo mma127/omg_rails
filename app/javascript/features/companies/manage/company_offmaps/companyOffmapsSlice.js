@@ -23,16 +23,19 @@ const companyOffmapsSlice = createSlice({
       } else {
         state.newCompanyOffmaps[availableOffmapId] = [newCompanyOffmap]
       }
+      state.isChanged = true
     },
     removeNewCompanyOffmap(state, action) {
       const { availableOffmapId } = action.payload
       if (availableOffmapId in state.newCompanyOffmaps) {
         state.newCompanyOffmaps[availableOffmapId] = _.dropRight(state.newCompanyOffmaps[availableOffmapId], 1)
       }
+      state.isChanged = true
     },
     removeExistingCompanyOffmap(state, action) {
       const { id } = action.payload
       companyOffmapsAdapter.removeOne(state, id)
+      state.isChanged = true
     }
   },
   extraReducers(builder) {
@@ -44,6 +47,7 @@ const companyOffmapsSlice = createSlice({
       .addCase(upsertSquads.fulfilled, (state, action) => {
         companyOffmapsAdapter.setAll(state, action.payload.companyOffmaps)
         state.newCompanyOffmaps = {}
+        state.isChanged = false
       })
   }
 })
@@ -63,5 +67,5 @@ export const selectNewCompanyOffmaps = state => state.companyOffmaps.newCompanyO
 const selectCompanyOffmapEntities = state => state.companyOffmaps.entities
 const selectCompanyOffmapNew = state => state.companyOffmaps.newCompanyOffmaps
 export const selectMergedCompanyOffmaps = createSelector([selectCompanyOffmapEntities, selectCompanyOffmapNew], (entities, newEntities) => {
-  _.values(entities).concat(_.values(newEntities).flat())
+  return _.values(entities).concat(_.values(newEntities).flat()) || []
 })

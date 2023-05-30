@@ -20,10 +20,28 @@
 #  fk_rails_...  (squad_id => squads.id)
 #
 class SquadUpgrade < ApplicationRecord
-  belongs_to :squad
+  belongs_to :squad, inverse_of: :squad_upgrades
   belongs_to :available_upgrade
   has_one :upgrade, through: :available_upgrade
 
   validates :squad, presence: true
   validates :available_upgrade, presence: true
+
+  def squad_uuid
+    squad.uuid
+  end
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :squad_id, as: :squadId
+    expose :available_upgrade_id, as: :availableUpgradeId
+    expose :squad_uuid, as: :squadUuid
+
+    expose :upgrade, using: Upgrade::Entity, if: { type: :include_upgrade }
+    expose :available_upgrade, using: AvailableUpgrade::Entity, as: :availableUpgrade, if: { type: :include_upgrade }
+  end
 end

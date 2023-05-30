@@ -5,6 +5,7 @@ module Entities
     expose :company_offmaps, using: CompanyOffmap::Entity, as: :companyOffmaps
     expose :available_offmaps, using: AvailableOffmap::Entity, as: :availableOffmaps
     expose :callin_modifiers, using: CallinModifier::Entity, as: :callinModifiers
+    expose :squad_upgrades, using: SquadUpgrade::Entity, as: :squadUpgrades
     expose :available_upgrades, using: AvailableUpgrade::Entity, as: :availableUpgrades
     expose :upgrades, using: Upgrade::Entity, as: :upgrades
   end

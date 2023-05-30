@@ -44,14 +44,15 @@ class Company < ApplicationRecord
   has_many :available_upgrades, dependent: :destroy
 
   has_many :squads, dependent: :destroy
+  has_many :squad_upgrades, through: :squads
   has_many :company_unlocks, dependent: :destroy
   has_many :doctrine_unlocks, through: :company_unlocks
   has_many :unlocks, through: :doctrine_unlocks
   has_many :company_offmaps, dependent: :destroy
-  has_many :offmaps, through: :available_offmaps
+  has_many :offmaps, -> { distinct }, through: :available_offmaps
   has_many :company_callin_modifiers, dependent: :destroy
-  has_many :callin_modifiers, through: :company_callin_modifiers
-  has_many :upgrades, through: :available_upgrades
+  has_many :callin_modifiers, -> { distinct }, through: :company_callin_modifiers
+  has_many :upgrades, -> { distinct }, through: :available_upgrades
   has_many :company_resource_bonuses, dependent: :destroy
   has_many :battle_players
 

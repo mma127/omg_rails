@@ -85,8 +85,9 @@ RSpec.describe CompanyService do
 
   describe "#update_company_squads" do
     let!(:offmaps_param) { [] }
+    let!(:squad_upgrades_param) { [] }
 
-    subject { instance.update_company_squads(company, squads_param, offmaps_param) }
+    subject { instance.update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param) }
 
     context "when the Company is empty" do
       let!(:company) { instance.create_company(doctrine, name) }
@@ -95,97 +96,84 @@ RSpec.describe CompanyService do
       let!(:available_unit_3) { company.available_units.find_by(unit_id: unit3.id) }
       let!(:available_offmap_1) { company.available_offmaps.find_by(offmap: offmap1) }
       let!(:available_offmap_2) { company.available_offmaps.find_by(offmap: offmap2) }
+      let!(:available_upgrade_1_1) { company.available_upgrades.find_by(upgrade: upgrade1, unit: unit1) }
+      let!(:available_upgrade_1_2) { company.available_upgrades.find_by(upgrade: upgrade1, unit: unit2) }
+      let!(:available_upgrade_2) { company.available_upgrades.find_by(upgrade: upgrade2) }
+      let!(:available_upgrade_3) { company.available_upgrades.find_by(upgrade: upgrade3) }
       let!(:squads_param) do
-        [
-          {
-            squad_id: nil,
-            unit_id: unit1.id,
-            available_unit_id: available_unit_1.id,
-            name: nil,
-            vet: 0,
-            tab: "core",
-            index: 0,
-            uuid: "1",
-            upgrades: []
-          },
-          {
-            squad_id: nil,
-            unit_id: unit2.id,
-            available_unit_id: available_unit_2.id,
-            name: nil,
-            vet: 0,
-            tab: "core",
-            index: 0,
-            uuid: '2',
-            upgrades: []
-          },
-          {
-            squad_id: nil,
-            unit_id: unit2.id,
-            available_unit_id: available_unit_2.id,
-            name: nil,
-            vet: 0,
-            tab: "core",
-            index: 1,
-            uuid: "3",
-            upgrades: []
-          },
-          {
-            squad_id: nil,
-            unit_id: unit2.id,
-            available_unit_id: available_unit_2.id,
-            name: nil,
-            vet: 0,
-            tab: "infantry",
-            index: 0,
-            uuid: "4",
-            upgrades: []
-          },
-          {
-            squad_id: nil,
-            unit_id: unit2.id,
-            available_unit_id: available_unit_2.id,
-            name: nil,
-            vet: 0,
-            tab: "infantry",
-            index: 1,
-            uuid: "5",
-            upgrades: []
-          },
-          {
-            squad_id: nil,
-            unit_id: unit1.id,
-            available_unit_id: available_unit_1.id,
-            name: nil,
-            vet: 0,
-            tab: "infantry",
-            index: 2,
-            uuid: "6",
-            upgrades: []
-          },
-          {
-            squad_id: nil,
-            unit_id: unit1.id,
-            name: nil,
-            available_unit_id: available_unit_1.id,
-            vet: 0,
-            tab: "infantry",
-            index: 2,
-            uuid: "7",
-            upgrades: []
-          },
-          {
-            squad_id: nil,
-            unit_id: unit3.id,
-            available_unit_id: available_unit_3.id,
-            name: nil,
-            vet: 0,
-            tab: "armour",
-            index: 1,
-            uuid: "8",
-            upgrades: []
-          }
-        ]
+        [{
+           squad_id: nil,
+           unit_id: unit1.id,
+           available_unit_id: available_unit_1.id,
+           name: nil,
+           vet: 0,
+           tab: "core",
+           index: 0,
+           uuid: "1"
+         }, {
+           squad_id: nil,
+           unit_id: unit2.id,
+           available_unit_id: available_unit_2.id,
+           name: nil,
+           vet: 0,
+           tab: "core",
+           index: 0,
+           uuid: '2'
+         }, {
+           squad_id: nil,
+           unit_id: unit2.id,
+           available_unit_id: available_unit_2.id,
+           name: nil,
+           vet: 0,
+           tab: "core",
+           index: 1,
+           uuid: "3"
+         }, {
+           squad_id: nil,
+           unit_id: unit2.id,
+           available_unit_id: available_unit_2.id,
+           name: nil,
+           vet: 0,
+           tab: "infantry",
+           index: 0,
+           uuid: "4"
+         }, {
+           squad_id: nil,
+           unit_id: unit2.id,
+           available_unit_id: available_unit_2.id,
+           name: nil,
+           vet: 0,
+           tab: "infantry",
+           index: 1,
+           uuid: "5"
+         }, {
+           squad_id: nil,
+           unit_id: unit1.id,
+           available_unit_id: available_unit_1.id,
+           name: nil,
+           vet: 0,
+           tab: "infantry",
+           index: 2,
+           uuid: "6"
+         }, {
+           squad_id: nil,
+           unit_id: unit1.id,
+           name: nil,
+           available_unit_id: available_unit_1.id,
+           vet: 0,
+           tab: "infantry",
+           index: 2,
+           uuid: "7"
+         }, {
+           squad_id: nil,
+           unit_id: unit3.id,
+           available_unit_id: available_unit_3.id,
+           name: nil,
+           vet: 0,
+           tab: "armour",
+           index: 1,
+           uuid: "8"
+         }]
       end
       let!(:offmaps_param) do
         [{
@@ -197,6 +185,34 @@ RSpec.describe CompanyService do
          }, {
            company_offmap_id: nil,
            available_offmap_id: available_offmap_2.id
+         }]
+      end
+      let!(:squad_upgrades_param) do
+        [{
+           squad_upgrade_id: nil,
+           available_upgrade_id: available_upgrade_1_1.id,
+           squad_id: nil,
+           squad_uuid: '1'
+         }, {
+           squad_upgrade_id: nil,
+           available_upgrade_id: available_upgrade_1_2.id,
+           squad_id: nil,
+           squad_uuid: '2'
+         }, {
+           squad_upgrade_id: nil,
+           available_upgrade_id: available_upgrade_1_2.id,
+           squad_id: nil,
+           squad_uuid: '3'
+         }, {
+           squad_upgrade_id: nil,
+           available_upgrade_id: available_upgrade_2.id,
+           squad_id: nil,
+           squad_uuid: '3'
+         }, {
+           squad_upgrade_id: nil,
+           available_upgrade_id: available_upgrade_3.id,
+           squad_id: nil,
+           squad_uuid: '8'
          }]
       end
 
@@ -231,10 +247,19 @@ RSpec.describe CompanyService do
         expect(available_offmaps.find_by(offmap: offmap2).available).to eq 1
       end
 
+      it "creates all input SquadUpgrades for the Company" do
+        _, _, _, _, squad_upgrades = subject
+        expect(squad_upgrades.size).to eq squad_upgrades_param.size
+        expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
+        expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 2
+        expect(squad_upgrades.where(available_upgrade: available_upgrade_2).count).to eq 1
+        expect(squad_upgrades.where(available_upgrade: available_upgrade_3).count).to eq 1
+      end
+
       it "raises a validation error when the Company does not belong to the Player" do
         player2 = create :player
         expect {
-          CompanyService.new(player2).update_company_squads(company, squads_param, offmaps_param)
+          CompanyService.new(player2).update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Player #{player2.id} cannot delete Company #{company.id}")
@@ -267,6 +292,16 @@ RSpec.describe CompanyService do
                 "Given company offmap ids [#{unknown_company_offmap_id}] that don't exist for the company #{company.id}")
       end
 
+      it "raises a validation error if a SquadUpgrade id is given that's not part of the Company" do
+        unknown_squad_upgrade_id = 9999999
+        invalid_squad_upgrade_param = { squad_upgrade_id: unknown_squad_upgrade_id, available_upgrade_id: available_upgrade_1_1.id }
+        squad_upgrades_param << invalid_squad_upgrade_param
+        expect { subject }
+          .to raise_error(
+                CompanyService::CompanyUpdateValidationError,
+                "Given squad upgrade ids [#{unknown_squad_upgrade_id}] that don't exist for the company #{company.id}")
+      end
+
       it "raises a validation error if an invalid Unit id is given" do
         unknown_unit_id = 99999999
         invalid_squad_param = { squad_id: nil,
@@ -278,7 +313,7 @@ RSpec.describe CompanyService do
                                 index: 0 }
         squads_param << invalid_squad_param
         expect {
-          instance.update_company_squads(company, squads_param, offmaps_param)
+          instance.update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Invalid unit id(s) given in company squad update: [#{unknown_unit_id}]"
@@ -297,7 +332,7 @@ RSpec.describe CompanyService do
                                 index: 0 }
         squads_param << invalid_squad_param
         expect {
-          instance.update_company_squads(company, squads_param, offmaps_param)
+          instance.update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Invalid available_unit_id(s) given in company #{company.id} squad update: [#{new_available_unit.id}]"
@@ -317,33 +352,133 @@ RSpec.describe CompanyService do
              )
       end
 
+      it "raises a validation error if an AvailableUpgrade id is given that doesn't match any AvailableUpgrade in the Company" do
+        new_upgrade = create :upgrade
+        new_available_upgrade = create :available_upgrade, upgrade: new_upgrade # company will not be the same
+        invalid_upgrade_param = { squad_upgrade_id: nil, available_upgrade_id: new_available_upgrade.id }
+        squad_upgrades_param << invalid_upgrade_param
+        expect {
+          subject
+        }.to raise_error(
+               CompanyService::CompanyUpdateValidationError,
+               "Invalid available_upgrade_id(s) given in company #{company.id} squad update: [#{new_available_upgrade.id}]"
+             )
+      end
+
+      it "raises a validation error if a squad_upgrade's squad_uuid does not match any squad's uuid in the Company" do
+        unknown_uuid = '43989534'
+        invalid_upgrade_param = { squad_upgrade_id: nil, available_upgrade_id: available_upgrade_1_1.id, squad_id: nil, squad_uuid: unknown_uuid }
+        squad_upgrades_param << invalid_upgrade_param
+        expected_error = { unknown_uuid => [invalid_upgrade_param] }
+        expect {
+          subject
+        }.to raise_error(
+               CompanyService::CompanyUpdateValidationError,
+               "Found squad upgrades not associated with a squad uuid: #{expected_error}"
+             )
+      end
+
+      context "when an upgrade has a max" do
+        let!(:enabled_upgrade1) { create :enabled_upgrade, upgrade: upgrade1, pop: 0, man: 0, mun: 35, fuel: 0, uses: 2, max: 1, restriction: restriction_faction, ruleset: ruleset }
+        let!(:squad_upgrades_param) do
+          [{
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_1_1.id,
+             squad_id: nil,
+             squad_uuid: '1'
+           }, {
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_1_1.id,
+             squad_id: nil,
+             squad_uuid: '1'
+           }]
+        end
+
+        it "raises a validation if squad exceeds the max number of that upgrade" do
+          expect { subject }
+            .to raise_error(
+                  CompanyService::CompanyUpdateValidationError,
+                  "Found 2 uses of available upgrade #{available_upgrade_1_1.id} with max 1, for company #{company.id} update and squad available unit id #{available_unit_1.id}" )
+        end
+      end
+
+      context "when an upgrade has slots" do
+        let(:unit1) { create :unit, upgrade_slots: 1 }
+        let(:upgrade1) { create :upgrade, upgrade_slots: 1 }
+        let!(:squad_upgrades_param) do
+          [{
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_1_1.id,
+             squad_id: nil,
+             squad_uuid: '1'
+           }, {
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_1_1.id,
+             squad_id: nil,
+             squad_uuid: '1'
+           }]
+        end
+
+        it "raises a validation if squad exceeds the upgrade slot limit of that upgrade" do
+          expect { subject }
+            .to raise_error(
+                  CompanyService::CompanyUpdateValidationError,
+                  "Found 2 upgrade slots used for unit #{unit1.id} with #{unit1.upgrade_slots} upgrade slots, for company #{company.id} update and squad available unit id #{available_unit_1.id}" )
+        end
+      end
+
+      context "when an upgrade has unitwide slots" do
+        let(:unit1) { create :unit, unitwide_upgrade_slots: 1 }
+        let(:upgrade1) { create :upgrade, unitwide_upgrade_slots: 1 }
+        let!(:squad_upgrades_param) do
+          [{
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_1_1.id,
+             squad_id: nil,
+             squad_uuid: '1'
+           }, {
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_1_1.id,
+             squad_id: nil,
+             squad_uuid: '1'
+           }]
+        end
+
+        it "raises a validation if squad exceeds the unitwide upgrade slot limit of that upgrade" do
+          expect { subject }
+            .to raise_error(
+                  CompanyService::CompanyUpdateValidationError,
+                  "Found 2 unitwide upgrade slots used for unit #{unit1.id} with #{unit1.unitwide_upgrade_slots} unitwide upgrade slots, for company #{company.id} update and squad available unit id #{available_unit_1.id}" )
+        end
+      end
+
       context "when the resource quantities are small" do
         before do
           ruleset.update!(starting_man: 200, starting_mun: 200, starting_fuel: 200)
         end
         it "raises a validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources" do
           expect {
-            instance.update_company_squads(company.reload, squads_param, offmaps_param)
+            instance.update_company_squads(company.reload, squads_param, offmaps_param, squad_upgrades_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
-                 "Invalid squad update, negative resource balance found: -600 manpower, -860 munitions, -120 fuel"
+                 "Invalid squad update, negative resource balance found: -700 manpower, -985 munitions, -170 fuel"
                )
         end
       end
 
       it "raises a validation error if a platoon has too little pop" do
-        invalid_squad_param = { squad_id: nil,
-                                unit_id: unit1.id,
-                                available_unit_id: available_unit_1.id,
-                                name: nil,
-                                vet: 0,
-                                tab: "core",
-                                index: 0 }
+        squads_param << { squad_id: nil,
+                          unit_id: unit1.id,
+                          available_unit_id: available_unit_1.id,
+                          name: nil,
+                          vet: 0,
+                          tab: "core",
+                          index: 2, uuid: "10" }
         expect {
-          instance.update_company_squads(company, [invalid_squad_param], offmaps_param)
+          instance.update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
-               "Platoon at [core 0] has 4.0 pop, must be between 7 and 25, inclusive"
+               "Platoon at [core 2] has 4.0 pop, must be between 7 and 25, inclusive"
              )
       end
 
@@ -357,7 +492,38 @@ RSpec.describe CompanyService do
                                 index: 1 }
         squads_param << invalid_squad_param
         expect {
-          instance.update_company_squads(company, squads_param, offmaps_param)
+          instance.update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param)
+        }.to raise_error(
+               CompanyService::CompanyUpdateValidationError,
+               "Platoon at [armour 1] has 26.0 pop, must be between 7 and 25, inclusive"
+             )
+      end
+
+      it "raises a validation error if a platoon has too much pop from squad upgrade" do
+        squads_param << { squad_id: nil,
+                          unit_id: unit1.id,
+                          available_unit_id: available_unit_1.id,
+                          name: nil,
+                          vet: 0,
+                          tab: "armour",
+                          index: 1,
+                          uuid: '9' }
+        squads_param << { squad_id: nil,
+                          unit_id: unit2.id,
+                          available_unit_id: available_unit_2.id,
+                          name: nil,
+                          vet: 0,
+                          tab: "armour",
+                          index: 1,
+                          uuid: '10' }
+        squad_upgrades_param << {
+          squad_upgrade_id: nil,
+          available_upgrade_id: available_upgrade_2.id,
+          squad_id: nil,
+          squad_uuid: '10'
+        }
+        expect {
+          instance.update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Platoon at [armour 1] has 26.0 pop, must be between 7 and 25, inclusive"
@@ -367,7 +533,7 @@ RSpec.describe CompanyService do
       it "raises a validation error if there's insufficient availability to create a squad of a certain unit" do
         available_unit_2.reload.update!(available: 1)
         expect {
-          instance.update_company_squads(company.reload, squads_param, offmaps_param)
+          instance.update_company_squads(company.reload, squads_param, offmaps_param, squad_upgrades_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
                "Insufficient availability to create squads for available unit #{available_unit_2.id} in company #{company.id}: Existing count 0, payload count 4, available number 1"
@@ -386,101 +552,88 @@ RSpec.describe CompanyService do
         let(:transportedSquadUuids1) { [uuid2] }
         let(:transportedSquadUuids2) { [uuid4, uuid5] }
         let!(:squads_param) do
-          [
-            {
-              squad_id: nil,
-              unit_id: unit1.id,
-              available_unit_id: available_unit_1.id,
-              name: nil,
-              vet: 0,
-              tab: "core",
-              index: 0,
-              uuid: uuid1,
-              transportedSquadUuids: transportedSquadUuids1,
-              upgrades: []
-            },
-            {
-              squad_id: nil,
-              unit_id: unit2.id,
-              available_unit_id: available_unit_2.id,
-              name: nil,
-              vet: 0,
-              tab: "core",
-              index: 0,
-              uuid: uuid2,
-              transportUuid: uuid1,
-              upgrades: []
-            },
-            {
-              squad_id: nil,
-              unit_id: unit2.id,
-              available_unit_id: available_unit_2.id,
-              name: nil,
-              vet: 0,
-              tab: "infantry",
-              index: 0,
-              uuid: "4",
-              upgrades: []
-            },
-            {
-              squad_id: nil,
-              unit_id: unit2.id,
-              available_unit_id: available_unit_2.id,
-              name: nil,
-              vet: 0,
-              tab: "infantry",
-              index: 1,
-              uuid: "5",
-              upgrades: []
-            },
-            {
-              squad_id: nil,
-              unit_id: unit1.id,
-              available_unit_id: available_unit_1.id,
-              name: nil,
-              vet: 0,
-              tab: "infantry",
-              index: 2,
-              uuid: uuid3,
-              transportedSquadUuids: transportedSquadUuids2,
-              upgrades: []
-            },
-            {
-              squad_id: nil,
-              unit_id: unit2.id,
-              name: nil,
-              available_unit_id: available_unit_2.id,
-              vet: 0,
-              tab: "infantry",
-              index: 2,
-              uuid: uuid4,
-              transportUuid: uuid3,
-              upgrades: []
-            },
-            {
-              squad_id: nil,
-              unit_id: unit2.id,
-              name: nil,
-              available_unit_id: available_unit_2.id,
-              vet: 0,
-              tab: "infantry",
-              index: 2,
-              uuid: uuid5,
-              transportUuid: uuid3,
-              upgrades: []
-            },
-            {
-              squad_id: nil,
-              unit_id: unit3.id,
-              available_unit_id: available_unit_3.id,
-              name: nil,
-              vet: 0,
-              tab: "armour",
-              index: 1,
-              uuid: "8",
-              upgrades: []
-            }
-          ]
+          [{
+             squad_id: nil,
+             unit_id: unit1.id, available_unit_id: available_unit_1.id,
+             name: nil, vet: 0,
+             tab: "core", index: 0,
+             uuid: uuid1,
+             transportedSquadUuids: transportedSquadUuids1
+           }, {
+             squad_id: nil,
+             unit_id: unit2.id, available_unit_id: available_unit_2.id,
+             name: nil, vet: 0,
+             tab: "core", index: 0,
+             uuid: uuid2,
+             transportUuid: uuid1
+           }, {
+             squad_id: nil,
+             unit_id: unit2.id, available_unit_id: available_unit_2.id,
+             name: nil, vet: 0,
+             tab: "infantry", index: 0,
+             uuid: "4"
+           }, {
+             squad_id: nil,
+             unit_id: unit2.id, available_unit_id: available_unit_2.id,
+             name: nil, vet: 0,
+             tab: "infantry", index: 1,
+             uuid: "5"
+           }, {
+             squad_id: nil,
+             unit_id: unit1.id, available_unit_id: available_unit_1.id,
+             name: nil, vet: 0,
+             tab: "infantry", index: 2,
+             uuid: uuid3,
+             transportedSquadUuids: transportedSquadUuids2
+           }, {
+             squad_id: nil,
+             unit_id: unit2.id, available_unit_id: available_unit_2.id,
+             name: nil, vet: 0,
+             tab: "infantry", index: 2,
+             uuid: uuid4,
+             transportUuid: uuid3
+           }, {
+             squad_id: nil,
+             unit_id: unit2.id, available_unit_id: available_unit_2.id,
+             name: nil, vet: 0,
+             tab: "infantry", index: 2,
+             uuid: uuid5,
+             transportUuid: uuid3
+           }, {
+             squad_id: nil,
+             unit_id: unit3.id, available_unit_id: available_unit_3.id,
+             name: nil, vet: 0,
+             tab: "armour", index: 1,
+             uuid: "8"
+           }]
+        end
+        let!(:squad_upgrades_param) do
+          [{
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_1_1.id,
+             squad_id: nil,
+             squad_uuid: uuid1
+           }, {
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_1_2.id,
+             squad_id: nil,
+             squad_uuid: uuid2
+           }, {
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_1_2.id,
+             squad_id: nil,
+             squad_uuid: '4'
+           }, {
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_2.id,
+             squad_id: nil,
+             squad_uuid: uuid4
+           }, {
+             squad_upgrade_id: nil,
+             available_upgrade_id: available_upgrade_3.id,
+             squad_id: nil,
+             squad_uuid: "8"
+           }]
         end
 
         it "creates all squads" do
@@ -504,72 +657,73 @@ RSpec.describe CompanyService do
           expect(transport2.squads_in_transport.second.uuid).to eq uuid5
         end
 
+        it "creates all input SquadUpgrades for the Company" do
+          _, _, _, _, squad_upgrades = subject
+          expect(squad_upgrades.size).to eq squad_upgrades_param.size
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 2
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_2).count).to eq 1
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_3).count).to eq 1
+        end
+
         context "when the transport uuid relationships are invalid" do
           let(:transportedSquadUuids1) { [] }
           let(:transportedSquadUuids2) { [uuid4, uuid5] }
           let!(:squads_param) do
-            [
-              {
-                squad_id: nil,
-                unit_id: unit1.id,
-                available_unit_id: available_unit_1.id,
-                name: nil,
-                vet: 0,
-                tab: "core",
-                index: 0,
-                uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit2.id,
-                available_unit_id: available_unit_2.id,
-                name: nil,
-                vet: 0,
-                tab: "core",
-                index: 0,
-                uuid: uuid2,
-                transportUuid: uuid1,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit1.id,
-                available_unit_id: available_unit_1.id,
-                name: nil,
-                vet: 0,
-                tab: "infantry",
-                index: 2,
-                uuid: uuid3,
-                transportedSquadUuids: transportedSquadUuids2,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit2.id,
-                name: nil,
-                available_unit_id: available_unit_2.id,
-                vet: 0,
-                tab: "infantry",
-                index: 2,
-                uuid: uuid4,
-                transportUuid: uuid5,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit2.id,
-                name: nil,
-                available_unit_id: available_unit_2.id,
-                vet: 0,
-                tab: "infantry",
-                index: 2,
-                uuid: uuid5,
-                transportUuid: uuid4,
-                upgrades: []
-              },
-            ]
+            [{
+               squad_id: nil,
+               unit_id: unit1.id, available_unit_id: available_unit_1.id,
+               name: nil, vet: 0,
+               tab: "core", index: 0,
+               uuid: uuid1,
+               transportedSquadUuids: transportedSquadUuids1
+             }, {
+               squad_id: nil,
+               unit_id: unit2.id, available_unit_id: available_unit_2.id,
+               name: nil, vet: 0,
+               tab: "core", index: 0,
+               uuid: uuid2,
+               transportUuid: uuid1
+             }, {
+               squad_id: nil,
+               unit_id: unit1.id, available_unit_id: available_unit_1.id,
+               name: nil, vet: 0,
+               tab: "infantry", index: 2,
+               uuid: uuid3,
+               transportedSquadUuids: transportedSquadUuids2
+             }, {
+               squad_id: nil,
+               unit_id: unit2.id, available_unit_id: available_unit_2.id,
+               name: nil, vet: 0,
+               tab: "infantry", index: 2,
+               uuid: uuid4,
+               transportUuid: uuid5
+             }, {
+               squad_id: nil,
+               unit_id: unit2.id, available_unit_id: available_unit_2.id,
+               name: nil, vet: 0,
+               tab: "infantry", index: 2,
+               uuid: uuid5,
+               transportUuid: uuid4
+             },]
+          end
+          let!(:squad_upgrades_param) do
+            [{
+               squad_upgrade_id: nil,
+               available_upgrade_id: available_upgrade_1_1.id,
+               squad_id: nil,
+               squad_uuid: uuid1
+             }, {
+               squad_upgrade_id: nil,
+               available_upgrade_id: available_upgrade_1_2.id,
+               squad_id: nil,
+               squad_uuid: uuid2
+             }, {
+               squad_upgrade_id: nil,
+               available_upgrade_id: available_upgrade_2.id,
+               squad_id: nil,
+               squad_uuid: uuid4
+             }]
           end
 
           it "creates all squads" do
@@ -587,6 +741,14 @@ RSpec.describe CompanyService do
             expect(transport1.squads_in_transport.count).to eq 0
             transport2 = Squad.find_by(company: company, uuid: uuid3)
             expect(transport2.squads_in_transport.count).to eq 0
+          end
+
+          it "creates all input SquadUpgrades for the Company" do
+            _, _, _, _, squad_upgrades = subject
+            expect(squad_upgrades.size).to eq squad_upgrades_param.size
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 1
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_2).count).to eq 1
           end
         end
 
@@ -608,73 +770,74 @@ RSpec.describe CompanyService do
             transport2 = Squad.find_by(company: company, uuid: uuid3)
             expect(transport2.squads_in_transport.count).to eq 0
           end
+
+          it "creates all input SquadUpgrades for the Company" do
+            _, _, _, _, squad_upgrades = subject
+            expect(squad_upgrades.size).to eq squad_upgrades_param.size
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 2
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_2).count).to eq 1
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_3).count).to eq 1
+          end
         end
 
         context "when the transport does not have sufficient squad slots" do
           let!(:unit1) { create :unit, transport_squad_slots: 1, transport_model_slots: 12 }
           let!(:squads_param) do
-            [
-              {
-                squad_id: nil,
-                unit_id: unit1.id,
-                available_unit_id: available_unit_1.id,
-                name: nil,
-                vet: 0,
-                tab: "core",
-                index: 0,
-                uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit2.id,
-                available_unit_id: available_unit_2.id,
-                name: nil,
-                vet: 0,
-                tab: "core",
-                index: 0,
-                uuid: uuid2,
-                transportUuid: uuid1,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit1.id,
-                available_unit_id: available_unit_1.id,
-                name: nil,
-                vet: 0,
-                tab: "infantry",
-                index: 2,
-                uuid: uuid3,
-                transportedSquadUuids: transportedSquadUuids2,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit2.id,
-                name: nil,
-                available_unit_id: available_unit_2.id,
-                vet: 0,
-                tab: "infantry",
-                index: 2,
-                uuid: uuid4,
-                transportUuid: uuid3,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit2.id,
-                name: nil,
-                available_unit_id: available_unit_2.id,
-                vet: 0,
-                tab: "infantry",
-                index: 2,
-                uuid: uuid5,
-                transportUuid: uuid3,
-                upgrades: []
-              },
-            ]
+            [{
+               squad_id: nil,
+               unit_id: unit1.id, available_unit_id: available_unit_1.id,
+               name: nil, vet: 0,
+               tab: "core", index: 0,
+               uuid: uuid1,
+               transportedSquadUuids: transportedSquadUuids1
+             }, {
+               squad_id: nil,
+               unit_id: unit2.id, available_unit_id: available_unit_2.id,
+               name: nil, vet: 0,
+               tab: "core", index: 0,
+               uuid: uuid2,
+               transportUuid: uuid1
+             }, {
+               squad_id: nil,
+               unit_id: unit1.id, available_unit_id: available_unit_1.id,
+               name: nil, vet: 0,
+               tab: "infantry", index: 2,
+               uuid: uuid3,
+               transportedSquadUuids: transportedSquadUuids2
+             }, {
+               squad_id: nil,
+               unit_id: unit2.id, available_unit_id: available_unit_2.id,
+               name: nil, vet: 0,
+               tab: "infantry", index: 2,
+               uuid: uuid4,
+               transportUuid: uuid3
+             }, {
+               squad_id: nil,
+               unit_id: unit2.id, available_unit_id: available_unit_2.id,
+               name: nil, vet: 0,
+               tab: "infantry", index: 2,
+               uuid: uuid5,
+               transportUuid: uuid3
+             }]
+          end
+          let!(:squad_upgrades_param) do
+            [{
+               squad_upgrade_id: nil,
+               available_upgrade_id: available_upgrade_1_1.id,
+               squad_id: nil,
+               squad_uuid: uuid1
+             }, {
+               squad_upgrade_id: nil,
+               available_upgrade_id: available_upgrade_1_2.id,
+               squad_id: nil,
+               squad_uuid: uuid2
+             }, {
+               squad_upgrade_id: nil,
+               available_upgrade_id: available_upgrade_2.id,
+               squad_id: nil,
+               squad_uuid: uuid4
+             }]
           end
 
           it "creates all squads" do
@@ -696,73 +859,74 @@ RSpec.describe CompanyService do
             expect(transport2.squads_in_transport.count).to eq 1
             expect(transport2.squads_in_transport.first.uuid).to eq uuid4
           end
+
+          it "creates all input SquadUpgrades for the Company" do
+            _, _, _, _, squad_upgrades = subject
+            expect(squad_upgrades.size).to eq squad_upgrades_param.size
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 1
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_2).count).to eq 1
+          end
         end
 
         context "when the transport does not have sufficient model slots" do
           let!(:unit1) { create :unit, transport_squad_slots: 1, transport_model_slots: 5 }
           let!(:squads_param) do
-            [
-              {
-                squad_id: nil,
-                unit_id: unit1.id,
-                available_unit_id: available_unit_1.id,
-                name: nil,
-                vet: 0,
-                tab: "core",
-                index: 0,
-                uuid: uuid1,
-                transportedSquadUuids: transportedSquadUuids1,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit2.id,
-                available_unit_id: available_unit_2.id,
-                name: nil,
-                vet: 0,
-                tab: "core",
-                index: 0,
-                uuid: uuid2,
-                transportUuid: uuid1,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit1.id,
-                available_unit_id: available_unit_1.id,
-                name: nil,
-                vet: 0,
-                tab: "infantry",
-                index: 2,
-                uuid: uuid3,
-                transportedSquadUuids: transportedSquadUuids2,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit2.id,
-                name: nil,
-                available_unit_id: available_unit_2.id,
-                vet: 0,
-                tab: "infantry",
-                index: 2,
-                uuid: uuid4,
-                transportUuid: uuid3,
-                upgrades: []
-              },
-              {
-                squad_id: nil,
-                unit_id: unit2.id,
-                name: nil,
-                available_unit_id: available_unit_2.id,
-                vet: 0,
-                tab: "infantry",
-                index: 2,
-                uuid: uuid5,
-                transportUuid: uuid3,
-                upgrades: []
-              },
-            ]
+            [{
+               squad_id: nil,
+               unit_id: unit1.id, available_unit_id: available_unit_1.id,
+               name: nil, vet: 0,
+               tab: "core", index: 0,
+               uuid: uuid1,
+               transportedSquadUuids: transportedSquadUuids1
+             }, {
+               squad_id: nil,
+               unit_id: unit2.id, available_unit_id: available_unit_2.id,
+               name: nil, vet: 0,
+               tab: "core", index: 0,
+               uuid: uuid2,
+               transportUuid: uuid1
+             }, {
+               squad_id: nil,
+               unit_id: unit1.id, available_unit_id: available_unit_1.id,
+               name: nil, vet: 0,
+               tab: "infantry", index: 2,
+               uuid: uuid3,
+               transportedSquadUuids: transportedSquadUuids2
+             }, {
+               squad_id: nil,
+               unit_id: unit2.id, available_unit_id: available_unit_2.id,
+               name: nil, vet: 0,
+               tab: "infantry", index: 2,
+               uuid: uuid4,
+               transportUuid: uuid3
+             }, {
+               squad_id: nil,
+               unit_id: unit2.id, available_unit_id: available_unit_2.id,
+               name: nil, vet: 0,
+               tab: "infantry", index: 2,
+               uuid: uuid5,
+               transportUuid: uuid3,
+               upgrades: []
+             }]
+          end
+          let!(:squad_upgrades_param) do
+            [{
+               squad_upgrade_id: nil,
+               available_upgrade_id: available_upgrade_1_1.id,
+               squad_id: nil,
+               squad_uuid: uuid1
+             }, {
+               squad_upgrade_id: nil,
+               available_upgrade_id: available_upgrade_1_2.id,
+               squad_id: nil,
+               squad_uuid: uuid2
+             }, {
+               squad_upgrade_id: nil,
+               available_upgrade_id: available_upgrade_2.id,
+               squad_id: nil,
+               squad_uuid: uuid4
+             }]
           end
 
           it "creates all squads" do
@@ -784,11 +948,19 @@ RSpec.describe CompanyService do
             expect(transport2.squads_in_transport.count).to eq 1
             expect(transport2.squads_in_transport.first.uuid).to eq uuid4
           end
+
+          it "creates all input SquadUpgrades for the Company" do
+            _, _, _, _, squad_upgrades = subject
+            expect(squad_upgrades.size).to eq squad_upgrades_param.size
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 1
+            expect(squad_upgrades.where(available_upgrade: available_upgrade_2).count).to eq 1
+          end
         end
       end
     end
 
-    context "when Company has Squads and CompanyOffmaps" do
+    context "when Company has Squads, CompanyOffmaps, and SquadUpgrades" do
       let!(:unit4) { create :unit }
       let!(:restriction_unit4) { create :enabled_unit, unit: unit4, pop: 8, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: ruleset }
       let!(:company) { instance.create_company(doctrine, name) } # Create the company here to include unit4
@@ -798,21 +970,25 @@ RSpec.describe CompanyService do
       let!(:available_unit_4) { company.available_units.find_by(unit_id: unit4.id) }
       let!(:available_offmap_1) { company.available_offmaps.find_by(offmap: offmap1) }
       let!(:available_offmap_2) { company.available_offmaps.find_by(offmap: offmap2) }
+      let!(:available_upgrade_1_1) { company.available_upgrades.find_by(upgrade: upgrade1, unit: unit1) }
+      let!(:available_upgrade_1_2) { company.available_upgrades.find_by(upgrade: upgrade1, unit: unit2) }
+      let!(:available_upgrade_2) { company.available_upgrades.find_by(upgrade: upgrade2) }
+      let!(:available_upgrade_3) { company.available_upgrades.find_by(upgrade: upgrade3) }
 
       context "without transports" do
         before do
-          squad1 = create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0
-          squad2 = create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 0
-          squad3 = create :squad, company: company, available_unit: available_unit_3, tab_category: "core", category_position: 0
+          squad1 = create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0, uuid: '1'
+          squad2 = create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 0, uuid: '2'
+          squad3 = create :squad, company: company, available_unit: available_unit_3, tab_category: "core", category_position: 0, uuid: '3old'
 
-          squad4 = create :squad, company: company, available_unit: available_unit_2, tab_category: "assault", category_position: 1
+          squad4 = create :squad, company: company, available_unit: available_unit_2, tab_category: "assault", category_position: 1, uuid: '4old'
 
-          squad5 = create :squad, company: company, available_unit: available_unit_1, tab_category: "infantry", category_position: 0
-          squad6 = create :squad, company: company, available_unit: available_unit_1, tab_category: "infantry", category_position: 0
+          squad5 = create :squad, company: company, available_unit: available_unit_1, tab_category: "infantry", category_position: 0, uuid: '4'
+          squad6 = create :squad, company: company, available_unit: available_unit_1, tab_category: "infantry", category_position: 0, uuid: '5'
 
-          squad7 = create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 2
+          squad7 = create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 2, uuid: '6'
 
-          squad8 = create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 3
+          squad8 = create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 3, uuid: '7'
           available_unit_1.update!(available: 3)
           available_unit_2.update!(available: 1)
           available_unit_3.update!(available: 0)
@@ -828,101 +1004,109 @@ RSpec.describe CompanyService do
           available_offmap_1.update!(available: 0)
           available_offmap_2.update!(available: 2)
 
+          squad_upgrade1 = create :squad_upgrade, squad: squad1, available_upgrade: available_upgrade_1_1
+          squad_upgrade2_1 = create :squad_upgrade, squad: squad2, available_upgrade: available_upgrade_1_2
+          squad_upgrade2_2 = create :squad_upgrade, squad: squad2, available_upgrade: available_upgrade_2
+          squad_upgrade3 = create :squad_upgrade, squad: squad3, available_upgrade: available_upgrade_3
+          squad_upgrade4 = create :squad_upgrade, squad: squad4, available_upgrade: available_upgrade_1_2
+
           @squads_param = [
             {
               squad_id: squad1.id,
-              unit_id: unit1.id,
-              available_unit_id: available_unit_1.id,
-              name: nil,
-              vet: 0,
-              tab: "core",
-              index: 0,
-              uuid: "1",
-              upgrades: []
-            },
-            {
+              unit_id: unit1.id, available_unit_id: available_unit_1.id,
+              name: nil, vet: 0,
+              tab: "core", index: 0,
+              uuid: "1"
+            }, {
               squad_id: squad2.id,
-              unit_id: unit2.id,
-              available_unit_id: available_unit_2.id,
-              name: nil,
-              vet: 0,
-              tab: "core",
-              index: 0,
-              uuid: "2",
-              upgrades: []
-            },
-            {
+              unit_id: unit2.id, available_unit_id: available_unit_2.id,
+              name: nil, vet: 0,
+              tab: "core", index: 0,
+              uuid: "2"
+            }, {
               squad_id: nil,
-              unit_id: unit4.id,
-              available_unit_id: available_unit_4.id,
-              name: nil,
-              vet: 0,
-              tab: "core",
-              index: 0,
-              uuid: "3",
-              upgrades: []
-            },
-            {
+              unit_id: unit4.id, available_unit_id: available_unit_4.id,
+              name: nil, vet: 0,
+              tab: "core", index: 0,
+              uuid: "3"
+            }, {
               squad_id: squad5.id,
-              unit_id: unit1.id,
-              available_unit_id: available_unit_1.id,
-              name: nil,
-              vet: 0,
-              tab: "infantry",
-              index: 0,
-              uuid: "4",
-              upgrades: []
-            },
-            {
+              unit_id: unit1.id, available_unit_id: available_unit_1.id,
+              name: nil, vet: 0,
+              tab: "infantry", index: 0,
+              uuid: "4"
+            }, {
               squad_id: squad6.id,
-              unit_id: unit1.id,
-              available_unit_id: available_unit_1.id,
-              name: nil,
-              vet: 0,
-              tab: "infantry",
-              index: 0,
-              uuid: "5",
-              upgrades: []
-            },
-            {
+              unit_id: unit1.id, available_unit_id: available_unit_1.id,
+              name: nil, vet: 0,
+              tab: "infantry", index: 0,
+              uuid: "5"
+            }, {
               squad_id: squad7.id,
-              unit_id: unit2.id,
-              available_unit_id: available_unit_2.id,
-              name: nil,
-              vet: 0,
-              tab: "infantry",
-              index: 2,
-              uuid: "6",
-              upgrades: []
-            },
-            {
+              unit_id: unit2.id, available_unit_id: available_unit_2.id,
+              name: nil, vet: 0,
+              tab: "infantry", index: 2,
+              uuid: "6"
+            }, {
               squad_id: squad8.id,
-              unit_id: unit2.id,
-              available_unit_id: available_unit_2.id,
-              name: nil,
-              vet: 0,
-              tab: "infantry",
-              index: 3,
-              uuid: "7",
-              upgrades: []
+              unit_id: unit2.id, available_unit_id: available_unit_2.id,
+              name: nil, vet: 0,
+              tab: "infantry", index: 3,
+              uuid: "7"
             }
           ]
-          @offmaps_param = [
+          @offmaps_param = [{
+                              company_offmap_id: company_offmap1.id,
+                              available_offmap_id: available_offmap_1.id
+                            }, {
+                              company_offmap_id: nil,
+                              available_offmap_id: available_offmap_2.id
+                            }, {
+                              company_offmap_id: nil,
+                              available_offmap_id: available_offmap_2.id
+                            }
+          ]
+          @squad_upgrades_param = [
             {
-              company_offmap_id: company_offmap1.id,
-              available_offmap_id: available_offmap_1.id
+              squad_upgrade_id: squad_upgrade1.id,
+              available_upgrade_id: available_upgrade_1_1.id,
+              squad_id: squad1.id,
+              squad_uuid: '1'
             }, {
-              company_offmap_id: nil,
-              available_offmap_id: available_offmap_2.id
+              squad_upgrade_id: squad_upgrade2_1.id,
+              available_upgrade_id: available_upgrade_1_2.id,
+              squad_id: squad2.id,
+              squad_uuid: '2'
             }, {
-              company_offmap_id: nil,
-              available_offmap_id: available_offmap_2.id
-            }
-          ]
+              squad_upgrade_id: nil,
+              available_upgrade_id: available_upgrade_1_2.id,
+              squad_id: nil,
+              squad_uuid: '3'
+            }, {
+              squad_upgrade_id: squad_upgrade2_2.id,
+              available_upgrade_id: available_upgrade_2.id,
+              squad_id: squad2.id,
+              squad_uuid: '2'
+            }, {
+              squad_upgrade_id: nil,
+              available_upgrade_id: available_upgrade_1_1.id,
+              squad_id: squad6.id,
+              squad_uuid: '5'
+            }, {
+              squad_upgrade_id: nil,
+              available_upgrade_id: available_upgrade_1_2.id,
+              squad_id: squad7.id,
+              squad_uuid: '6'
+            }, {
+              squad_upgrade_id: nil,
+              available_upgrade_id: available_upgrade_2.id,
+              squad_id: squad8.id,
+              squad_uuid: '7'
+            }]
         end
 
         it "creates all input Squads for the Company" do
-          squads, _, _, _ = instance.update_company_squads(company, @squads_param, @offmaps_param)
+          squads, _, _, _ = instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           expect(squads.size).to eq @squads_param.size
 
           expect(squads.where(available_unit: available_unit_1).size).to eq 3
@@ -932,7 +1116,7 @@ RSpec.describe CompanyService do
         end
 
         it "updates the Company's AvailableUnits available value" do
-          _, available_units, _, _ = instance.update_company_squads(company, @squads_param, @offmaps_param)
+          _, available_units, _, _ = instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           expect(available_units.size).to eq 4
           expect(available_unit_1.reload.available).to eq 3
           expect(available_unit_2.reload.available).to eq 2
@@ -943,7 +1127,7 @@ RSpec.describe CompanyService do
         it "creates all input CompanyOffmaps for the Company" do
           company_offmap1 = company.company_offmaps.find_by(available_offmap: available_offmap_1)
           company_offmap2 = company.company_offmaps.find_by(available_offmap: available_offmap_2)
-          _, _, company_offmaps, _ = instance.update_company_squads(company, @squads_param, @offmaps_param)
+          _, _, company_offmaps, _ = instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           expect(company_offmaps.size).to eq @offmaps_param.size
           expect(company_offmaps.where(available_offmap: available_offmap_1).size).to eq 1
           expect(company_offmaps.where(available_offmap: available_offmap_2).size).to eq 2
@@ -952,10 +1136,27 @@ RSpec.describe CompanyService do
         end
 
         it "updates the Company's AvailableOffmaps available value" do
-          _, _, _, available_offmaps = instance.update_company_squads(company, @squads_param, @offmaps_param)
+          _, _, _, available_offmaps = instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           expect(available_offmaps.size).to eq 2
           expect(available_offmaps.find_by(offmap: offmap1).available).to eq 0
           expect(available_offmaps.find_by(offmap: offmap2).available).to eq 1
+        end
+
+        it "creates all input SquadUpgrades for the Company" do
+          squad3 = company.squads.find_by(uuid: '3old')
+          squad4 = company.squads.find_by(uuid: '4old')
+          squad_upgrade3 = company.squad_upgrades.find_by(available_upgrade: available_upgrade_3, squad: squad3)
+          squad_upgrade4 = company.squad_upgrades.find_by(available_upgrade: available_upgrade_1_2, squad: squad4)
+          _, _, _, _, squad_upgrades = instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          expect(squad_upgrades.size).to eq @squad_upgrades_param.size
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).size).to eq 2
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).size).to eq 3
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_2).size).to eq 2
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_3).size).to eq 0
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).pluck(:id)).not_to include squad_upgrade4.id
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_3).pluck(:id)).not_to include squad_upgrade3.id
+          expect(SquadUpgrade.exists?(squad_upgrade3.id)).to be false
+          expect(SquadUpgrade.exists?(squad_upgrade4.id)).to be false
         end
 
         it "raises a validation error if a Squad id is given that's not part of the Company" do
@@ -969,7 +1170,7 @@ RSpec.describe CompanyService do
                                   index: 0 }
           @squads_param << invalid_squad_param
           expect {
-            instance.update_company_squads(company, @squads_param, @offmaps_param)
+            instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Given squad ids [#{unknown_squad_id}] that don't exist for the company #{company.id}"
@@ -980,7 +1181,7 @@ RSpec.describe CompanyService do
           duplicate_company_offmap_id = company.company_offmaps.find_by(available_offmap: available_offmap_1.id).id
           invalid_company_offmap_param = { company_offmap_id: duplicate_company_offmap_id, available_offmap_id: available_offmap_1.id }
           @offmaps_param << invalid_company_offmap_param
-          expect { instance.update_company_squads(company, @squads_param, @offmaps_param) }
+          expect { instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param) }
             .to raise_error(
                   CompanyService::CompanyUpdateValidationError,
                   "Duplicate company offmap ids found in payload company offmap ids: [#{duplicate_company_offmap_id}]")
@@ -990,7 +1191,7 @@ RSpec.describe CompanyService do
           unknown_company_offmap_id = 9999999
           invalid_company_offmap_param = { company_offmap_id: unknown_company_offmap_id, available_offmap_id: available_offmap_1.id }
           @offmaps_param << invalid_company_offmap_param
-          expect { instance.update_company_squads(company, @squads_param, @offmaps_param) }
+          expect { instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param) }
             .to raise_error(
                   CompanyService::CompanyUpdateValidationError,
                   "Given company offmap ids [#{unknown_company_offmap_id}] that don't exist for the company #{company.id}")
@@ -1007,7 +1208,7 @@ RSpec.describe CompanyService do
                                   index: 0 }
           @squads_param << invalid_squad_param
           expect {
-            instance.update_company_squads(company, @squads_param, @offmaps_param)
+            instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Invalid unit id(s) given in company squad update: [#{unknown_unit_id}]"
@@ -1026,7 +1227,7 @@ RSpec.describe CompanyService do
                                   index: 0 }
           @squads_param << invalid_squad_param
           expect {
-            instance.update_company_squads(company, @squads_param, @offmaps_param)
+            instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Invalid available_unit_id(s) given in company #{company.id} squad update: [#{new_available_unit.id}]"
@@ -1039,7 +1240,7 @@ RSpec.describe CompanyService do
           invalid_offmap_param = { company_offmap_id: nil, available_offmap_id: new_available_offmap.id }
           @offmaps_param << invalid_offmap_param
           expect {
-            instance.update_company_squads(company, @squads_param, @offmaps_param)
+            instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Invalid available_offmap_id(s) given in company #{company.id} squad update: [#{new_available_offmap.id}]"
@@ -1052,51 +1253,50 @@ RSpec.describe CompanyService do
           end
           it "raises a validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources" do
             expect {
-              instance.update_company_squads(company.reload, @squads_param, @offmaps_param)
+              instance.update_company_squads(company.reload, @squads_param, @offmaps_param, @squad_upgrades_param)
             }.to raise_error(
                    CompanyService::CompanyUpdateValidationError,
-                   "Invalid squad update, negative resource balance found: -500 manpower, -770 munitions, -80 fuel"
+                   "Invalid squad update, negative resource balance found: -700 manpower, -985 munitions, -80 fuel"
                  )
           end
         end
 
         it "raises a validation error if a platoon has too little pop" do
-          invalid_squad_param = { squad_id: nil,
-                                  unit_id: unit1.id,
-                                  available_unit_id: available_unit_1.id,
-                                  name: nil,
-                                  vet: 0,
-                                  tab: "core",
-                                  index: 0 }
+          @squads_param << { squad_id: nil,
+                             unit_id: unit1.id,
+                             available_unit_id: available_unit_1.id,
+                             name: nil,
+                             vet: 0,
+                             tab: "core",
+                             index: 3 }
           expect {
-            instance.update_company_squads(company, [invalid_squad_param], @offmaps_param)
+            instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
-                 "Platoon at [core 0] has 4.0 pop, must be between 7 and 25, inclusive"
+                 "Platoon at [core 3] has 4.0 pop, must be between 7 and 25, inclusive"
                )
         end
 
-        it "raises a validation error if a platoon has too much pop" do
-          invalid_squad_param = { squad_id: nil,
-                                  unit_id: unit3.id,
-                                  available_unit_id: available_unit_3.id,
-                                  name: nil,
-                                  vet: 0,
-                                  tab: "core",
-                                  index: 0 }
-          @squads_param << invalid_squad_param
+        it "raises a validation error if a platoon has too much pop including squad upgrades" do
+          @squads_param << { squad_id: nil,
+                             unit_id: unit3.id,
+                             available_unit_id: available_unit_3.id,
+                             name: nil,
+                             vet: 0,
+                             tab: "core",
+                             index: 0 }
           expect {
-            instance.update_company_squads(company, @squads_param, @offmaps_param)
+            instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
-                 "Platoon at [core 0] has 32.0 pop, must be between 7 and 25, inclusive"
+                 "Platoon at [core 0] has 34.0 pop, must be between 7 and 25, inclusive"
                )
         end
 
         it "raises a validation error if there's insufficient availability to create a squad of a certain unit" do
           available_unit_4.update!(available: 0)
           expect {
-            instance.update_company_squads(company.reload, @squads_param, @offmaps_param)
+            instance.update_company_squads(company.reload, @squads_param, @offmaps_param, @squad_upgrades_param)
           }.to raise_error(
                  CompanyService::CompanyUpdateValidationError,
                  "Insufficient availability to create squads for available unit #{available_unit_4.id} in company #{company.id}: Existing count 0, payload count 1, available number 0"
@@ -1230,7 +1430,7 @@ RSpec.describe CompanyService do
             ]
           end
 
-          subject { instance.update_company_squads(company, squads_param, offmaps_param) }
+          subject { instance.update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param) }
 
           before do
             available_unit_1.update!(available: 2)
@@ -1758,14 +1958,23 @@ RSpec.describe CompanyService do
       @available_unit_2 = @company.available_units.find_by(unit: unit2)
       @available_unit_3 = @company.available_units.find_by(unit: unit3)
 
-      create :squad, company: @company, available_unit: @available_unit_1, tab_category: "core", category_position: 0
-      create :squad, company: @company, available_unit: @available_unit_2, tab_category: "core", category_position: 0
-      create :squad, company: @company, available_unit: @available_unit_3, tab_category: "core", category_position: 3
+      squad1 = create :squad, company: @company, available_unit: @available_unit_1, tab_category: "core", category_position: 0
+      squad2 = create :squad, company: @company, available_unit: @available_unit_2, tab_category: "core", category_position: 0
+      squad3 = create :squad, company: @company, available_unit: @available_unit_3, tab_category: "core", category_position: 3
 
       @available_offmap_1 = @company.available_offmaps.find_by(offmap: offmap1)
       @available_offmap_2 = @company.available_offmaps.find_by(offmap: offmap2)
       create :company_offmap, company: @company, available_offmap: @available_offmap_1
       create :company_offmap, company: @company, available_offmap: @available_offmap_2
+
+      @available_upgrade_1_1 = @company.available_upgrades.find_by(upgrade: upgrade1, unit: unit1)
+      @available_upgrade_1_2 = @company.available_upgrades.find_by(upgrade: upgrade1, unit: unit2)
+      @available_upgrade_2 = @company.available_upgrades.find_by(upgrade: upgrade2)
+      @available_upgrade_3 = @company.available_upgrades.find_by(upgrade: upgrade3)
+      create :squad_upgrade, squad: squad1, available_upgrade: @available_upgrade_1_1
+      create :squad_upgrade, squad: squad2, available_upgrade: @available_upgrade_1_2
+      create :squad_upgrade, squad: squad2, available_upgrade: @available_upgrade_2
+      create :squad_upgrade, squad: squad3, available_upgrade: @available_upgrade_3
     end
 
     it "destroys the Company" do
@@ -1789,6 +1998,15 @@ RSpec.describe CompanyService do
       expect { subject }.to change { CompanyOffmap.count }.by -2
       expect(CompanyOffmap.where(company_id: @company.id).size).to eq 0
     end
+
+    it "destroys the Company's AvailableUpgrades" do
+      expect { subject }.to change { AvailableUpgrade.count }.by -4
+      expect(AvailableUpgrade.where(company_id: @company.id).size).to eq 0
+    end
+    it "destroys the Company's SquadUpgrades" do
+      expect { subject }.to change { SquadUpgrade.count }.by -4
+      expect(SquadUpgrade.joins(:squad).where(squad: { company_id: @company.id }).size).to eq 0
+    end
   end
 
   describe "#recalculate_resources" do
@@ -1798,17 +2016,26 @@ RSpec.describe CompanyService do
       @available_unit_2 = @company.available_units.find_by(unit: unit2)
       @available_unit_3 = @company.available_units.find_by(unit: unit3)
 
-      create :squad, company: @company, available_unit: @available_unit_1, tab_category: "core", category_position: 0
-      create :squad, company: @company, available_unit: @available_unit_2, tab_category: "core", category_position: 0
-      create :squad, company: @company, available_unit: @available_unit_3, tab_category: "core", category_position: 3
+      squad1 = create :squad, company: @company, available_unit: @available_unit_1, tab_category: "core", category_position: 0
+      squad2 = create :squad, company: @company, available_unit: @available_unit_2, tab_category: "core", category_position: 0
+      squad3 = create :squad, company: @company, available_unit: @available_unit_3, tab_category: "core", category_position: 3
+
+      @available_upgrade_1_1 = @company.available_upgrades.find_by(upgrade: upgrade1, unit: unit1)
+      @available_upgrade_1_2 = @company.available_upgrades.find_by(upgrade: upgrade1, unit: unit2)
+      @available_upgrade_2 = @company.available_upgrades.find_by(upgrade: upgrade2)
+      @available_upgrade_3 = @company.available_upgrades.find_by(upgrade: upgrade3)
+      create :squad_upgrade, squad: squad1, available_upgrade: @available_upgrade_1_1
+      create :squad_upgrade, squad: squad2, available_upgrade: @available_upgrade_1_2
+      create :squad_upgrade, squad: squad2, available_upgrade: @available_upgrade_2
+      create :squad_upgrade, squad: squad3, available_upgrade: @available_upgrade_3
     end
 
     it "calculates the correct resources remaining" do
       man, mun, fuel, pop = instance.recalculate_resources(@company)
-      expect(man).to eq ruleset.starting_man - @available_unit_1.man - @available_unit_2.man - @available_unit_3.man
-      expect(mun).to eq ruleset.starting_mun - @available_unit_1.mun - @available_unit_2.mun - @available_unit_3.mun
-      expect(fuel).to eq ruleset.starting_fuel - @available_unit_1.fuel - @available_unit_2.fuel - @available_unit_3.fuel
-      expect(pop).to eq @available_unit_1.pop + @available_unit_2.pop + @available_unit_3.pop
+      expect(man).to eq ruleset.starting_man - @available_unit_1.man - @available_unit_2.man - @available_unit_3.man - @available_upgrade_1_1.man - @available_upgrade_1_2.man - @available_upgrade_2.man - @available_upgrade_3.man
+      expect(mun).to eq ruleset.starting_mun - @available_unit_1.mun - @available_unit_2.mun - @available_unit_3.mun - @available_upgrade_1_1.mun - @available_upgrade_1_2.mun - @available_upgrade_2.mun - @available_upgrade_3.mun
+      expect(fuel).to eq ruleset.starting_fuel - @available_unit_1.fuel - @available_unit_2.fuel - @available_unit_3.fuel - @available_upgrade_1_1.fuel - @available_upgrade_1_2.fuel - @available_upgrade_2.fuel - @available_upgrade_3.fuel
+      expect(pop).to eq @available_unit_1.pop + @available_unit_2.pop + @available_unit_3.pop + @available_upgrade_1_1.pop + @available_upgrade_1_2.pop + @available_upgrade_2.pop + @available_upgrade_3.pop
     end
   end
 
