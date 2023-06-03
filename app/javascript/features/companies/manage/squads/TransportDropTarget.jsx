@@ -24,8 +24,9 @@ export const TransportDropTarget = ({
                                       index,
                                       tab,
                                       transportUuid,
-                                      onUnitClick,
+                                      onSquadClick,
                                       transportSquadDelete,
+                                      onSquadUpgradeDestroyClick,
                                       enabled
                                     }) => {
   const classes = useStyles()
@@ -39,8 +40,9 @@ export const TransportDropTarget = ({
               {transportedSquads.map(ts => <SquadCard key={ts.uuid}
                                                       uuid={ts.uuid} index={index} tab={tab}
                                                       transportUuid={transportUuid}
-                                                      onUnitClick={onUnitClick}
+                                                      onSquadClick={onSquadClick}
                                                       onDestroyClick={transportSquadDelete}
+                                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                                       enabled={enabled} />)}
             </Box>
           </Paper>

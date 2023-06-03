@@ -5,6 +5,7 @@
 #  id                                                         :bigint           not null, primary key
 #  fuel(Calculated fuel cost of this upgrade for the company) :integer          not null
 #  man(Calculated man cost of this upgrade for the company)   :integer          not null
+#  max(Maximum number of this upgrade purchasable by a unit)  :integer
 #  mun(Calculated mun cost of this upgrade for the company)   :integer          not null
 #  pop(Calculated pop cost of this upgrade for the company)   :decimal(, )      not null
 #  type(Type of available upgrade)                            :string           not null
@@ -60,6 +61,7 @@ class AvailableUpgrade < ApplicationRecord
     expose :mun
     expose :fuel
     expose :pop
+    expose :max
 
     expose :upgrade, using: Upgrade::Entity, if: { type: :include_upgrade }
   end

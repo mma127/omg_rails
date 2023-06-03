@@ -11,6 +11,7 @@ import availableOffmapsSlice from "../features/companies/manage/available_offmap
 import companyOffmapsSlice from "../features/companies/manage/company_offmaps/companyOffmapsSlice";
 import availableUpgradesSlice from "../features/companies/manage/available_upgrades/availableUpgradesSlice";
 import upgradesSlice from "../features/companies/manage/upgrades/upgradesSlice";
+import squadUpgradesSlice from "../features/companies/manage/squad_upgrades/squadUpgradesSlice";
 
 export default configureStore({
   reducer: {
@@ -25,6 +26,7 @@ export default configureStore({
     companyOffmaps: companyOffmapsSlice,
     lobby: lobbySlice,
     availableUpgrades: availableUpgradesSlice,
-    upgrades: upgradesSlice
+    upgrades: upgradesSlice,
+    squadUpgrades: squadUpgradesSlice
   },
 })

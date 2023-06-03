@@ -29,7 +29,7 @@ class Squad < ApplicationRecord
   belongs_to :company
   belongs_to :available_unit
 
-  has_many :squad_upgrades
+  has_many :squad_upgrades, :inverse_of => :squad, dependent: :destroy
   has_many :available_upgrades, through: :squad_upgrades
 
   # The TransportSquad associations for which this Squad is the transport

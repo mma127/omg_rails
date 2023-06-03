@@ -65,6 +65,14 @@ class CompanyService
   # Construct TransportedSquad associating the transport to the embarked squads.
   # If the transportUuid does not match, persist the squads without a TransportedSquad association.
   #
+  # Takes the input offmaps, validates that the company can upsert all of the offmaps, and persists them. Deletes any
+  # existing company offmaps that are not in that set of offmaps.
+  #
+  # Takes the input squad upgrades, compares against existing squad upgrades to determine
+  # 1. The set of existing squad upgrades that will remain
+  # 2. The set of existing squad upgrades that will be destroyed
+  # 3. The set of new squad upgrades to create
+  #
   # Validates:
   # * The company belongs to the player, or an override is used
   # * The set of squad ids represent Squads belonging to the company
@@ -73,28 +81,37 @@ class CompanyService
   # * The company has sufficient manpower, munitions, and fuel resources to afford all given squads
   # * Each platoon of squads (squads grouped by tab and index) has pop between the MIN and MAX allowed
   # * The company has sufficient availability in AvailableUnits for every unique unit in the given squads
-  def update_company_squads(company, squads, offmaps, override = false)
+  def update_company_squads(company, squads, offmaps, squad_upgrades, override = false)
     unless can_update_company(company, override)
       # Raise validation error if the company does not belong to the player
       raise CompanyUpdateValidationError.new("Player #{@player.id} cannot delete Company #{company.id}")
     end
 
+    ## Squads
     existing_squads = company.squads
     existing_squad_ids = existing_squads.pluck(:id)
     payload_squad_ids = squads.select { |s| s[:squad_id].present? }.pluck(:squad_id)
-
     # Validates that all squad ids in the squads payload are unique and correspond to an existing squad id in the company
     validate_incoming_squad_ids(payload_squad_ids, existing_squad_ids, company.id)
 
+    # Company Offmaps
     existing_company_offmaps = company.company_offmaps
     existing_co_offmap_ids = existing_company_offmaps.pluck(:id)
     payload_co_offmap_ids = offmaps.select { |o| o[:company_offmap_id].present? }.pluck(:company_offmap_id)
     # Validates that all company_offmap ids in the offmaps payload are unique and correspond to an existing company_offmap id in the company
     validate_incoming_company_offmap_ids(payload_co_offmap_ids, existing_co_offmap_ids, company.id)
 
-    ## Price every squad and offmap, sum up and validate against ruleset totals
-    ## Raise validation error if insufficient
+    ## Squad Upgrades
+    existing_squad_upgrades = existing_squads.map { |s| s.squad_upgrades }.flatten
+    existing_squad_upgrade_ids = existing_squad_upgrades.pluck(:id)
+    payload_squad_upgrade_ids = squad_upgrades.select { |su| su[:squad_upgrade_id].present? }.pluck(:squad_upgrade_id)
+    # Validates that all squad upgrade ids in the squad_upgrades payload are unique and correspond to an existing squad_upgrade id in the company
+    validate_incoming_squad_upgrade_ids(payload_squad_upgrade_ids, existing_squad_upgrade_ids, company.id)
 
+    ### Price every squad, offmap, and squad upgrade, sum up and validate against ruleset totals
+    ### Raise validation error if insufficient
+
+    ## Squads
     # Get unique squad units
     uniq_unit_ids_new = squads.map { |s| s[:unit_id] }.uniq
     uniq_units_new_by_id = Unit.where(id: uniq_unit_ids_new).index_by(&:id)
@@ -121,12 +138,16 @@ class CompanyService
 
     # Get available upgrades for the company - cost is stored there
     available_upgrades = company.available_upgrades
-    # Validations
-    # TODO
     # Index available upgrades by id
     available_upgrades_by_id = available_upgrades.index_by(&:id)
+    # Get unique squad_upgrades payload available_upgrade_ids
+    uniq_available_upgrade_ids_new = squad_upgrades.map { |su| su[:available_upgrade_id] }.uniq
+    # Validate that all uniq_available_upgrade_ids_new correspond to existing available_upgrades
+    validate_payload_available_upgrades_exist(uniq_available_upgrade_ids_new, available_upgrades, company.id)
+    # Attach each squad upgrade to corresponding squad hash. Validate there are no unattached squad upgrades
+    squads = attach_squad_upgrades_to_squads(squads, squad_upgrades)
 
-    # Calculate resources used by the input squads
+    # Calculate resources used by the input squads and upgrades
     man_new, mun_new, fuel_new, pop_new = calculate_squad_resources(squads, available_units_by_id, available_upgrades_by_id, platoon_pop_by_tab_and_index)
 
     ## Offmaps
@@ -153,14 +174,15 @@ class CompanyService
     # more pop than the maximum allowed
     validate_platoon_pop(platoon_pop_by_tab_and_index)
 
-    ## Get all existing squads for the company
+    ## Squads
+    # Get all existing squads for the company
     existing_squads_by_available_unit_id = existing_squads.group_by(&:available_unit_id)
 
     # Get payload squads by available unit id
     payload_squads_by_available_unit_id = squads.group_by { |s| s[:available_unit_id] }
 
-    ## Calculate delta in number of each unit against the available number of that unit for the company
-    ## Raise validation error if insufficient
+    # Calculate delta in number of each unit against the available number of that unit for the company
+    # Raise validation error if insufficient
     available_changes = build_available_unit_deltas(company, payload_squads_by_available_unit_id, existing_squads_by_available_unit_id, available_units_by_id)
 
     # Check for any existing squads that have units which aren't in the payload squads list. These represent squads we
@@ -182,7 +204,11 @@ class CompanyService
     # we will be destroying and offmaps that will give their availability back
     add_existing_offmaps_to_remove(existing_company_offmaps_by_available_offmap_id, available_offmap_changes)
 
-    ##### At this point, we know the company can have the new squads and offmaps as they are within price and availability
+    ## Squad Upgrades
+    # Validate for each squad that upgrades fit max, slots, unitwide slots
+    validate_squad_upgrade_max_and_slots(squads, existing_squads, available_upgrades_by_id, available_units_by_id, company.id)
+
+    ##### At this point, we know the company can have the new squads, offmaps, and upgrades as they are within price and availability
 
     # Build transport mappings
     uuid_to_transported_uuids, transport_related_uuids = build_transport_mappings(squads, uniq_units_new_by_id)
@@ -191,21 +217,26 @@ class CompanyService
       existing_squads_by_id = existing_squads.index_by(&:id)
 
       new_squads = []
+      new_squad_upgrades = []
       squads.each do |s|
         if s[:squad_id].blank?
           ## Create new Squad records for squads without squad id
           available_unit = available_units_by_id[s[:available_unit_id]]
-          new_squads << Squad.new(company: company, vet: s[:vet], tab_category: s[:tab], uuid: s[:uuid],
+          squad = Squad.new(company: company, vet: s[:vet], tab_category: s[:tab], uuid: s[:uuid],
                                   category_position: s[:index], available_unit: available_unit,
                                   total_model_count: s[:totalModelCount])
+          new_squad_upgrades.concat(build_recursive_squad_upgrades(s, squad))
+          new_squads << squad
         else
           ## Update existing Squads
           existing_squad = existing_squads_by_id[s[:squad_id]]
           existing_squad.update!(tab_category: s[:tab], category_position: s[:index], name: s[:name],
                                  total_model_count: s[:totalModelCount])
+          new_squad_upgrades.concat(build_recursive_squad_upgrades(s, existing_squad))
         end
       end
       Squad.import!(new_squads)
+      SquadUpgrade.import!(new_squad_upgrades)
 
       ## Determine set of existing Squads with squad id not in the new list of squads. Delete these
       squad_ids_to_delete = existing_squad_ids - payload_squad_ids
@@ -269,11 +300,16 @@ class CompanyService
         available_offmap.update!(available: [new_available_number, 0].max)
       end
 
+      ## Squad Upgrades
+      ## Determine set of existing SquadUpgrades with squad_upgrade_id not in the payload list of squad_upgrades. Delete these
+      squad_upgrade_ids_to_delete = existing_squad_upgrade_ids - payload_squad_upgrade_ids
+      SquadUpgrade.where(id: [squad_upgrade_ids_to_delete]).destroy_all if squad_upgrade_ids_to_delete.present?
+
       company.update!(pop: pop_new, man: man_remaining, mun: mun_remaining, fuel: fuel_remaining)
     end
 
     company.reload
-    [company.squads, company.available_units, company.company_offmaps, company.available_offmaps]
+    [company.squads, company.available_units, company.company_offmaps, company.available_offmaps, company.squad_upgrades]
   end
 
   def delete_company(company, override = false)
@@ -370,6 +406,22 @@ class CompanyService
     end
   end
 
+  # Validates that all squad_upgrade ids in the payload are unique and correspond to an existing squad_upgrade id in the company
+  def validate_incoming_squad_upgrade_ids(payload_squad_upgrade_ids, existing_squad_upgrade_ids, company_id)
+    uniq_payload_squad_upgrade_ids = payload_squad_upgrade_ids.uniq
+    unless uniq_payload_squad_upgrade_ids.size == payload_squad_upgrade_ids.size
+      # Raise validation error if one or more squad upgrade ids are duplicated
+      raise CompanyUpdateValidationError.new("Duplicate squad upgrade ids found in payload squad upgrade ids: "\
+        "#{payload_squad_upgrade_ids.group_by { |e| e }.select { |_, v| v.size > 1 }.map(&:first)}")
+    end
+
+    unless (payload_squad_upgrade_ids - existing_squad_upgrade_ids).size == 0
+      # Raise validation error if one or more given squad upgrades ids do not belong to the company
+      raise CompanyUpdateValidationError.new("Given squad upgrade ids #{payload_squad_upgrade_ids - existing_squad_upgrade_ids}"\
+        " that don't exist for the company #{company_id}")
+    end
+  end
+
   # Validates that all unit ids correspond to existing units
   def validate_squad_units_exist(uniq_unit_ids_new, uniq_units_new_by_id)
     unless uniq_unit_ids_new.size == uniq_units_new_by_id.size
@@ -390,6 +442,29 @@ class CompanyService
     unless diff.empty?
       raise CompanyUpdateValidationError.new("Invalid available_offmap_id(s) given in company #{company_id} squad update: #{diff}")
     end
+  end
+
+  def validate_payload_available_upgrades_exist(uniq_available_upgrade_ids_new, available_upgrades, company_id)
+    diff = uniq_available_upgrade_ids_new - available_upgrades.pluck(:id).uniq
+    unless diff.empty?
+      raise CompanyUpdateValidationError.new("Invalid available_upgrade_id(s) given in company #{company_id} squad update: #{diff}")
+    end
+  end
+
+  def attach_squad_upgrades_to_squads(squads, squad_upgrades)
+    squad_upgrades_grouped_by_squad_uuid = squad_upgrades.deep_dup.group_by { |su| su[:squad_uuid] }
+    squads.each do |squad|
+      next unless squad_upgrades_grouped_by_squad_uuid.include? squad[:uuid]
+
+      squad[:upgrades] = squad_upgrades_grouped_by_squad_uuid[squad[:uuid]]
+      squad_upgrades_grouped_by_squad_uuid.delete(squad[:uuid])
+    end
+
+    unless squad_upgrades_grouped_by_squad_uuid.empty?
+      raise CompanyUpdateValidationError.new("Found squad upgrades not associated with a squad uuid: #{squad_upgrades_grouped_by_squad_uuid}")
+    end
+
+    squads
   end
 
   # Validates that all unit ids correspond to available units
@@ -579,6 +654,55 @@ class CompanyService
     end
   end
 
+  # Validate max, slots and unitwide slots for squad upgrades by squad
+  def validate_squad_upgrade_max_and_slots(payload_squads, existing_squads, available_upgrades_by_id, available_units_by_id, company_id)
+    existing_squads_by_id = existing_squads.index_by(&:id)
+
+    # For each payload squad
+    payload_squads.each do |payload_squad|
+      # validate each squad upgrade against max, calculate slot cost against squad unit slots/unitwide slots
+      check_squad_unit_max_upgrades_and_slots(payload_squad, available_upgrades_by_id, available_units_by_id[payload_squad[:available_unit_id]], company_id)
+    end
+  end
+
+  def check_squad_unit_max_upgrades_and_slots(payload_squad, available_upgrades_by_id, available_unit, company_id)
+    return unless payload_squad.include? :upgrades
+    return unless payload_squad[:upgrades].size.positive?
+
+    slots_used = 0
+    unitwide_slots_used = 0
+    upgrade_id_to_count = Hash.new { |h, k| h[k] = 0 }
+    unit = available_unit.unit
+
+    payload_squad[:upgrades].each do |squad_upgrade|
+      available_upgrade_id = squad_upgrade[:available_upgrade_id]
+      available_upgrade = available_upgrades_by_id[available_upgrade_id]
+      upgrade = available_upgrade.upgrade
+
+      slots_used += upgrade.upgrade_slots || 0
+      unitwide_slots_used += upgrade.unitwide_upgrade_slots || 0
+      upgrade_id_to_count[upgrade.id] += 1
+
+      unless available_upgrade.max.blank? || upgrade_id_to_count[upgrade.id] <= available_upgrade.max
+        raise CompanyUpdateValidationError.new("Found #{upgrade_id_to_count[upgrade.id]} uses of available upgrade "\
+          "#{available_upgrade_id} with max #{available_upgrade.max}, for company #{company_id} update and squad "\
+          "available unit id #{payload_squad[:available_unit_id]}")
+      end
+
+      unless slots_used <= unit.upgrade_slots
+        raise CompanyUpdateValidationError.new("Found #{slots_used} upgrade slots used for unit #{unit.id} with "\
+          "#{unit.upgrade_slots} upgrade slots, for company #{company_id} update and squad "\
+          "available unit id #{payload_squad[:available_unit_id]}")
+      end
+
+      unless unitwide_slots_used <= unit.unitwide_upgrade_slots
+        raise CompanyUpdateValidationError.new("Found #{unitwide_slots_used} unitwide upgrade slots used for unit "\
+          "#{unit.id} with #{unit.unitwide_upgrade_slots} unitwide upgrade slots, for company #{company_id} update and"\
+          " squad available unit id #{payload_squad[:available_unit_id]}")
+      end
+    end
+  end
+
   def build_transport_mappings(squads, uniq_units_new_by_id)
     squads_by_uuid = squads.index_by { |s| s[:uuid] }
     transport_allowed_unit_ids_by_transport_id = TransportAllowedUnit.relationship_map
@@ -615,5 +739,17 @@ class CompanyService
       end
     end
     [uuid_to_transported_uuids, transport_related_uuids]
+  end
+
+  def build_recursive_squad_upgrades(payload_squad, squad_record)
+    return [] unless payload_squad.include? :upgrades
+
+    new_squad_upgrades = []
+    payload_squad[:upgrades].each do |su|
+      next unless su[:squad_upgrade_id].blank?
+
+      new_squad_upgrades << SquadUpgrade.new(squad: squad_record, available_upgrade_id: su[:available_upgrade_id])
+    end
+    new_squad_upgrades
   end
 end

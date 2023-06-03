@@ -44,6 +44,7 @@ export const createSquad = (availableUnit,
     transportUuid: transportUuid, // The transport this squad was created in
     transportedSquadUuids: null,
     transportedSquads: null, // List of squads this squad is transporting
+    upgrades: []
   }
 }
 
@@ -75,6 +76,9 @@ export const loadSquad = (squad) => {
     transportModelSlots: squad.transportModelSlots,
     transportUuid: squad.transportUuid,
     transportedSquadUuids: squad.transportedSquadUuids,
-    transportedSquads: null
+    transportedSquads: null,
+
+    // Upgrades
+    upgrades: squad.upgrades //TODO fix this
   }
 }

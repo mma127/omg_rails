@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const AvailableUnitDetails = () => {
+export const AvailableUnitDetails = ({ onAvailableUpgradeClick }) => {
   const availableUnitId = useSelector(selectSelectedAvailableUnitId)
   console.log(`AvailableUnitId Details - ${availableUnitId}`)
   const classes = useStyles()
@@ -46,7 +46,7 @@ export const AvailableUnitDetails = () => {
 
     let squadContent
     if (selectedSquad) {
-      squadContent = (
+      squadContent = ( //TODO do we need anything of the squad here?
         <Grid item container spacing={2}>
           <Grid item>
             Selected squad {selectedSquad?.uuid}
@@ -99,10 +99,9 @@ export const AvailableUnitDetails = () => {
           </Grid>
           <Grid item container>
             <Grid item>
-              <AvailableUpgrades unitId={unitId} />
+              <AvailableUpgrades unitId={unitId} onSelect={onAvailableUpgradeClick} />
             </Grid>
           </Grid>
-          {squadContent}
         </Grid>
 
       </Box>
