@@ -376,7 +376,7 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
     t.integer "priority", comment: "Priority of this restriction"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["restriction_id", "upgrade_id", "ruleset_id", "type"], name: "idx_restriction_upgrades_ruleset_type_uniq", unique: true
+    t.index ["restriction_id", "upgrade_id", "ruleset_id", "type", "uses", "max", "man", "mun", "fuel"], name: "idx_restriction_upgrades_ruleset_type_uniq", unique: true
     t.index ["restriction_id"], name: "index_restriction_upgrades_on_restriction_id"
     t.index ["ruleset_id", "restriction_id"], name: "index_restriction_upgrades_on_ruleset_id_and_restriction_id"
     t.index ["ruleset_id", "upgrade_id"], name: "index_restriction_upgrades_on_ruleset_id_and_upgrade_id"
