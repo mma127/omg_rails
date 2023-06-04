@@ -41,6 +41,7 @@ after :upgrades do
   end
 
   CSV.foreach('db/seeds/enabled_upgrades.csv', headers: true) do |row|
+    puts "#{row["upgrade"]} | #{row["const"]} | #{row['faction_restriction']}, #{row['doctrine_restriction']}, #{row['unlock_restriction']} | #{row["unit"]}"
     man = row['man']
     mun = row['mun']
     fuel = row['fuel']

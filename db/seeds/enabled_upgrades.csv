@@ -1,21 +1,32 @@
 upgrade,const,display_name,description,type,faction_restriction,doctrine_restriction,unlock_restriction,man,mun,fuel,pop,uses,slots,unitwide_slots,max,model_count,add_model_count,unit
 ally_grenade,ALLY.GRENADE,Grenades,Line infantry grenades,consumable,americans,,,0,35,0,0,2,0,0,1,,,riflemen
 ranger_grenade,ALLY.GRENADE,Grenades,Elite infantry grenades,consumable,americans,,,0,40,0,0,2,0,0,1,,,airborne
-ranger_grenade,ALLY.GRENADE,Grenades,Elite infantry grenades,consumable,americans,,,0,40,0,0,2,0,0,1,,,assault_airborne
+ranger_grenade,ALLY.GRENADE,Grenades,Elite infantry grenades,consumable,,airborne,,0,40,0,0,2,0,0,1,,,assault_airborne
+ranger_grenade,ALLY.GRENADE,Grenades,Elite infantry grenades,consumable,,infantry,,0,40,0,0,2,0,0,1,,,rangers
 bar,ALLY.BAR,BAR,A single Browning Automatic Rifle,single_weapon,americans,,,0,55,0,0,0,1,0,1,,,riflemen
+bar,ALLY.BAR,BAR,A single Browning Automatic Rifle,single_weapon,,infantry,,0,55,0,0,0,1,0,1,,,ambush_riflemen
+bar,ALLY.BAR,BAR,A single Browning Automatic Rifle,single_weapon,,infantry,,0,70,0,0,0,0,0,1,,,rangers
 sticky_bombs,ALLY.STICKY,Sticky Bombs,Anti-tank grenades that stick to targets,consumable,americans,,,0,55,0,0,3,0,0,1,,,riflemen
+sticky_bombs,ALLY.STICKY,Sticky Bombs,Anti-tank grenades that stick to targets,consumable,,infantry,,0,55,0,0,3,0,0,1,,,ambush_riflemen
 ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,americans,,,0,10,0,0,1,0,0,1,,,riflemen
-ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,americans,,,0,10,0,0,1,0,0,1,,,assault_airborne
-ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,americans,,,0,10,0,0,1,0,0,1,,,airborne
+ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,,airborne,,0,10,0,0,1,0,0,1,,,assault_airborne
+ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,,airborne,,0,10,0,0,1,0,0,1,,,airborne
 ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,americans,,,0,10,0,0,1,0,0,1,,,engineers
+ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,,infantry,,0,10,0,0,1,0,0,1,,,rangers
+ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,,infantry,,0,10,0,0,1,0,0,1,,,ambush_riflemen
+ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,,infantry,,0,10,0,0,1,0,0,1,,,spotter
+ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,,armor,,0,10,0,0,1,0,0,1,,,mech_inf
 bar_suppression,ALLY.SUPPRESSION,BAR with Suppression Fire,"A single Browning Automatic Rifle with the Suppression Fire ability. When activated, quickly suppresses the target infantry squad",single_weapon,americans,,,0,85,0,0,0,1,0,1,,,riflemen
 satchel_charge,ALLY.SATCHEL,Satchel Charges,Large packages of thrown explosives on a five-second timer,consumable,,airborne,,0,60,0,0,2,0,0,1,,,airborne
 satchel_charge,ALLY.SATCHEL,Satchel Charges,Large packages of thrown explosives on a five-second timer,consumable,,airborne,,0,60,0,0,2,0,0,1,,,assault_airborne
 four_thompsons,ALLY.FOUR_THOMPSONS,Thompsons,Four Thompson submachine guns,single_weapon,,airborne,,0,110,0,0,0,0,1,1,,,assault_airborne
-recoilless_rifles,ALLY.RECOILLES_RIFLE,Recoilless Rifles,Two long range hand-held anti tank weapons,single_weapon,,airborne,,0,165,0,0,0,4,0,1,,,airborne
+four_thompsons,ALLY.FOUR_THOMPSONS,Thompsons,Four Thompson submachine guns,single_weapon,,infantry,,0,110,0,0,0,0,1,1,,,rangers
+recoilless_rifles,ALLY.RECOILLES_RIFLE,Recoilless Rifles,Two long range hand-held anti-tank weapons,single_weapon,,airborne,,0,165,0,0,0,4,0,1,,,airborne
 ally_flamethrower,ALLY.FLAME_THROWER,Flamethrower,A single anti-infantry flamethrower,single_weapon,americans,,,0,60,0,0,0,0,0,1,,,engineers
 ally_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,americans,,,0,10,0,0,0,0,0,1,,,engineers
-timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,americans,,,0,30,0,0,2,0,0,1,,,engineers
+ally_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,,armor,,0,10,0,0,0,0,0,1,,,mech_inf
+ally_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,americans,,,0,30,0,0,2,0,0,1,,,engineers
+ally_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,,armor,,0,30,0,0,2,0,0,1,,,mech_inf
 mg_nest,ALLY.MG_NEST,HMG Nest,.30 cal machine gun emplacement,building,americans,,,0,60,0,0,1,1,0,,,,engineers
 medic_station,ALLY.MEDIC_STATION,Medic Station,"Tent that spawns medics to collect injured soldiers. Once six have been collected, spawns a new Riflemen squad",building,americans,,,0,60,0,0,1,0,0,,,,engineers
 triage_center,ALLY.TRIAGE_CENTER,Triage Center,Building that heals nearby infantry,building,americans,,,0,160,0,0,1,0,0,,,,engineers
@@ -27,11 +38,26 @@ m8_mines,ALLY.M8_MINES,Greyhound Mines,"Camouflaged explosives that detonate on 
 t17_wp,ALLY.T17WHITE,White Phosphorus Round,"Fire a white phosphorus round at a target vehicle, blinding and slowing it",ability,americans,,,0,40,0,0,0,2,0,1,,,t17
 t17_sandbags,ALLY.T17SAND,Sandbags,Increases T17 health,passive,americans,,,60,0,10,0,0,0,0,1,,,t17
 bulldozer,ALLY.BULLDOZER,Bulldozer,Bulldozer that can plow through tank traps and hedge rows. Increases tank health,ability,americans,,,0,35,0,0,0,2,0,1,,,sherman_croc
+bulldozer,ALLY.BULLDOZER,Bulldozer,Bulldozer that can plow through tank traps and hedge rows. Increases tank health,ability,,infantry,,0,45,0,0,0,2,0,1,,,jumbo
+bulldozer,ALLY.BULLDOZER,Bulldozer,Bulldozer that can plow through tank traps and hedge rows. Increases tank health,ability,,armor,a_tool_for_every_job,0,35,0,0,0,2,0,1,,,sherman
+bulldozer,ALLY.BULLDOZER,Bulldozer,Bulldozer that can plow through tank traps and hedge rows. Increases tank health,ability,,armor,a_tool_for_every_job,0,35,0,0,0,2,0,1,,,sherman_105
+bulldozer,ALLY.BULLDOZER,Bulldozer,Bulldozer that can plow through tank traps and hedge rows. Increases tank health,ability,,armor,a_tool_for_every_job,0,35,0,0,0,2,0,1,,,easy_eight
+bulldozer,ALLY.BULLDOZER,Bulldozer,Bulldozer that can plow through tank traps and hedge rows. Increases tank health,ability,,armor,a_tool_for_every_job,0,35,0,0,0,2,0,1,,,calliope
 sherman_upgun,ALLY.SHERMAN_UPGUN,76mm Upgun,"Upgrades the Sherman's main gun, granting increased anti-tank performance at the cost of reduced splash damage",passive,americans,,,0,0,40,0,0,0,0,1,,,sherman
 sherman_50_cal,ALLY.SHERMAN_MG,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,americans,,,0,75,0,0,0,0,0,1,,,sherman
 sherman_50_cal,ALLY.SHERMAN_MG,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,,airborne,flamethrower_envy,0,75,0,0,0,0,0,1,,,sherman_croc
-ally_tank_smoke,ALLY.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,americans,,,0,15,0,0,15,0,0,1,,,sherman
+sherman_50_cal,ALLY.SHERMAN_MG,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,,infantry,,0,75,0,0,0,0,0,1,,,jumbo
+sherman_50_cal,ALLY.SHERMAN_MG,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,,armor,,0,75,0,0,0,0,0,1,,,sherman_105
+ally_tank_smoke,ALLY.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,americans,,,0,15,0,0,2,0,0,1,,,sherman
+ally_tank_smoke,ALLY.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,infantry,,0,15,0,0,2,0,0,1,,,jumbo
+ally_tank_smoke,ALLY.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,armor,,0,15,0,0,2,0,0,1,,,sherman_105
+ally_tank_smoke,ALLY.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,armor,,0,15,0,0,2,0,0,1,,,easy_eight
+ally_tank_smoke,ALLY.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,armor,,0,15,0,0,2,0,0,1,,,calliope
 mine_flail,ALLY.SHERMAN_FLAIL,Mine Flail,Activatable mine flail that destroys mines safely,ability,americans,,,0,35,0,0,0,2,0,1,,,sherman
+mine_flail,ALLY.SHERMAN_FLAIL,Mine Flail,Activatable mine flail that destroys mines safely,ability,,armor,a_tool_for_every_job,0,35,0,0,0,2,0,1,,,sherman_croc
+mine_flail,ALLY.SHERMAN_FLAIL,Mine Flail,Activatable mine flail that destroys mines safely,ability,,armor,a_tool_for_every_job,0,35,0,0,0,2,0,1,,,sherman_105
+mine_flail,ALLY.SHERMAN_FLAIL,Mine Flail,Activatable mine flail that destroys mines safely,ability,,armor,a_tool_for_every_job,0,35,0,0,0,2,0,1,,,easy_eight
+mine_flail,ALLY.SHERMAN_FLAIL,Mine Flail,Activatable mine flail that destroys mines safely,ability,,armor,a_tool_for_every_job,0,35,0,0,0,2,0,1,,,calliope
 m18_50_cal,ALLY.M18FIFTY,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,americans,,,0,50,0,0,0,1,0,1,,,m18
 m18_stag_50,CMW.STAG50,Staghound .50 Cal,Powerful top-mounted .50 cal machine gun,single_weapon,,airborne,hellhounds,0,80,0,0,0,1,0,1,,,m18
 four_ranger_garands,ALLY.FOUR_M1_GARAND,Four M1 Ranger Garands,Replace base M1 Carbines with four M1 Ranger Garands,squad_weapon,,airborne,long_range_options,0,0,0,0,0,0,1,1,,,airborne
@@ -41,3 +67,28 @@ four_m1a1_carbines,ALLY.M1A1_CARBINES,Four M1A1 Carbines,Replace base M1 Carbine
 four_m1a1_carbines,ALLY.M1A1_CARBINES,Four M1A1 Carbines,Replace base M1 Carbines with improved M1A1 Carbines,squad_weapon,,airborne,improved_carbines,0,0,0,0,0,0,1,1,,,assault_airborne
 four_m2_carbines,ALLY.M2_CARBINES,Four M2 Carbines,"Four M2 Carbines, powerful at close range",squad_weapon,,airborne,improved_carbines,0,110,0,0,0,0,1,1,,,assault_airborne
 long_range_radios,ALLY.PARATROOPERS_NO_SUPPLY,Long Range Radios,Radios allowing capture of unconnected territory,unit_replacement,,airborne,behind_enemy_lines,30,0,0,0,0,0,0,1,6,,airborne
+57mm_hvap_rounds,ALLY.AT_AP_ROUNDS,HVAP Rounds,Increases armor penetration and damage,ability,,infantry,hvap_shells,0,60,0,0,0,1,0,1,,,57mm_atg
+bazooka,ALLY.SINGLE_BAZOOKA,Bazooka,A single Bazooka,single_weapon,,infantry,,0,40,0,0,0,1,0,1,,,ambush_riflemen
+bazooka,ALLY.SINGLE_BAZOOKA,Bazooka,A single Bazooka,single_weapon,,armor,,0,40,0,0,0,1,0,1,,,mech_inf
+ranger_leader,ALLY.RIFLEMEN_HEAVY,Ranger Leader,Replaces squad leader with a Ranger. The squad recovers from suppression 20% faster.,unit_replacement,,infantry,rangers_lead_the_way,10,0,0,0,0,0,0,1,6,,riflemen
+snare_mines,ALLY.SNARE_TRAPS,Snare Mines,Camouflaged mines that slow enemy infantry but deal no damage ,consumable,,infantry,snare_traps,0,20,0,0,2,0,0,1,,,riflemen
+snare_mines,ALLY.SNARE_TRAPS,Snare Mines,Camouflaged mines that slow enemy infantry but deal no damage ,consumable,,infantry,snare_traps,0,20,0,0,2,0,0,1,,,engineers
+snare_mines,ALLY.SNARE_TRAPS,Snare Mines,Camouflaged mines that slow enemy infantry but deal no damage ,consumable,,infantry,snare_traps,0,20,0,0,2,0,0,1,,,ambush_riflemen
+two_bazookas,ALLY.TWO_BAZOOKAS,Two Bazookas,Two hand-held anti-tank Bazookas,single_weapon,,infantry,here_to_clean_up_this_mess,0,85,0,0,0,0,0,1,,,rangers
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,20,0,0,1,0,0,1,,,greyhound
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,20,0,0,1,0,0,1,,,halftrack_allied
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,20,0,0,1,0,0,1,,,quad_halftrack
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,20,0,0,1,0,0,1,,,t17
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,50,0,0,1,0,0,1,,,sherman
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,50,0,0,1,0,0,1,,,sherman_croc
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,50,0,0,1,0,0,1,,,easy_eight
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,50,0,0,1,0,0,1,,,sherman_105
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,50,0,0,1,0,0,1,,,calliope
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,40,0,0,1,0,0,1,,,m10
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,40,0,0,1,0,0,1,,,m18
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,70,0,0,1,0,0,1,,,pershing
+repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,70,0,0,1,0,0,1,,,jackson
+pershing_hvap,ALLY.PERSHING_UPGUN,HVAP Upgun,"Increases anti-tank performance at the cost of reduced splash damage",passive,,armor,,0,0,0,0,0,0,0,1,,,pershing
+ally_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,,armor,,0,35,0,0,0,0,0,1,,,easy_eight
+two_thompsons,ALLY.TWO_THOMPSONS,Two Thompsons,Two Thompson SMGs,single_weapon,,armor,,0,50,0,0,0,0,0,1,,,mech_inf
+quad_ap_rounds,ALLY.QUADAP,Quad .50 cal AP rounds,Grants an ability that temporarily increases armor penetration,ability,,armor,quadruple_bypass,0,20,0,0,2,0,0,1,,,quad_halftrack
