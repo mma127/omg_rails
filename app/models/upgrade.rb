@@ -21,8 +21,14 @@
 #  updated_at                                                                         :datetime         not null
 #
 class Upgrade < ApplicationRecord
+  CONST_PREFIX = "OMGUPG"
 
   validates :model_count, presence: false
+
+  # Used for battle file
+  def formatted_const_name
+    "#{CONST_PREFIX}.#{const_name}"
+  end
 
   def entity
     Entity.new(self)
