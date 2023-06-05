@@ -130,7 +130,14 @@ end
 
   def build_buildings_block(company)
     offmap_consts = company.company_offmaps.map { |co| co.offmap.const_name }
-    offmap_consts.join(",\n")
+    building_consts = company.squad_upgrades
+                             .includes(available_upgrade: :upgrade)
+                             .joins(available_upgrade: :upgrade)
+                             .where(upgrade: { type: "Upgrades::Building" })
+                             .map { |su| su.available_upgrade.upgrade.formatted_const_name }
+
+    merged_consts = offmap_consts.concat(building_consts)
+    merged_consts.join(",\n")
   end
 
   # Player[pid].Platoons = {
@@ -249,7 +256,7 @@ end
   # If HalfTrack_Check is true, also include HalfTrack_SGroup_Name of the transport squad id
   #
   def build_squad_block(squad)
-    upgrades = "" # TODO upgrades
+    upgrades = build_squad_upgrades_block(squad)
     if squad.embarked_transported_squad.present?
       halftrack_check = "true,"
       transport_sgroup_name = "\n              Transport_SGroup_Name = 'SGroup#{squad.embarked_transported_squad.transport_squad_id}'"
@@ -269,6 +276,15 @@ end
               HalfTrack_Check = #{halftrack_check}#{transport_sgroup_name}
             },
     SQUAD
+  end
+
+  def build_squad_upgrades_block(squad)
+    upgrade_consts = squad.squad_upgrades
+                        .includes(available_upgrade: :upgrade)
+                        .joins(available_upgrade: :upgrade)
+                        .where.not(upgrade: { type: "Upgrades::Building" })
+                        .map { |su| su.available_upgrade.upgrade.formatted_const_name }
+    upgrade_consts.join(",\n")
   end
 
   #                 Glider = {
