@@ -1,0 +1,45 @@
+upgrade,const,display_name,description,type,faction_restriction,doctrine_restriction,unlock_restriction,man,mun,fuel,pop,uses,slots,unitwide_slots,max,model_count,add_model_count,unit
+bren_gun,CMW.BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,british,,,0,60,0,0,0,1,0,1,,,infantry_section
+bren_gun,CMW.BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,,engineers,now_this_is_a_big_sodding_gun,0,60,0,0,0,1,0,1,,,sappers
+bren_gun,CMW.BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,,engineers,now_this_is_a_big_sodding_gun,0,60,0,0,0,1,0,1,,,expert_sappers
+bren_gun_button,CMW.BREN_WITH_BUTTON,Bren Gun with Button,"A single Bren Gun with the Button ability. When activated, prevents the targeted tank or vehicle from firing or moving quickly",single_weapon,british,,,0,100,0,0,0,1,0,1,,,infantry_section
+mortar_pit,AXIS.BUNKER,Mortar Pit,"A empty mortar pit emplacement, can be garrisoned by mortar teams",building,british,,,0,30,0,0,1,0,0,1,,,infantry_section
+cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,british,,,0,10,0,0,2,0,0,1,,,infantry_section
+cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,british,,,0,10,0,0,2,0,0,1,,,recon_section
+cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,british,,,0,10,0,0,2,0,0,1,,,sappers
+cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,british,,,0,10,0,0,2,0,0,1,,,expert_sappers
+rifle_grenade,CMW.RIFLE_GRENADE,Rifle Grenades,"Replace two Lee Enfield rifles with rifle grenade launchers, allowing for indirect fire with grenades",single_weapon,british,,,0,110,0,0,0,1,0,1,,,infantry_section
+rifle_grenade,CMW.RIFLE_GRENADE,Rifle Grenades,"Replace two Lee Enfield rifles with rifle grenade launchers, allowing for indirect fire with grenades",single_weapon,,engineers,now_this_is_a_big_sodding_gun,0,110,0,0,0,1,0,1,,,sappers
+rifle_grenade,CMW.RIFLE_GRENADE,Rifle Grenades,"Replace two Lee Enfield rifles with rifle grenade launchers, allowing for indirect fire with grenades",single_weapon,,engineers,now_this_is_a_big_sodding_gun,0,110,0,0,0,1,0,1,,,expert_sappers
+cmw_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,british,,,0,10,0,0,0,0,0,1,,,sappers
+cmw_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,british,,,0,30,0,0,2,0,0,1,,,sappers
+casualty_clearing_station,CMW.CASUALTY_STATION,Casualty Clearing Station,"Building with the ability to heal infantry on a cooldown. Also spawns medics to collect wounded.",building,british,,,0,90,0,0,1,0,0,,,,sappers
+casualty_clearing_station,CMW.CASUALTY_STATION,Casualty Clearing Station,"Building with the ability to heal infantry on a cooldown. Also spawns medics to collect wounded.",building,british,,,0,90,0,0,1,0,0,,,,expert_sappers
+two_piats,CMW.PIATS,PIATs,"Handheld anti tank weapons that fire in an arc. Can shoot behind cover.",single_weapon,british,,,0,110,0,0,0,1,0,1,,,sappers
+two_piats,CMW.PIATS,PIATs,"Handheld anti tank weapons that fire in an arc. Can shoot behind cover.",single_weapon,british,,,0,110,0,0,0,1,0,1,,,expert_sappers
+cmw_mines,CMW.MINES,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,british,,,0,35,0,0,2,0,0,1,,,sappers
+cmw_mines,CMW.MINES,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,british,,,0,35,0,0,2,0,0,1,,,expert_sappers
+two_boys_at,CMW.BOYSAT,PIATs,"Handheld anti tank rifles effective against light vehicles",single_weapon,british,,,0,50,0,0,0,1,0,1,,,sappers
+two_boys_at,CMW.BOYSAT,PIATs,"Handheld anti tank rifles effective against light vehicles",single_weapon,british,,,0,50,0,0,0,1,0,1,,,expert_sappers
+17pdr_nest,AXIS.PANTHERTURM,17pdr AT Nest,"Anti tank emplacement with a 17pdr AT gun.",building,british,,,200,0,100,0,1,0,0,1,,,sappers
+17pdr_nest,AXIS.PANTHERTURM,17pdr AT Nest,"Anti tank emplacement with a 17pdr AT gun.",building,british,,,200,0,100,0,1,0,0,1,,,expert_sappers
+17pdr_ap_rounds,CMW.AP_SEVENTEENPOUNDER,Armour Piercing Rounds,"Increases armor penetration, accuracy, and damage for 10 seconds",ability,british,,,0,40,0,0,0,0,0,1,,,17pdr
+heroic_charge,CMW.HEROIC_CHARGE,Heroic Charge,"The LT and surrounding infantry break suppression, move faster, fire more quickly, and receive less damage for a brief period of time.",ability,british,,,0,60,0,0,0,0,0,1,,,lt
+bren_carrier_button,CMW.BUTTON_BREN,Bren Carrier Button,"The targeted enemy vehicle or tank is prevented from firing or moving quickly.",ability,british,,,0,35,0,0,0,0,0,1,,,bren_carrier
+stag_50_cal,CMW.STAG50,Staghound .50 Cal,Powerful top-mounted .50 cal machine gun,single_weapon,british,,,0,90,0,0,0,1,0,1,,,staghound
+cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,british,,,0,20,0,0,0,0,0,1,,,stuart
+cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,,engineers,,0,20,0,0,0,0,0,1,,,stuart_flame
+cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,british,,,0,20,0,0,0,0,0,1,,,cromwell
+cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,british,,,0,20,0,0,0,0,0,1,,,cct
+cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,british,,,0,20,0,0,0,0,0,1,,,firefly
+cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,,engineers,behaving_like_officers,0,20,0,0,0,0,0,1,,,churchill
+cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,,engineers,behaving_like_officers,0,20,0,0,0,0,0,1,,,churchill_avre
+cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,,engineers,behaving_like_officers,0,20,0,0,0,0,0,1,,,churchill_croc
+cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,,engineers,behaving_like_officers,0,20,0,0,0,0,0,1,,,churchill_cct
+stuart_canister_round,CMW.CANISTER,Canister Round,"Fires a canister round in a triangular area of effect, deadly against infantry.",ability,british,,,0,75,0,0,0,0,0,1,,,stuart
+flank_speed,CMW.FLANK_SPEED,Flank Speed,"Drastically increases speed and acceleration for a period of time.",ability,british,,,0,25,0,0,0,0,0,1,,,cromwell
+flank_speed,CMW.FLANK_SPEED,Flank Speed,"Drastically increases speed and acceleration for a period of time.",ability,british,,,0,25,0,0,0,0,0,1,,,cct
+churchill_plow,CMW.PLOW,Mine Plow,Allows the tank to detonate mines safely,passive,,engineers,,0,35,0,0,0,0,0,1,,,churchill
+churchill_plow,CMW.PLOW,Mine Plow,Allows the tank to detonate mines safely,passive,,engineers,maneuver_training,0,35,0,0,0,0,0,1,,,churchill_avre
+churchill_plow,CMW.PLOW,Mine Plow,Allows the tank to detonate mines safely,passive,,engineers,maneuver_training,0,35,0,0,0,0,0,1,,,churchill_croc
+churchill_plow,CMW.PLOW,Mine Plow,Allows the tank to detonate mines safely,passive,,engineers,maneuver_training,0,35,0,0,0,0,0,1,,,churchill_cct

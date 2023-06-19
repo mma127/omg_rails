@@ -40,21 +40,24 @@ after :upgrades do
     end
   end
 
-  CSV.foreach('db/seeds/enabled_upgrades.csv', headers: true) do |row|
-    puts "#{row["upgrade"]} | #{row["const"]} | #{row['faction_restriction']}, #{row['doctrine_restriction']}, #{row['unlock_restriction']} | #{row["unit"]}"
-    man = row['man']
-    mun = row['mun']
-    fuel = row['fuel']
-    pop = row['pop']
-    uses = row['uses']
-    max = row['max']
+  csv_paths = %w[db/seeds/ame_enabled_upgrades.csv db/seeds/cmw_enabled_upgrades.csv].freeze
+  csv_paths.each do |path|
+    CSV.foreach(path, headers: true) do |row|
+      puts "#{row["upgrade"]} | #{row["const"]} | #{row['faction_restriction']}, #{row['doctrine_restriction']}, #{row['unlock_restriction']} | #{row["unit"]}"
+      man = row['man']
+      mun = row['mun']
+      fuel = row['fuel']
+      pop = row['pop']
+      uses = row['uses']
+      max = row['max']
 
-    unit = Unit.find_by!(name: row['unit'])
-    upgrade = Upgrade.find_by!(name: row['upgrade'])
-    restriction = get_restriction(row['faction_restriction'], row['doctrine_restriction'], row['unlock_restriction'])
-    enabled_upgrade = EnabledUpgrade.find_or_create_by!(restriction: restriction, upgrade: upgrade, ruleset: war_ruleset,
-                                                        man: man, mun: mun, fuel: fuel, pop: pop, uses: uses, max: max, priority: 1)
-    RestrictionUpgradeUnit.create!(restriction_upgrade: enabled_upgrade, unit: unit)
+      unit = Unit.find_by!(name: row['unit'])
+      upgrade = Upgrade.find_by!(name: row['upgrade'])
+      restriction = get_restriction(row['faction_restriction'], row['doctrine_restriction'], row['unlock_restriction'])
+      enabled_upgrade = EnabledUpgrade.find_or_create_by!(restriction: restriction, upgrade: upgrade, ruleset: war_ruleset,
+                                                          man: man, mun: mun, fuel: fuel, pop: pop, uses: uses, max: max, priority: 1)
+      RestrictionUpgradeUnit.create!(restriction_upgrade: enabled_upgrade, unit: unit)
+    end
   end
 
   CSV.foreach('db/seeds/disabled_upgrades.csv', headers: true) do |row|

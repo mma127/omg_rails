@@ -71,10 +71,10 @@ after :doctrines do
   SupportTeam.create!(name: "17pdr", const_name: "CMW.SEVENTEENPOUNDER", display_name: "17-pounder AT Gun")
 
   LightVehicle.create!(name: "universal_carrier", const_name: "CMW.UNIVERAL_CARRIER", display_name: "Universal Carrier",
-                       upgrade_slots: 1, transport_squad_slots: 1, transport_model_slots: 6, model_count: 6)
+                       upgrade_slots: 1, transport_squad_slots: 1, transport_model_slots: 6)
   LightVehicle.create!(name: "bren_carrier", const_name: "CMW.BRENGUN", display_name: "Bren Gun Carrier",
-                       upgrade_slots: 1, model_count: 6)
-  LightVehicle.create!(name: "staghound", const_name: "CMW.STAGHOUND", display_name: "Staghound")
+                       upgrade_slots: 1)
+  LightVehicle.create!(name: "staghound", const_name: "CMW.STAGHOUND", display_name: "Staghound", upgrade_slots: 1)
 
   Tank.create!(name: "stuart", const_name: "CMW.STUART", display_name: "Stuart")
   Tank.create!(name: "cromwell", const_name: "CMW.CROMWELL", display_name: "Cromwell")
