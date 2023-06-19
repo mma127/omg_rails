@@ -90,7 +90,7 @@ after :doctrines do
   Infantry.create!(name: "canadian_section", const_name: "CMW.TOMMIES_CANUK", display_name: "Canadian Infantry Section",
                    unitwide_upgrade_slots: 0, upgrade_slots: 1, model_count: 5)
   Infantry.create!(name: "ssf", const_name: "CMW.SSF", display_name: "Devil's Brigade",
-                   unitwide_upgrade_slots: 0, upgrade_slots: 1, model_count: 4)
+                   unitwide_upgrade_slots: 0, upgrade_slots: 2, model_count: 4)
 
   Tank.create!(name: "stuart_recce", const_name: "CMW.STUART_RECON", display_name: "Stuart Recce")
   Tank.create!(name: "comet", const_name: "CMW.COMET", display_name: "Comet")

@@ -23,6 +23,7 @@ export const AvailableUpgradeTooltipContent = ({ availableUpgrade }) => {
   const upgrade = useSelector(state => selectUpgradeById(state, availableUpgrade.upgradeId))
 
   const cost = formatResourceCost({ man: availableUpgrade.man, mun: availableUpgrade.mun, fuel: availableUpgrade.fuel })
+  const pop = availableUpgrade.pop
 
   return (
     <>
@@ -31,6 +32,7 @@ export const AvailableUpgradeTooltipContent = ({ availableUpgrade }) => {
       </Typography>
       <Box><Typography variant="body" className={classes.description}>{upgrade.description}</Typography></Box>
       <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
+      {pop > 0 ? <Box><Typography variant="body"><b>Pop: </b>{pop}</Typography></Box> : null}
     </>
   )
 }

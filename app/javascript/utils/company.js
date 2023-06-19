@@ -9,5 +9,9 @@ export const formatResourceCost = ({man, mun, fuel}) => {
   if (fuel > 0) {
     cost += `${fuel}FU`
   }
+
+  if (cost.length === 0) {
+    cost += "Free"
+  }
   return cost
 }

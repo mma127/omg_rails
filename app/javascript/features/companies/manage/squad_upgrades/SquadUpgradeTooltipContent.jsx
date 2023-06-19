@@ -33,7 +33,7 @@ export const SquadUpgradeTooltipContent = ({ squadUpgrade }) => {
       </Typography>
       <Box><Typography variant="body" className={classes.description}>{upgrade.description}</Typography></Box>
       <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
-      {pop > 0 ? <Box><Typography variant="body"><b>Pop:</b>{pop}</Typography></Box> : null}
+      {pop > 0 ? <Box><Typography variant="body"><b>Pop: </b>{pop}</Typography></Box> : null}
     </>
   )
 }

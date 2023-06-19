@@ -1,18 +1,25 @@
 upgrade,const,display_name,description,type,faction_restriction,doctrine_restriction,unlock_restriction,man,mun,fuel,pop,uses,slots,unitwide_slots,max,model_count,add_model_count,unit
 bren_gun,CMW.BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,british,,,0,60,0,0,0,1,0,1,,,infantry_section
+bren_gun,CMW.BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,,canadians,,0,60,0,0,0,1,0,1,,,canadian_section
 bren_gun,CMW.BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,,engineers,now_this_is_a_big_sodding_gun,0,60,0,0,0,1,0,1,,,sappers
 bren_gun,CMW.BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,,engineers,now_this_is_a_big_sodding_gun,0,60,0,0,0,1,0,1,,,expert_sappers
 bren_gun_button,CMW.BREN_WITH_BUTTON,Bren Gun with Button,"A single Bren Gun with the Button ability. When activated, prevents the targeted tank or vehicle from firing or moving quickly",single_weapon,british,,,0,100,0,0,0,1,0,1,,,infantry_section
+bren_gun_button,CMW.BREN_WITH_BUTTON,Bren Gun with Button,"A single Bren Gun with the Button ability. When activated, prevents the targeted tank or vehicle from firing or moving quickly",single_weapon,,canadians,,0,100,0,0,0,1,0,1,,,canadian_section
 mortar_pit,AXIS.BUNKER,Mortar Pit,"A empty mortar pit emplacement, can be garrisoned by mortar teams",building,british,,,0,30,0,0,1,0,0,1,,,infantry_section
+mortar_pit,AXIS.BUNKER,Mortar Pit,"A empty mortar pit emplacement, can be garrisoned by mortar teams",building,,canadians,,0,30,0,0,1,0,0,1,,,canadian_section
 cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,british,,,0,10,0,0,2,0,0,1,,,infantry_section
+cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,,canadians,,0,10,0,0,2,0,0,1,,,canadian_section
+cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,,canadians,,0,10,0,0,2,0,0,1,,,ssf
 cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,british,,,0,10,0,0,2,0,0,1,,,recon_section
 cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,british,,,0,10,0,0,2,0,0,1,,,sappers
 cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,british,,,0,10,0,0,2,0,0,1,,,expert_sappers
 rifle_grenade,CMW.RIFLE_GRENADE,Rifle Grenades,"Replace two Lee Enfield rifles with rifle grenade launchers, allowing for indirect fire with grenades",single_weapon,british,,,0,110,0,0,0,1,0,1,,,infantry_section
+rifle_grenade,CMW.RIFLE_GRENADE,Rifle Grenades,"Replace two Lee Enfield rifles with rifle grenade launchers, allowing for indirect fire with grenades",single_weapon,,canadians,,0,110,0,0,0,1,0,1,,,canadian_section
 rifle_grenade,CMW.RIFLE_GRENADE,Rifle Grenades,"Replace two Lee Enfield rifles with rifle grenade launchers, allowing for indirect fire with grenades",single_weapon,,engineers,now_this_is_a_big_sodding_gun,0,110,0,0,0,1,0,1,,,sappers
 rifle_grenade,CMW.RIFLE_GRENADE,Rifle Grenades,"Replace two Lee Enfield rifles with rifle grenade launchers, allowing for indirect fire with grenades",single_weapon,,engineers,now_this_is_a_big_sodding_gun,0,110,0,0,0,1,0,1,,,expert_sappers
 cmw_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,british,,,0,10,0,0,0,0,0,1,,,sappers
 cmw_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,british,,,0,30,0,0,2,0,0,1,,,sappers
+cmw_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,,canadians,,0,30,0,0,2,0,0,1,,,ssf
 casualty_clearing_station,CMW.CASUALTY_STATION,Casualty Clearing Station,"Building with the ability to heal infantry on a cooldown. Also spawns medics to collect wounded.",building,british,,,0,90,0,0,1,0,0,,,,sappers
 casualty_clearing_station,CMW.CASUALTY_STATION,Casualty Clearing Station,"Building with the ability to heal infantry on a cooldown. Also spawns medics to collect wounded.",building,british,,,0,90,0,0,1,0,0,,,,expert_sappers
 two_piats,CMW.PIATS,PIATs,"Handheld anti tank weapons that fire in an arc. Can shoot behind cover.",single_weapon,british,,,0,110,0,0,0,1,0,1,,,sappers
@@ -36,10 +43,19 @@ cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line o
 cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,,engineers,behaving_like_officers,0,20,0,0,0,0,0,1,,,churchill_avre
 cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,,engineers,behaving_like_officers,0,20,0,0,0,0,0,1,,,churchill_croc
 cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,,engineers,behaving_like_officers,0,20,0,0,0,0,0,1,,,churchill_cct
+cmw_tank_commander,CMW.TANK_COMMANDER,Tank Commander,Increases the tank's line of sight range,passive,,canadians,,0,20,0,0,0,0,0,1,,,comet
 stuart_canister_round,CMW.CANISTER,Canister Round,"Fires a canister round in a triangular area of effect, deadly against infantry.",ability,british,,,0,75,0,0,0,0,0,1,,,stuart
 flank_speed,CMW.FLANK_SPEED,Flank Speed,"Drastically increases speed and acceleration for a period of time.",ability,british,,,0,25,0,0,0,0,0,1,,,cromwell
 flank_speed,CMW.FLANK_SPEED,Flank Speed,"Drastically increases speed and acceleration for a period of time.",ability,british,,,0,25,0,0,0,0,0,1,,,cct
+flank_speed,CMW.FLANK_SPEED,Flank Speed,"Drastically increases speed and acceleration for a period of time.",ability,,canadians,,0,25,0,0,0,0,0,1,,,comet
 churchill_plow,CMW.PLOW,Mine Plow,Allows the tank to detonate mines safely,passive,,engineers,,0,35,0,0,0,0,0,1,,,churchill
 churchill_plow,CMW.PLOW,Mine Plow,Allows the tank to detonate mines safely,passive,,engineers,maneuver_training,0,35,0,0,0,0,0,1,,,churchill_avre
 churchill_plow,CMW.PLOW,Mine Plow,Allows the tank to detonate mines safely,passive,,engineers,maneuver_training,0,35,0,0,0,0,0,1,,,churchill_croc
 churchill_plow,CMW.PLOW,Mine Plow,Allows the tank to detonate mines safely,passive,,engineers,maneuver_training,0,35,0,0,0,0,0,1,,,churchill_cct
+cmw_booby_trap,PE.BOOBY_TRAP,Booby Trap Building,"Rig a building with explosives. When enemy infantry enter that building, the charges will explode after a brief timer.",ability,,canadians,,0,20,0,0,0,0,0,1,,,ssf
+johnson_lmg,CMW.JOHNSON,Johnson LMG,A single Johnson LMG,single_weapon,,canadians,,0,30,0,0,0,1,0,2,,,ssf
+cmw_satchel_charge,ALLY.SATCHEL,Satchel Charges,Large packages of thrown explosives on a five-second timer,consumable,,canadians,,0,75,0,0,2,0,0,1,,,ssf
+cmw_tank_smoke,ALLY.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,canadians,,0,15,0,0,2,0,0,1,,,stuart_recce
+supercharge_mortar,CMW.MORTAR_SUPER,Supercharge,Increases weapon range,passive,,canadians,supercharged_shells,50,20,0,1,0,0,0,1,,,mortar_british
+supercharge_priest,CMW.PRIEST_SUPER,Supercharge,Increases weapon range,passive,,canadians,supercharged_shells,0,0,0,1,0,0,0,1,,,priest
+supercharge_25pdr,CMW.TWENTYFIVEPOUNDER_SUPER,Supercharge,Increases weapon range,passive,,canadians,supercharged_shells,50,20,0,1,0,0,0,1,,,25pdr
