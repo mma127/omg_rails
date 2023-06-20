@@ -111,10 +111,8 @@ after :doctrines do
   SupportTeam.create!(name: "commando_mortar", const_name: "CMW.COMMANDO_MORTAR", display_name: "Commando 3-inch Mortar Team",
                       model_count: 3)
 
-  LightVehicle.create!(name: "tetrarch", const_name: "CMW.TETRARCH", display_name: "Tetrarch",
-                       model_count: 6)
-  LightVehicle.create!(name: "sas_jeep", const_name: "CMW.SAS_JEEP", display_name: "SAS Jeep",
-                       model_count: 6)
+  LightVehicle.create!(name: "tetrarch", const_name: "CMW.TETRARCH", display_name: "Tetrarch")
+  LightVehicle.create!(name: "sas_jeep", const_name: "CMW.SAS_JEEP", display_name: "SAS Jeep")
 
   Glider.create!(name: "infantry_glider", const_name: "CMW.INF_GLIDER", display_name: "Infantry Glider",
                  transport_squad_slots: 2, transport_model_slots: 12)
