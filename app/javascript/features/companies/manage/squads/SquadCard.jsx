@@ -18,7 +18,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { TransportSlots } from "./TransportSlots";
 import { TransportDropTarget } from "./TransportDropTarget";
 import { SquadUpgrades } from "../squad_upgrades/SquadUpgrades";
-import { removeSquadUpgrade } from "../squad_upgrades/squadUpgradesSlice";
+import { removeSquadUpgrade, selectSquadUpgradesForSquad } from "../squad_upgrades/squadUpgradesSlice";
 import { removeCost } from "../../companiesSlice";
 
 const useStyles = makeStyles(() => ({
@@ -86,6 +86,7 @@ export const SquadCard = (
     squad = useSelector(state => selectSquadInTabIndexTransportUuid(state, tab, index, transportUuid, uuid))
   }
   const unit = useSelector(state => selectUnitById(state, squad.unitId))
+  const squadUpgrades = useSelector(state => selectSquadUpgradesForSquad(state, tab, index, uuid))
 
   // Must have unit loaded to continue
   if (!unit || !squad) {
@@ -165,7 +166,7 @@ export const SquadCard = (
   }
 
   const transportSquadDelete = (deleteSquad) => {
-    onDestroyClick(deleteSquad, uuid)
+    onDestroyClick(deleteSquad, squadUpgrades, uuid)
   }
 
   const onUnitClick = (availableUnitId) => {
@@ -175,7 +176,7 @@ export const SquadCard = (
   let deleteContent = ""
   if (enabled) {
     deleteContent = <DeleteOutlineIcon
-      onClick={() => onDestroyClick(squad)}
+      onClick={() => onDestroyClick(squad, squadUpgrades, null)}
       className={classes.deleteIcon}
       color="error"/>
   }
