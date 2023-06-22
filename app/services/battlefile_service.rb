@@ -257,6 +257,13 @@ end
   #
   def build_squad_block(squad)
     upgrades = build_squad_upgrades_block(squad)
+    unit_replacement_const = get_unit_replacement_const(squad)
+    if unit_replacement_const.present?
+      const = unit_replacement_const
+    else
+      const = squad.unit.const_name
+    end
+
     if squad.embarked_transported_squad.present?
       halftrack_check = "true,"
       transport_sgroup_name = "\n              Transport_SGroup_Name = 'SGroup#{squad.embarked_transported_squad.transport_squad_id}'"
@@ -267,7 +274,7 @@ end
     <<-SQUAD
           {
               SGroup = SGroup_CreateIfNotFound("SGroup#{squad.id}"),
-              BP = OMGSBPS.#{squad.unit.const_name},
+              BP = OMGSBPS.#{const},
               exp = #{squad.vet},
               SquadPop = #{squad.pop.to_i},
               Upgrades = {
@@ -282,9 +289,18 @@ end
     upgrade_consts = squad.squad_upgrades
                         .includes(available_upgrade: :upgrade)
                         .joins(available_upgrade: :upgrade)
-                        .where.not(upgrade: { type: "Upgrades::Building" })
+                        .where.not(upgrade: { type: %w[Upgrades::Building Upgrades::UnitReplacement] })
                         .map { |su| su.available_upgrade.upgrade.formatted_const_name }
     upgrade_consts.join(",\n")
+  end
+
+  def get_unit_replacement_const(squad)
+    squad.squad_upgrades
+         .includes(available_upgrade: :upgrade)
+         .joins(available_upgrade: :upgrade)
+         .where(upgrade: { type: "Upgrades::UnitReplacement" })
+         .map { |su| su.available_upgrade.upgrade.const_name }
+         .first
   end
 
   #                 Glider = {
