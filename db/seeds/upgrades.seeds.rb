@@ -20,22 +20,27 @@ after :restriction_units do
     end
   end
 
-  upgrades = []
-  CSV.foreach('db/seeds/enabled_upgrades.csv', headers: true) do |row|
-    name = row['upgrade']
-    const = row['const']
-    display_name = row['display_name']
-    description = row['description']
-    slots = row['slots']
-    unitwide_slots = row['unitwide_slots']
-    model_count = row['model_count']
-    add_model_count = row['add_model_count']
-    type = row['type']
-    upgrade_class = get_upgrade_class(type)
+  csv_paths = %w[db/seeds/ame_enabled_upgrades.csv db/seeds/cmw_enabled_upgrades.csv].freeze
 
-    upgrades << upgrade_class.new(name: name, const_name: const, display_name: display_name, description: description,
-                                  upgrade_slots: slots, unitwide_upgrade_slots: unitwide_slots,
-                                  model_count: model_count, additional_model_count: add_model_count)
+  upgrades = []
+
+  csv_paths.each do |path|
+    CSV.foreach(path, headers: true) do |row|
+      name = row['upgrade']
+      const = row['const']
+      display_name = row['display_name']
+      description = row['description']
+      slots = row['slots']
+      unitwide_slots = row['unitwide_slots']
+      model_count = row['model_count']
+      add_model_count = row['add_model_count']
+      type = row['type']
+      upgrade_class = get_upgrade_class(type)
+
+      upgrades << upgrade_class.new(name: name, const_name: const, display_name: display_name, description: description,
+                                    upgrade_slots: slots, unitwide_upgrade_slots: unitwide_slots,
+                                    model_count: model_count, additional_model_count: add_model_count)
+    end
   end
   Upgrade.import! upgrades
 end

@@ -71,10 +71,10 @@ after :doctrines do
   SupportTeam.create!(name: "17pdr", const_name: "CMW.SEVENTEENPOUNDER", display_name: "17-pounder AT Gun")
 
   LightVehicle.create!(name: "universal_carrier", const_name: "CMW.UNIVERAL_CARRIER", display_name: "Universal Carrier",
-                       upgrade_slots: 1, transport_squad_slots: 1, transport_model_slots: 6, model_count: 6)
+                       upgrade_slots: 1, transport_squad_slots: 1, transport_model_slots: 6)
   LightVehicle.create!(name: "bren_carrier", const_name: "CMW.BRENGUN", display_name: "Bren Gun Carrier",
-                       upgrade_slots: 1, model_count: 6)
-  LightVehicle.create!(name: "staghound", const_name: "CMW.STAGHOUND", display_name: "Staghound")
+                       upgrade_slots: 1)
+  LightVehicle.create!(name: "staghound", const_name: "CMW.STAGHOUND", display_name: "Staghound", upgrade_slots: 1)
 
   Tank.create!(name: "stuart", const_name: "CMW.STUART", display_name: "Stuart")
   Tank.create!(name: "cromwell", const_name: "CMW.CROMWELL", display_name: "Cromwell")
@@ -90,7 +90,7 @@ after :doctrines do
   Infantry.create!(name: "canadian_section", const_name: "CMW.TOMMIES_CANUK", display_name: "Canadian Infantry Section",
                    unitwide_upgrade_slots: 0, upgrade_slots: 1, model_count: 5)
   Infantry.create!(name: "ssf", const_name: "CMW.SSF", display_name: "Devil's Brigade",
-                   unitwide_upgrade_slots: 0, upgrade_slots: 1, model_count: 4)
+                   unitwide_upgrade_slots: 0, upgrade_slots: 2, model_count: 4)
 
   Tank.create!(name: "stuart_recce", const_name: "CMW.STUART_RECON", display_name: "Stuart Recce")
   Tank.create!(name: "comet", const_name: "CMW.COMET", display_name: "Comet")
@@ -111,10 +111,8 @@ after :doctrines do
   SupportTeam.create!(name: "commando_mortar", const_name: "CMW.COMMANDO_MORTAR", display_name: "Commando 3-inch Mortar Team",
                       model_count: 3)
 
-  LightVehicle.create!(name: "tetrarch", const_name: "CMW.TETRARCH", display_name: "Tetrarch",
-                       model_count: 6)
-  LightVehicle.create!(name: "sas_jeep", const_name: "CMW.SAS_JEEP", display_name: "SAS Jeep",
-                       model_count: 6)
+  LightVehicle.create!(name: "tetrarch", const_name: "CMW.TETRARCH", display_name: "Tetrarch")
+  LightVehicle.create!(name: "sas_jeep", const_name: "CMW.SAS_JEEP", display_name: "SAS Jeep")
 
   Glider.create!(name: "infantry_glider", const_name: "CMW.INF_GLIDER", display_name: "Infantry Glider",
                  transport_squad_slots: 2, transport_model_slots: 12)

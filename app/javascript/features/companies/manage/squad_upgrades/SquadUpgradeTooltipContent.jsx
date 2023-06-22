@@ -25,6 +25,7 @@ export const SquadUpgradeTooltipContent = ({ squadUpgrade }) => {
   const cost = formatResourceCost({ man: squadUpgrade.man, mun: squadUpgrade.mun, fuel: squadUpgrade.fuel })
 
   const pop = squadUpgrade.pop
+  const uses = squadUpgrade.uses
 
   return (
     <>
@@ -32,8 +33,9 @@ export const SquadUpgradeTooltipContent = ({ squadUpgrade }) => {
         {upgrade.displayName}
       </Typography>
       <Box><Typography variant="body" className={classes.description}>{upgrade.description}</Typography></Box>
+      {uses > 0 ? <Box><Typography variant="body"><b>Uses: </b>{uses}</Typography></Box> : null}
       <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
-      {pop > 0 ? <Box><Typography variant="body"><b>Pop:</b>{pop}</Typography></Box> : null}
+      {pop > 0 ? <Box><Typography variant="body"><b>Pop: </b>{pop}</Typography></Box> : null}
     </>
   )
 }

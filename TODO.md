@@ -1,5 +1,6 @@
 Upgrades:
-1. UpgradeSwap should also have an association that links units affected by the swap. Otherwise we don't have any granularity
+1. Squad Builder needs to delete squad upgrades for squads that are deleted in the UI. Cannot pass squad upgrades when the corresponding squad isn't also in the payload
+2. Upgrades that increase squad pop or model count aren't updating the platoon's count. Similar for removing the upgrade
 
 
 SquadBuilder
