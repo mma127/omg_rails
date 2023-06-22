@@ -1,7 +1,8 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { fetchCompanySquads, upsertSquads } from "../units/squadsSlice";
+import { fetchCompanySquads, removeSquad, removeTransportedSquad, upsertSquads } from "../units/squadsSlice";
 import { CATEGORIES } from "../../../../constants/company";
 import { loadSquadUpgrade } from "./squadUpgrade";
+import { removeNewCompanyOffmap } from "../company_offmaps/companyOffmapsSlice";
 
 const find_or_memo = (memo, source, id) => {
   if (id in memo) {
@@ -65,6 +66,18 @@ const squadUpgradesSlice = createSlice({
         squadUpgradesAdapter.setAll(state, action.payload.squadUpgrades)
         state.currentSquadUpgrades = populateSquadUpgradesTree(action.payload.squadUpgrades, action.payload.upgrades, action.payload.availableUpgrades, action.payload.squads)
         state.isChanged = false
+      })
+      .addCase(removeSquad, (state, action) => {
+        const { uuid, index, tab } = action.payload
+
+        delete state.currentSquadUpgrades[tab][index][uuid]
+        state.isChanged = true
+      })
+      .addCase(removeTransportedSquad, (state, action) => {
+        const { uuid, index, tab } = action.payload
+
+        delete state.currentSquadUpgrades[tab][index][uuid]
+        state.isChanged = true
       })
   }
 })

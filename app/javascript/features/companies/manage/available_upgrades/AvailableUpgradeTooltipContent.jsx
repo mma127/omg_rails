@@ -34,7 +34,7 @@ export const AvailableUpgradeTooltipContent = ({ availableUpgrade }) => {
       <Box><Typography variant="body" className={classes.description}>{upgrade.description}</Typography></Box>
       {uses > 0 ? <Box><Typography variant="body"><b>Uses: </b>{uses}</Typography></Box> : null}
       <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
-      {pop > 0 ? <Box><Typography variant="body"><b>Pop: </b>{pop}</Typography></Box> : null}
+      {pop > 0 ? <Box><Typography variant="body"><b>Pop: </b>{parseFloat(pop)}</Typography></Box> : null}
     </>
   )
 }

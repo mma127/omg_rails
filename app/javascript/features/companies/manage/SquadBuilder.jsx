@@ -40,7 +40,7 @@ import {
 } from "./company_offmaps/companyOffmapsSlice";
 import { PurchasedOffmaps } from "./company_offmaps/PurchasedOffmaps";
 import { CompanyResources } from "./CompanyResources";
-import {createSquadUpgrade} from "./squad_upgrades/squadUpgrade";
+import { createSquadUpgrade } from "./squad_upgrades/squadUpgrade";
 import {
   addNewSquadUpgrade,
   removeSquadUpgrade,
@@ -162,9 +162,22 @@ export const SquadBuilder = ({}) => {
     onSquadSelect(availableUnit.id, tab, index, newSquad.uuid, transportUuid)
   }
 
-  const onSquadDestroy = (squad, transportUuid = null) => {
+  const onSquadDestroy = (squad, squadUpgrades, transportUuid = null) => {
     // TODO remove squad id from company if not null
-    dispatch(removeCost({ id: companyId, pop: squad.pop, man: squad.man, mun: squad.mun, fuel: squad.fuel }))
+
+    // Calculate total cost to remove from sum of squad and upgrades
+    let pop = squad.pop,
+      man = squad.man,
+      mun = squad.mun,
+      fuel = squad.fuel;
+    (squadUpgrades || []).forEach(su => {
+      pop += su.pop
+      man += su.man
+      mun += su.mun
+      fuel += su.fuel
+    })
+
+    dispatch(removeCost({ id: companyId, pop: pop, man: man, mun: mun, fuel: fuel }))
     if (_.isNull(transportUuid)) {
       dispatch(removeSquad(squad))
     } else {
@@ -211,7 +224,13 @@ export const SquadBuilder = ({}) => {
   }
 
   const onSquadUpgradeDestroyClick = (squadUpgrade) => {
-    dispatch(removeCost({ id: companyId, pop: squadUpgrade.pop || 0, man: squadUpgrade.man, mun: squadUpgrade.mun, fuel: squadUpgrade.fuel }))
+    dispatch(removeCost({
+      id: companyId,
+      pop: squadUpgrade.pop || 0,
+      man: squadUpgrade.man,
+      mun: squadUpgrade.mun,
+      fuel: squadUpgrade.fuel
+    }))
     dispatch(removeSquadUpgrade({ squadUpgrade }))
   }
 
@@ -220,11 +239,11 @@ export const SquadBuilder = ({}) => {
   let availableUnitsContent,
     availableOffmapsContent
   if (availableUnitsStatus === "pending") {
-    availableUnitsContent = <CircularProgress />
+    availableUnitsContent = <CircularProgress/>
     availableOffmapsContent = null
   } else {
-    availableUnitsContent = <AvailableUnits onUnitSelect={onUnitSelect} enabled={editEnabled} />
-    availableOffmapsContent = <AvailableOffmaps onSelect={onOffmapSelect} enabled={editEnabled} />
+    availableUnitsContent = <AvailableUnits onUnitSelect={onUnitSelect} enabled={editEnabled}/>
+    availableOffmapsContent = <AvailableOffmaps onSelect={onOffmapSelect} enabled={editEnabled}/>
   }
 
   let snackbarSeverity = "success"
@@ -243,7 +262,7 @@ export const SquadBuilder = ({}) => {
                        setIsOpen={setOpenSnackbar}
                        handleClose={handleCloseSnackbar}
                        severity={snackbarSeverity}
-                       content={snackbarContent} />
+                       content={snackbarContent}/>
         <Grid container spacing={2} ref={constraintsRef}>
           <Grid item container spacing={2} className={classes.availableUnitsContainer}>
             <Grid item container md={6}>
@@ -256,22 +275,22 @@ export const SquadBuilder = ({}) => {
             </Grid>
             <Grid item container md={6} xs={12}>
               <Grid item xs={12}>
-                <AvailableUnitDetails onAvailableUpgradeClick={onAvailableUpgradeClick} />
-                <SaveCompanyButton saveSquads={saveSquads} />
+                <AvailableUnitDetails onAvailableUpgradeClick={onAvailableUpgradeClick}/>
+                <SaveCompanyButton saveSquads={saveSquads}/>
               </Grid>
             </Grid>
           </Grid>
           <Grid item container spacing={2}>
-            <CompanyResources companyId={companyId} />
-            <Grid item md={2} />
+            <CompanyResources companyId={companyId}/>
+            <Grid item md={2}/>
             <Grid item md={6}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                           pr={1}>Purchased Offmaps</Typography>
-              <PurchasedOffmaps onDeleteClick={onOffmapDestroyClick} enabled={editEnabled} />
+              <PurchasedOffmaps onDeleteClick={onOffmapDestroyClick} enabled={editEnabled}/>
             </Grid>
           </Grid>
           <Grid item container spacing={2}>
-            <SquadsGridTabs selectedTab={currentTab} changeCallback={onTabChange} />
+            <SquadsGridTabs selectedTab={currentTab} changeCallback={onTabChange}/>
           </Grid>
           <Grid item container spacing={2}>
             <Grid item xs={3}>
@@ -282,7 +301,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                     enabled={editEnabled} />
+                                     enabled={editEnabled}/>
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={1} currentTab={currentTab}
@@ -292,7 +311,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                     enabled={editEnabled} />
+                                     enabled={editEnabled}/>
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={2} currentTab={currentTab}
@@ -302,7 +321,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                     enabled={editEnabled} />
+                                     enabled={editEnabled}/>
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={3} currentTab={currentTab}
@@ -312,7 +331,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                     enabled={editEnabled} />
+                                     enabled={editEnabled}/>
             </Grid>
           </Grid>
           <Grid item container spacing={2}>
@@ -324,7 +343,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                     enabled={editEnabled} />
+                                     enabled={editEnabled}/>
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={5} currentTab={currentTab}
@@ -334,7 +353,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                     enabled={editEnabled} />
+                                     enabled={editEnabled}/>
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={6} currentTab={currentTab}
@@ -344,7 +363,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                     enabled={editEnabled} />
+                                     enabled={editEnabled}/>
             </Grid>
             <Grid item xs={3}>
               <CompanyGridDropTarget gridIndex={7} currentTab={currentTab}
@@ -354,7 +373,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                     enabled={editEnabled} />
+                                     enabled={editEnabled}/>
             </Grid>
           </Grid>
         </Grid>
