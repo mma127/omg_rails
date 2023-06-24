@@ -224,14 +224,14 @@ class CompanyService
           available_unit = available_units_by_id[s[:available_unit_id]]
           squad = Squad.new(company: company, vet: s[:vet], tab_category: s[:tab], uuid: s[:uuid],
                                   category_position: s[:index], available_unit: available_unit,
-                                  total_model_count: s[:totalModelCount])
+                                  total_model_count: s[:totalModelCount], total_pop: s[:total_pop])
           new_squad_upgrades.concat(build_recursive_squad_upgrades(s, squad))
           new_squads << squad
         else
           ## Update existing Squads
           existing_squad = existing_squads_by_id[s[:squad_id]]
           existing_squad.update!(tab_category: s[:tab], category_position: s[:index], name: s[:name],
-                                 total_model_count: s[:totalModelCount])
+                                 total_model_count: s[:totalModelCount], total_pop: s[:total_pop])
           new_squad_upgrades.concat(build_recursive_squad_upgrades(s, existing_squad))
         end
       end
@@ -308,8 +308,8 @@ class CompanyService
       company.update!(pop: pop_new, man: man_remaining, mun: mun_remaining, fuel: fuel_remaining)
     end
 
-    company.reload
-    [company.squads, company.available_units, company.company_offmaps, company.available_offmaps, company.squad_upgrades]
+    # company.reload
+    # [company.squads, company.available_units, company.company_offmaps, company.available_offmaps, company.squad_upgrades]
   end
 
   def delete_company(company, override = false)

@@ -8,7 +8,7 @@ import {
   removeExistingCompanyOffmap,
   removeNewCompanyOffmap, selectMergedCompanyOffmaps
 } from "../company_offmaps/companyOffmapsSlice";
-import { selectFlatSquadUpgrades } from "../squad_upgrades/squadUpgradesSlice";
+import { addNewSquadUpgrade, removeSquadUpgrade, selectFlatSquadUpgrades } from "../squad_upgrades/squadUpgradesSlice";
 
 const squadsAdapter = createEntityAdapter()
 
@@ -137,12 +137,12 @@ const buildNewSquadTabs = (squads) => {
     transportedSquads.forEach(squad => {
       const transport = tabs[squad.tab][squad.index][squad.transportUuid]
       const transportedSquads = { ...transport.transportedSquads, [squad.uuid]: loadSquad(squad) }
-      const combinedPop = transport.combinedPop + parseFloat(squad.pop)
+      const totalPop = transport.totalPop + parseFloat(squad.pop)
       const usedSquadSlots = transport.usedSquadSlots + 1
       const usedModelSlots = transport.usedModelSlots + squad.totalModelCount
       tabs[squad.tab][squad.index][squad.transportUuid] = {
         ...transport,
-        combinedPop: combinedPop,
+        totalPop: totalPop,
         transportedSquads: transportedSquads,
         usedSquadSlots: usedSquadSlots,
         usedModelSlots: usedModelSlots
@@ -173,7 +173,7 @@ const squadsSlice = createSlice({
      */
     addTransportedSquad(state, action) {
       const { newSquad, transportUuid } = action.payload
-      const { uuid, index, tab, totalModelCount, pop } = newSquad
+      const { uuid, index, tab, totalModelCount, totalPop } = newSquad
       const platoon = state[tab][index]
       if (_.has(platoon, transportUuid)) {
         const transport = platoon[transportUuid]
@@ -190,7 +190,7 @@ const squadsSlice = createSlice({
             transport.transportedSquads = transportedSquads
             transport.usedSquadSlots = usedSquadSlots + 1
             transport.usedModelSlots = usedModelSlots + totalModelCount
-            transport.combinedPop = parseFloat(transport.combinedPop) + parseFloat(pop)
+            transport.totalPop = parseFloat(transport.totalPop) + parseFloat(totalPop)
           } else {
             // Otherwise, add the squad to the platoon
             if (!Object.keys(platoon).includes(uuid)) {
@@ -224,7 +224,7 @@ const squadsSlice = createSlice({
       if (_.has(platoon, transportUuid)) {
         const transport = platoon[transportUuid]
         if (_.has(transport.transportedSquads, squad.uuid)) {
-          transport.combinedPop = parseFloat(transport.combinedPop) - parseFloat(squad.pop)
+          transport.totalPop = parseFloat(transport.totalPop) - parseFloat(squad.totalPop)
           transport.usedSquadSlots -= 1
           transport.usedModelSlots -= squad.totalModelCount
           delete transport.transportedSquads[squad.uuid]
@@ -252,7 +252,7 @@ const squadsSlice = createSlice({
 
         // Uncouple squad from the source transport
         workingSquad.transportUuid = null
-        sourceTransport.combinedPop = parseFloat(sourceTransport.combinedPop) - parseFloat(workingSquad.pop)
+        sourceTransport.totalPop = parseFloat(sourceTransport.totalPop) - parseFloat(workingSquad.totalPop)
         sourceTransport.usedSquadSlots -= 1
         sourceTransport.usedModelSlots -= workingSquad.totalModelCount
         delete sourceTransport.transportedSquads[uuid]
@@ -264,6 +264,7 @@ const squadsSlice = createSlice({
       if (_.isNil(targetTransportUuid)) {
         // Moving into platoon
         newPlatoon[uuid] = workingSquad
+        state.selectedSquadTransportUuid = null
       } else {
         // Moving into transport
         const targetTransport = newPlatoon[targetTransportUuid]
@@ -276,8 +277,13 @@ const squadsSlice = createSlice({
         targetTransport.transportedSquads = transportedSquads
         targetTransport.usedSquadSlots = (targetTransport.usedSquadSlots || 0) + 1
         targetTransport.usedModelSlots = (targetTransport.usedModelSlots || 0) + workingSquad.totalModelCount
-        targetTransport.combinedPop = parseFloat(targetTransport.combinedPop) + parseFloat(workingSquad.pop)
+        targetTransport.totalPop = parseFloat(targetTransport.totalPop) + parseFloat(workingSquad.pop)
+        state.selectedSquadTransportUuid = targetTransportUuid
       }
+
+      state.selectedSquadTab = newTab
+      state.selectedSquadIndex = newIndex
+      state.selectedSquadUuid = uuid
 
       state.isChanged = true
     },
@@ -346,6 +352,56 @@ const squadsSlice = createSlice({
       })
       .addCase(removeExistingCompanyOffmap, (state) => {
         state.isChanged = true
+      })
+
+      .addCase(addNewSquadUpgrade, (state, action) => {
+        const { newSquadUpgrade, squad } = action.payload
+        const tab = newSquadUpgrade.tab,
+          index = newSquadUpgrade.index,
+          squadUuid = squad.uuid,
+          transportUuid = squad.transportUuid;
+
+        if (newSquadUpgrade.pop > 0 || newSquadUpgrade.addModelCount > 0) {
+          let workingSquad
+          if (transportUuid) {
+            workingSquad = state[tab][index][transportUuid].transportedSquads[squadUuid]
+          } else {
+            workingSquad = state[tab][index][squadUuid]
+          }
+          workingSquad.totalPop += newSquadUpgrade.pop || 0
+          workingSquad.totalModelCount += newSquadUpgrade.addModelCount || 0
+        }
+        state.isChanged = true
+      })
+
+      .addCase(removeSquadUpgrade, (state, action) => {
+        const { squadUpgrade } = action.payload
+        const tab = squadUpgrade.tab,
+          index = squadUpgrade.index,
+          squadUuid = squadUpgrade.squadUuid;
+
+        const platoon = state[tab][index]
+        let squad
+        // First look for top level squad
+        if (Object.keys(platoon).includes(squadUuid)) {
+          squad = platoon[squadUuid]
+        } else {
+          // Iterate through transportedSquads of top level squads
+          const transport = Object.values(platoon).find(s => {
+            if (s.transportedSquads) {
+              return s.transportedSquads.includes(squadUuid)
+            } else {
+              return false
+            }
+          })
+          if (transport) {
+            squad = transport.transportedSquads[squadUuid]
+          } else {
+            return
+          }
+        }
+        squad.totalPop -= squadUpgrade.pop || 0
+        squad.totalModelCount -= squadUpgrade.addModelCount || 0
       })
   }
 })

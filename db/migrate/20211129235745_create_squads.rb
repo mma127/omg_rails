@@ -8,6 +8,7 @@ class CreateSquads < ActiveRecord::Migration[6.1]
       t.string :uuid, null: false, comment: "Unique uuid"
       t.decimal :vet, comment: "Squad's veterancy"
       t.string :name, comment: "Squad's custom name"
+      t.decimal :total_pop, comment: "Total pop of the unit and all upgrades"
       t.integer :total_model_count, comment: "Total model count of the unit and all upgrades"
 
       t.timestamps

@@ -7,6 +7,7 @@
 #  name(Squad's custom name)                                         :string
 #  tab_category(Tab this squad is in)                                :string           not null
 #  total_model_count(Total model count of the unit and all upgrades) :integer
+#  total_pop(Total pop of the unit and all upgrades)                 :integer
 #  uuid(Unique uuid)                                                 :string           not null
 #  vet(Squad's veterancy)                                            :decimal(, )
 #  created_at                                                        :datetime         not null
@@ -137,6 +138,7 @@ class Squad < ApplicationRecord
     expose :man
     expose :mun
     expose :fuel
+    expose :total_pop, as: :totalPop
 
     # Transport related
     expose :total_model_count, as: :totalModelCount

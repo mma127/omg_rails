@@ -220,7 +220,7 @@ export const SquadBuilder = ({}) => {
       mun: newSquadUpgrade.mun,
       fuel: newSquadUpgrade.fuel
     }))
-    dispatch(addNewSquadUpgrade({ newSquadUpgrade }))
+    dispatch(addNewSquadUpgrade({ newSquadUpgrade, squad }))
   }
 
   const onSquadUpgradeDestroyClick = (squadUpgrade) => {

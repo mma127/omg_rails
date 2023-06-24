@@ -7,6 +7,7 @@ import { makeStyles } from "@mui/styles";
 import { UpgradeIcon } from "../upgrades/UpgradeIcon";
 import { selectUpgradeById } from "../upgrades/upgradesSlice";
 import { SquadUpgradeTooltipContent } from "./SquadUpgradeTooltipContent";
+import { selectSquadUpgradesForSquad } from "./squadUpgradesSlice";
 
 
 const useStyles = makeStyles(() => ({

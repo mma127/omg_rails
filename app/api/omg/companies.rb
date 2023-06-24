@@ -67,11 +67,13 @@ module OMG
         end
         get 'squads' do
           declared_params = declared(params)
-          company = Company.includes(:squads, :ruleset,
-                                     { available_units: :unit,
+          company = Company.includes(:ruleset,
+                                     { squads: [:embarked_transport, :squads_in_transport, available_unit: { unit: :transport_allowed_units}],
+                                       available_units: { unit: :transport_allowed_units},
                                        available_offmaps: :offmap,
                                        company_offmaps: :offmap,
                                        company_callin_modifiers: :callin_modifier,
+                                       squad_upgrades: :squad,
                                        available_upgrades: :upgrade })
                            .find_by(id: declared_params[:id], player: current_player)
           if company.blank?
@@ -103,6 +105,7 @@ module OMG
             requires :tab, type: String, values: Squad.tab_categories.values, desc: "Squad's tab category"
             requires :index, type: Integer, desc: "Squad's position within a tab category"
             requires :uuid, type: String, desc: "Squad uuid"
+            optional :totalPop, type: BigDecimal, as: :total_pop, desc: "Total pop of this squad, if applicable"
             optional :totalModelCount, type: Integer, desc: "Total model count of this squad, if applicable"
             optional :transportedSquadUuids, type: Array, desc: "Optional list of uuids of squads this squad is transporting"
             optional :transportUuid, type: String, desc: "Optional uuid of the transport squad this squad is embarked in"
@@ -122,21 +125,31 @@ module OMG
           begin
             declared_params = declared(params)
             company = Company.includes(:ruleset, :available_units,
-                                       { squads: { squad_upgrades: :upgrade},
+                                       { squads: { squad_upgrades: :upgrade },
                                          available_upgrades: :upgrade,
                                          available_offmaps: :offmap,
                                          company_offmaps: :offmap })
                              .find_by(id: declared_params[:id], player: current_player)
             company_service = CompanyService.new(current_player)
-            squads, available_units, company_offmaps, available_offmaps, squad_upgrades = company_service.update_company_squads(company,
-                                                                                                                                declared_params[:squads],
-                                                                                                                                declared_params[:offmaps],
-                                                                                                                                declared_params[:squadUpgrades])
 
-            squads_response = { squads: squads, available_units: available_units,
-                                company_offmaps: company_offmaps, available_offmaps: available_offmaps,
-                                squad_upgrades: squad_upgrades, available_upgrades: company.available_upgrades,
-                                upgrades: company.upgrades}
+            company_service.update_company_squads(company,
+                                                  declared_params[:squads],
+                                                  declared_params[:offmaps],
+                                                  declared_params[:squadUpgrades])
+
+            company = Company.includes(:ruleset,
+                                       { squads: [:embarked_transport, :squads_in_transport, available_unit: { unit: :transport_allowed_units}],
+                                         available_units: { unit: :transport_allowed_units},
+                                         available_offmaps: :offmap,
+                                         company_offmaps: :offmap,
+                                         company_callin_modifiers: :callin_modifier,
+                                         squad_upgrades: :squad,
+                                         available_upgrades: :upgrade })
+                             .find(company.id)
+            squads_response = { squads: company.squads, available_units: company.available_units,
+                                company_offmaps: company.company_offmaps, available_offmaps: company.available_offmaps,
+                                squad_upgrades: company.squad_upgrades, available_upgrades: company.available_upgrades,
+                                upgrades: company.upgrades }
             present squads_response, with: Entities::SquadsResponse, type: :include_unit
           rescue StandardError => e
             Rails.logger.warn("Failed to upsert company squads/offmaps/squad upgrades for Player #{current_player.id}: #{e.message}\nParams #{declared_params}\nBacktrace: #{e.backtrace.first(15).join("\n")}")

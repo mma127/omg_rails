@@ -28,7 +28,7 @@ export const createSquad = (availableUnit,
     unitDisplayName: unit.displayName,
     unitType: unit.type,
     pop: parseFloat(availableUnit.pop),
-    combinedPop: parseFloat(availableUnit.pop), // Combination of transport's pop and passenger pops
+    totalPop: parseFloat(availableUnit.pop), // Squad's total pop including upgrades
     man: availableUnit.man,
     mun: availableUnit.mun,
     fuel: availableUnit.fuel,
@@ -36,6 +36,7 @@ export const createSquad = (availableUnit,
     index: index,
     tab: tab,
     vet: 0,
+    transportTotalPop: parseFloat(availableUnit.pop) // Combination of transport's total pop and passenger total pops
     totalModelCount: unit.modelCount, // How many models this squad contains, inclusive of upgrades
     usedSquadSlots: 0,
     usedModelSlots: 0,
@@ -59,7 +60,7 @@ export const loadSquad = (squad) => {
     unitDisplayName: squad.unitDisplayName,
     unitType: squad.unitType,
     pop: parseFloat(squad.pop),
-    combinedPop: parseFloat(squad.pop),
+    totalPop: parseFloat(squad.totalPop),
     man: squad.man,
     mun: squad.mun,
     fuel: squad.fuel,
