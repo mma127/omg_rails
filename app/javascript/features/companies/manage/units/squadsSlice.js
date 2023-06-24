@@ -264,6 +264,15 @@ const squadsSlice = createSlice({
       if (_.isNil(targetTransportUuid)) {
         // Moving into platoon
         newPlatoon[uuid] = workingSquad
+
+        // If this squad is transporting other squads, update the transported squads
+        if (workingSquad.transportedSquads) {
+          Object.values(workingSquad.transportedSquads).forEach(ts => {
+            ts.tab = newTab
+            ts.index = newIndex
+          })
+        }
+        state.selectedSquadTransportUuid = null
       } else {
         // Moving into transport
         const targetTransport = newPlatoon[targetTransportUuid]
@@ -277,8 +286,12 @@ const squadsSlice = createSlice({
         targetTransport.usedSquadSlots = (targetTransport.usedSquadSlots || 0) + 1
         targetTransport.usedModelSlots = (targetTransport.usedModelSlots || 0) + workingSquad.totalModelCount
         targetTransport.popWithTransported = parseFloat(targetTransport.popWithTransported) + parseFloat(workingSquad.pop)
+        state.selectedSquadTransportUuid = targetTransportUuid
       }
 
+      state.selectedSquadTab = newTab
+      state.selectedSquadIndex = newIndex
+      state.selectedSquadUuid = uuid
       state.isChanged = true
     },
     resetSquadState: () => initialState,

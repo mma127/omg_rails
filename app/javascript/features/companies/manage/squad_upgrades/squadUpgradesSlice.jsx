@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { fetchCompanySquads, removeSquad, removeTransportedSquad, upsertSquads } from "../units/squadsSlice";
+import { fetchCompanySquads, moveSquad, removeSquad, removeTransportedSquad, upsertSquads } from "../units/squadsSlice";
 import { CATEGORIES } from "../../../../constants/company";
 import { loadSquadUpgrade } from "./squadUpgrade";
 import { removeNewCompanyOffmap } from "../company_offmaps/companyOffmapsSlice";
@@ -78,6 +78,42 @@ const squadUpgradesSlice = createSlice({
 
         delete state.currentSquadUpgrades[tab][index][uuid]
         state.isChanged = true
+      })
+      .addCase(moveSquad, (state, action) => {
+        const { squad, newIndex, newTab } = action.payload
+
+        // update all squad upgrades for the squad with new tab and index
+        const squadUuid = squad.uuid,
+          oldTab = squad.tab,
+          oldIndex = squad.index;
+
+        if (!state.currentSquadUpgrades?.[oldTab]?.[oldIndex]) return
+
+        const oldPlatoon = state.currentSquadUpgrades[oldTab][oldIndex]
+        if (squadUuid in oldPlatoon) {
+          const oldSquadUpgrades = oldPlatoon[squadUuid]
+          Object.values(oldSquadUpgrades).forEach(osu => {
+            // Create new copy with updated location
+            const newSquadUpgrade = { ...osu, index: newIndex, tab: newTab }
+            _.setWith(state.currentSquadUpgrades, `[${newTab}][${newIndex}][${squadUuid}][${newSquadUpgrade.uuid}]`, newSquadUpgrade, Object)
+          })
+          delete state.currentSquadUpgrades[oldTab][oldIndex][squadUuid]
+        }
+
+        // If the squad has transportedSquads, also update their squad upgrades
+        if (squad.transportedSquads) {
+          Object.values(squad.transportedSquads).forEach(ts => {
+            const tsUuid = ts.uuid
+            if (tsUuid in oldPlatoon) {
+              const oldSquadUpgrades = oldPlatoon[tsUuid]
+              Object.values(oldSquadUpgrades).forEach(osu => {
+                const newSquadUpgrade = { ...osu, index: newIndex, tab: newTab }
+                _.setWith(state.currentSquadUpgrades, `[${newTab}][${newIndex}][${tsUuid}][${newSquadUpgrade.uuid}]`, newSquadUpgrade, Object)
+              })
+              delete state.currentSquadUpgrades[oldTab][oldIndex][tsUuid]
+            }
+          })
+        }
       })
   }
 })
