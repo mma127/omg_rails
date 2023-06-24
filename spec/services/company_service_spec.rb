@@ -1322,6 +1322,14 @@ RSpec.describe CompanyService do
             ruleset.update!(starting_man: 200, starting_mun: 200, starting_fuel: 200)
           end
           it "raises a validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources" do
+            squad2 = Squad.find_by(uuid: '2')
+            @squad_upgrades_param << {
+              squad_upgrade_id: nil,
+              available_upgrade_id: available_upgrade_2.id,
+              squad_id: squad2.id,
+              squad_uuid: '2'
+            }
+
             expect {
               instance.update_company_squads(company.reload, @squads_param, @offmaps_param, @squad_upgrades_param)
             }.to raise_error(
@@ -1348,6 +1356,7 @@ RSpec.describe CompanyService do
         end
 
         it "raises a validation error if a platoon has too much pop including squad upgrades" do
+          squad2 = Squad.find_by(uuid: '2')
           @squads_param << { squad_id: nil,
                              unit_id: unit3.id,
                              available_unit_id: available_unit_3.id,
@@ -1355,6 +1364,12 @@ RSpec.describe CompanyService do
                              vet: 0,
                              tab: "core",
                              index: 0 }
+          @squad_upgrades_param << {
+            squad_upgrade_id: nil,
+            available_upgrade_id: available_upgrade_2.id,
+            squad_id: squad2.id,
+            squad_uuid: '2'
+          }
           expect {
             instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
           }.to raise_error(
