@@ -307,9 +307,6 @@ class CompanyService
 
       company.update!(pop: pop_new, man: man_remaining, mun: mun_remaining, fuel: fuel_remaining)
     end
-
-    company.reload
-    [company.squads, company.available_units, company.company_offmaps, company.available_offmaps, company.squad_upgrades]
   end
 
   def delete_company(company, override = false)

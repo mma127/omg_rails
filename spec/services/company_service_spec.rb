@@ -217,7 +217,8 @@ RSpec.describe CompanyService do
       end
 
       it "creates all input Squads for the Company" do
-        squads, _, _, _ = subject
+        subject
+        squads = company.reload.squads
         expect(squads.size).to eq squads_param.size
 
         expect(squads.where(available_unit: available_unit_1).size).to eq 3
@@ -226,7 +227,8 @@ RSpec.describe CompanyService do
       end
 
       it "updates the Company's AvailableUnits available value" do
-        _, available_units, _, _ = subject
+        subject
+        available_units = company.reload.available_units
         expect(available_units.size).to eq 3
         expect(available_unit_1.reload.available).to eq 3
         expect(available_unit_2.reload.available).to eq 1
@@ -234,21 +236,24 @@ RSpec.describe CompanyService do
       end
 
       it "creates all input CompanyOffmaps for the Company" do
-        _, _, company_offmaps, _ = subject
+        subject
+        company_offmaps = company.reload.company_offmaps
         expect(company_offmaps.size).to eq offmaps_param.size
         expect(company_offmaps.where(available_offmap: available_offmap_1).size).to eq 1
         expect(company_offmaps.where(available_offmap: available_offmap_2).size).to eq 2
       end
 
       it "updates the Company's AvailableOffmaps available value" do
-        _, _, _, available_offmaps = subject
+        subject
+        available_offmaps = company.reload.available_offmaps
         expect(available_offmaps.size).to eq 2
         expect(available_offmaps.find_by(offmap: offmap1).available).to eq 0
         expect(available_offmaps.find_by(offmap: offmap2).available).to eq 1
       end
 
       it "creates all input SquadUpgrades for the Company" do
-        _, _, _, _, squad_upgrades = subject
+        subject
+        squad_upgrades = company.reload.squad_upgrades
         expect(squad_upgrades.size).to eq squad_upgrades_param.size
         expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
         expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 2
@@ -637,7 +642,8 @@ RSpec.describe CompanyService do
         end
 
         it "creates all squads" do
-          squads, _ = subject
+          subject
+          squads = company.reload.squads
           expect(squads.size).to eq squads_param.size
 
           expect(squads.where(available_unit: available_unit_1).size).to eq 2
@@ -658,7 +664,8 @@ RSpec.describe CompanyService do
         end
 
         it "creates all input SquadUpgrades for the Company" do
-          _, _, _, _, squad_upgrades = subject
+          subject
+          squad_upgrades = company.reload.squad_upgrades
           expect(squad_upgrades.size).to eq squad_upgrades_param.size
           expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
           expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 2
@@ -727,7 +734,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all squads" do
-            squads, _ = subject
+            subject
+            squads = company.reload.squads
             expect(squads.size).to eq squads_param.size
 
             expect(squads.where(available_unit: available_unit_1).size).to eq 2
@@ -744,7 +752,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all input SquadUpgrades for the Company" do
-            _, _, _, _, squad_upgrades = subject
+            subject
+            squad_upgrades = company.reload.squad_upgrades
             expect(squad_upgrades.size).to eq squad_upgrades_param.size
             expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
             expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 1
@@ -755,7 +764,8 @@ RSpec.describe CompanyService do
         context "when the transport is not allowed to embark the passenger unit" do
           let!(:transport_allowed_unit) { nil }
           it "creates all squads" do
-            squads, _ = subject
+            subject
+            squads = company.reload.squads
             expect(squads.size).to eq squads_param.size
 
             expect(squads.where(available_unit: available_unit_1).size).to eq 2
@@ -772,7 +782,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all input SquadUpgrades for the Company" do
-            _, _, _, _, squad_upgrades = subject
+            subject
+            squad_upgrades = company.reload.squad_upgrades
             expect(squad_upgrades.size).to eq squad_upgrades_param.size
             expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
             expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 2
@@ -841,7 +852,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all squads" do
-            squads, _ = subject
+            subject
+            squads = company.reload.squads
             expect(squads.size).to eq squads_param.size
 
             expect(squads.where(available_unit: available_unit_1).size).to eq 2
@@ -861,7 +873,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all input SquadUpgrades for the Company" do
-            _, _, _, _, squad_upgrades = subject
+            subject
+            squad_upgrades = company.reload.squad_upgrades
             expect(squad_upgrades.size).to eq squad_upgrades_param.size
             expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
             expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 1
@@ -930,7 +943,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all squads" do
-            squads, _ = subject
+            subject
+            squads = company.reload.squads
             expect(squads.size).to eq squads_param.size
 
             expect(squads.where(available_unit: available_unit_1).size).to eq 2
@@ -950,7 +964,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all input SquadUpgrades for the Company" do
-            _, _, _, _, squad_upgrades = subject
+            subject
+            squad_upgrades = company.reload.squad_upgrades
             expect(squad_upgrades.size).to eq squad_upgrades_param.size
             expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).count).to eq 1
             expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).count).to eq 1
@@ -1106,7 +1121,8 @@ RSpec.describe CompanyService do
         end
 
         it "creates all input Squads for the Company" do
-          squads, _, _, _ = instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          squads = company.reload.squads
           expect(squads.size).to eq @squads_param.size
 
           expect(squads.where(available_unit: available_unit_1).size).to eq 3
@@ -1116,7 +1132,8 @@ RSpec.describe CompanyService do
         end
 
         it "updates the Company's AvailableUnits available value" do
-          _, available_units, _, _ = instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          available_units = company.reload.available_units
           expect(available_units.size).to eq 4
           expect(available_unit_1.reload.available).to eq 3
           expect(available_unit_2.reload.available).to eq 2
@@ -1127,7 +1144,8 @@ RSpec.describe CompanyService do
         it "creates all input CompanyOffmaps for the Company" do
           company_offmap1 = company.company_offmaps.find_by(available_offmap: available_offmap_1)
           company_offmap2 = company.company_offmaps.find_by(available_offmap: available_offmap_2)
-          _, _, company_offmaps, _ = instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          company_offmaps = company.reload.company_offmaps
           expect(company_offmaps.size).to eq @offmaps_param.size
           expect(company_offmaps.where(available_offmap: available_offmap_1).size).to eq 1
           expect(company_offmaps.where(available_offmap: available_offmap_2).size).to eq 2
@@ -1136,7 +1154,8 @@ RSpec.describe CompanyService do
         end
 
         it "updates the Company's AvailableOffmaps available value" do
-          _, _, _, available_offmaps = instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          available_offmaps = company.reload.available_offmaps
           expect(available_offmaps.size).to eq 2
           expect(available_offmaps.find_by(offmap: offmap1).available).to eq 0
           expect(available_offmaps.find_by(offmap: offmap2).available).to eq 1
@@ -1147,7 +1166,8 @@ RSpec.describe CompanyService do
           squad4 = company.squads.find_by(uuid: '4old')
           squad_upgrade3 = company.squad_upgrades.find_by(available_upgrade: available_upgrade_3, squad: squad3)
           squad_upgrade4 = company.squad_upgrades.find_by(available_upgrade: available_upgrade_1_2, squad: squad4)
-          _, _, _, _, squad_upgrades = instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          squad_upgrades = company.reload.squad_upgrades
           expect(squad_upgrades.size).to eq @squad_upgrades_param.size
           expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).size).to eq 2
           expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).size).to eq 3
@@ -1439,7 +1459,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all input Squads for the Company" do
-            squads, _ = subject
+            subject
+            squads = company.reload.squads
             expect(squads.size).to eq squads_param.size
 
             expect(squads.where(available_unit: available_unit_1).size).to eq 3
@@ -1449,7 +1470,8 @@ RSpec.describe CompanyService do
           end
 
           it "updates the Company's AvailableUnits available value" do
-            _, available_units = subject
+            subject
+            available_units = company.reload.available_units
             expect(available_units.size).to eq 4
             expect(available_unit_1.reload.available).to eq 3
             expect(available_unit_2.reload.available).to eq 1
@@ -1586,7 +1608,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all squads" do
-            squads, _ = subject
+            subject
+            squads = company.reload.squads
             expect(squads.size).to eq squads_param.size
 
             expect(squads.where(available_unit: available_unit_1).size).to eq 2
@@ -1697,7 +1720,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all squads" do
-            squads, _ = subject
+            subject
+            squads = company.reload.squads
             expect(squads.size).to eq squads_param.size
 
             expect(squads.where(available_unit: available_unit_1).size).to eq 2
@@ -1809,7 +1833,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all squads" do
-            squads, _ = subject
+            subject
+            squads = company.reload.squads
             expect(squads.size).to eq squads_param.size
 
             expect(squads.where(available_unit: available_unit_1).size).to eq 2
@@ -1925,7 +1950,8 @@ RSpec.describe CompanyService do
           end
 
           it "creates all squads" do
-            squads, _ = subject
+            subject
+            squads = company.reload.squads
             expect(squads.size).to eq squads_param.size
 
             expect(squads.where(available_unit: available_unit_1).size).to eq 2

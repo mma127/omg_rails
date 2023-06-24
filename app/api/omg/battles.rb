@@ -1,6 +1,6 @@
 module OMG
   class Battles < Grape::API
-    helpers OMG::Helpers
+    helpers OMG::Helpers::RequestHelpers
 
     resource :battles do
       desc 'get all battles'
