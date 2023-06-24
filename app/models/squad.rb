@@ -5,6 +5,7 @@
 #  id                                                                :bigint           not null, primary key
 #  category_position(Position within the tab the squad is in)        :integer          not null
 #  name(Squad's custom name)                                         :string
+#  pop(Total pop of the squad including unit and all upgrades)       :decimal(, )
 #  tab_category(Tab this squad is in)                                :string           not null
 #  total_model_count(Total model count of the unit and all upgrades) :integer
 #  uuid(Unique uuid)                                                 :string           not null
@@ -75,7 +76,7 @@ class Squad < ApplicationRecord
     unit.type
   end
 
-  def pop
+  def unit_pop
     available_unit.pop
   end
 
@@ -133,6 +134,7 @@ class Squad < ApplicationRecord
     expose :unit_name, as: :unitName
     expose :unit_display_name, as: :unitDisplayName
     expose :unit_type, as: :unitType
+    expose :unit_pop, as: :unitPop
     expose :pop
     expose :man
     expose :mun

@@ -431,6 +431,7 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
     t.string "uuid", null: false, comment: "Unique uuid"
     t.decimal "vet", comment: "Squad's veterancy"
     t.string "name", comment: "Squad's custom name"
+    t.decimal "pop", comment: "Total pop of the squad including unit and all upgrades"
     t.integer "total_model_count", comment: "Total model count of the unit and all upgrades"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

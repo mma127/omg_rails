@@ -261,6 +261,28 @@ RSpec.describe CompanyService do
         expect(squad_upgrades.where(available_upgrade: available_upgrade_3).count).to eq 1
       end
 
+      it "sets the correct squad pop if there is a squadUpgrade with nonzero pop" do
+        subject
+        squad_upgrades = company.reload.squad_upgrades.where(available_upgrade: available_upgrade_2)
+        expect(squad_upgrades.size).to eq 1
+
+        squad = squad_upgrades.first.squad
+        expected_pop = squad.available_unit.pop + available_upgrade_2.pop
+        expect(squad.pop).to eq expected_pop
+      end
+
+      it "sets the correct squad pop if there are no squad upgrades with nonzero pop for the squad" do
+        subject
+        squad_upgrades = company.reload.squad_upgrades.where(available_upgrade: available_upgrade_2)
+        expect(squad_upgrades.size).to eq 1
+        pop_squad = squad_upgrades.first.squad
+        squads = company.squads.where.not(id: pop_squad.id)
+        squads.each do |squad|
+          expected_pop = squad.available_unit.pop
+          expect(squad.pop).to eq expected_pop
+        end
+      end
+
       it "raises a validation error when the Company does not belong to the Player" do
         player2 = create :player
         expect {
@@ -992,18 +1014,18 @@ RSpec.describe CompanyService do
 
       context "without transports" do
         before do
-          squad1 = create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0, uuid: '1'
-          squad2 = create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 0, uuid: '2'
-          squad3 = create :squad, company: company, available_unit: available_unit_3, tab_category: "core", category_position: 0, uuid: '3old'
+          squad1 = create :squad, company: company, available_unit: available_unit_1, tab_category: "core", category_position: 0, uuid: '1', pop: available_unit_1.pop
+          squad2 = create :squad, company: company, available_unit: available_unit_2, tab_category: "core", category_position: 0, uuid: '2', pop: available_unit_2.pop + available_upgrade_2.pop
+          squad3 = create :squad, company: company, available_unit: available_unit_3, tab_category: "core", category_position: 0, uuid: '3old', pop: available_unit_3.pop
 
-          squad4 = create :squad, company: company, available_unit: available_unit_2, tab_category: "assault", category_position: 1, uuid: '4old'
+          squad4 = create :squad, company: company, available_unit: available_unit_2, tab_category: "assault", category_position: 1, uuid: '4old', pop: available_unit_2.pop
 
-          squad5 = create :squad, company: company, available_unit: available_unit_1, tab_category: "infantry", category_position: 0, uuid: '4'
-          squad6 = create :squad, company: company, available_unit: available_unit_1, tab_category: "infantry", category_position: 0, uuid: '5'
+          squad5 = create :squad, company: company, available_unit: available_unit_1, tab_category: "infantry", category_position: 0, uuid: '4', pop: available_unit_1.pop
+          squad6 = create :squad, company: company, available_unit: available_unit_1, tab_category: "infantry", category_position: 0, uuid: '5', pop: available_unit_1.pop
 
-          squad7 = create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 2, uuid: '6'
+          squad7 = create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 2, uuid: '6', pop: available_unit_2.pop
 
-          squad8 = create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 3, uuid: '7'
+          squad8 = create :squad, company: company, available_unit: available_unit_2, tab_category: "infantry", category_position: 3, uuid: '7', pop: available_unit_2.pop
           available_unit_1.update!(available: 3)
           available_unit_2.update!(available: 1)
           available_unit_3.update!(available: 0)
@@ -1098,11 +1120,6 @@ RSpec.describe CompanyService do
               squad_id: nil,
               squad_uuid: '3'
             }, {
-              squad_upgrade_id: squad_upgrade2_2.id,
-              available_upgrade_id: available_upgrade_2.id,
-              squad_id: squad2.id,
-              squad_uuid: '2'
-            }, {
               squad_upgrade_id: nil,
               available_upgrade_id: available_upgrade_1_1.id,
               squad_id: squad6.id,
@@ -1162,8 +1179,10 @@ RSpec.describe CompanyService do
         end
 
         it "creates all input SquadUpgrades for the Company" do
+          squad2 = company.squads.find_by(uuid: '2')
           squad3 = company.squads.find_by(uuid: '3old')
           squad4 = company.squads.find_by(uuid: '4old')
+          squad_upgrade2_2 = company.squad_upgrades.find_by(available_upgrade: available_upgrade_2, squad: squad2)
           squad_upgrade3 = company.squad_upgrades.find_by(available_upgrade: available_upgrade_3, squad: squad3)
           squad_upgrade4 = company.squad_upgrades.find_by(available_upgrade: available_upgrade_1_2, squad: squad4)
           instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
@@ -1171,12 +1190,43 @@ RSpec.describe CompanyService do
           expect(squad_upgrades.size).to eq @squad_upgrades_param.size
           expect(squad_upgrades.where(available_upgrade: available_upgrade_1_1).size).to eq 2
           expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).size).to eq 3
-          expect(squad_upgrades.where(available_upgrade: available_upgrade_2).size).to eq 2
+          expect(squad_upgrades.where(available_upgrade: available_upgrade_2).size).to eq 1
           expect(squad_upgrades.where(available_upgrade: available_upgrade_3).size).to eq 0
           expect(squad_upgrades.where(available_upgrade: available_upgrade_1_2).pluck(:id)).not_to include squad_upgrade4.id
           expect(squad_upgrades.where(available_upgrade: available_upgrade_3).pluck(:id)).not_to include squad_upgrade3.id
+          expect(SquadUpgrade.exists?(squad_upgrade2_2.id)).to be false
           expect(SquadUpgrade.exists?(squad_upgrade3.id)).to be false
           expect(SquadUpgrade.exists?(squad_upgrade4.id)).to be false
+        end
+
+        it "sets the correct squad pop for squads that no longer have a squad upgrade with nonzero pop" do
+          squad2 = company.squads.find_by(uuid: '2')
+          expect(squad2.pop).to eq(squad2.available_unit.pop + available_upgrade_2.pop)
+          instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          expect(squad2.reload.pop).to eq (squad2.available_unit.pop)
+        end
+
+        it "sets the correct squad pop if there is a squadUpgrade with nonzero pop" do
+          instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+          squad_upgrades = company.reload.squad_upgrades.where(available_upgrade: available_upgrade_2)
+          expect(squad_upgrades.size).to eq 1
+
+          squad = squad_upgrades.first.squad
+          expected_pop = squad.available_unit.pop + available_upgrade_2.pop
+          expect(squad.pop).to eq expected_pop
+        end
+
+        it "sets the correct squad pop if there are no squad upgrades with nonzero pop for the squad" do
+          instance.update_company_squads(company, @squads_param, @offmaps_param, @squad_upgrades_param)
+
+          squad_upgrades = company.reload.squad_upgrades.where(available_upgrade: available_upgrade_2)
+          expect(squad_upgrades.size).to eq 1
+          pop_squad = squad_upgrades.first.squad
+          squads = company.squads.where.not(id: pop_squad.id)
+          squads.each do |squad|
+            expected_pop = squad.available_unit.pop
+            expect(squad.pop).to eq expected_pop
+          end
         end
 
         it "raises a validation error if a Squad id is given that's not part of the Company" do
