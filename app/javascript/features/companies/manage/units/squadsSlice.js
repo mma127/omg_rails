@@ -401,7 +401,7 @@ const squadsSlice = createSlice({
           workingSquad.totalModelCount += newSquadUpgrade.addModelCount || 0
           if (transportSquad) {
             transportSquad.popWithTransported += newSquadUpgrade.pop || 0
-            transportSquad.transportModelSlots += newSquadUpgrade.addModelCount || 0
+            transportSquad.usedModelSlots += newSquadUpgrade.addModelCount || 0
           }
         }
         state.isChanged = true
@@ -437,7 +437,7 @@ const squadsSlice = createSlice({
         squad.totalModelCount -= squadUpgrade.addModelCount || 0
         if (transport) {
           transport.popWithTransported -= squadUpgrade.pop || 0
-          transport.transportModelSlots += squadUpgrade.addModelCount || 0
+          transport.usedModelSlots -= squadUpgrade.addModelCount || 0
         }
       })
   }
@@ -471,7 +471,7 @@ export const selectSupportSquads = state => state.squads[SUPPORT]
 
 export const selectSquadsInTabIndex = (state, tab, index) => state.squads[tab][index]
 
-export const selectSquadInTabIndexUuid = (state, tab, index, uuid) => state.squads[tab][index][uuid]
+export const selectSquadInTabIndexUuid = (state, tab, index, uuid) => state.squads?.[tab]?.[index]?.[uuid]
 export const selectSquadInTabIndexTransportUuid = (state, tab, index, transportUuid, uuid) => {
   const transport = state.squads[tab][index][transportUuid]
   return transport.transportedSquads[uuid]
