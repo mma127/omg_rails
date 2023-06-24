@@ -107,8 +107,8 @@ export const CompanyGridDropTarget = ({
     onSquadMove(squad, unit, gridIndex, currentTab)
   }
 
-  const onDestroyClick = (squad, transportUuid = null) => {
-    onSquadDestroy(squad, transportUuid)
+  const onDestroyClick = (squad, squadUpgrades, transportUuid = null) => {
+    onSquadDestroy(squad, squadUpgrades, transportUuid)
   }
 
   const insertSquadUnitIds = (unitIds, squad) => {

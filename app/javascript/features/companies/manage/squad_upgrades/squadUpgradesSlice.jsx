@@ -70,11 +70,15 @@ const squadUpgradesSlice = createSlice({
       .addCase(removeSquad, (state, action) => {
         const { uuid, index, tab } = action.payload
 
+        if (!state.currentSquadUpgrades?.[tab]?.[index]?.[uuid]) return
+
         delete state.currentSquadUpgrades[tab][index][uuid]
         state.isChanged = true
       })
       .addCase(removeTransportedSquad, (state, action) => {
         const { uuid, index, tab } = action.payload
+
+        if (!state.currentSquadUpgrades?.[tab]?.[index]?.[uuid]) return
 
         delete state.currentSquadUpgrades[tab][index][uuid]
         state.isChanged = true

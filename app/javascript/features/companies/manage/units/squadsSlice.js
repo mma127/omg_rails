@@ -8,7 +8,7 @@ import {
   removeExistingCompanyOffmap,
   removeNewCompanyOffmap, selectMergedCompanyOffmaps
 } from "../company_offmaps/companyOffmapsSlice";
-import { selectFlatSquadUpgrades } from "../squad_upgrades/squadUpgradesSlice";
+import { addNewSquadUpgrade, removeSquadUpgrade, selectFlatSquadUpgrades } from "../squad_upgrades/squadUpgradesSlice";
 
 const squadsAdapter = createEntityAdapter()
 
@@ -359,6 +359,86 @@ const squadsSlice = createSlice({
       })
       .addCase(removeExistingCompanyOffmap, (state) => {
         state.isChanged = true
+      })
+
+      .addCase(addNewSquadUpgrade, (state, action) => {
+        const { newSquadUpgrade } = action.payload
+        const tab = newSquadUpgrade.tab,
+          index = newSquadUpgrade.index,
+          squadUuid = newSquadUpgrade.squadUuid
+        const platoon = state[tab][index]
+
+        let squad
+        // Find the squad, either at top level or in transport
+        if (Object.keys(platoon).includes(squadUuid)) {
+          squad = platoon[squadUuid]
+        } else {
+          // Iterate through transportedSquads of top level squads
+          const transport = Object.values(platoon).find(s => {
+            if (s.transportedSquads) {
+              return Object.keys(s.transportedSquads).includes(squadUuid)
+            } else {
+              return false
+            }
+          })
+          if (transport) {
+            squad = transport.transportedSquads[squadUuid]
+          } else {
+            return // Squad is not in the expected location
+          }
+        }
+
+        if (newSquadUpgrade.pop > 0 || newSquadUpgrade.addModelCount > 0) {
+          let workingSquad
+          let transportSquad
+          if (squad.transportUuid) {
+            transportSquad = state[tab][index][squad.transportUuid]
+            workingSquad = transportSquad.transportedSquads[squadUuid]
+          } else {
+            workingSquad = state[tab][index][squadUuid]
+          }
+          workingSquad.pop += newSquadUpgrade.pop || 0
+          workingSquad.totalModelCount += newSquadUpgrade.addModelCount || 0
+          if (transportSquad) {
+            transportSquad.popWithTransported += newSquadUpgrade.pop || 0
+            transportSquad.transportModelSlots += newSquadUpgrade.addModelCount || 0
+          }
+        }
+        state.isChanged = true
+      })
+
+      .addCase(removeSquadUpgrade, (state, action) => {
+        const { squadUpgrade } = action.payload
+        const tab = squadUpgrade.tab,
+          index = squadUpgrade.index,
+          squadUuid = squadUpgrade.squadUuid;
+
+        const platoon = state[tab][index]
+        let squad, transport
+        // First look for top level squad
+        if (Object.keys(platoon).includes(squadUuid)) {
+          squad = platoon[squadUuid]
+        } else {
+          // Iterate through transportedSquads of top level squads
+          transport = Object.values(platoon).find(s => {
+            if (s.transportedSquads) {
+              return Object.keys(s.transportedSquads).includes(squadUuid)
+            } else {
+              return false
+            }
+          })
+          if (transport) {
+            squad = transport.transportedSquads[squadUuid]
+          } else {
+            return // Squad is not in the expected location
+          }
+        }
+        squad.pop -= squadUpgrade.pop || 0
+        squad.totalModelCount -= squadUpgrade.addModelCount || 0
+        if (transport) {
+          transport.popWithTransported -= squadUpgrade.pop || 0
+          transport.transportModelSlots += squadUpgrade.addModelCount || 0
+        }
       })
   }
 })

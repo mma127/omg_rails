@@ -77,6 +77,6 @@ bren_gun,CMW.SINGLE_BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,,commandos
 bren_gun,CMW.SINGLE_BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,,commandos,packing_heat,0,20,0,0,0,1,0,1,,,captain
 piat,CMW.SINGLE_PIAT,PIAT,A single PIAT,single_weapon,,commandos,packing_heat,0,30,0,0,0,1,0,1,,,lt
 piat,CMW.SINGLE_PIAT,PIAT,A single PIAT,single_weapon,,commandos,packing_heat,0,30,0,0,0,1,0,1,,,captain
-piat_commando_four,CMW.PIAT_COMMANDO_FOUR,Additional PIAT Commando,Adds another member to the squad,unit_replacement,,commandos,commando_fire_teams,60,10,0,1,0,0,0,1,4,,piat_commandos
+piat_commando_four,CMW.PIAT_COMMANDO_FOUR,Additional PIAT Commando,Adds another member to the squad,unit_replacement,,commandos,commando_fire_teams,60,10,0,1,0,0,0,1,4,1,piat_commandos
 piat_commando_brens,CMW.BREN_GUN,Bren Guns,Replace PIATs with Bren Guns,single_weapon,,commandos,commando_fire_teams,0,0,0,0,0,1,0,1,,,piat_commandos
 piat_commando_boys_at,CMW.BOYSAT,Boys AT Rifles,Replace PIATs with Boys AT Rifles,single_weapon,,commandos,commando_fire_teams,0,0,0,0,0,1,0,1,,,piat_commandos
