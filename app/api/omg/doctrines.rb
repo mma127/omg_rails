@@ -1,6 +1,6 @@
 module OMG
   class Doctrines < Grape::API
-    helpers OMG::Helpers
+    helpers OMG::Helpers::RequestHelpers
 
     resource :doctrines do
       desc 'get all doctrines'

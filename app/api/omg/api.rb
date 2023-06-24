@@ -6,7 +6,7 @@ module OMG
     logger.formatter = GrapeLogging::Formatters::Default.new
     insert_before Grape::Middleware::Error, GrapeLogging::Middleware::RequestLogger, { logger: logger }
 
-    helpers OMG::Helpers
+    helpers OMG::Helpers::RequestHelpers
 
     format :json
     prefix :api

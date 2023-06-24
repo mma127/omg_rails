@@ -1,6 +1,6 @@
 module OMG
   class CompanyUnlocks < Grape::API
-    helpers OMG::Helpers
+    helpers OMG::Helpers::RequestHelpers
 
     before do
       authenticate!
