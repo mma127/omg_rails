@@ -27,8 +27,8 @@ export const createSquad = (availableUnit,
     unitName: unit.name,
     unitDisplayName: unit.displayName,
     unitType: unit.type,
-    pop: parseFloat(availableUnit.pop),
-    combinedPop: parseFloat(availableUnit.pop), // Combination of transport's pop and passenger pops
+    pop: parseFloat(availableUnit.pop), // Squad pop = unit pop + upgrades pop
+    popWithTransported: parseFloat(availableUnit.pop), // Combination of transport's pop and passenger pops
     man: availableUnit.man,
     mun: availableUnit.mun,
     fuel: availableUnit.fuel,
@@ -59,7 +59,7 @@ export const loadSquad = (squad) => {
     unitDisplayName: squad.unitDisplayName,
     unitType: squad.unitType,
     pop: parseFloat(squad.pop),
-    combinedPop: parseFloat(squad.pop),
+    popWithTransported: parseFloat(squad.pop),
     man: squad.man,
     mun: squad.mun,
     fuel: squad.fuel,

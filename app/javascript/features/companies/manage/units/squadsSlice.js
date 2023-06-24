@@ -137,12 +137,12 @@ const buildNewSquadTabs = (squads) => {
     transportedSquads.forEach(squad => {
       const transport = tabs[squad.tab][squad.index][squad.transportUuid]
       const transportedSquads = { ...transport.transportedSquads, [squad.uuid]: loadSquad(squad) }
-      const combinedPop = transport.combinedPop + parseFloat(squad.pop)
+      const popWithTransported = transport.popWithTransported + parseFloat(squad.pop)
       const usedSquadSlots = transport.usedSquadSlots + 1
       const usedModelSlots = transport.usedModelSlots + squad.totalModelCount
       tabs[squad.tab][squad.index][squad.transportUuid] = {
         ...transport,
-        combinedPop: combinedPop,
+        popWithTransported: popWithTransported,
         transportedSquads: transportedSquads,
         usedSquadSlots: usedSquadSlots,
         usedModelSlots: usedModelSlots
@@ -190,7 +190,7 @@ const squadsSlice = createSlice({
             transport.transportedSquads = transportedSquads
             transport.usedSquadSlots = usedSquadSlots + 1
             transport.usedModelSlots = usedModelSlots + totalModelCount
-            transport.combinedPop = parseFloat(transport.combinedPop) + parseFloat(pop)
+            transport.popWithTransported = parseFloat(transport.popWithTransported) + parseFloat(pop)
           } else {
             // Otherwise, add the squad to the platoon
             if (!Object.keys(platoon).includes(uuid)) {
@@ -224,7 +224,7 @@ const squadsSlice = createSlice({
       if (_.has(platoon, transportUuid)) {
         const transport = platoon[transportUuid]
         if (_.has(transport.transportedSquads, squad.uuid)) {
-          transport.combinedPop = parseFloat(transport.combinedPop) - parseFloat(squad.pop)
+          transport.popWithTransported = parseFloat(transport.popWithTransported) - parseFloat(squad.pop)
           transport.usedSquadSlots -= 1
           transport.usedModelSlots -= squad.totalModelCount
           delete transport.transportedSquads[squad.uuid]
@@ -252,7 +252,7 @@ const squadsSlice = createSlice({
 
         // Uncouple squad from the source transport
         workingSquad.transportUuid = null
-        sourceTransport.combinedPop = parseFloat(sourceTransport.combinedPop) - parseFloat(workingSquad.pop)
+        sourceTransport.popWithTransported = parseFloat(sourceTransport.popWithTransported) - parseFloat(workingSquad.pop)
         sourceTransport.usedSquadSlots -= 1
         sourceTransport.usedModelSlots -= workingSquad.totalModelCount
         delete sourceTransport.transportedSquads[uuid]
@@ -276,7 +276,7 @@ const squadsSlice = createSlice({
         targetTransport.transportedSquads = transportedSquads
         targetTransport.usedSquadSlots = (targetTransport.usedSquadSlots || 0) + 1
         targetTransport.usedModelSlots = (targetTransport.usedModelSlots || 0) + workingSquad.totalModelCount
-        targetTransport.combinedPop = parseFloat(targetTransport.combinedPop) + parseFloat(workingSquad.pop)
+        targetTransport.popWithTransported = parseFloat(targetTransport.popWithTransported) + parseFloat(workingSquad.pop)
       }
 
       state.isChanged = true
