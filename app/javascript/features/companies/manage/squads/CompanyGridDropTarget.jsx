@@ -107,8 +107,8 @@ export const CompanyGridDropTarget = ({
     onSquadMove(squad, unit, gridIndex, currentTab)
   }
 
-  const onDestroyClick = (squad, transportUuid = null) => {
-    onSquadDestroy(squad, transportUuid)
+  const onDestroyClick = (squad, squadUpgrades, transportUuid = null) => {
+    onSquadDestroy(squad, squadUpgrades, transportUuid)
   }
 
   const insertSquadUnitIds = (unitIds, squad) => {
@@ -127,7 +127,7 @@ export const CompanyGridDropTarget = ({
   if (squads) {
     for (const squad of Object.values(squads)) {
       insertSquadUnitIds(unitIds, squad)
-      gridPop += parseFloat(squad.combinedPop) // Use combinedPop to include transported squads' pop
+      gridPop += parseFloat(squad.popWithTransported) // Use popWithTransported to include transported squads' pop
       squadCards.push(<SquadCard key={squad.uuid}
                                  uuid={squad.uuid}
                                  index={gridIndex} tab={currentTab}

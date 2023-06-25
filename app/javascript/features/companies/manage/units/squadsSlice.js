@@ -8,7 +8,7 @@ import {
   removeExistingCompanyOffmap,
   removeNewCompanyOffmap, selectMergedCompanyOffmaps
 } from "../company_offmaps/companyOffmapsSlice";
-import { selectFlatSquadUpgrades } from "../squad_upgrades/squadUpgradesSlice";
+import { addNewSquadUpgrade, removeSquadUpgrade, selectFlatSquadUpgrades } from "../squad_upgrades/squadUpgradesSlice";
 
 const squadsAdapter = createEntityAdapter()
 
@@ -137,12 +137,12 @@ const buildNewSquadTabs = (squads) => {
     transportedSquads.forEach(squad => {
       const transport = tabs[squad.tab][squad.index][squad.transportUuid]
       const transportedSquads = { ...transport.transportedSquads, [squad.uuid]: loadSquad(squad) }
-      const combinedPop = transport.combinedPop + parseFloat(squad.pop)
+      const popWithTransported = transport.popWithTransported + parseFloat(squad.pop)
       const usedSquadSlots = transport.usedSquadSlots + 1
       const usedModelSlots = transport.usedModelSlots + squad.totalModelCount
       tabs[squad.tab][squad.index][squad.transportUuid] = {
         ...transport,
-        combinedPop: combinedPop,
+        popWithTransported: popWithTransported,
         transportedSquads: transportedSquads,
         usedSquadSlots: usedSquadSlots,
         usedModelSlots: usedModelSlots
@@ -190,7 +190,7 @@ const squadsSlice = createSlice({
             transport.transportedSquads = transportedSquads
             transport.usedSquadSlots = usedSquadSlots + 1
             transport.usedModelSlots = usedModelSlots + totalModelCount
-            transport.combinedPop = parseFloat(transport.combinedPop) + parseFloat(pop)
+            transport.popWithTransported = parseFloat(transport.popWithTransported) + parseFloat(pop)
           } else {
             // Otherwise, add the squad to the platoon
             if (!Object.keys(platoon).includes(uuid)) {
@@ -224,7 +224,7 @@ const squadsSlice = createSlice({
       if (_.has(platoon, transportUuid)) {
         const transport = platoon[transportUuid]
         if (_.has(transport.transportedSquads, squad.uuid)) {
-          transport.combinedPop = parseFloat(transport.combinedPop) - parseFloat(squad.pop)
+          transport.popWithTransported = parseFloat(transport.popWithTransported) - parseFloat(squad.pop)
           transport.usedSquadSlots -= 1
           transport.usedModelSlots -= squad.totalModelCount
           delete transport.transportedSquads[squad.uuid]
@@ -252,7 +252,7 @@ const squadsSlice = createSlice({
 
         // Uncouple squad from the source transport
         workingSquad.transportUuid = null
-        sourceTransport.combinedPop = parseFloat(sourceTransport.combinedPop) - parseFloat(workingSquad.pop)
+        sourceTransport.popWithTransported = parseFloat(sourceTransport.popWithTransported) - parseFloat(workingSquad.pop)
         sourceTransport.usedSquadSlots -= 1
         sourceTransport.usedModelSlots -= workingSquad.totalModelCount
         delete sourceTransport.transportedSquads[uuid]
@@ -264,6 +264,15 @@ const squadsSlice = createSlice({
       if (_.isNil(targetTransportUuid)) {
         // Moving into platoon
         newPlatoon[uuid] = workingSquad
+
+        // If this squad is transporting other squads, update the transported squads
+        if (workingSquad.transportedSquads) {
+          Object.values(workingSquad.transportedSquads).forEach(ts => {
+            ts.tab = newTab
+            ts.index = newIndex
+          })
+        }
+        state.selectedSquadTransportUuid = null
       } else {
         // Moving into transport
         const targetTransport = newPlatoon[targetTransportUuid]
@@ -276,9 +285,13 @@ const squadsSlice = createSlice({
         targetTransport.transportedSquads = transportedSquads
         targetTransport.usedSquadSlots = (targetTransport.usedSquadSlots || 0) + 1
         targetTransport.usedModelSlots = (targetTransport.usedModelSlots || 0) + workingSquad.totalModelCount
-        targetTransport.combinedPop = parseFloat(targetTransport.combinedPop) + parseFloat(workingSquad.pop)
+        targetTransport.popWithTransported = parseFloat(targetTransport.popWithTransported) + parseFloat(workingSquad.pop)
+        state.selectedSquadTransportUuid = targetTransportUuid
       }
 
+      state.selectedSquadTab = newTab
+      state.selectedSquadIndex = newIndex
+      state.selectedSquadUuid = uuid
       state.isChanged = true
     },
     resetSquadState: () => initialState,
@@ -347,6 +360,86 @@ const squadsSlice = createSlice({
       .addCase(removeExistingCompanyOffmap, (state) => {
         state.isChanged = true
       })
+
+      .addCase(addNewSquadUpgrade, (state, action) => {
+        const { newSquadUpgrade } = action.payload
+        const tab = newSquadUpgrade.tab,
+          index = newSquadUpgrade.index,
+          squadUuid = newSquadUpgrade.squadUuid
+        const platoon = state[tab][index]
+
+        let squad
+        // Find the squad, either at top level or in transport
+        if (Object.keys(platoon).includes(squadUuid)) {
+          squad = platoon[squadUuid]
+        } else {
+          // Iterate through transportedSquads of top level squads
+          const transport = Object.values(platoon).find(s => {
+            if (s.transportedSquads) {
+              return Object.keys(s.transportedSquads).includes(squadUuid)
+            } else {
+              return false
+            }
+          })
+          if (transport) {
+            squad = transport.transportedSquads[squadUuid]
+          } else {
+            return // Squad is not in the expected location
+          }
+        }
+
+        if (newSquadUpgrade.pop > 0 || newSquadUpgrade.addModelCount > 0) {
+          let workingSquad
+          let transportSquad
+          if (squad.transportUuid) {
+            transportSquad = state[tab][index][squad.transportUuid]
+            workingSquad = transportSquad.transportedSquads[squadUuid]
+          } else {
+            workingSquad = state[tab][index][squadUuid]
+          }
+          workingSquad.pop += newSquadUpgrade.pop || 0
+          workingSquad.totalModelCount += newSquadUpgrade.addModelCount || 0
+          if (transportSquad) {
+            transportSquad.popWithTransported += newSquadUpgrade.pop || 0
+            transportSquad.usedModelSlots += newSquadUpgrade.addModelCount || 0
+          }
+        }
+        state.isChanged = true
+      })
+
+      .addCase(removeSquadUpgrade, (state, action) => {
+        const { squadUpgrade } = action.payload
+        const tab = squadUpgrade.tab,
+          index = squadUpgrade.index,
+          squadUuid = squadUpgrade.squadUuid;
+
+        const platoon = state[tab][index]
+        let squad, transport
+        // First look for top level squad
+        if (Object.keys(platoon).includes(squadUuid)) {
+          squad = platoon[squadUuid]
+        } else {
+          // Iterate through transportedSquads of top level squads
+          transport = Object.values(platoon).find(s => {
+            if (s.transportedSquads) {
+              return Object.keys(s.transportedSquads).includes(squadUuid)
+            } else {
+              return false
+            }
+          })
+          if (transport) {
+            squad = transport.transportedSquads[squadUuid]
+          } else {
+            return // Squad is not in the expected location
+          }
+        }
+        squad.pop -= squadUpgrade.pop || 0
+        squad.totalModelCount -= squadUpgrade.addModelCount || 0
+        if (transport) {
+          transport.popWithTransported -= squadUpgrade.pop || 0
+          transport.usedModelSlots -= squadUpgrade.addModelCount || 0
+        }
+      })
   }
 })
 
@@ -378,7 +471,7 @@ export const selectSupportSquads = state => state.squads[SUPPORT]
 
 export const selectSquadsInTabIndex = (state, tab, index) => state.squads[tab][index]
 
-export const selectSquadInTabIndexUuid = (state, tab, index, uuid) => state.squads[tab][index][uuid]
+export const selectSquadInTabIndexUuid = (state, tab, index, uuid) => state.squads?.[tab]?.[index]?.[uuid]
 export const selectSquadInTabIndexTransportUuid = (state, tab, index, transportUuid, uuid) => {
   const transport = state.squads[tab][index][transportUuid]
   return transport.transportedSquads[uuid]

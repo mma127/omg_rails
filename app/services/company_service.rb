@@ -224,14 +224,14 @@ class CompanyService
           available_unit = available_units_by_id[s[:available_unit_id]]
           squad = Squad.new(company: company, vet: s[:vet], tab_category: s[:tab], uuid: s[:uuid],
                                   category_position: s[:index], available_unit: available_unit,
-                                  total_model_count: s[:totalModelCount])
+                                  total_model_count: s[:totalModelCount], pop: s[:pop])
           new_squad_upgrades.concat(build_recursive_squad_upgrades(s, squad))
           new_squads << squad
         else
           ## Update existing Squads
           existing_squad = existing_squads_by_id[s[:squad_id]]
           existing_squad.update!(tab_category: s[:tab], category_position: s[:index], name: s[:name],
-                                 total_model_count: s[:totalModelCount])
+                                 total_model_count: s[:totalModelCount], pop: s[:pop])
           new_squad_upgrades.concat(build_recursive_squad_upgrades(s, existing_squad))
         end
       end
@@ -511,6 +511,7 @@ class CompanyService
         squad_pop += available_upgrade.pop
       end
 
+      squad[:pop] = squad_pop
       platoon_pop_by_tab_and_index[squad[:tab]][squad[:index]] += squad_pop
       pop_new += squad_pop
     end

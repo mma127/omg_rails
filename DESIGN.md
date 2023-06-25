@@ -43,3 +43,7 @@ Follow the Unit model, where
 `CallinModifierAllowedUnit` defines all units that may be in the platoon and still qualify for the callin modifier. 
 * If there are non-zero `CallinModifierAllowedUnit`s, only those units may exist in the platoon and qualify
 * If there are zero `CallinModifierAllowedUnit`s, any unit may exist in the platoon and qualify
+
+## Squad Upgrades
+1. `Squad` model has a `pop` attribute encompassing both the unit's pop and any squad upgrades with pop
+2. UI will update this pop value for the user's convenience during company construction, but the backend will recalculate the squad pop value before saving

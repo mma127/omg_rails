@@ -112,23 +112,23 @@ export const SquadBuilder = ({}) => {
 
   const onTabChange = (newTab) => {
     setCurrentTab(newTab)
-    dispatch(setSelectedAvailableUnitId(null))
     dispatch(setSelectedSquadAccess({ tab: null, index: null, uuid: null, transportUuid: null }))
+    dispatch(setSelectedAvailableUnitId(null))
   }
 
   const onUnitSelect = (availableUnitId) => {
     /** Called when a unit is selected. Populates the unit stats box with relevant data
      */
-    dispatch(setSelectedAvailableUnitId(availableUnitId))
     dispatch(setSelectedSquadAccess({ tab: null, index: null, uuid: null, transportUuid: null }))
+    dispatch(setSelectedAvailableUnitId(availableUnitId))
   }
 
   const onSquadSelect = (availableUnitId, tab, index, uuid, transportUuid) => {
     /** Called when a squad is selected. Populates the unit stats box with relevant data
      * TODO if a squad is clicked, should take upgrades into account
      */
-    dispatch(setSelectedAvailableUnitId(availableUnitId))
     dispatch(setSelectedSquadAccess({ tab, index, uuid, transportUuid }))
+    dispatch(setSelectedAvailableUnitId(availableUnitId))
   }
 
   /** For a new non-transported squad, use the availableUnit and unit to construct a new squad object
