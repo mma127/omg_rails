@@ -14,11 +14,20 @@ medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,wehrmacht,,,0,20,0,0,2
 medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,wehrmacht,,,0,20,0,0,2,0,0,1,,,nebelwerfer
 medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,,defensive,,0,20,0,0,2,0,0,1,,,fortress_pioneers
 medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,,defensive,,0,20,0,0,2,0,0,1,,,officer_def
+medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,,terror,,0,20,0,0,2,0,0,1,,,sturmpioneers
+medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,,terror,,0,20,0,0,2,0,0,1,,,officer_terror
+medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,,terror,,0,20,0,0,2,0,0,1,,,mortar_terror
+medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,,blitz,,0,20,0,0,2,0,0,1,,,stormtroopers
+medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,,blitz,,0,20,0,0,2,0,0,1,,,flammentrupp
+medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,,blitz,,0,20,0,0,2,0,0,1,,,panzer_ace
 medpack_kch,AXIS.KCH_MEDPACK,Medpack,Self-healing kits,consumable,wehrmacht,,,0,20,0,0,2,0,0,1,,,kch
 axis_smoke_grenade,AXIS.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,wehrmacht,,,0,10,0,0,2,0,0,1,,,volksgrenadiers
 axis_smoke_grenade,AXIS.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,wehrmacht,,,0,10,0,0,2,0,0,1,,,grenadiers
 axis_smoke_grenade,AXIS.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,wehrmacht,,,0,10,0,0,2,0,0,1,,,kch
 axis_smoke_grenade,AXIS.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,wehrmacht,,,0,10,0,0,2,0,0,1,,,pioneers
+axis_smoke_grenade,AXIS.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,,terror,,0,10,0,0,2,0,0,1,,,sturmpioneers
+axis_smoke_grenade,AXIS.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,,blitz,,0,10,0,0,2,0,0,1,,,stormtroopers
+axis_smoke_grenade,AXIS.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,,blitz,,0,10,0,0,2,0,0,1,,,flammentrupp
 axis_grenade,AXIS.GRENADE,Grenades,Stick hand grenade,consumable,wehrmacht,,,0,30,0,0,2,0,0,1,,,grenadiers
 axis_grenade,AXIS.GRENADE,Grenades,Stick hand grenade,consumable,,defensive,surplus_munitions,0,30,0,0,2,0,0,1,,,volksgrenadiers
 axis_grenade,AXIS.GRENADE,Grenades,Stick hand grenade,consumable,,defensive,surplus_munitions,0,30,0,0,2,0,0,1,,,pioneers
@@ -29,7 +38,11 @@ lmg42,AXIS.LMG,LMG42,A single light MG42,single_weapon,,defensive,,0,70,0,0,0,1,
 lmg42,AXIS.LMG,LMG42,A single light MG42,single_weapon,,defensive,leadership,0,70,0,0,0,1,0,1,,,officer_def
 lmg42,AXIS.LMG,LMG42,A single light MG42,single_weapon,,defensive,leadership,0,70,0,0,0,1,0,1,,,medic
 assault_grenades,AXIS.ASSAULT_NADES,Assault Grenades,"Grants the Assault ability. When activated, approach the target squad and throw a series of grenade",ability,wehrmacht,,,0,50,0,0,0,0,0,1,,,kch
+assault_grenades,AXIS.ASSAULT_NADES,Assault Grenades,"Grants the Assault ability. When activated, approach the target squad and throw a series of grenade",ability,,blitz,assault,0,55,0,0,2,0,0,1,,,volksgrenadiers
+assault_grenades,AXIS.ASSAULT_NADES,Assault Grenades,"Grants the Assault ability. When activated, approach the target squad and throw a series of grenade",ability,,blitz,assault,0,55,0,0,2,0,0,1,,,grenadiers
+assault_grenades,AXIS.ASSAULT_NADES,Assault Grenades,"Grants the Assault ability. When activated, approach the target squad and throw a series of grenade",ability,,blitz,assault,0,65,0,0,2,0,0,1,,,stormtroopers
 axis_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,wehrmacht,,,0,30,0,0,2,0,0,1,,,pioneers
+axis_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,,terror,,0,30,0,0,2,0,0,1,,,saboteurs
 axis_flamethrower,AXIS.FLAMETHROWER,Flamethrower,A single anti-infantry flamethrower,single_weapon,wehrmacht,,,0,50,0,0,0,4,0,1,,,pioneers
 axis_mine_detector,AXIS.MINEDETECTOR,Mine Detector,Hand-held mine detector,single_weapon,wehrmacht,,,0,10,0,0,0,0,0,1,,,pioneers
 axis_goliath,AXIS.GOLIATH,Goliath,Deploy a remote controlled explosive Goliath,consumable,wehrmacht,,,0,100,0,0,1,5,0,1,,,pioneers
@@ -49,13 +62,45 @@ pantherturm,AXIS.PANTHERTURM,Pantherturm,"Bunker with a Panther turret, can be g
 listening_post,AXIS.LISTENING_POST,Listening Post,"Building that can hold territory and provide line of sight",building,,defensive,,0,40,0,0,1,1,0,,,,pioneers
 listening_post,AXIS.LISTENING_POST,Listening Post,"Building that can hold territory and provide line of sight",building,,defensive,,0,40,0,0,1,1,0,,,,fortress_pioneers
 puma_upgun,AXIS.PUMA_UPGUN,50mm Upgun,"Replace the Puma main gun with a 50mm cannon, granting increased anti-tank performance",passive,wehrmacht,,,0,0,10,0,0,0,0,1,,,puma
+puma_upgun,AXIS.PUMA_UPGUN,50mm Upgun,"Replace the Puma main gun with a 50mm cannon, granting increased anti-tank performance",passive,,blitz,,0,0,10,0,0,0,0,1,,,puma_blitz
 stug_mg42,AXIS.STUG_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,wehrmacht,,,0,45,0,0,0,0,0,1,,,stug
+stug_mg42,AXIS.STUG_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,blitz,,0,45,0,0,0,0,0,1,,,stug_blitz
 stug_skirts,AXIS.STUG_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,70,0,0,0,0,1,,,stug
+stug_skirts,AXIS.STUG_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,70,0,0,0,0,1,,,stug_blitz
+stuh_mg42,AXIS.STUH_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,wehrmacht,,,0,45,0,0,0,0,0,1,,,stuh
+stuh_skirts,AXIS.STUH_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,80,0,0,0,0,1,,,stuh
 p4_mg42,AXIS.P4_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,wehrmacht,,,0,45,0,0,0,0,0,1,,,p4
+p4_mg42,AXIS.P4_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,blitz,,0,45,0,0,0,0,0,1,,,p4_blitz
 p4_skirts,AXIS.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,100,0,0,0,0,1,,,p4
+p4_skirts,AXIS.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,100,0,0,0,0,1,,,p4_blitz
 panther_mg42,AXIS.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,wehrmacht,,,0,45,0,0,0,0,0,1,,,panther_axis
+panther_mg42,AXIS.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,blitz,,0,45,0,0,0,0,0,1,,,panther_blitz
 panther_skirts,AXIS.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,110,0,0,0,0,1,,,panther_axis
+panther_skirts,AXIS.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,110,0,0,0,0,1,,,panther_blitz
 support_karbines,AXIS.SUPPORT_KARBINES,Karbines,Equip the squad with Grenadier Rifles,squad_weapon,,defensive,karbines,0,5,0,0,0,3,0,1,,,pioneers
 support_karbines,AXIS.SUPPORT_KARBINES,Karbines,Equip the squad with Grenadier Rifles,squad_weapon,,defensive,karbines,0,5,0,0,0,0,0,1,,,mg42
 support_karbines,AXIS.SUPPORT_KARBINES,Karbines,Equip the squad with Grenadier Rifles,squad_weapon,,defensive,karbines,0,5,0,0,0,0,0,1,,,mortar_axis
 charismatic_leaders,CMW.HEROIC_CHARGE,Charismatic Leader,Grant Lt aura bonuses in exchange for -35% maximum hitpoints,passive,,defensive,charismatic_leaders,0,60,0,0,0,0,0,1,,,officer_def
+satchel_charge,ALLY.SATCHEL,Satchel Charges,Large packages of thrown explosives on a five-second timer,consumable,,terror,,0,50,0,0,2,0,0,1,,,sturmpioneers
+bundle_grenade,AXIS.BUNDLE_NADE,Bundle Grenade,Powerful grenade,consumable,,terror,,0,50,0,0,2,0,0,1,,,sturmpioneers
+bundle_grenade,AXIS.BUNDLE_NADE,Bundle Grenade,Powerful grenade,consumable,,blitz,,0,60,0,0,2,0,0,1,,,stormtroopers
+two_mp44,AXIS.MP44,Two MP44s,Equip the squad with two MP44s,single_weapon,,terror,,0,60,0,0,0,2,0,1,,,sturmpioneers
+two_mp44,AXIS.MP44,Two MP44s,Equip the squad with two MP44s,single_weapon,,blitz,,0,80,0,0,0,1,0,2,,,stormtroopers
+four_mp44,AXIS.SECOND_MP44,Four MP44s,Equip the squad with four MP44s,single_weapon,,blitz,,0,100,0,0,0,2,0,1,,,stormtroopers
+st_schreck,AXIS.ST_SCHRECK,Panzerschreck,A single Panzerschreck,single_weapon,,blitz,,0,150,0,0,0,1,0,2,,,stormtroopers
+booby_trap,PE.BOOBY_TRAP,Booby Trap Building,"Rig a building with explosives. When enemy infantry enter that building, the charges will explode after a brief timer.",ability,,terror,,0,20,0,0,0,0,0,1,,,saboteurs
+axis_at_mines,AXIS.MINES,AT Mines,Anti tank mines,consumable,,terror,,0,50,0,0,2,0,0,1,,,saboteurs
+terror_karbines,AXIS.TERROR_KARBINES,Volksgrenadier Rifles,Equip the squad with Volksgrenadier Rifles,squad_weapon,,terror,hunter_killers,0,0,0,0,0,2,0,1,,,pioneers
+terror_karbines,AXIS.TERROR_KARBINES,Volksgrenadier Rifles,Equip the squad with Volksgrenadier Rifles,squad_weapon,,terror,hunter_killers,0,0,0,0,0,2,0,1,,,sturmpioneers
+crew_repair_kit,ALLY.REPAIR_MANUAL,Crew Repair Kit,"Vehicle self repair kits, accelerates repairs",consumable,,terror,in_the_name_of_the_king,0,80,0,0,1,0,0,1,,,king_tiger
+axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,halftrack_axis
+axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,flammenwerfer
+axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,puma_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,ostwind_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,geschutzwagen_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,stug_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,p4_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,panther_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,stuh
+axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,tiger
+camo_smocks,AXIS.CAMOUFLAGE_SMOCKS,Camouflage Smocks,Gain Elite armor,passive,,blitz,personal_cloaking_devices,50,0,0,0,0,2,0,1,,,stormtroopers
