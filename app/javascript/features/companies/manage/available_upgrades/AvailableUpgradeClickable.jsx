@@ -35,17 +35,17 @@ const calculateDisabled = (enabled, selectedUnit, availableUpgrade, upgrade, sel
       // At or exceeded max number of this upgrade that the squad can have
       return true
     }
-    if (upgrade.upgradeSlots > 0) {
+    if (availableUpgrade.upgradeSlots > 0) {
       // Calc upgrade slots/unitwide slots against squad's unit's slots/unitwide slots
       const availableSlots = selectedUnit?.upgradeSlots - slotsUsed
-      if (upgrade.upgradeSlots > availableSlots) {
+      if (availableUpgrade.upgradeSlots > availableSlots) {
         // We don't have enough slots to fit this upgrade that uses slots
         return true
       }
     }
-    if (upgrade.unitwideUpgradeSlots > 0) {
+    if (availableUpgrade.unitwideUpgradeSlots > 0) {
       const availableUnitwideSlots = selectedUnit?.unitwideUpgradeSlots - unitwideSlotsUsed
-      if (upgrade.unitwideUpgradeSlots > availableUnitwideSlots) {
+      if (availableUpgrade.unitwideUpgradeSlots > availableUnitwideSlots) {
         // We don't have enough unitwide slots to fit this upgrade that uses unitwide slots
         return true
       }

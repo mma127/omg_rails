@@ -10,6 +10,8 @@ FactoryBot.define do
     fuel { 40 }
     pop { 5 }
     priority { 1 }
+    unitwide_upgrade_slots { nil }
+    upgrade_slots { nil }
     type { "EnabledUpgrade" }
   end
 end

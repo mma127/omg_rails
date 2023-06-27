@@ -86,6 +86,8 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
     t.integer "fuel", null: false, comment: "Calculated fuel cost of this upgrade for the company"
     t.integer "uses", comment: "Uses of this upgrade"
     t.integer "max", comment: "Maximum number of this upgrade purchasable by a unit"
+    t.integer "upgrade_slots", comment: "Upgrade slot cost for per model upgrades"
+    t.integer "unitwide_upgrade_slots", comment: "Upgrade slot cost for unit wide upgrades"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id", "upgrade_id", "unit_id", "type"], name: "idx_available_upgrade_uniq", unique: true
@@ -374,6 +376,8 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
     t.integer "mun", comment: "Munition cost"
     t.integer "fuel", comment: "Fuel cost"
     t.integer "priority", comment: "Priority of this restriction"
+    t.integer "upgrade_slots", comment: "Upgrade slot cost for per model upgrades"
+    t.integer "unitwide_upgrade_slots", comment: "Upgrade slot cost for unit wide upgrades"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["restriction_id", "upgrade_id", "ruleset_id", "type", "uses", "max", "man", "mun", "fuel"], name: "idx_restriction_upgrades_ruleset_type_uniq", unique: true
@@ -544,8 +548,6 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
     t.string "name", null: false, comment: "Unique upgrade name"
     t.string "display_name", null: false, comment: "Display upgrade name"
     t.string "description", comment: "Upgrade description"
-    t.integer "upgrade_slots", comment: "Upgrade slot cost for per model upgrades"
-    t.integer "unitwide_upgrade_slots", comment: "Upgrade slot cost for unit wide upgrades"
     t.integer "model_count", comment: "How many model entities this unit replacement consists of"
     t.integer "additional_model_count", comment: "How many model entities this upgrade adds to the base unit"
     t.string "type", null: false, comment: "Type of Upgrade"

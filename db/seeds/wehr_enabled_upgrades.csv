@@ -77,7 +77,7 @@ panther_mg42,AXIS.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,wehrma
 panther_mg42,AXIS.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,blitz,,0,45,0,0,0,0,0,1,,,panther_blitz
 panther_skirts,AXIS.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,110,0,0,0,0,1,,,panther_axis
 panther_skirts,AXIS.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,110,0,0,0,0,1,,,panther_blitz
-support_karbines,AXIS.SUPPORT_KARBINES,Karbines,Equip the squad with Grenadier Rifles,squad_weapon,,defensive,karbines,0,5,0,0,0,3,0,1,,,pioneers
+support_karbines_pio,AXIS.SUPPORT_KARBINES,Karbines,Equip the squad with Grenadier Rifles,squad_weapon,,defensive,karbines,0,5,0,0,0,3,0,1,,,pioneers
 support_karbines,AXIS.SUPPORT_KARBINES,Karbines,Equip the squad with Grenadier Rifles,squad_weapon,,defensive,karbines,0,5,0,0,0,0,0,1,,,mg42
 support_karbines,AXIS.SUPPORT_KARBINES,Karbines,Equip the squad with Grenadier Rifles,squad_weapon,,defensive,karbines,0,5,0,0,0,0,0,1,,,mortar_axis
 charismatic_leaders,CMW.HEROIC_CHARGE,Charismatic Leader,Grant Lt aura bonuses in exchange for -35% maximum hitpoints,passive,,defensive,charismatic_leaders,0,60,0,0,0,0,0,1,,,officer_def

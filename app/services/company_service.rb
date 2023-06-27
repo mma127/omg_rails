@@ -677,8 +677,8 @@ class CompanyService
       available_upgrade = available_upgrades_by_id[available_upgrade_id]
       upgrade = available_upgrade.upgrade
 
-      slots_used += upgrade.upgrade_slots || 0
-      unitwide_slots_used += upgrade.unitwide_upgrade_slots || 0
+      slots_used += available_upgrade.upgrade_slots || 0
+      unitwide_slots_used += available_upgrade.unitwide_upgrade_slots || 0
       upgrade_id_to_count[upgrade.id] += 1
 
       unless available_upgrade.max.blank? || upgrade_id_to_count[upgrade.id] <= available_upgrade.max

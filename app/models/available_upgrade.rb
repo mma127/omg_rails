@@ -2,19 +2,21 @@
 #
 # Table name: available_upgrades
 #
-#  id                                                         :bigint           not null, primary key
-#  fuel(Calculated fuel cost of this upgrade for the company) :integer          not null
-#  man(Calculated man cost of this upgrade for the company)   :integer          not null
-#  max(Maximum number of this upgrade purchasable by a unit)  :integer
-#  mun(Calculated mun cost of this upgrade for the company)   :integer          not null
-#  pop(Calculated pop cost of this upgrade for the company)   :decimal(, )      not null
-#  type(Type of available upgrade)                            :string           not null
-#  uses(Uses of this upgrade)                                 :integer
-#  created_at                                                 :datetime         not null
-#  updated_at                                                 :datetime         not null
-#  company_id                                                 :bigint
-#  unit_id                                                    :bigint
-#  upgrade_id                                                 :bigint
+#  id                                                               :bigint           not null, primary key
+#  fuel(Calculated fuel cost of this upgrade for the company)       :integer          not null
+#  man(Calculated man cost of this upgrade for the company)         :integer          not null
+#  max(Maximum number of this upgrade purchasable by a unit)        :integer
+#  mun(Calculated mun cost of this upgrade for the company)         :integer          not null
+#  pop(Calculated pop cost of this upgrade for the company)         :decimal(, )      not null
+#  type(Type of available upgrade)                                  :string           not null
+#  unitwide_upgrade_slots(Upgrade slot cost for unit wide upgrades) :integer
+#  upgrade_slots(Upgrade slot cost for per model upgrades)          :integer
+#  uses(Uses of this upgrade)                                       :integer
+#  created_at                                                       :datetime         not null
+#  updated_at                                                       :datetime         not null
+#  company_id                                                       :bigint
+#  unit_id                                                          :bigint
+#  upgrade_id                                                       :bigint
 #
 # Indexes
 #
@@ -62,6 +64,8 @@ class AvailableUpgrade < ApplicationRecord
     expose :fuel
     expose :pop
     expose :max
+    expose :upgrade_slots, as: :upgradeSlots
+    expose :unitwide_upgrade_slots, as: :unitwideUpgradeSlots
 
     expose :upgrade, using: Upgrade::Entity, if: { type: :include_upgrade }
   end

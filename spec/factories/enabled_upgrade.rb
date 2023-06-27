@@ -8,6 +8,8 @@ FactoryBot.define do
     fuel { 40 }
     pop { 5 }
     uses { 2 }
+    unitwide_upgrade_slots { nil }
+    upgrade_slots { nil }
     priority { 1 }
   end
 end

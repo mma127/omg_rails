@@ -239,7 +239,9 @@ class AvailableUpgradeService
   def instantiate_base_available_upgrade(restriction_upgrade, unit_id)
     BaseAvailableUpgrade.new(upgrade: restriction_upgrade.upgrade, unit_id: unit_id, company: @company,
                              pop: restriction_upgrade.pop, man: restriction_upgrade.man, mun: restriction_upgrade.mun,
-                             fuel: restriction_upgrade.fuel, uses: restriction_upgrade.uses, max: restriction_upgrade.max)
+                             fuel: restriction_upgrade.fuel, uses: restriction_upgrade.uses, max: restriction_upgrade.max,
+                             upgrade_slots: restriction_upgrade.upgrade_slots, unitwide_upgrade_slots: restriction_upgrade.unitwide_upgrade_slots
+                             )
   end
 
   # Apply any modification RestrictionUpgrades associated with the given restrictions against any BaseAvailableUpgrades
