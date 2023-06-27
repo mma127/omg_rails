@@ -1,5 +1,4 @@
 import _57mm_ap_rounds from '../../../assets/images/doctrines/americans/upgrades/57mm_ap_rounds.png'
-import ally_flamethrower from '../../../assets/images/doctrines/americans/upgrades/ally_flamethrower.png'
 import ally_grenade from '../../../assets/images/doctrines/americans/upgrades/ally_grenade.png'
 import ally_tank_smoke from '../../../assets/images/doctrines/americans/upgrades/ally_tank_smoke.png'
 import bar from '../../../assets/images/doctrines/americans/upgrades/bar.png'
@@ -35,6 +34,7 @@ import mg_ap from '../../../assets/images/doctrines/americans/upgrades/mg_ap.png
 
 import m18_stag_50 from '../../../assets/images/doctrines/british/upgrades/stag_50_cal.png'
 
+import flamethrower from '../../../assets/images/doctrines/common/upgrades/flamethrower.png'
 import mine_detector from '../../../assets/images/doctrines/common/upgrades/mine_detector.png'
 import mines from '../../../assets/images/doctrines/common/upgrades/mines.png'
 import smoke_grenade from '../../../assets/images/doctrines/common/upgrades/smoke_grenade.png'
@@ -89,7 +89,7 @@ export const TWO_THOMPSONS = 'two_thompsons'
 export const upgradeImageMapping = {
   [_57MM_AP_ROUNDS]: _57mm_ap_rounds,
   [_57MM_HVAP_ROUNDS]: _57mm_ap_rounds,
-  [ALLY_FLAMETHROWER]: ally_flamethrower,
+  [ALLY_FLAMETHROWER]: flamethrower,
   [ALLY_GRENADE]: ally_grenade,
   [ALLY_MINE_DETECTOR]: mine_detector,
   [ALLY_MINES]: mines,

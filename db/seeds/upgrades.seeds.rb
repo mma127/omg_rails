@@ -20,7 +20,7 @@ after :restriction_units do
     end
   end
 
-  csv_paths = %w[db/seeds/ame_enabled_upgrades.csv db/seeds/cmw_enabled_upgrades.csv].freeze
+  csv_paths = %w[db/seeds/ame_enabled_upgrades.csv db/seeds/cmw_enabled_upgrades.csv db/seeds/wehr_enabled_upgrades.csv].freeze
 
   upgrades = []
 
