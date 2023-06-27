@@ -18,8 +18,8 @@ export const createSquadUpgrade = (availableUpgrade, upgrade, squad) => {
     squadUuid: squad.uuid,
     index: squad.index,
     tab: squad.tab,
-    upgradeSlots: upgrade.upgradeSlots,
-    unitwideUpgradeSlots: upgrade.unitwideUpgradeSlots,
+    upgradeSlots: availableUpgrade.upgradeSlots,
+    unitwideUpgradeSlots: availableUpgrade.unitwideUpgradeSlots,
     modelCount: upgrade.modelCount,
     addModelCount: upgrade.additionalModelCount
   }
@@ -43,8 +43,8 @@ export const loadSquadUpgrade = (squadUpgrade, upgrade, availableUpgrade, squad)
     squadUuid: squad.uuid,
     index: squad.index,
     tab: squad.tab,
-    upgradeSlots: upgrade.upgradeSlots,
-    unitwideUpgradeSlots: upgrade.unitwideUpgradeSlots,
+    upgradeSlots: availableUpgrade.upgradeSlots,
+    unitwideUpgradeSlots: availableUpgrade.unitwideUpgradeSlots,
     modelCount: upgrade.modelCount,
     addModelCount: upgrade.additionalModelCount
   }
