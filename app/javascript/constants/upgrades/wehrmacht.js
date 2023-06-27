@@ -60,7 +60,7 @@ export const MG_BUNKER = 'mg_bunker'
 export const MORTAR_BUNKER = 'mortar_bunker'
 export const MP40 = 'mp40'
 export const P4_MG42 = 'p4_mg42'
-export const P4_SKIRTS = 'p4_skirts'
+export const P4_SKIRTS = 'p4_skirts'F
 export const PANTHER_MG42 = 'panther_mg42'
 export const PANTHER_SKIRTS = 'panther_skirts'
 export const PANTHERTURM = 'pantherturm'
@@ -71,6 +71,7 @@ export const STUG_SKIRTS = 'stug_skirts'
 export const STUH_MG42 = 'stuh_mg42'
 export const STUH_SKIRTS = 'stuh_skirts'
 export const SUPPORT_KARBINES = 'support_karbines'
+export const SUPPORT_KARBINES_PIO = 'support_karbines_pio'
 export const ST_SCHRECK = 'st_schreck'
 export const TERROR_KARBINES = 'terror_karbines'
 export const TWO_MP44 = 'two_mp44'
@@ -114,6 +115,7 @@ export const upgradeImageMapping = {
   [STUH_MG42]: mg42_gunner,
   [STUH_SKIRTS]: skirts,
   [SUPPORT_KARBINES]: g43,
+  [SUPPORT_KARBINES_PIO]: g43,
   [ST_SCHRECK]: panzerschreck,
   [TERROR_KARBINES]: g43,
   [TWO_MP44]: mp44,

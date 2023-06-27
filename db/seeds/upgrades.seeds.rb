@@ -30,15 +30,12 @@ after :restriction_units do
       const = row['const']
       display_name = row['display_name']
       description = row['description']
-      slots = row['slots']
-      unitwide_slots = row['unitwide_slots']
       model_count = row['model_count']
       add_model_count = row['add_model_count']
       type = row['type']
       upgrade_class = get_upgrade_class(type)
 
       upgrades << upgrade_class.new(name: name, const_name: const, display_name: display_name, description: description,
-                                    upgrade_slots: slots, unitwide_upgrade_slots: unitwide_slots,
                                     model_count: model_count, additional_model_count: add_model_count)
     end
   end

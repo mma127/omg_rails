@@ -13,6 +13,8 @@ class CreateRestrictionUpgrades < ActiveRecord::Migration[6.1]
       t.integer :mun, comment: "Munition cost"
       t.integer :fuel, comment: "Fuel cost"
       t.integer :priority, comment: "Priority of this restriction"
+      t.integer :upgrade_slots, comment: "Upgrade slot cost for per model upgrades"
+      t.integer :unitwide_upgrade_slots, comment: "Upgrade slot cost for unit wide upgrades"
 
       t.timestamps
     end

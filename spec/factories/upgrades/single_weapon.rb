@@ -4,8 +4,6 @@ FactoryBot.define do
     sequence(:const_name) { |n| "single weapon const_name #{n}" }
     sequence(:display_name) { |n| "single weapon display_name #{n}" }
 
-    unitwide_upgrade_slots { nil }
-    upgrade_slots { 1 }
     model_count { nil }
     additional_model_count { nil }
   end

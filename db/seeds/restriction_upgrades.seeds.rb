@@ -50,12 +50,16 @@ after :upgrades do
       pop = row['pop']
       uses = row['uses']
       max = row['max']
+      slots = row['slots']
+      unitwide_slots = row['unitwide_slots']
 
       unit = Unit.find_by!(name: row['unit'])
       upgrade = Upgrade.find_by!(name: row['upgrade'])
       restriction = get_restriction(row['faction_restriction'], row['doctrine_restriction'], row['unlock_restriction'])
       enabled_upgrade = EnabledUpgrade.find_or_create_by!(restriction: restriction, upgrade: upgrade, ruleset: war_ruleset,
-                                                          man: man, mun: mun, fuel: fuel, pop: pop, uses: uses, max: max, priority: 1)
+                                                          man: man, mun: mun, fuel: fuel, pop: pop, uses: uses, max: max,
+                                                          upgrade_slots: slots, unitwide_upgrade_slots: unitwide_slots,
+                                                          priority: 1)
       RestrictionUpgradeUnit.create!(restriction_upgrade: enabled_upgrade, unit: unit)
     end
   end

@@ -431,7 +431,7 @@ RSpec.describe CompanyService do
 
       context "when an upgrade has slots" do
         let(:unit1) { create :unit, upgrade_slots: 1 }
-        let(:upgrade1) { create :upgrade, upgrade_slots: 1 }
+        let!(:enabled_upgrade1) { create :enabled_upgrade, upgrade: upgrade1, pop: 0, man: 0, mun: 35, fuel: 0, uses: 2, restriction: restriction_faction, ruleset: ruleset, upgrade_slots: 1 }
         let!(:squad_upgrades_param) do
           [{
              squad_upgrade_id: nil,
@@ -456,7 +456,7 @@ RSpec.describe CompanyService do
 
       context "when an upgrade has unitwide slots" do
         let(:unit1) { create :unit, unitwide_upgrade_slots: 1 }
-        let(:upgrade1) { create :upgrade, unitwide_upgrade_slots: 1 }
+        let!(:enabled_upgrade1) { create :enabled_upgrade, upgrade: upgrade1, pop: 0, man: 0, mun: 35, fuel: 0, uses: 2, restriction: restriction_faction, ruleset: ruleset, unitwide_upgrade_slots: 1 }
         let!(:squad_upgrades_param) do
           [{
              squad_upgrade_id: nil,

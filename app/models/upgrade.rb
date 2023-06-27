@@ -40,8 +40,6 @@ class Upgrade < ApplicationRecord
     expose :display_name, as: :displayName
     expose :description
     expose :type
-    expose :upgrade_slots, as: :upgradeSlots
-    expose :unitwide_upgrade_slots, as: :unitwideUpgradeSlots
     expose :model_count, as: :modelCount
     expose :additional_model_count, as: :additionalModelCount
   end

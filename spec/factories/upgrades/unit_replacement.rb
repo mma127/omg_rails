@@ -4,8 +4,6 @@ FactoryBot.define do
     sequence(:const_name) { |n| "unit replace const_name #{n}" }
     sequence(:display_name) { |n| "unit replace display_name #{n}" }
 
-    upgrade_slots { nil }
-    unitwide_upgrade_slots { nil }
     model_count { 5 }
     additional_model_count { nil }
   end

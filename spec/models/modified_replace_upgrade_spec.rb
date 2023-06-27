@@ -2,21 +2,23 @@
 #
 # Table name: restriction_upgrades
 #
-#  id                                                          :bigint           not null, primary key
-#  fuel(Fuel cost)                                             :integer
-#  internal_description(What does this RestrictionUpgrade do?) :string
-#  man(Manpower cost)                                          :integer
-#  max(Maximum number of purchases per unit)                   :integer
-#  mun(Munition cost)                                          :integer
-#  pop(Population cost)                                        :integer
-#  priority(Priority of this restriction)                      :integer
-#  type(What effect this restriction has on the upgrade)       :string           not null
-#  uses(Number of uses this upgrade provides)                  :integer
-#  created_at                                                  :datetime         not null
-#  updated_at                                                  :datetime         not null
-#  restriction_id                                              :bigint
-#  ruleset_id                                                  :bigint
-#  upgrade_id                                                  :bigint
+#  id                                                               :bigint           not null, primary key
+#  fuel(Fuel cost)                                                  :integer
+#  internal_description(What does this RestrictionUpgrade do?)      :string
+#  man(Manpower cost)                                               :integer
+#  max(Maximum number of purchases per unit)                        :integer
+#  mun(Munition cost)                                               :integer
+#  pop(Population cost)                                             :integer
+#  priority(Priority of this restriction)                           :integer
+#  type(What effect this restriction has on the upgrade)            :string           not null
+#  unitwide_upgrade_slots(Upgrade slot cost for unit wide upgrades) :integer
+#  upgrade_slots(Upgrade slot cost for per model upgrades)          :integer
+#  uses(Number of uses this upgrade provides)                       :integer
+#  created_at                                                       :datetime         not null
+#  updated_at                                                       :datetime         not null
+#  restriction_id                                                   :bigint
+#  ruleset_id                                                       :bigint
+#  upgrade_id                                                       :bigint
 #
 # Indexes
 #
