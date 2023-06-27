@@ -4,5 +4,4 @@ SquadBuilder
 3. Only open the transport drop target when dragging units/squads
 
 Upgrades
-1. Move slots from `Upgrade` to `RestrictionUpgrade`
-2. Enable upgrade by unit and minimum vet
+1. Enable upgrade by unit and minimum vet
