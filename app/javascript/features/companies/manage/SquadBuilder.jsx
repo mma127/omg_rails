@@ -171,7 +171,7 @@ export const SquadBuilder = ({}) => {
       mun = squad.mun,
       fuel = squad.fuel;
     (squadUpgrades || []).forEach(su => {
-      pop += su.pop
+      // Don't need to recalculate squad pop
       man += su.man
       mun += su.mun
       fuel += su.fuel

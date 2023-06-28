@@ -40,7 +40,7 @@ after :upgrades do
     end
   end
 
-  csv_paths = %w[db/seeds/ame_enabled_upgrades.csv db/seeds/cmw_enabled_upgrades.csv db/seeds/wehr_enabled_upgrades.csv].freeze
+  csv_paths = %w[db/seeds/ame_enabled_upgrades.csv db/seeds/cmw_enabled_upgrades.csv db/seeds/wehr_enabled_upgrades.csv db/seeds/pe_enabled_upgrades.csv].freeze
   csv_paths.each do |path|
     CSV.foreach(path, headers: true) do |row|
       puts "#{row["upgrade"]} | #{row["const"]} | #{row['faction_restriction']}, #{row['doctrine_restriction']}, #{row['unlock_restriction']} | #{row["unit"]}"

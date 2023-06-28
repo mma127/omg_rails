@@ -20,7 +20,7 @@ after :restriction_units do
     end
   end
 
-  csv_paths = %w[db/seeds/ame_enabled_upgrades.csv db/seeds/cmw_enabled_upgrades.csv db/seeds/wehr_enabled_upgrades.csv].freeze
+  csv_paths = %w[db/seeds/ame_enabled_upgrades.csv db/seeds/cmw_enabled_upgrades.csv db/seeds/wehr_enabled_upgrades.csv db/seeds/pe_enabled_upgrades.csv].freeze
 
   upgrades = []
 
@@ -34,6 +34,7 @@ after :restriction_units do
       add_model_count = row['add_model_count']
       type = row['type']
       upgrade_class = get_upgrade_class(type)
+      puts "#{name} | #{const} | #{display_name} | #{model_count} | #{add_model_count} | #{type}"
 
       upgrades << upgrade_class.new(name: name, const_name: const, display_name: display_name, description: description,
                                     model_count: model_count, additional_model_count: add_model_count)
