@@ -5,4 +5,5 @@ SquadBuilder
 
 Upgrades
 1. Squad `pop` and `popWithTransported` isn't consistent. CompanyGridDropTarget is calculating platoon pop with `popWithTransported` but that isn't updated for squad upgrade pop
-1. Enable upgrade by unit and minimum vet
+2. Show enabled upgrades in the Unlocks card
+3. Enable upgrade by unit and minimum vet
