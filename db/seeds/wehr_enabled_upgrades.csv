@@ -1,8 +1,8 @@
 upgrade,const,display_name,description,type,faction_restriction,doctrine_restriction,unlock_restriction,man,mun,fuel,pop,uses,slots,unitwide_slots,max,model_count,add_model_count,unit
 mp40,AXIS.MP40,MP40s,Equip the squad with MP40s,squad_weapon,wehrmacht,,,0,45,0,0,0,0,1,1,,,volksgrenadiers
-axis_panzerfaust,AXIS.FAUST,Panzerfaust,Disposable Panzerfaust anti-tank weapons,consumable,wehrmacht,,,0,35,0,0,2,0,0,1,,,volksgrenadiers
-axis_panzerfaust,AXIS.FAUST,Panzerfaust,Disposable Panzerfaust anti-tank weapons,consumable,wehrmacht,,,0,35,0,0,2,0,0,1,,,kch
-axis_panzerfaust,AXIS.FAUST,Panzerfaust,Disposable Panzerfaust anti-tank weapons,consumable,,defensive,,0,35,0,0,2,0,0,1,,,fortress_pioneers
+axis_panzerfaust,AXIS.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,wehrmacht,,,0,35,0,0,2,0,0,1,,,volksgrenadiers
+axis_panzerfaust,AXIS.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,wehrmacht,,,0,35,0,0,2,0,0,1,,,kch
+axis_panzerfaust,AXIS.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,,defensive,,0,35,0,0,2,0,0,1,,,fortress_pioneers
 medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,wehrmacht,,,0,20,0,0,2,0,0,1,,,volksgrenadiers
 medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,wehrmacht,,,0,20,0,0,2,0,0,1,,,grenadiers
 medpack,AXIS.MEDPACK,Medpack,Self-healing kits,consumable,wehrmacht,,,0,20,0,0,2,0,0,1,,,pioneers

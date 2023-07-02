@@ -1,0 +1,102 @@
+upgrade,const,display_name,description,type,faction_restriction,doctrine_restriction,unlock_restriction,man,mun,fuel,pop,uses,slots,unitwide_slots,max,model_count,add_model_count,unit
+g43,PE.G43,G43s,Equip the squad with G43s,squad_weapon,panzer_elite,,,0,55,0,0,0,0,1,1,,,panzer_grenadiers
+g43,PE.G43,G43s,Equip the squad with G43s,squad_weapon,,luftwaffe,combat_arms_requisition,0,75,0,0,0,0,1,1,,,falls
+g43,PE.G43,G43s,Equip the squad with G43s,squad_weapon,,luftwaffe,combat_arms_requisition,0,35,0,0,0,0,1,1,,,luft_infantry
+g43,PE.G43,G43s,Equip the squad with G43s,squad_weapon,,scorched_earth,,0,35,0,0,0,0,1,1,,,ostfront_veterans
+g43_suppress,PE.SUPPRESSIVE_VOLLEY,G43s w/Suppressive Volley,Equip the squad with G43s that grant the Suppressive Volley ability,squad_weapon,panzer_elite,,,0,90,0,0,0,0,1,1,,,panzer_grenadiers
+g43_suppress,PE.SUPPRESSIVE_VOLLEY,G43s w/Suppressive Volley,Equip the squad with G43s that grant the Suppressive Volley ability,squad_weapon,,scorched_earth,,0,90,0,0,0,0,1,1,,,ostfront_veterans
+at_grenade,PE.AT_GRENADE,AT Grenade,Anti tank grenade,consumable,panzer_elite,,,0,15,0,0,2,0,0,1,,,panzer_grenadiers
+at_grenade,PE.AT_GRENADE,AT Grenade,Anti tank grenade,consumable,panzer_elite,,,0,15,0,0,2,0,0,1,,,assault_grenadiers
+at_grenade,PE.AT_GRENADE,AT Grenade,Anti tank grenade,consumable,panzer_elite,,,0,15,0,0,2,0,0,1,,,tank_busters
+at_grenade,PE.AT_GRENADE,AT Grenade,Anti tank grenade,consumable,,luftwaffe,priority_acquisitions,0,15,0,0,2,0,0,1,,,falls
+at_grenade,PE.AT_GRENADE,AT Grenade,Anti tank grenade,consumable,,luftwaffe,priority_acquisitions,0,15,0,0,2,0,0,1,,,luft_infantry
+flame_grenade,PE.INCENDIARY_GRENADE,Incendiary Grenade,Flame grenade,consumable,panzer_elite,,,0,25,0,0,2,0,0,1,,,panzer_grenadiers
+flame_grenade,PE.INCENDIARY_GRENADE,Incendiary Grenade,Flame grenade,consumable,panzer_elite,,,0,25,0,0,2,0,0,1,,,assault_grenadiers
+flame_grenade,PE.INCENDIARY_GRENADE,Incendiary Grenade,Flame grenade,consumable,panzer_elite,,,0,25,0,0,2,0,0,1,,,tank_busters
+flame_grenade,PE.INCENDIARY_GRENADE,Incendiary Grenade,Flame grenade,consumable,,luftwaffe,priority_acquisitions,0,25,0,0,2,0,0,1,,,falls
+flame_grenade,PE.INCENDIARY_GRENADE,Incendiary Grenade,Flame grenade,consumable,,luftwaffe,priority_acquisitions,0,25,0,0,2,0,0,1,,,luft_infantry
+flame_grenade,PE.INCENDIARY_GRENADE,Incendiary Grenade,Flame grenade,consumable,,scorched_earth,,0,25,0,0,2,0,0,1,,,ostfront_veterans
+anti_building_grenade,PE.ANTI_BUILDING_GRENADE,Anti-Building Grenade,Flame grenade,consumable,,luftwaffe,,0,10,0,0,2,0,0,1,,,falls
+anti_building_grenade,PE.ANTI_BUILDING_GRENADE,Anti-Building Grenade,Flame grenade,consumable,,luftwaffe,,0,10,0,0,2,0,0,1,,,crete_vets
+teller_mines,PE.TELLER,Teller Mine,"Powerful anti tank mine. Cannot be triggered by infantry",consumable,,tank_hunters,,0,75,0,0,1,0,0,1,,,panzer_grenadiers
+teller_mines,PE.TELLER,Teller Mine,"Powerful anti tank mine. Cannot be triggered by infantry",consumable,,tank_hunters,,0,75,0,0,1,0,0,1,,,tank_busters
+advanced_repair,PE.ADVANCED_REPAIRS,Advanced Repair,Improved repair and wear&tear rates,passive,panzer_elite,,,0,35,0,0,0,0,0,1,,,panzer_grenadiers
+advanced_repair,PE.ADVANCED_REPAIRS,Advanced Repair,Improved repair and wear&tear rates,passive,panzer_elite,,,0,35,0,0,0,0,0,1,,,assault_grenadiers
+advanced_repair,PE.ADVANCED_REPAIRS,Advanced Repair,Improved repair and wear&tear rates,passive,panzer_elite,,,0,35,0,0,0,0,0,1,,,tank_busters
+advanced_repair,PE.ADVANCED_REPAIRS,Advanced Repair,Improved repair and wear&tear rates,passive,,luftwaffe,,0,35,0,0,0,0,0,1,,,luft_infantry
+extra_man_pg,PE.SQUAD_PLUS_ONE_PG,Extra Man,Add a fourth member to the squad,unit_replacement,panzer_elite,,,60,0,0,1,0,0,0,1,4,1,panzer_grenadiers
+extra_man_ag,PE.SQUAD_PLUS_ONE_ASSAULT,Extra Man,Add a fourth member to the squad,unit_replacement,panzer_elite,,,60,20,0,1,0,0,0,1,4,1,assault_grenadiers
+extra_man_tb,PE.SQUAD_PLUS_ONE_TANK,Extra Man,Add a fourth member to the squad,unit_replacement,panzer_elite,,,50,0,0,1,0,0,0,1,4,1,tank_busters
+pe_smoke_grenade,PE.SMOKE_GRENADES,Smoke Grenade,Grenade that provides smoke cover,consumable,panzer_elite,,,0,10,0,0,2,0,0,1,,,panzer_grenadiers
+pe_smoke_grenade,PE.SMOKE_GRENADES,Smoke Grenade,Grenade that provides smoke cover,consumable,panzer_elite,,,0,10,0,0,2,0,0,1,,,assault_grenadiers
+pe_smoke_grenade,PE.SMOKE_GRENADES,Smoke Grenade,Grenade that provides smoke cover,consumable,panzer_elite,,,0,10,0,0,2,0,0,1,,,tank_busters
+pe_smoke_grenade,PE.SMOKE_GRENADES,Smoke Grenade,Grenade that provides smoke cover,consumable,,luftwaffe,,0,10,0,0,2,0,0,1,,,falls
+pe_smoke_grenade,PE.SMOKE_GRENADES,Smoke Grenade,Grenade that provides smoke cover,consumable,,luftwaffe,,0,10,0,0,2,0,0,1,,,crete_vets
+pe_smoke_grenade,PE.SMOKE_GRENADES,Smoke Grenade,Grenade that provides smoke cover,consumable,,luftwaffe,,0,10,0,0,2,0,0,1,,,luft_infantry
+pe_smoke_grenade,PE.SMOKE_GRENADES,Smoke Grenade,Grenade that provides smoke cover,consumable,,luftwaffe,,0,10,0,0,2,0,0,1,,,gebirgs
+pe_smoke_grenade,PE.SMOKE_GRENADES,Smoke Grenade,Grenade that provides smoke cover,consumable,,scorched_earth,,0,10,0,0,2,0,0,1,,,ostfront_veterans
+veteran_sergeant,PE.VET_SGT,Veteran Sergeant,Gain increased suppression resistance,passive,panzer_elite,,,50,0,0,0,0,0,0,1,,,panzer_grenadiers
+veteran_sergeant,PE.VET_SGT,Veteran Sergeant,Gain increased suppression resistance,passive,panzer_elite,,,50,0,0,0,0,0,0,1,,,assault_grenadiers
+veteran_sergeant,PE.VET_SGT,Veteran Sergeant,Gain increased suppression resistance,passive,panzer_elite,,,50,0,0,0,0,0,0,1,,,tank_busters
+overdrive,PE.OVERDRIVE,Overdrive,"Grants the Overdrive ability, increasing maximum speed, acceleration and deceleration",ability,panzer_elite,,,15,0,0,0,0,0,0,1,,,armored_car
+fire_support,PE.SCOUT_HMG,Fire Support,"Allows the Scout Car to lock down a sector, becoming stationary but gaining maximum health and increased suppression",unit_replacement,panzer_elite,,,60,0,30,1,0,1,0,1,1,0,scout_car
+at_ht_mines,PE.MUN_HT_MINES,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,panzer_elite,,,0,35,0,0,2,0,0,1,,,light_at_halftrack
+flame_round,PE.INCENDIARY_MORTAR_ROUNDS,Incendiary Mortar Rounds,Fire a single incendiary round,consumable,panzer_elite,,,0,40,0,0,2,0,0,1,,,mortar_halftrack
+pe_goliath,PE.GOLIATH,Goliath,Deploy a remote controlled explosive Goliath,consumable,panzer_elite,,,0,90,0,0,1,0,0,1,,,vampire_halftrack
+spotting_scope,PE.HETZER_SPOTTING,Spotting Scope,Grants increased sight range and weapon range,passive,,tank_hunters,,0,50,50,0,0,0,0,1,,,hetzer
+hotchkiss_stuka,PE.HOTCHKISS_STUKA,Hotchkiss Stuka Upgrade,Equip the tank with four rocket launchers,passive,panzer_elite,,,0,75,0,1,0,0,0,1,,,hotchkiss
+hotchkiss_upgun,PE.HOTCHUPGUN,Hotchkiss Upgun,Grants increased penetration against armor,passive,panzer_elite,,,0,0,70,0,0,0,0,1,,,hotchkiss
+p4_ist_mg42,PE.P4_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,panzer_elite,,,0,45,0,0,0,0,0,1,,,p4_ist
+p4_ist_skirts,AXIS.STUG_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,panzer_elite,,,0,0,100,0,0,0,0,1,,,p4_ist
+panther_pe_mg42,PE.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,panzer_elite,,,0,45,0,0,0,0,0,1,,,panther_pe
+panther_pe_skirts,PE.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,panzer_elite,,,0,0,110,0,0,0,0,1,,,panther_pe
+faustpatrone,PE.FAUST,Faustpatrone,Disposable anti-tank weapons,consumable,,tank_hunters,faustpatrone,0,35,0,0,2,0,0,1,,,panzer_grenadiers
+faustpatrone,PE.FAUST,Faustpatrone,Disposable anti-tank weapons,consumable,,tank_hunters,faustpatrone,0,35,0,0,2,0,0,1,,,assault_grenadiers
+faustpatrone,PE.FAUST,Faustpatrone,Disposable anti-tank weapons,consumable,,tank_hunters,faustpatrone,0,35,0,0,2,0,0,1,,,tank_busters
+pe_panzerfaust,PE.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,,luftwaffe,,0,35,0,0,2,0,0,1,,,falls
+pe_panzerfaust,PE.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,,luftwaffe,,0,35,0,0,2,0,0,1,,,crete_vets
+pe_panzerfaust,PE.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,,luftwaffe,,0,35,0,0,2,0,0,1,,,gebirgs
+pe_panzerfaust,PE.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,,scorched_earth,,0,35,0,0,2,0,0,1,,,ostfront_veterans
+pe_panzerschreck,AXIS.SCHRECK,Panzerschreck,Equip a second Panzerschreck,single_weapon,,tank_hunters,doubled_firepower,0,105,0,0,0,1,0,1,,,tank_busters
+apcr_at_ht,PE.APCR_ATHT,APCR Rounds,Grants increased penetration against armor,passive,,tank_hunters,apcr_ammunition,0,0,0,0,0,0,0,1,,,light_at_halftrack
+apcr_hetzer,PE.APCR_HETZER,APCR Rounds,Grants increased penetration against armor,passive,,tank_hunters,apcr_ammunition,0,0,0,0,0,0,0,1,,,hetzer
+apcr_marder,PE.APCR_MARDER,APCR Rounds,Grants increased penetration against armor,passive,,tank_hunters,apcr_ammunition,0,0,0,0,0,0,0,1,,,marder
+apcr_panther,PE.APCR_PANTHER,APCR Rounds,Grants increased penetration against armor,passive,,tank_hunters,apcr_ammunition,0,0,0,0,0,0,0,1,,,panther_pe
+armored_plating_ac,PE.ARMOREDCAR_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,passive,,tank_hunters,mechanized_tactics,30,0,15,1,0,0,0,1,,,armored_car
+armored_plating_at_ht,PE.AT_HT_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,passive,,tank_hunters,mechanized_tactics,30,0,10,1,0,0,0,1,,,light_at_halftrack
+armored_plating_iht,PE.INFANTRY_HT_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,passive,,tank_hunters,mechanized_tactics,20,0,10,1,0,0,0,1,,,infantry_halftrack
+armored_plating_mht,PE.MORTAR_HT_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,passive,,tank_hunters,mechanized_tactics,20,0,10,1,0,0,0,1,,,mortar_halftrack
+armored_plating_sc,PE.SCOUT_HMG_ARMOURED,Fire Support & Armor Plating,"Grants increased resistance against small caliber weapons, as well as all Fire Support bonuses",unit_replacement,,tank_hunters,mechanized_tactics,75,0,35,1,0,1,0,1,1,0,scout_car
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,50,0,0,0,0,0,1,,,armored_car
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,infantry_halftrack
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,light_at_halftrack
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,mortar_halftrack
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,medic_halftrack
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,vampire_halftrack
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,hotchkiss
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,marder
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,nashorn
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,p4_ist
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,stug_ace_pe
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,panther_pe
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,jagdpanther
+fg42,PE.FG42,FG42s,Equip the squad with FG42s,squad_weapon,,luftwaffe,,0,120,0,0,0,0,1,1,,,falls
+fg42,PE.FG42,FG42s,Equip the squad with FG42s,squad_weapon,,luftwaffe,,0,120,0,0,0,0,1,1,,,crete_vets
+luft_lmg42,PE.LUFT_LMG,LMG42 w/Suppressing Fire,A single LMG42 with the Suppressing Fire ability,single_weapon,,luftwaffe,combat_arms_requisition,0,55,0,0,0,1,0,1,,,luft_infantry
+butterfly_mine,PE.BUTTERFLY_BOMB,Butterfly Mine Package,Small anti-infantry mines,consumable,,luftwaffe,combat_arms_requisition,0,20,0,0,0,0,0,1,,,luft_infantry
+falls_panzerschreck,AXIS.ST_SCHRECK,Panzerschreck,A single Panzerschreck,single_weapon,,luftwaffe,anti_tank_requisition,0,120,0,0,0,1,0,1,,,falls
+falls_at_rifles,CMW.BOYSAT,Anti Tank Rifles,Anti tank rifles,single_weapon,,luftwaffe,anti_tank_requisition,0,50,0,0,0,1,0,1,,,falls
+falls_at_rifles,CMW.BOYSAT,Anti Tank Rifles,Anti tank rifles,single_weapon,,luftwaffe,anti_tank_requisition,0,50,0,0,0,1,0,1,,,crete_vets
+se_mp40s,PE.SE_ASSAULT,MP40s,Equip the squad with MP40s,squad_weapon,,scorched_earth,,0,75,0,0,0,0,1,1,,,ostfront_veterans
+flame_hotchkiss_stuka,PE.FLAME_HOTCH_STUKA,Hotchkiss Stuka Upgrade,Equip the tank with four rocket launchers,passive,,scorched_earth,,0,75,0,2,0,0,0,1,,,flammen_hotchkiss
+stup_mg42,PE.STUP_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,scorched_earth,,0,40,0,0,0,0,0,1,,,stup
+stup_skirts,PE.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,scorched_earth,,0,0,70,0,0,0,0,1,,,stup
+booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,panzer_grenadiers
+booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,assault_grenadiers
+booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,tank_busters
+booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,ostfront_veterans
+booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,panzer_grenadiers
+booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,assault_grenadiers
+booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,tank_busters
+booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,ostfront_veterans
+p4_ist_wp,ALLY.T17WHITE,White Phosphorus,"Fire a white phosphorus round at a target vehicle, blinding and slowing it",consumable,,scorched_earth,surplus_armaments,0,40,0,0,0,0,0,1,,,p4_ist
