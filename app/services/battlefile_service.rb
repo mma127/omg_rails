@@ -393,6 +393,7 @@ end
 
   def encode_ucs(ucs_contents)
     result = [0xFEFF].pack("v")
+    ucs_contents = ucs_contents.force_encoding("ASCII-8BIT")
     ucs_contents.each_char do |s|
       result << s
       result << "\0"
