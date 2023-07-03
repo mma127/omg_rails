@@ -493,3 +493,5 @@ export const selectSelectedSquad = state => {
   }
   return null
 }
+
+export const selectSelectedSquadUuid = state => state.squads.selectedSquadUuid

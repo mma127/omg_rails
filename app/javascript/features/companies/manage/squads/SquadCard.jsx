@@ -1,31 +1,30 @@
-import React, { useState } from 'react'
-import { UnitCard } from "./UnitCard";
-import { Box, Card, Paper, Tooltip, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import { DragDropContainer, DropTarget } from "react-drag-drop-container";
+import React from 'react'
+import {UnitCard} from "./UnitCard";
+import {Box, Card, Tooltip, Typography} from "@mui/material";
+import {makeStyles} from "@mui/styles";
+import {DragDropContainer} from "react-drag-drop-container";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { formatResourceCost } from "../../../../utils/company";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUnitById } from "../units/unitsSlice";
+import {formatResourceCost} from "../../../../utils/company";
+import {useSelector} from "react-redux";
+import {selectUnitById} from "../units/unitsSlice";
 import {
-  addTransportedSquad,
-  selectSquadById,
+  selectSelectedSquadUuid,
   selectSquadInTabIndexTransportUuid,
   selectSquadInTabIndexUuid
 } from "../units/squadsSlice";
-import { createSquad } from "../units/squad";
-import { nanoid } from "@reduxjs/toolkit";
-import { TransportSlots } from "./TransportSlots";
-import { TransportDropTarget } from "./TransportDropTarget";
-import { SquadUpgrades } from "../squad_upgrades/SquadUpgrades";
-import { removeSquadUpgrade, selectSquadUpgradesForSquad } from "../squad_upgrades/squadUpgradesSlice";
-import { removeCost } from "../../companiesSlice";
+import {TransportSlots} from "./TransportSlots";
+import {TransportDropTarget} from "./TransportDropTarget";
+import {SquadUpgrades} from "../squad_upgrades/SquadUpgrades";
+import {selectSquadUpgradesForSquad} from "../squad_upgrades/squadUpgradesSlice";
 
 const useStyles = makeStyles(() => ({
   squadCard: {
     display: 'inline-flex',
     backgroundColor: "#303030",
-    margin: '0.125rem'
+    margin: '0.125rem',
+    '&.selected': {
+      backgroundColor: "#606060"
+    }
   },
   squadCardItems: {
     display: 'flex',
@@ -87,6 +86,9 @@ export const SquadCard = (
   }
   const unit = useSelector(state => selectUnitById(state, squad.unitId))
   const squadUpgrades = useSelector(state => selectSquadUpgradesForSquad(state, tab, index, uuid))
+  const selectedSquadUuid = useSelector(selectSelectedSquadUuid)
+
+  const isSelected = selectedSquadUuid === uuid
 
   // Must have unit loaded to continue
   if (!unit || !squad) {
@@ -223,7 +225,7 @@ export const SquadCard = (
                          }
                        }
     >
-      <Card className={classes.squadCard}>
+      <Card className={`${classes.squadCard} ${isSelected ? 'selected' : null}`}>
         <Tooltip
           key={uuid}
           title={
