@@ -3,7 +3,9 @@ import apcr from '../../../assets/images/doctrines/panzer_elite/upgrades/apcr.pn
 import at_grenade from '../../../assets/images/doctrines/panzer_elite/upgrades/at_grenade.png'
 import booby_trap from '../../../assets/images/doctrines/panzer_elite/upgrades/booby_trap.png'
 import butterfly_mine from '../../../assets/images/doctrines/panzer_elite/upgrades/butterfly_mine.png'
-import extra_man from '../../../assets/images/doctrines/panzer_elite/upgrades/extra_man.png'
+import extra_ag from '../../../assets/images/doctrines/panzer_elite/upgrades/extra_ag.png'
+import extra_pg from '../../../assets/images/doctrines/panzer_elite/upgrades/extra_pg.png'
+import extra_tb from '../../../assets/images/doctrines/panzer_elite/upgrades/extra_tb.png'
 import fg42 from '../../../assets/images/doctrines/panzer_elite/upgrades/fg42.png'
 import flame_grenade from '../../../assets/images/doctrines/panzer_elite/upgrades/flame_grenade.png'
 import flame_round from '../../../assets/images/doctrines/panzer_elite/upgrades/flame_round.png'
@@ -97,9 +99,9 @@ export const upgradeImageMapping = {
   [BOOBY_TRAP]: booby_trap,
   [BUTTERFLY_MINE]: butterfly_mine,
 
-  [EXTRA_MAN_AG]: extra_man,
-  [EXTRA_MAN_PG]: extra_man,
-  [EXTRA_MAN_TB]: extra_man,
+  [EXTRA_MAN_AG]: extra_ag,
+  [EXTRA_MAN_PG]: extra_pg,
+  [EXTRA_MAN_TB]: extra_tb,
   [FALLS_AT_RIFLES]: at_rifles,
   [FALLS_PANZERSCHRECK]: axis_panzerschreck,
   [FAUSTPATRONE]: panzerfaust,
