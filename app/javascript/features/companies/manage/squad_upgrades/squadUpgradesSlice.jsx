@@ -94,13 +94,14 @@ const squadUpgradesSlice = createSlice({
         if (!state.currentSquadUpgrades?.[oldTab]?.[oldIndex]) return
 
         const oldPlatoon = state.currentSquadUpgrades[oldTab][oldIndex]
-        if (squadUuid in oldPlatoon) {
+        if (squadUuid in oldPlatoon && (oldTab !== newTab || oldIndex !== newIndex)) {
           const oldSquadUpgrades = oldPlatoon[squadUuid]
           Object.values(oldSquadUpgrades).forEach(osu => {
             // Create new copy with updated location
             const newSquadUpgrade = { ...osu, index: newIndex, tab: newTab }
             _.setWith(state.currentSquadUpgrades, `[${newTab}][${newIndex}][${squadUuid}][${newSquadUpgrade.uuid}]`, newSquadUpgrade, Object)
           })
+
           delete state.currentSquadUpgrades[oldTab][oldIndex][squadUuid]
         }
 
