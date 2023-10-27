@@ -19,6 +19,8 @@ import tank_hunters from '../../../../assets/images/doctrine_banners/tank_hunter
 import terror from '../../../../assets/images/doctrine_banners/terror.png'
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
 import { ErrorTypography } from "../../../components/ErrorTypography";
+import {useSelector} from "react-redux";
+import {selectCreatingCompanyStatus} from "../companiesSlice";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
@@ -40,12 +42,14 @@ export const CompanyForm = ({ side, back, company, single = false, companyCallba
   // Depending on whether the side is axis or allied, show the corresponding list of doctrine options as radio buttons
   // And expose company name field
   const [selectedDoctrine, setSelectedDoctrine] = useState("")
+  const companyCreatingStatus = useSelector(selectCreatingCompanyStatus)
 
   const classes = useStyles()
 
-  const { reset, handleSubmit, setValue, control, formState: { errors } } = useForm({
+  const { reset, handleSubmit, setValue, control, formState: { errors, isSubmitting } } = useForm({
     resolver: yupResolver(schema),
   });
+  console.log(`Submitting ${isSubmitting}`)
 
   useEffect(() => {
     reset()
@@ -171,7 +175,7 @@ export const CompanyForm = ({ side, back, company, single = false, companyCallba
             {backButton}
             <Grid item xs={2} container justifyContent="flex-end">
               <Button variant="contained" type="submit" color="secondary" size="small"
-                      sx={{ marginRight: '9px' }}>{single ? "Save" : "Next"}</Button>
+                      sx={{ marginRight: '9px' }} disabled={isSubmitting || companyCreatingStatus === "pending"}>{single ? "Save" : "Next"}</Button>
             </Grid>
           </Grid>
         </form>

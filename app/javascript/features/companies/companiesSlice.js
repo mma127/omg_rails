@@ -163,3 +163,4 @@ export const selectCompanyFuel = (state, companyId) => state.companies.entities[
 export const selectCompanyActiveBattleId = (state, companyId) => state.companies.entities[companyId].activeBattleId
 export const selectCompanyDoctrineId = (state, companyId) => state.companies.entities[companyId].doctrineId
 export const selectCompanyName = (state, companyId) => state.companies.entities[companyId].name
+export const selectCreatingCompanyStatus = (state) => state.companies.creatingStatus
