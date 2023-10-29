@@ -11,4 +11,10 @@
 #
 class ResourceBonus < ApplicationRecord
   has_many :company_resource_bonuses
+
+  enum resource: {
+    man: "man",
+    mun: "mun",
+    fuel: "fuel"
+  }
 end
