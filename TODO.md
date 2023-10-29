@@ -8,3 +8,6 @@ Upgrades
 2. Show enabled upgrades in the Unlocks card
 3. Enable upgrade by unit and minimum vet
 4. Should Falls have only 1 of fg42, schreck, at rifles, g43? Can fg42 and g43 be unitwide? seems to be priority issues where fg42 over schreck
+
+Company
+1. Move `MAX_VP` to Ruleset

@@ -44,6 +44,8 @@ class InitialSchema < ActiveRecord::Migration[6.1]
       t.integer :starting_mun, null: false, comment: "Company starting muntions"
       t.integer :starting_fuel, null: false, comment: "Company starting fuel"
       t.integer :starting_vps, null: false, comment: "Company starting vps"
+      t.integer :max_vps, null: false, comment: "Company max vps"
+      t.integer :max_resource_bonuses, null: false, comment: "Company maximum number of resource bonuses"
 
       t.timestamps
     end

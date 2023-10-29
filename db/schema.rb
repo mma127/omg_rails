@@ -292,9 +292,12 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
   end
 
   create_table "resource_bonuses", force: :cascade do |t|
-    t.string "name", comment: "Resource bonus name"
-    t.string "type", comment: "Resource type"
-    t.integer "value", comment: "Bonus amount"
+    t.string "name", null: false, comment: "Resource bonus name"
+    t.string "resource", null: false, comment: "Resource type"
+    t.integer "gained", default: 0, null: false, comment: "Bonus amount"
+    t.integer "man_lost", default: 0, null: false, comment: "Man deducted"
+    t.integer "mun_lost", default: 0, null: false, comment: "Mun deducted"
+    t.integer "fuel_lost", default: 0, null: false, comment: "Fuel deducted"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -413,6 +416,8 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
     t.integer "starting_mun", null: false, comment: "Company starting muntions"
     t.integer "starting_fuel", null: false, comment: "Company starting fuel"
     t.integer "starting_vps", null: false, comment: "Company starting vps"
+    t.integer "max_vps", null: false, comment: "Company max vps"
+    t.integer "max_resource_bonuses", null: false, comment: "Company maximum number of resource bonuses"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
