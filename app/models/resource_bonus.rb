@@ -3,14 +3,18 @@
 # Table name: resource_bonuses
 #
 #  id                        :bigint           not null, primary key
-#  fuel_lost(Fuel deducted)  :integer          default(0)
-#  gained(Bonus amount)      :integer          default(0)
-#  man_lost(Man deducted)    :integer          default(0)
-#  mun_lost(Mun deducted)    :integer          default(0)
-#  name(Resource bonus name) :string
-#  resource(Resource type)   :string
+#  fuel_lost(Fuel deducted)  :integer          default(0), not null
+#  gained(Bonus amount)      :integer          default(0), not null
+#  man_lost(Man deducted)    :integer          default(0), not null
+#  mun_lost(Mun deducted)    :integer          default(0), not null
+#  name(Resource bonus name) :string           not null
+#  resource(Resource type)   :string           not null
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#
+# Indexes
+#
+#  index_resource_bonuses_on_resource  (resource) UNIQUE
 #
 class ResourceBonus < ApplicationRecord
   has_many :company_resource_bonuses
@@ -31,4 +35,13 @@ class ResourceBonus < ApplicationRecord
   validates_numericality_of :man_lost
   validates_numericality_of :mun_lost
   validates_numericality_of :fuel_lost
+
+  class Entity < Grape::Entity
+    expose :name
+    expose :resource
+    expose :gained
+    expose :man_lost, as: :manLost
+    expose :mun_lost, as: :munLost
+    expose :fuel_lost, as: :fuelLost
+  end
 end

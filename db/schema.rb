@@ -300,6 +300,7 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
     t.integer "fuel_lost", default: 0, null: false, comment: "Fuel deducted"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["resource"], name: "index_resource_bonuses_on_resource", unique: true
   end
 
   create_table "restriction_callin_modifiers", comment: "Association of Restriction to CallinModifier", force: :cascade do |t|

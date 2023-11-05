@@ -12,6 +12,10 @@
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #
+# Indexes
+#
+#  index_resource_bonuses_on_resource  (resource) UNIQUE
+#
 require "rails_helper"
 
 RSpec.describe ResourceBonus, type: :model do
