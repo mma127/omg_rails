@@ -16,13 +16,26 @@ module OMG
         present query, type: :include_players
       end
 
-      desc 'download battlefile'
-      params do
-        requires :battleId, type: Integer, desc: "Battle id to download"
-      end
-      get :battlefile do
-        service = BattlefileService.new(declared_params[:battleId])
-        redirect service.get_file_download_url
+      route_param :battle_id, type: Integer, desc: "Battle id to download" do
+        namespace :battlefiles do
+          desc 'download battlefile zip'
+          get :zip do
+            service = BattlefileService.new(declared_params[:battle_id])
+            redirect service.get_zip_file_download_url
+          end
+
+          desc 'download battlefile sga'
+          get :sga do
+            service = BattlefileService.new(declared_params[:battle_id])
+            redirect service.get_sga_file_download_url
+          end
+
+          desc 'download battlefile ucs'
+          get :ucs do
+            service = BattlefileService.new(declared_params[:battle_id])
+            redirect service.get_ucs_file_download_url
+          end
+        end
       end
 
       namespace :player do
@@ -92,7 +105,7 @@ module OMG
           requires :surviveSGroups, type: String, desc: "List of surviving squads with xp, semicolon separated in format: [squad id],[exp];..."
           optional :newSGroups, type: String, desc: "List of new squads" # Not using for now
           requires :dropPlayers, type: String, desc: "List of dropped player names, possible to receive a blank string name"
-          requires :battleStats, type: String, desc: "Stats string by player semicolon separated in format: "\
+          requires :battleStats, type: String, desc: "Stats string by player semicolon separated in format: " \
             "[player name],CompanyId:[company id],Inf Lost:[int] ,Vehicles Lost:[int] ,Inf Killed[int] ,Vehicles Killed:[int];..."
         end
         post do

@@ -58,7 +58,7 @@ export const BattleCard = ({ id, rulesetId }) => {
   const alliedPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'allied'), size)
   const axisPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'axis'), size)
   const generatingContent = battle.state === GENERATING ? <Typography>Generating</Typography> : ""
-  const ingameContent = battle.state === INGAME ? <Link to={`/api/battles/battlefile?battleId=${id}`} target="_blank" download>Download Battlefile</Link> : ""
+  const ingameContent = battle.state === INGAME ? <Link to={`/api/battles/${id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link> : ""
 
   return (
     <Box>

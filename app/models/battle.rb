@@ -23,7 +23,9 @@ class Battle < ApplicationRecord
   has_many :companies, through: :battle_players
   has_many :squads, through: :companies
 
-  has_one_attached :battlefile
+  has_one_attached :sga_file
+  has_one_attached :ucs_file
+  has_one_attached :zip_file
 
   validates_presence_of :ruleset
   validates_presence_of :size

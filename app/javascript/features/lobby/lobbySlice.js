@@ -79,7 +79,7 @@ export const downloadBattlefile = createAsyncThunk(
   "lobby/downloadBattlefile",
   async ({ battleId }) => {
     try {
-      const response = await axios.post("/battles/battlefile", { battleId })
+      const response = await axios.post(`/battles/${battleId}/battlefiles/zip`)
       return response.data
     } catch (err) {
       return rejectWithValue(err.response.data)
