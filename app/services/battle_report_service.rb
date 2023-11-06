@@ -4,7 +4,7 @@ class BattleReportService
   RUBBERBAND_VET = 5
 
   def initialize(battle_id)
-    @battle = Battle.includes(players: :companies, companies: [:squads, :available_units]).find_by!(id: battle_id)
+    @battle = Battle.includes(players: :companies, companies: [:squads, :available_units, company_resource_bonuses: :resource_bonus]).find_by!(id: battle_id)
   end
 
   def self.enqueue_report(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,

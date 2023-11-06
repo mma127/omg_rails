@@ -15,12 +15,22 @@ module OMG
 
       desc "purchase a resource bonus"
       params do
-        requires :resource, type: String, desc: "Resource type to purchase"
+        requires :resource, type: String, values: ResourceBonus.resources.values, desc: "Resource type to purchase"
       end
       post :purchase do
         declared_params = declared(params)
         service = CompanyBonusesService.new(params[:id], current_player)
-        service.purchase_resource_bonus(declared_params[:resource])
+        present service.purchase_resource_bonus(declared_params[:resource]), with: Entities::CompanyResourceBonuses
+      end
+
+      desc "refund a resource bonus"
+      params do
+        requires :resource, type: String, values: ResourceBonus.resources.values, desc: "Resource type to refund"
+      end
+      post :refund do
+        declared_params = declared(params)
+        service = CompanyBonusesService.new(params[:id], current_player)
+        present service.refund_resource_bonus(declared_params[:resource]), with: Entities::CompanyResourceBonuses
       end
     end
   end

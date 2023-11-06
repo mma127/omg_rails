@@ -294,10 +294,9 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
   create_table "resource_bonuses", force: :cascade do |t|
     t.string "name", null: false, comment: "Resource bonus name"
     t.string "resource", null: false, comment: "Resource type"
-    t.integer "gained", default: 0, null: false, comment: "Bonus amount"
-    t.integer "man_lost", default: 0, null: false, comment: "Man deducted"
-    t.integer "mun_lost", default: 0, null: false, comment: "Mun deducted"
-    t.integer "fuel_lost", default: 0, null: false, comment: "Fuel deducted"
+    t.integer "man", default: 0, null: false, comment: "Man change"
+    t.integer "mun", default: 0, null: false, comment: "Mun change"
+    t.integer "fuel", default: 0, null: false, comment: "Fuel change"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["resource"], name: "index_resource_bonuses_on_resource", unique: true

@@ -3,10 +3,9 @@
 # Table name: resource_bonuses
 #
 #  id                        :bigint           not null, primary key
-#  fuel_lost(Fuel deducted)  :integer          default(0), not null
-#  gained(Bonus amount)      :integer          default(0), not null
-#  man_lost(Man deducted)    :integer          default(0), not null
-#  mun_lost(Mun deducted)    :integer          default(0), not null
+#  fuel(Fuel change)         :integer          default(0), not null
+#  man(Man change)           :integer          default(0), not null
+#  mun(Mun change)           :integer          default(0), not null
 #  name(Resource bonus name) :string           not null
 #  resource(Resource type)   :string           not null
 #  created_at                :datetime         not null
@@ -24,13 +23,11 @@ RSpec.describe ResourceBonus, type: :model do
   describe "validations" do
     it { should validate_presence_of(:name) }
     it { should validate_presence_of(:resource) }
-    it { should validate_presence_of(:gained) }
-    it { should validate_presence_of(:man_lost) }
-    it { should validate_presence_of(:mun_lost) }
-    it { should validate_presence_of(:fuel_lost) }
-    it { should validate_numericality_of(:gained) }
-    it { should validate_numericality_of(:man_lost) }
-    it { should validate_numericality_of(:mun_lost) }
-    it { should validate_numericality_of(:fuel_lost) }
+    it { should validate_presence_of(:man) }
+    it { should validate_presence_of(:mun) }
+    it { should validate_presence_of(:fuel) }
+    it { should validate_numericality_of(:man) }
+    it { should validate_numericality_of(:mun) }
+    it { should validate_numericality_of(:fuel) }
   end
 end

@@ -168,7 +168,7 @@ class CompanyService
 
     # Calculate resources remaining when subtracting the squad resources from the company's total starting resources
     # Raise validation error if the new squads' cost is greater in one or more resource than the company's total starting resources
-    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, man_final, mun_final, fuel_final)
+    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, company.company_resource_bonuses, man_final, mun_final, fuel_final)
 
     # Raise validation error if a platoon (squads within a tab and index) has either less pop than the minimum or
     # more pop than the maximum allowed
@@ -318,14 +318,14 @@ class CompanyService
   end
 
   # Recalculates resources remaining for the company based on squads and availability, AND updates the company
-  def recalculate_and_update_resources(company)
-    man, mun, fuel, pop = recalculate_resources(company)
+  def recalculate_and_update_resources(company, force_update=false)
+    man, mun, fuel, pop = recalculate_resources(company, force_update)
     company.update!(man: man, mun: mun, fuel: fuel, pop: pop)
   end
 
   # Based on squads of the company and ruleset starting resources, determine what resources are left
   # TODO refactor with similar block in #update_company_squads
-  def recalculate_resources(company)
+  def recalculate_resources(company, force_update=false)
     # Index available units by id
     available_units_by_id = company.reload.available_units.index_by(&:id)
     # Index available upgrades by id
@@ -352,7 +352,9 @@ class CompanyService
 
     # Calculate resources remaining when subtracting the squad resources from the company's total starting resources
     # Raise validation error if the new squads' cost is greater in one or more resource than the company's total starting resources
-    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, man_final, mun_final, fuel_final)
+    man_remaining, mun_remaining, fuel_remaining = calculate_remaining_resources(company.ruleset, company.company_resource_bonuses,
+                                                                                 man_final, mun_final, fuel_final,
+                                                                                 force_update)
 
     [man_remaining, mun_remaining, fuel_remaining, pop_new]
   end
@@ -490,7 +492,6 @@ class CompanyService
   # AvailableUnit for the squad's unit id. Also increments the pop of the platoon_pop_by_tab_and_index value for the
   # tab and index the squad is in.
   def calculate_squad_resources(squads, available_units_by_id, available_upgrades_by_id, platoon_pop_by_tab_and_index)
-    # TODO include resource bonuses
     man_new = 0
     mun_new = 0
     fuel_new = 0
@@ -533,24 +534,31 @@ class CompanyService
 
   # Calculate a company's total starting resources, including:
   # * Ruleset starting man, mun, fuel
-  def get_total_available_resources(ruleset)
-    # TODO Add resource bonuses later
+  def get_total_available_resources(ruleset, company_resource_bonuses)
     available_man = ruleset.starting_man
     available_mun = ruleset.starting_mun
     available_fuel = ruleset.starting_fuel
+
+    company_resource_bonuses.each do |crb|
+      resource_bonus = crb.resource_bonus
+      available_man += resource_bonus.man
+      available_mun += resource_bonus.mun
+      available_fuel += resource_bonus.fuel
+    end
 
     [available_man, available_mun, available_fuel]
   end
 
   # Calculate resources remaining after subtracting the used resources from the company's total starting resources
-  def calculate_remaining_resources(ruleset, man_new, mun_new, fuel_new)
-    available_man, available_mun, available_fuel = get_total_available_resources(ruleset)
+  def calculate_remaining_resources(ruleset, company_resource_bonuses, man_new, mun_new, fuel_new, force_update=false)
+    available_man, available_mun, available_fuel = get_total_available_resources(ruleset, company_resource_bonuses)
     man_remaining = available_man - man_new
     mun_remaining = available_mun - mun_new
     fuel_remaining = available_fuel - fuel_new
 
-    unless man_remaining >= 0 && mun_remaining >= 0 && fuel_remaining >= 0
+    unless (man_remaining >= 0 && mun_remaining >= 0 && fuel_remaining >= 0) || force_update
       # Raise validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources
+      # Skip validation error if we are forcing the update even with negative resource amounts. Currently used for resource bonuses
       raise CompanyUpdateValidationError.new("Invalid squad update, negative resource balance found: #{man_remaining} manpower"\
         ", #{mun_remaining} munitions, #{fuel_remaining} fuel")
     end
