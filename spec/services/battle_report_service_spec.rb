@@ -270,6 +270,31 @@ RSpec.describe BattleReportService do
       expect(company2.mun).to eq ruleset.starting_mun - available_unit2.mun * 3
       expect(company2.fuel).to eq ruleset.starting_fuel - available_unit2.fuel * 3
     end
+
+    context "when there are resource bonuses" do
+      let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15 }
+      let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10 }
+      let(:fuel_rb) { create :resource_bonus, resource: "fuel", man: -60, mun: -20, fuel: 50 }
+      before do
+        create :company_resource_bonus, company: company1, resource_bonus: man_rb
+        create :company_resource_bonus, company: company1, resource_bonus: man_rb
+        create :company_resource_bonus, company: company1, resource_bonus: mun_rb
+
+        create :company_resource_bonus, company: company2, resource_bonus: mun_rb
+        create :company_resource_bonus, company: company2, resource_bonus: fuel_rb
+      end
+
+      it "updates the company resources" do
+        instance.send(:recalculate_company_resources)
+        expect(company1.reload.man).to eq ruleset.starting_man - (available_unit1.man * 2) + (man_rb.man * 2) + mun_rb.man
+        expect(company1.mun).to eq ruleset.starting_mun - (available_unit1.mun * 2) + (man_rb.mun * 2) + mun_rb.mun
+        expect(company1.fuel).to eq ruleset.starting_fuel - (available_unit1.fuel * 2) + (man_rb.fuel * 2) + mun_rb.fuel
+
+        expect(company2.reload.man).to eq ruleset.starting_man - (available_unit2.man * 3) + mun_rb.man + fuel_rb.man
+        expect(company2.mun).to eq ruleset.starting_mun - (available_unit2.mun * 3) + mun_rb.mun + fuel_rb.mun
+        expect(company2.fuel).to eq ruleset.starting_fuel - (available_unit2.fuel * 3) + mun_rb.fuel + fuel_rb.fuel
+      end
+    end
   end
 
   describe "#add_company_vps" do
