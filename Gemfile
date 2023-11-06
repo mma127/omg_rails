@@ -93,6 +93,8 @@ group :development do
   gem 'annotate'
 
   gem 'foreman'
+
+  gem 'grape_on_rails_routes'
 end
 
 group :test do

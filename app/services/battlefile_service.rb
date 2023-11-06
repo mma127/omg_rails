@@ -19,7 +19,7 @@ class BattlefileService
                     .find(battle_id)
   end
 
-  # To download with temp url: Rails.application.routes.url_helpers.rails_blob_url(Battle.last.battlefile)
+  # To download with temp url: Rails.application.routes.url_helpers.rails_blob_url(Battle.last.zip_file)
 
   # Generate the SGA battlefile and UCS names file
   def generate_files
@@ -32,10 +32,22 @@ class BattlefileService
     create_attach_zip(scar_contents, ucs_contents)
   end
 
-  def get_file_download_url
+  def get_zip_file_download_url
     validate_battle_exists
-    validate_battlefile_attached
-    Rails.application.routes.url_helpers.rails_blob_url(@battle.battlefile)
+    validate_battlefile_zip_attached
+    Rails.application.routes.url_helpers.rails_blob_url(@battle.zip_file)
+  end
+
+  def get_sga_file_download_url
+    validate_battle_exists
+    validate_battlefile_sga_attached
+    Rails.application.routes.url_helpers.rails_blob_url(@battle.sga_file)
+  end
+
+  def get_ucs_file_download_url
+    validate_battle_exists
+    validate_battlefile_ucs_attached
+    Rails.application.routes.url_helpers.rails_blob_url(@battle.ucs_file)
   end
 
   private
@@ -287,10 +299,10 @@ end
 
   def build_squad_upgrades_block(squad)
     upgrade_consts = squad.squad_upgrades
-                        .includes(available_upgrade: :upgrade)
-                        .joins(available_upgrade: :upgrade)
-                        .where.not(upgrade: { type: %w[Upgrades::Building Upgrades::UnitReplacement] })
-                        .map { |su| su.available_upgrade.upgrade.formatted_const_name }
+                          .includes(available_upgrade: :upgrade)
+                          .joins(available_upgrade: :upgrade)
+                          .where.not(upgrade: { type: %w[Upgrades::Building Upgrades::UnitReplacement] })
+                          .map { |su| su.available_upgrade.upgrade.formatted_const_name }
     upgrade_consts.join(",\n")
   end
 
@@ -420,6 +432,11 @@ end
         f.write(encode_ucs(ucs_contents))
       end
 
+      sga = File.open(sga_path)
+      ucs = File.open(ucs_path)
+      @battle.sga_file.attach(io: sga, filename: SGA_FILENAME, content_type: 'application/octet-stream')
+      @battle.ucs_file.attach(io: ucs, filename: UCS_FILENAME, content_type: 'application/octet-stream')
+
       Zip::File.open("#{dir}/#{battle_string}.zip", Zip::File::CREATE) do |zipfile|
         zipfile.add("OMGmod/Archives/#{SGA_FILENAME}",
                     sga_path)
@@ -430,9 +447,9 @@ end
 
       zip_filename = "#{battle_string}.zip"
       zipfile_io = File.open("#{dir}/#{zip_filename}")
-      @battle.battlefile.attach(io: zipfile_io,
-                                filename: "#{zip_filename}",
-                                content_type: 'application/octet-stream')
+      @battle.zip_file.attach(io: zipfile_io,
+                              filename: "#{zip_filename}",
+                              content_type: 'application/octet-stream')
     end
   end
 
@@ -453,8 +470,16 @@ end
     raise BattlefileGenerationValidationError.new "Battle #{@battle.id} is not in generating status" unless @battle.players_ready?
   end
 
-  def validate_battlefile_attached
-    raise BattlefileGenerationValidationError.new "Battle #{@battle.id} does not have a battlefile attached" if @battle.battlefile.blank?
+  def validate_battlefile_zip_attached
+    raise BattlefileGenerationValidationError.new "Battle #{@battle.id} does not have a battlefile zip attached" if @battle.zip_file.blank?
+  end
+
+  def validate_battlefile_sga_attached
+    raise BattlefileGenerationValidationError.new "Battle #{@battle.id} does not have a battlefile sga attached" if @battle.sga_file.blank?
+  end
+
+  def validate_battlefile_ucs_attached
+    raise BattlefileGenerationValidationError.new "Battle #{@battle.id} does not have a battlefile ucs attached" if @battle.ucs_file.blank?
   end
 
   def format_squad_list(list)
