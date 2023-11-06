@@ -1,5 +1,5 @@
 after :rulesets do
-  ResourceBonus.create!(name: "Manpower Bonus", resource: "man", gained: 450, mun_lost: 45, fuel_lost: 40)
-  ResourceBonus.create!(name: "Munitions Bonus", resource: "mun", gained: 180, man_lost: 125, fuel_lost: 40)
-  ResourceBonus.create!(name: "Fuel Bonus", resource: "fuel", gained: 160, man_lost: 90, mun_lost: 30)
+  ResourceBonus.create!(name: "Manpower Bonus", resource: "man", man: 450, mun: -45, fuel: -40)
+  ResourceBonus.create!(name: "Munitions Bonus", resource: "mun", man: -125, mun: 180, fuel: -40)
+  ResourceBonus.create!(name: "Fuel Bonus", resource: "fuel", man: -90, mun: -30, fuel: 160)
 end

@@ -2288,28 +2288,72 @@ RSpec.describe CompanyService do
     let(:starting_mun) { 2000 }
     let(:starting_fuel) { 1400 }
     let(:ruleset) { create :ruleset, starting_man: starting_man, starting_mun: starting_mun, starting_fuel: starting_fuel }
+    let(:company_resource_bonuses) { [] }
     it "returns the correct resources" do
-      man, mun, fuel = instance.send(:get_total_available_resources, ruleset)
+      man, mun, fuel = instance.send(:get_total_available_resources, ruleset, company_resource_bonuses)
       expect(man).to eq starting_man
       expect(mun).to eq starting_mun
       expect(fuel).to eq starting_fuel
+    end
+
+    context "when there are resource bonuses" do
+      let(:company) { create :company }
+      let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15 }
+      let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10 }
+      before do
+        create :company_resource_bonus, company: company, resource_bonus: man_rb
+        create :company_resource_bonus, company: company, resource_bonus: man_rb
+        create :company_resource_bonus, company: company, resource_bonus: mun_rb
+      end
+
+      it "returns the correct resources" do
+        man, mun, fuel = instance.send(:get_total_available_resources, ruleset, company.reload.company_resource_bonuses)
+        expect(man).to eq starting_man + 100 + 100 - 50
+        expect(mun).to eq starting_mun - 10 - 10 + 40
+        expect(fuel).to eq starting_fuel - 15 - 15 - 10
+      end
     end
   end
 
   describe "#calculate_remaining_resources" do
     let(:ruleset) { create :ruleset, starting_man: 5000, starting_mun: 2000, starting_fuel: 1400 }
+    let(:company_resource_bonuses) { [] }
 
     it "returns resources remaining when the remaining resources are > 0" do
-      man, mun, fuel = instance.send(:calculate_remaining_resources, ruleset, 4500, 1200, 1400)
+      man, mun, fuel = instance.send(:calculate_remaining_resources, ruleset, company_resource_bonuses, 4500, 1200, 1400)
       expect(man).to eq 500
       expect(mun).to eq 800
       expect(fuel).to eq 0
     end
 
     it "raises an error when one or more resource remaining is less than 0" do
-      expect { instance.send(:calculate_remaining_resources, ruleset, 5500, 1200, 1400) }.
+      expect { instance.send(:calculate_remaining_resources, ruleset, company_resource_bonuses, 5500, 1200, 1400) }.
         to raise_error(CompanyService::CompanyUpdateValidationError,
                        "Invalid squad update, negative resource balance found: -500 manpower, 800 munitions, 0 fuel")
+    end
+
+    context "when there are resource bonuses" do
+      let(:company) { create :company }
+      let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15 }
+      let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10 }
+      before do
+        create :company_resource_bonus, company: company, resource_bonus: man_rb
+        create :company_resource_bonus, company: company, resource_bonus: man_rb
+        create :company_resource_bonus, company: company, resource_bonus: mun_rb
+      end
+
+      it "returns the correct resources when the override is forced" do
+        man, mun, fuel = instance.send(:calculate_remaining_resources, ruleset, company.reload.company_resource_bonuses, 4500, 1200, 1400, force_update=true)
+        expect(man).to eq 500 + 100 + 100 - 50
+        expect(mun).to eq 800 - 10 - 10 + 40
+        expect(fuel).to eq 0 - 15 - 15 - 10
+      end
+
+      it "raises an error when the override is not forced" do
+        expect { instance.send(:calculate_remaining_resources, ruleset, company.reload.company_resource_bonuses, 5500, 1200, 1400) }.
+          to raise_error(CompanyService::CompanyUpdateValidationError,
+                         "Invalid squad update, negative resource balance found: -350 manpower, 820 munitions, -40 fuel")
+      end
     end
   end
 
