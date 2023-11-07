@@ -30,6 +30,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center'
+  },
+  headerRow: {
+    display: "flex",
+    justifyContent: "space-between"
   }
 }))
 
@@ -63,13 +67,18 @@ export const BattleCard = ({ id, rulesetId }) => {
   return (
     <Box>
       <Card elevation={3} sx={{ padding: '16px' }}>
-        <Typography variant={"h5"} pl={"9px"} gutterBottom>{battle.name}</Typography>
+        <Box className={classes.headerRow}>
+          <Typography variant={"h5"} pl={"9px"} gutterBottom>{battle.name}</Typography>
+          <Box className={classes.headerRow}>
+            <Typography variant={"h5"} pl={"9px"} gutterBottom>Battle ID: </Typography>
+            <Typography variant={"h5"} pl={"9px"} gutterBottom color="secondary">{battle.id}</Typography>
+          </Box>
+        </Box>
         {generatingContent}
         {ingameContent}
         <Grid container>
           <Grid item xs={1}>
             <Box className={classes.column}>
-              {/*{battle.size}v{battle.size}*/}
             </Box>
           </Grid>
           <Grid item xs={5}>
