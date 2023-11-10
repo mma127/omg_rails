@@ -1,6 +1,7 @@
 import {createAsyncThunk, createEntityAdapter, createSlice} from "@reduxjs/toolkit";
 import axios from "axios"
 import {fetchCompanyById} from "../../companiesSlice";
+import { fetchCompanySquads } from "../units/squadsSlice";
 
 const companyBonusesAdapter = createEntityAdapter()
 
@@ -16,6 +17,7 @@ const initialState = companyBonusesAdapter.getInitialState({
   currentMun: 0,
   currentFuel: 0,
   maxResourceBonuses: null,
+  isChanged: false,
   isSaving: false,
   notifySnackbar: false,
   errorMessage: null
@@ -71,6 +73,10 @@ const companyBonusesSlice = createSlice({
     builder
       .addCase(fetchCompanyById.fulfilled, (state, action) => {
         state.activeCompanyId = action.payload.id
+        state.isChanged = false
+      })
+      .addCase(fetchCompanySquads.fulfilled, (state, action) => {
+        state.isChanged = false
       })
 
       .addCase(fetchCompanyBonuses.fulfilled, (state, action) => {
@@ -100,6 +106,7 @@ const companyBonusesSlice = createSlice({
         state.currentMan = action.payload.currentMan
         state.currentMun = action.payload.currentMun
         state.currentFuel = action.payload.currentFuel
+        state.isChanged = true
         state.isSaving = false
       })
       .addCase(purchaseCompanyResourceBonus.rejected, (state, action) => {
@@ -123,6 +130,7 @@ const companyBonusesSlice = createSlice({
         state.currentMan = action.payload.currentMan
         state.currentMun = action.payload.currentMun
         state.currentFuel = action.payload.currentFuel
+        state.isChanged = true
         state.isSaving = false
       })
       .addCase(refundCompanyResourceBonus.rejected, (state, action) => {
@@ -144,8 +152,18 @@ export const selectCompanyBonuses = state => {
     manBonusCount: state.companyBonuses.manBonusCount,
     munBonusCount: state.companyBonuses.munBonusCount,
     fuelBonusCount: state.companyBonuses.fuelBonusCount,
-    currentMan: state.companyBonuses.currentMan,
-    currentMun: state.companyBonuses.currentMun,
-    currentFuel: state.companyBonuses.currentFuel
+    manCurrent: state.companyBonuses.currentMan,
+    munCurrent: state.companyBonuses.currentMun,
+    fuelCurrent: state.companyBonuses.currentFuel,
+    maxResourceBonuses: state.companyBonuses.maxResourceBonuses
   }
+}
+
+export const selectAvailableRBs = state => {
+  const usedRB = state.companyBonuses.manBonusCount + state.companyBonuses.munBonusCount + state.companyBonuses.fuelBonusCount
+  return Math.max(state.companyBonuses.maxResourceBonuses - usedRB, 0)
+}
+
+export const selectIsCompanyBonusesChanged = state => {
+  return state.companyBonuses.isChanged
 }

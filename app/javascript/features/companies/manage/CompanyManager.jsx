@@ -19,6 +19,7 @@ import { CompanyUnlocks } from "./unlocks/CompanyUnlocks";
 import { doctrineImgMapping } from "../../../constants/doctrines";
 import { selectDoctrineById } from "../../doctrines/doctrinesSlice";
 import {CompanyBonuses} from "./bonuses/CompanyBonuses";
+import { selectIsCompanyBonusesChanged } from "./bonuses/companyBonusesSlice";
 
 const useStyles = makeStyles(theme => ({
   titleItem: {
@@ -75,11 +76,12 @@ export const CompanyManager = () => {
   const doctrineId = useSelector(state => selectCompanyDoctrineId(state, companyId))
   const companyName = useSelector(state => selectCompanyName(state, companyId))
   const doctrine = useSelector(state => selectDoctrineById(state, doctrineId))
+  const isCompanyBonusesChanged = useSelector(selectIsCompanyBonusesChanged)
 
   useEffect(() => {
     console.log("dispatching company fetch from CompanyManager")
     dispatch(fetchCompanyById({ companyId }))
-  }, [companyId])
+  }, [companyId, isCompanyBonusesChanged])
 
 
   const editEnabled = !activeBattleId
@@ -121,7 +123,7 @@ export const CompanyManager = () => {
                className={classes.tab}
                component={Link} />
           <Tab key={`company-manager-tab-${BONUSES}`}
-               icon={matches ? <AddBox /> : null}
+               icon={matches ? <AddBoxIcon /> : null}
                label={matches ? null : "Bonuses"}
                value="bonuses"
                to="bonuses"
