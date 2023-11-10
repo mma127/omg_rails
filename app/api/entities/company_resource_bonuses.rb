@@ -1,6 +1,8 @@
 module Entities
   class CompanyResourceBonuses < Grape::Entity
-    expose :resource_bonuses, using: ResourceBonus::Entity, as: :resourceBonuses
+    expose :man_resource_bonus, using: ResourceBonus::Entity, as: :manResourceBonus
+    expose :mun_resource_bonus, using: ResourceBonus::Entity, as: :munResourceBonus
+    expose :fuel_resource_bonus, using: ResourceBonus::Entity, as: :fuelResourceBonus
     expose :man_bonus_count, as: :manBonusCount
     expose :mun_bonus_count, as: :munBonusCount
     expose :fuel_bonus_count, as: :fuelBonusCount
