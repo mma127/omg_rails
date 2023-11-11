@@ -29,6 +29,9 @@ class BattleService
     # Validate company has all valid platoons
     validate_company_platoons(company)
 
+    # Validate player's company can ready
+    validate_player_company_resources(company)
+
     ActiveRecord::Base.transaction do
       # Create new Battle for the ruleset, of name and size, and add the player's company to it
       battle = Battle.create!(name: name, size: size, ruleset: ruleset)
@@ -58,6 +61,9 @@ class BattleService
 
     # Validate company has all valid platoons
     validate_company_platoons(company)
+
+    # Validate player's company can ready
+    validate_player_company_resources(company)
 
     # Add company to battle
     ActiveRecord::Base.transaction do
@@ -90,8 +96,10 @@ class BattleService
 
     battle_player = BattlePlayer.includes(:company).find_by(battle: battle, player: @player)
 
+    # Validate company has all valid platoons
+    validate_company_platoons(company)
     # Validate player's company can ready
-    validate_player_company_readyable(battle_player.company)
+    validate_player_company_resources(battle_player.company)
 
     battle_player.update!(ready: true)
 
@@ -177,7 +185,7 @@ class BattleService
     raise BattleValidationError.new "Player #{@player.name} is not in battle #{battle.id}" unless battle.battle_players.find_by(player: @player).present?
   end
 
-  def validate_player_company_readyable(company)
+  def validate_player_company_resources(company)
     unless company.resources_valid?
       error_string = ""
       if company.man.negative?
@@ -189,7 +197,7 @@ class BattleService
       if company.fuel.negative?
         error_string << "Fuel [#{company.fuel}] "
       end
-      raise BattleValidationError.new "Player #{@player.name}'s Company #{company.id} cannot be readied. #{error_string}"
+      raise BattleValidationError.new "Player #{@player.name}'s Company #{company.id} cannot have negative resources: #{error_string}"
     end
   end
 
