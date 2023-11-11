@@ -17,7 +17,7 @@ import {Controller, useForm} from "react-hook-form";
 import * as yup from "yup"
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useDispatch, useSelector} from "react-redux";
-import {createBattle} from "../lobbySlice";
+import { createBattle, selectIsPending } from "../lobbySlice";
 import {ErrorTypography} from "../../../components/ErrorTypography";
 import {selectAllCompanies} from "../../companies/companiesSlice";
 import {doctrineImgMapping} from "../../../constants/doctrines";
@@ -73,6 +73,7 @@ export const CreateBattleForm = ({rulesetId, onCreateCallback}) => {
   const dispatch = useDispatch()
   const companies = useSelector(selectAllCompanies)
   const sortedCompanies = companies.sort(nameSort);
+  const isPending = useSelector(selectIsPending)
 
   const {reset, handleSubmit, setValue, control, formState: {errors}} = useForm({
     resolver: yupResolver(schema),
@@ -160,7 +161,7 @@ export const CreateBattleForm = ({rulesetId, onCreateCallback}) => {
         </Box>
         <Grid container pt={4} justifyContent="center">
           <Button variant="contained" type="submit" color="secondary" size="small"
-                  sx={{marginRight: '9px'}}>Create</Button>
+                  sx={{marginRight: '9px'}} disabled={isPending}>Create</Button>
         </Grid>
       </form>
     </Box>

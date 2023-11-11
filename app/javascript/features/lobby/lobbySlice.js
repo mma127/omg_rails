@@ -8,7 +8,9 @@ const initialState = battlesAdapter.getInitialState({
   creatingBattleStatus: "idle",
   creatingBattleError: null,
   updatingBattleStatus: "idle",
-  updatingBattleError: null
+  updatingBattleError: null,
+  isPending: false,
+  errorMessage: null
 })
 
 /**
@@ -17,7 +19,7 @@ const initialState = battlesAdapter.getInitialState({
  */
 export const fetchActiveBattles = createAsyncThunk(
   "lobby/fetchActiveBattles",
-  async () => {
+  async (_, {__, rejectWithValue}) => {
     try {
       const response = await axios.get("/battles")
       return response.data
@@ -29,7 +31,7 @@ export const fetchActiveBattles = createAsyncThunk(
 
 export const createBattle = createAsyncThunk(
   "lobby/createBattle",
-  async ({ name, size, rulesetId, initialCompanyId }) => {
+  async ({ name, size, rulesetId, initialCompanyId }, {_, rejectWithValue}) => {
     try {
       const response = await axios.post("/battles/player/create_match", { name, size, rulesetId, initialCompanyId })
       return response.data
@@ -41,7 +43,7 @@ export const createBattle = createAsyncThunk(
 
 export const joinBattle = createAsyncThunk(
   "lobby/joinBattle",
-  async ({ battleId, companyId }) => {
+  async ({ battleId, companyId }, {_, rejectWithValue}) => {
     try {
       const response = await axios.post("/battles/player/join_match", { battleId, companyId })
       return response.data
@@ -53,7 +55,7 @@ export const joinBattle = createAsyncThunk(
 
 export const leaveBattle = createAsyncThunk(
   "lobby/leaveBattle",
-  async ({ battleId, playerId }) => {
+  async ({ battleId, playerId }, {_, rejectWithValue}) => {
     try {
       const response = await axios.post("/battles/player/leave_match", { battleId, playerId })
       return response.data
@@ -65,7 +67,7 @@ export const leaveBattle = createAsyncThunk(
 
 export const readyPlayer = createAsyncThunk(
   "lobby/readyPlayer",
-  async ({ battleId, playerId }) => {
+  async ({ battleId, playerId }, {_, rejectWithValue}) => {
     try {
       const response = await axios.post("/battles/player/ready", { battleId, playerId })
       return response.data
@@ -77,7 +79,7 @@ export const readyPlayer = createAsyncThunk(
 
 export const downloadBattlefile = createAsyncThunk(
   "lobby/downloadBattlefile",
-  async ({ battleId }) => {
+  async ({ battleId }, {_, rejectWithValue}) => {
     try {
       const response = await axios.post(`/battles/${battleId}/battlefiles/zip`)
       return response.data
@@ -106,39 +108,69 @@ const lobbySlice = createSlice({
   },
   extraReducers(builder) {
     builder
+      .addCase(fetchActiveBattles.pending, (state, action) => {
+        state.errorMessage = null
+      })
       .addCase(fetchActiveBattles.fulfilled, (state, action) => {
         battlesAdapter.setAll(state, action.payload)
       })
       .addCase(fetchActiveBattles.rejected, (state, action) => {
-        state.loadingBattlesError = action.payload.error
+        state.errorMessage = action.payload.error
       })
 
       .addCase(createBattle.pending, (state, action) => {
         state.creatingBattleStatus = "pending"
-        state.creatingBattleError = null
+        state.isPending = true
+        state.errorMessage = null
       })
       .addCase(createBattle.fulfilled, (state, action) => {
         state.creatingBattleStatus = "fulfilled"
+        state.isPending = false
       })
       .addCase(createBattle.rejected, (state, action) => {
         state.creatingBattleStatus = "rejected"
-        state.creatingBattleError = action.payload.error
+        state.isPending = false
+        state.errorMessage = action.payload.error
       })
 
       .addCase(joinBattle.pending, (state, action) => {
         state.updatingBattleStatus = "pending"
-        state.updatingBattleError = null
+        state.isPending = true
+        state.errorMessage = null
       })
       .addCase(joinBattle.fulfilled, (state, action) => {
         state.updatingBattleStatus = "fulfilled"
+        state.isPending = false
       })
       .addCase(joinBattle.rejected, (state, action) => {
         state.updatingBattleStatus = "rejected"
-        state.updatingBattleError = action.payload.error
+        state.isPending = false
+        state.errorMessage = action.payload.error
       })
 
+      .addCase(leaveBattle.pending, (state, action) => {
+        state.errorMessage = null
+        state.isPending = true
+      })
+      .addCase(leaveBattle.fulfilled, (state, action) => {
+        state.isPending = false
+      })
       .addCase(leaveBattle.rejected, (state, action) => {
-        state.updatingBattleError = action.payload.error
+        state.errorMessage = action.payload.error
+        state.isPending = false
+      })
+
+      .addCase(readyPlayer.pending, (state, action) => {
+        state.errorMessage = null
+        state.isPending = true
+      })
+      .addCase(readyPlayer.fulfilled, (state, action) => {
+        state.errorMessage = null
+        state.isPending = false
+      })
+      .addCase(readyPlayer.rejected, (state, action) => {
+        state.errorMessage = action.payload.error
+        state.isPending = false
       })
   }
 })
@@ -151,3 +183,5 @@ export const {
   selectAll: selectAllActiveBattles,
   selectById: selectBattleById
 } = battlesAdapter.getSelectors(state => state.lobby)
+
+export const selectIsPending = state => state.lobby.isPending
