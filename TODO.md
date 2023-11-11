@@ -11,3 +11,6 @@ Upgrades
 
 Company
 1. Move `MAX_VP` to Ruleset
+
+Redux
+1. Fix missing rejectWithValue. See fetchCompanyBonuses for example

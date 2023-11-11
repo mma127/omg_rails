@@ -61,6 +61,10 @@ class Company < ApplicationRecord
   validates_presence_of :player
   validates_presence_of :ruleset
 
+  def resources_valid?
+    !man.negative? && !mun.negative? && !fuel.negative?
+  end
+
   def doctrine_name
     doctrine.name
   end

@@ -2,7 +2,6 @@ import React from 'react'
 import { Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import {
-  selectCompanyById,
   selectCompanyFuel,
   selectCompanyMan,
   selectCompanyMun,
@@ -15,9 +14,22 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 'bold'
   }
 }))
-export const CompanyResources = ({companyId}) => {
-  const classes = useStyles()
 
+const ResourceDisplay = ({resource, quantity}) => {
+  const classes = useStyles()
+  let color
+  if (quantity < 0) {
+    color = "error"
+  }
+  return (
+    <>
+      <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                  pr={1}>{resource}</Typography>
+      <Typography variant="body2" gutterBottom color={color}>{quantity}</Typography>
+    </>
+  )
+}
+export const CompanyResources = ({companyId}) => {
   const pop = useSelector(state => selectCompanyPop(state, companyId))
   const man = useSelector(state => selectCompanyMan(state, companyId))
   const mun = useSelector(state => selectCompanyMun(state, companyId))
@@ -26,24 +38,16 @@ export const CompanyResources = ({companyId}) => {
   return (
     <>
       <Grid item xs={2} md={1}>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                    pr={1}>Population</Typography>
-        <Typography variant="body2" gutterBottom>{pop}</Typography>
+        <ResourceDisplay resource="Population" quantity={pop} />
       </Grid>
       <Grid item xs={2} md={1}>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                    pr={1}>Manpower</Typography>
-        <Typography variant="body2" gutterBottom>{man}</Typography>
+        <ResourceDisplay resource="Manpower" quantity={man} />
       </Grid>
       <Grid item xs={2} md={1}>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                    pr={1}>Munitions</Typography>
-        <Typography variant="body2" gutterBottom>{mun}</Typography>
+        <ResourceDisplay resource="Munitions" quantity={mun} />
       </Grid>
       <Grid item xs={2} md={1}>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                    pr={1}>Fuel</Typography>
-        <Typography variant="body2" gutterBottom>{fuel}</Typography>
+        <ResourceDisplay resource="Fuel" quantity={fuel} />
       </Grid>
     </>
   )

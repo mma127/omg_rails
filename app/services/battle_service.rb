@@ -29,6 +29,9 @@ class BattleService
     # Validate company has all valid platoons
     validate_company_platoons(company)
 
+    # Validate player's company can ready
+    validate_player_company_resources(company)
+
     ActiveRecord::Base.transaction do
       # Create new Battle for the ruleset, of name and size, and add the player's company to it
       battle = Battle.create!(name: name, size: size, ruleset: ruleset)
@@ -59,6 +62,9 @@ class BattleService
     # Validate company has all valid platoons
     validate_company_platoons(company)
 
+    # Validate player's company can ready
+    validate_player_company_resources(company)
+
     # Add company to battle
     ActiveRecord::Base.transaction do
       BattlePlayer.create!(battle: battle, player: @player, company: company, side: company.side)
@@ -88,7 +94,14 @@ class BattleService
     # Validate the player is in the battle
     validate_player_in_battle(battle)
 
-    BattlePlayer.find_by(battle: battle, player: @player).update!(ready: true)
+    battle_player = BattlePlayer.includes(:company).find_by(battle: battle, player: @player)
+
+    # Validate company has all valid platoons
+    validate_company_platoons(company)
+    # Validate player's company can ready
+    validate_player_company_resources(battle_player.company)
+
+    battle_player.update!(ready: true)
 
     # If the battle has all players ready, move to generating state
     if battle.reload.players_ready?
@@ -172,6 +185,22 @@ class BattleService
     raise BattleValidationError.new "Player #{@player.name} is not in battle #{battle.id}" unless battle.battle_players.find_by(player: @player).present?
   end
 
+  def validate_player_company_resources(company)
+    unless company.resources_valid?
+      error_string = ""
+      if company.man.negative?
+        error_string << "Man [#{company.man}] "
+      end
+      if company.mun.negative?
+        error_string << "Mun [#{company.mun}] "
+      end
+      if company.fuel.negative?
+        error_string << "Fuel [#{company.fuel}] "
+      end
+      raise BattleValidationError.new "Player #{@player.name}'s Company #{company.id} cannot have negative resources: #{error_string}"
+    end
+  end
+
   def validate_battle_final(battle)
     raise BattleValidationError.new "Cannot send finalize message for battle in non-final state #{battle.state}" unless battle.final?
   end
@@ -227,6 +256,6 @@ class BattleService
 
   def get_company_squads_by_platoon(company)
     categories_hash = company.squads.group_by { |s| s[:tab_category] }
-    categories_hash.transform_values { |category_squads| category_squads.group_by { |s| s[:category_position]} }
+    categories_hash.transform_values { |category_squads| category_squads.group_by { |s| s[:category_position] } }
   end
 end

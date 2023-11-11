@@ -23,7 +23,9 @@ RSpec.describe CompanyBonusesService do
 
     it "returns the correct response" do
       result = instance.get_company_resource_bonuses
-      expect(result[:resource_bonuses]).to match_array([man_rb, mun_rb, fuel_rb])
+      expect(result[:man_resource_bonus]).to eq man_rb
+      expect(result[:mun_resource_bonus]).to eq mun_rb
+      expect(result[:fuel_resource_bonus]).to eq fuel_rb
       expect(result[:man_bonus_count]).to eq 1
       expect(result[:mun_bonus_count]).to eq 2
       expect(result[:fuel_bonus_count]).to eq 2
@@ -42,7 +44,9 @@ RSpec.describe CompanyBonusesService do
 
     it "adds a resource bonus to the company" do
       result = instance.purchase_resource_bonus(ResourceBonus.resources[:man])
-      expect(result[:resource_bonuses]).to match_array([man_rb, mun_rb, fuel_rb])
+      expect(result[:man_resource_bonus]).to eq man_rb
+      expect(result[:mun_resource_bonus]).to eq mun_rb
+      expect(result[:fuel_resource_bonus]).to eq fuel_rb
       expect(result[:man_bonus_count]).to eq 2
       expect(result[:mun_bonus_count]).to eq 2
       expect(result[:fuel_bonus_count]).to eq 1
@@ -74,7 +78,9 @@ RSpec.describe CompanyBonusesService do
 
       it "removes the resource bonus from the company" do
         result = instance.refund_resource_bonus(ResourceBonus.resources[:man])
-        expect(result[:resource_bonuses]).to match_array([man_rb, mun_rb, fuel_rb])
+        expect(result[:man_resource_bonus]).to eq man_rb
+        expect(result[:mun_resource_bonus]).to eq mun_rb
+        expect(result[:fuel_resource_bonus]).to eq fuel_rb
         expect(result[:man_bonus_count]).to eq 0
         expect(result[:mun_bonus_count]).to eq 0
         expect(result[:fuel_bonus_count]).to eq 1

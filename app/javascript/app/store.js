@@ -12,12 +12,14 @@ import companyOffmapsSlice from "../features/companies/manage/company_offmaps/co
 import availableUpgradesSlice from "../features/companies/manage/available_upgrades/availableUpgradesSlice";
 import upgradesSlice from "../features/companies/manage/upgrades/upgradesSlice";
 import squadUpgradesSlice from "../features/companies/manage/squad_upgrades/squadUpgradesSlice";
+import companyBonusesSlice from "../features/companies/manage/bonuses/companyBonusesSlice";
 
 export default configureStore({
   reducer: {
     player: playerSlice,
     companies: companiesSlice,
     companyUnlocks: companyUnlocksSlice,
+    companyBonuses: companyBonusesSlice,
     doctrines: doctrinesSlice,
     units: unitsSlice,
     availableUnits: availableUnitsSlice,

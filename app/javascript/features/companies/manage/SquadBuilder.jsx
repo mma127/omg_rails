@@ -46,6 +46,7 @@ import {
   removeSquadUpgrade,
 } from "./squad_upgrades/squadUpgradesSlice";
 import { SaveCompanyButton } from "./SaveCompanyButton";
+import { selectIsCompanyBonusesChanged } from "./bonuses/companyBonusesSlice";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {

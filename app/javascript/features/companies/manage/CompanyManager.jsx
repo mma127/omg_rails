@@ -6,11 +6,11 @@ import { makeStyles, useTheme } from "@mui/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import {
   fetchCompanyById,
   selectCompanyActiveBattleId,
-  selectCompanyById,
   selectCompanyDoctrineId, selectCompanyName
 } from "../companiesSlice";
 
@@ -18,6 +18,8 @@ import { SquadBuilder } from "./SquadBuilder";
 import { CompanyUnlocks } from "./unlocks/CompanyUnlocks";
 import { doctrineImgMapping } from "../../../constants/doctrines";
 import { selectDoctrineById } from "../../doctrines/doctrinesSlice";
+import {CompanyBonuses} from "./bonuses/CompanyBonuses";
+import { selectIsCompanyBonusesChanged } from "./bonuses/companyBonusesSlice";
 
 const useStyles = makeStyles(theme => ({
   titleItem: {
@@ -52,6 +54,7 @@ const useStyles = makeStyles(theme => ({
 
 const SQUADS = "squads"
 const UNLOCKS = "unlocks"
+const BONUSES = "bonuses"
 const DEFAULT_TAB = SQUADS
 
 export const CompanyManager = () => {
@@ -73,11 +76,12 @@ export const CompanyManager = () => {
   const doctrineId = useSelector(state => selectCompanyDoctrineId(state, companyId))
   const companyName = useSelector(state => selectCompanyName(state, companyId))
   const doctrine = useSelector(state => selectDoctrineById(state, doctrineId))
+  const isCompanyBonusesChanged = useSelector(selectIsCompanyBonusesChanged)
 
   useEffect(() => {
     console.log("dispatching company fetch from CompanyManager")
     dispatch(fetchCompanyById({ companyId }))
-  }, [companyId])
+  }, [companyId, isCompanyBonusesChanged])
 
 
   const editEnabled = !activeBattleId
@@ -118,10 +122,18 @@ export const CompanyManager = () => {
                to="unlocks"
                className={classes.tab}
                component={Link} />
+          <Tab key={`company-manager-tab-${BONUSES}`}
+               icon={matches ? <AddBoxIcon /> : null}
+               label={matches ? null : "Bonuses"}
+               value="bonuses"
+               to="bonuses"
+               className={classes.tab}
+               component={Link} />
         </Tabs>
         <Routes>
           <Route path="squads" element={<SquadBuilder />} />
           <Route path="unlocks" element={<CompanyUnlocks />} />
+          <Route path="bonuses" element={<CompanyBonuses />} />
           <Route index element={<SquadBuilder />} />
         </Routes>
       </Box>

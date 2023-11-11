@@ -25,7 +25,7 @@ class CompanyBonusesService
 
     # Update Company resources
     company_service = CompanyService.new(@player)
-    company_service.recalculate_and_update_resources(company.reload, force_update=true) # Force the resources to update even if negative amounts
+    company_service.recalculate_and_update_resources(company.reload, force_update = true) # Force the resources to update even if negative amounts
     build_company_resource_bonuses_response(company)
   end
 
@@ -43,7 +43,7 @@ class CompanyBonusesService
 
     # Update Company resources
     company_service = CompanyService.new(@player)
-    company_service.recalculate_and_update_resources(company.reload, force_update=true) # Force the resources to update even if negative amounts
+    company_service.recalculate_and_update_resources(company.reload, force_update = true) # Force the resources to update even if negative amounts
     build_company_resource_bonuses_response(company)
   end
 
@@ -53,12 +53,17 @@ class CompanyBonusesService
     company_bonuses = company.company_resource_bonuses
     ruleset = company.ruleset
     resource_bonuses = ResourceBonus.all
+    man_rb = resource_bonuses.find { |rb| rb.resource == ResourceBonus.resources[:man] }
+    mun_rb = resource_bonuses.find { |rb| rb.resource == ResourceBonus.resources[:mun] }
+    fuel_rb = resource_bonuses.find { |rb| rb.resource == ResourceBonus.resources[:fuel] }
 
     {
-      resource_bonuses: resource_bonuses,
-      man_bonus_count: get_co_bonus_count_for_bonus(resource_bonuses.find_by(resource: ResourceBonus::resources[:man]), company_bonuses),
-      mun_bonus_count: get_co_bonus_count_for_bonus(resource_bonuses.find_by(resource: ResourceBonus::resources[:mun]), company_bonuses),
-      fuel_bonus_count: get_co_bonus_count_for_bonus(resource_bonuses.find_by(resource: ResourceBonus::resources[:fuel]), company_bonuses),
+      man_resource_bonus: man_rb,
+      mun_resource_bonus: mun_rb,
+      fuel_resource_bonus: fuel_rb,
+      man_bonus_count: get_co_bonus_count_for_bonus(man_rb, company_bonuses),
+      mun_bonus_count: get_co_bonus_count_for_bonus(mun_rb, company_bonuses),
+      fuel_bonus_count: get_co_bonus_count_for_bonus(fuel_rb, company_bonuses),
       current_man: company.man,
       current_mun: company.mun,
       current_fuel: company.fuel,
@@ -67,7 +72,7 @@ class CompanyBonusesService
   end
 
   def get_co_bonus_count_for_bonus(resource_bonus, company_bonuses)
-    company_bonuses.where(resource_bonus: resource_bonus).count
+    company_bonuses.select { |cb| cb.resource_bonus == resource_bonus }.count
   end
 
   def validate_can_update_company(company)
