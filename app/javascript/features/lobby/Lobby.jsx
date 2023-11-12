@@ -11,6 +11,9 @@ import {
   BATTLEFILE_GENERATED,
   CREATED_BATTLE,
   PLAYER_ALL_READY,
+  PLAYER_ABANDONED,
+  PLAYER_UNABANDONED,
+  BATTLE_ABANDONED,
   PLAYER_JOINED,
   PLAYER_JOINED_FULL,
   PLAYER_LEFT,
@@ -88,6 +91,18 @@ export const Lobby = () => {
       }
       case PLAYER_ALL_READY: {
         dispatch(updateBattle({ battle: message.battle }))
+        break
+      }
+      case PLAYER_ABANDONED: {
+        dispatch(updateBattle({ battle: message.battle }))
+        break
+      }
+      case PLAYER_UNABANDONED: {
+        dispatch(updateBattle({ battle: message.battle }))
+        break
+      }
+      case BATTLE_ABANDONED: {
+        dispatch(removeBattle({ battle: message.battle }))
         break
       }
       case BATTLEFILE_GENERATED: {

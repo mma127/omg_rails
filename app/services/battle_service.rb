@@ -9,6 +9,9 @@ class BattleService
   PLAYER_ALL_READY = "player_all_ready".freeze
   BATTLEFILE_GENERATED = "battlefile_generated".freeze
   PLAYER_LEFT = "player_left".freeze
+  PLAYER_ABANDONED = "player_abandoned".freeze
+  PLAYER_UNABANDONED = "player_unabandoned".freeze
+  BATTLE_ABANDONED = "battle_abandoned".freeze
   REMOVE_BATTLE = "removed_battle".freeze
   BATTLE_FINALIZED = "battle_finalized".freeze
 
@@ -118,6 +121,78 @@ class BattleService
     broadcast_cable(battle_message)
   end
 
+  def unready_player(battle_id)
+    # Validate battle exists
+    battle = validate_battle(battle_id)
+
+    # Validate battle is readyable
+    validate_battle_readyable(battle)
+
+    # Validate the player is in the battle
+    validate_player_in_battle(battle)
+
+    unless battle.reload.players_ready?
+      BattlePlayer.find_by(battle: battle, player: @player).update!(ready: false)
+    end
+
+    battle.reload
+    # Broadcast battle update
+    message_hash = { type: PLAYER_READY, battle: battle }
+    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+    broadcast_cable(battle_message)
+  end
+
+  def abandon_battle(battle_id)
+    # Validate battle exists
+    battle = validate_battle(battle_id)
+
+    # Validate battle is abandonable
+    validate_battle_abandonable(battle)
+
+    # Validate the player is in the battle
+    validate_player_in_battle(battle)
+
+    # set battle as abandoned for player
+    BattlePlayer.find_by(battle: battle, player: @player).update!(abandoned: true)
+
+    # If the battle has all players abandoned, move to abandoned state
+    if battle.reload.players_abandoned?
+      battle.abandoned!
+      type = BATTLE_ABANDONED
+    else
+      type = PLAYER_ABANDONED
+    end
+
+    # Broadcast battle update
+    message_hash = { type: type, battle: battle }
+    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+    broadcast_cable(battle_message)
+
+  end
+
+  def unabandon_battle(battle_id)
+    # Validate battle exists
+    battle = validate_battle(battle_id)
+
+    # Validate battle is abandonable
+    validate_battle_abandonable(battle)
+
+    # Validate the player is in the battle
+    validate_player_in_battle(battle)
+
+    unless battle.reload.players_abandoned?
+      # set battle as abandoned for player
+      BattlePlayer.find_by(battle: battle, player: @player).update!(abandoned: false)
+    end
+    battle.reload
+
+    # Broadcast battle update
+    message_hash = { type: PLAYER_UNABANDONED, battle: battle }
+    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+    broadcast_cable(battle_message)
+  end
+      
+
   def leave_battle(battle_id)
     # Validate battle exists
     battle = validate_battle(battle_id)
@@ -203,6 +278,10 @@ class BattleService
 
   def validate_battle_final(battle)
     raise BattleValidationError.new "Cannot send finalize message for battle in non-final state #{battle.state}" unless battle.final?
+  end
+
+  def validate_battle_abandonable(battle)
+    raise BattleValidationError.new "Cannot abandon battle in #{battle.state} state" unless battle.abandonable
   end
 
   def validate_ruleset(ruleset_id)

@@ -85,6 +85,14 @@ class Battle < ApplicationRecord
     %w[open full].include? state
   end
 
+  def players_abandoned?
+    battle_players.all? { |bp| bp.abandoned }
+  end
+
+  def abandonable
+    %w[ingame reporting].include? state
+  end
+
   def entity
     Entity.new(self)
   end
