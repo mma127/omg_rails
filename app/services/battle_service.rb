@@ -120,6 +120,27 @@ class BattleService
     broadcast_cable(battle_message)
   end
 
+  def unready_player(battle_id)
+    # Validate battle exists
+    battle = validate_battle(battle_id)
+
+    # Validate battle is readyable
+    validate_battle_readyable(battle)
+
+    # Validate the player is in the battle
+    validate_player_in_battle(battle)
+
+    unless battle.reload.players_ready?
+      BattlePlayer.find_by(battle: battle, player: @player).update!(ready: false)
+    end
+
+    battle.reload
+    # Broadcast battle update
+    message_hash = { type: PLAYER_READY, battle: battle }
+    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+    broadcast_cable(battle_message)
+  end
+
   def leave_battle(battle_id)
     # Validate battle exists
     battle = validate_battle(battle_id)

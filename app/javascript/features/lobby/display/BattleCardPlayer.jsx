@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import CheckIcon from '@mui/icons-material/Check';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch, useSelector } from "react-redux";
-import { abandonBattle, fetchActiveBattles, leaveBattle, readyPlayer, selectIsPending } from "../lobbySlice";
+import { abandonBattle, fetchActiveBattles, leaveBattle, readyPlayer, unreadyPlayer, selectIsPending } from "../lobbySlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 import { doctrineImgMapping } from "../../../constants/doctrines";
 import { JoinBattlePopover } from "./JoinBattlePopover";
@@ -75,6 +75,10 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
     dispatch(readyPlayer({ battleId: battleId, playerId: playerId }))
   }
 
+  const handleUnreadyClick = () => {
+    dispatch(unreadyPlayer({ battleId: battleId, playerId: playerId }))
+  }
+
   const leaveGame = () => {
     if (isCurrentPlayer && !isPending) {
       dispatch(leaveBattle({ battleId: battleId, playerId: player.id }))
@@ -90,7 +94,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
     // Filled spot by logged in player
     let readyContent
     if (battleState === FULL && ready) {
-      readyContent = <CheckIcon className={classes.clickableIcon} color="success" />
+      readyContent = <CheckIcon className={classes.clickableIcon} onClick={handleUnreadyClick} disabled={isPending} color="success" />
     } else if (battleState === FULL && !ready) {
       readyContent = <Button variant="contained" type="submit" color="secondary" size="small"
                              className={classes.readyBtn} onClick={handleReadyClick} disabled={isPending}>Ready</Button>
