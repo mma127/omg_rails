@@ -61,7 +61,7 @@ class Battle < ApplicationRecord
     end
 
     event :abandoned do
-      transition [:open, :ingame, :reporting] => :abandoned
+      transition [:generating, :ingame, :reporting] => :abandoned
     end
   end
 
@@ -77,12 +77,20 @@ class Battle < ApplicationRecord
     battle_players.all? { |bp| bp.ready }
   end
 
-  def joinable
+  def players_abandoned?
+    battle_players.all? { |bp| bp.abandoned }
+  end
+
+  def joinable?
     state == "open"
   end
 
-  def leavable
+  def leavable?
     %w[open full].include? state
+  end
+
+  def abandonable?
+    %w[generating ingame reporting].include? state
   end
 
   def entity

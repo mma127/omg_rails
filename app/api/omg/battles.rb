@@ -89,7 +89,14 @@ module OMG
         end
 
         # Abandon a 'generating', 'ingame', 'reporting'? Battle
-
+        desc "Mark a player as abandoned in a battle"
+        params do
+          requires :battleId, type: Integer, desc: "Battle id to abandon in"
+        end
+        post 'abandon' do
+          service = BattleService.new(current_player)
+          service.abandon_battle(declared_params[:battleId])
+        end
       end
 
       namespace :report do

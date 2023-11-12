@@ -77,6 +77,18 @@ export const readyPlayer = createAsyncThunk(
   }
 )
 
+export const abandonBattle = createAsyncThunk(
+  "lobby/abandonBattle",
+  async ({ battleId, playerId }, {_, rejectWithValue}) => {
+    try {
+      const response = await axios.post("/battles/player/abandon", { battleId, playerId })
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
 export const downloadBattlefile = createAsyncThunk(
   "lobby/downloadBattlefile",
   async ({ battleId }, {_, rejectWithValue}) => {
@@ -169,6 +181,19 @@ const lobbySlice = createSlice({
         state.isPending = false
       })
       .addCase(readyPlayer.rejected, (state, action) => {
+        state.errorMessage = action.payload.error
+        state.isPending = false
+      })
+
+      .addCase(abandonBattle.pending, (state, action) => {
+        state.errorMessage = null
+        state.isPending = true
+      })
+      .addCase(abandonBattle.fulfilled, (state, action) => {
+        state.errorMessage = null
+        state.isPending = false
+      })
+      .addCase(abandonBattle.rejected, (state, action) => {
         state.errorMessage = action.payload.error
         state.isPending = false
       })

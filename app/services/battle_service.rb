@@ -6,11 +6,13 @@ class BattleService
   PLAYER_JOINED = "player_joined".freeze
   PLAYER_JOINED_FULL = "player_joined_full".freeze
   PLAYER_READY = "player_ready".freeze
-  PLAYER_ALL_READY = "player_all_ready".freeze
+  PLAYERS_ALL_READY = "players_all_ready".freeze
   BATTLEFILE_GENERATED = "battlefile_generated".freeze
   PLAYER_LEFT = "player_left".freeze
   REMOVE_BATTLE = "removed_battle".freeze
   BATTLE_FINALIZED = "battle_finalized".freeze
+  PLAYER_ABANDONED = "player_abandoned".freeze
+  PLAYERS_ALL_ABANDONED = "players_all_abandoned".freeze
 
   def initialize(player)
     @player = player
@@ -95,18 +97,18 @@ class BattleService
     validate_player_in_battle(battle)
 
     battle_player = BattlePlayer.includes(:company).find_by(battle: battle, player: @player)
-
+    company = battle_player.company
     # Validate company has all valid platoons
     validate_company_platoons(company)
     # Validate player's company can ready
-    validate_player_company_resources(battle_player.company)
+    validate_player_company_resources(company)
 
     battle_player.update!(ready: true)
 
     # If the battle has all players ready, move to generating state
     if battle.reload.players_ready?
       battle.ready!
-      type = PLAYER_ALL_READY
+      type = PLAYERS_ALL_READY
       BattlefileGenerationJob.perform_async(battle_id)
     else
       type = PLAYER_READY
@@ -157,6 +159,33 @@ class BattleService
     broadcast_cable(battle_message)
   end
 
+  def abandon_battle(battle_id)
+    # Validate battle exists
+    battle = validate_battle(battle_id)
+
+    # Validate battle is abandonable
+    validate_battle_abandonable(battle)
+
+    # Validate the player is in the battle
+    validate_player_in_battle(battle)
+
+    # Set player abandon flag to true
+    BattlePlayer.find_by(battle: battle, player: @player).update!(abandoned: true)
+
+    # Are all players abandoned?
+    if battle.reload.players_abandoned?
+      battle.abandoned! # Should this just destroy the battle? What's the value in keeping it
+      type = PLAYERS_ALL_ABANDONED
+    else
+      type = PLAYER_ABANDONED
+    end
+
+    # Broadcast battle update
+    message_hash = { type: type, battle: battle.reload }
+    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+    broadcast_cable(battle_message)
+  end
+
   private
 
   def broadcast_cable(message)
@@ -164,17 +193,20 @@ class BattleService
   end
 
   def validate_battle(battle_id)
-    battle = Battle.find(battle_id)
+    battle = Battle.includes(:battle_players).find(battle_id)
     raise BattleValidationError.new "Invalid battle #{battle_id}" unless battle.present?
     battle
   end
 
+  def validate_battle_abandonable(battle)
+    raise BattleValidationError.new "Cannot abandon battle in #{battle.state} state" unless battle.abandonable?
+  end
   def validate_battle_leavable(battle)
-    raise BattleValidationError.new "Cannot leave battle in #{battle.state} state" unless battle.leavable
+    raise BattleValidationError.new "Cannot leave battle in #{battle.state} state" unless battle.leavable?
   end
 
   def validate_battle_joinable(battle)
-    raise BattleValidationError.new "Cannot join battle in #{battle.state} state" unless battle.joinable
+    raise BattleValidationError.new "Cannot join battle in #{battle.state} state" unless battle.joinable?
   end
 
   def validate_battle_readyable(battle)

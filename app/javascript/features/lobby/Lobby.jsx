@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Alert } from "@mui/material";
 
 import { ActionCableConsumer } from '@thrash-industries/react-actioncable-provider';
-import { addNewBattle, updateBattle, removeBattle } from "./lobbySlice";
+import { addNewBattle, updateBattle, removeBattle, fetchActiveBattles } from "./lobbySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId, setCurrentBattle } from "../player/playerSlice";
 import { isPlayerInBattle } from "../../utils/battle";
@@ -10,13 +10,13 @@ import { LobbyContent } from "./LobbyContent";
 import {
   BATTLEFILE_GENERATED,
   CREATED_BATTLE,
-  PLAYER_ALL_READY,
+  PLAYERS_ALL_READY,
   PLAYER_JOINED,
   PLAYER_JOINED_FULL,
   PLAYER_LEFT,
   PLAYER_READY,
   REMOVE_BATTLE,
-  BATTLE_FINALIZED
+  BATTLE_FINALIZED, PLAYER_ABANDONED, PLAYERS_ALL_ABANDONED
 } from "../../constants/battles/events";
 import { AlertSnackbar } from "../companies/AlertSnackbar";
 
@@ -27,11 +27,15 @@ export const Lobby = () => {
   // TODO:
   //    Chat
   //    List of active players
-
+  const stateRef = useRef()
   const dispatch = useDispatch()
   const isAuthed = useSelector(selectIsAuthed)
   const player = useSelector(selectPlayer)
   const currentBattleId = useSelector(selectPlayerCurrentBattleId)
+
+  // Use stateRef to pass the current value of player to the handleReceivedCable callback. Otherwise the callback
+  // method is created with the original null value for player and never updated
+  stateRef.current = player
 
   const error = useSelector(state => state.lobby.errorMessage)
   const notifySnackbar = error?.length > 0
@@ -59,26 +63,29 @@ export const Lobby = () => {
   const handleReceivedCable = (message) => {
     console.log(`Received cable:`)
     console.log(message)
-
+    const currentPlayer = stateRef.current
     switch (message.type) {
       case CREATED_BATTLE: {
         dispatch(addNewBattle({ battle: message.battle }))
-        if (isAuthed && isPlayerInBattle(player.id, message.battle.battlePlayers)) {
+        if (isAuthed && isPlayerInBattle(currentPlayer.id, message.battle.battlePlayers)) {
           dispatch(setCurrentBattle({ battleId: message.battle.id }))
+          dispatch(fetchActiveBattles())
         }
         break
       }
       case PLAYER_JOINED: {
         dispatch(updateBattle({ battle: message.battle }))
-        if (isAuthed && isPlayerInBattle(player.id, message.battle.battlePlayers) && currentBattleId !== message.battle.id) {
+        if (isAuthed && isPlayerInBattle(currentPlayer.id, message.battle.battlePlayers) && currentBattleId !== message.battle.id) {
           dispatch(setCurrentBattle({ battleId: message.battle.id }))
+          dispatch(fetchActiveBattles())
         }
         break
       }
       case PLAYER_JOINED_FULL: {
         dispatch(updateBattle({ battle: message.battle }))
-        if (isAuthed && isPlayerInBattle(player.id, message.battle.battlePlayers) && currentBattleId !== message.battle.id) {
+        if (isAuthed && isPlayerInBattle(currentPlayer.id, message.battle.battlePlayers) && currentBattleId !== message.battle.id) {
           dispatch(setCurrentBattle({ battleId: message.battle.id }))
+          dispatch(fetchActiveBattles())
         }
         break
       }
@@ -86,7 +93,7 @@ export const Lobby = () => {
         dispatch(updateBattle({ battle: message.battle }))
         break
       }
-      case PLAYER_ALL_READY: {
+      case PLAYERS_ALL_READY: {
         dispatch(updateBattle({ battle: message.battle }))
         break
       }
@@ -104,6 +111,15 @@ export const Lobby = () => {
       }
       case BATTLE_FINALIZED: {
         dispatch(removeBattle({ battle: message.battle }))
+        break
+      }
+      case PLAYER_ABANDONED: {
+        dispatch(updateBattle({ battle: message.battle }))
+        break
+      }
+      case PLAYERS_ALL_ABANDONED: {
+        dispatch(removeBattle({ battle: message.battle }))
+        dispatch(fetchActiveBattles())
         break
       }
       default: {

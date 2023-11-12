@@ -1,21 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import {
-  Box,
-  Button,
-  Card,
-  Grid, Popover,
-  Typography
-} from "@mui/material";
+import React from 'react'
+import { Box, Button, Popover, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import CheckIcon from '@mui/icons-material/Check';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch, useSelector } from "react-redux";
-import { createBattle, leaveBattle, readyPlayer, selectIsPending } from "../lobbySlice";
-import { ErrorTypography } from "../../../components/ErrorTypography";
+import { abandonBattle, fetchActiveBattles, leaveBattle, readyPlayer, selectIsPending } from "../lobbySlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 import { doctrineImgMapping } from "../../../constants/doctrines";
 import { JoinBattlePopover } from "./JoinBattlePopover";
-import { FULL, GENERATING, INGAME, OPEN } from "../../../constants/battles/states";
+import { ABANDONABLE_STATES, FULL, GENERATING, INGAME, OPEN } from "../../../constants/battles/states";
 
 const useStyles = makeStyles(theme => ({
   wrapperRow: {
@@ -52,7 +45,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctrine, side, battleState, ready }) => {
+export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctrine, side, battleState, ready, abandoned }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   // const companies = useSelector(selectAllCompanies)
@@ -88,18 +81,29 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
     }
   }
 
+  const handleAbandonClick = () => {
+    dispatch(abandonBattle({ battleId, playerId }))
+  }
+
   let content
   if (playerId && isCurrentPlayer) {
     // Filled spot by logged in player
     let readyContent
-    if ((battleState === FULL && ready) || battleState === GENERATING) {
+    if (battleState === FULL && ready) {
       readyContent = <CheckIcon className={classes.clickableIcon} color="success" />
     } else if (battleState === FULL && !ready) {
       readyContent = <Button variant="contained" type="submit" color="secondary" size="small"
                              className={classes.readyBtn} onClick={handleReadyClick} disabled={isPending}>Ready</Button>
-    } else if (battleState === INGAME) {
-      // TODO Abandon
-
+    } else if (_.includes(ABANDONABLE_STATES, battleState)) {
+      if (abandoned) {
+        // Already abandoned
+        readyContent = <Button variant="contained" type="submit" color="error" size="small"
+                               className={ classes.readyBtn } disabled={ true }>Abandoning</Button>
+      } else {
+        readyContent = <Button variant="contained" type="submit" color="error" size="small"
+                               className={ classes.readyBtn } onClick={ handleAbandonClick }
+                               disabled={ isPending }>Abandon</Button>
+      }
     }
 
     content = (
@@ -115,6 +119,13 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
     )
   } else if (playerId) {
     // Filled spot
+    let readyContent
+    if (battleState === FULL && ready) {
+      readyContent = <CheckIcon className={classes.clickableIcon} color="success" />
+    } else if (_.includes(ABANDONABLE_STATES, battleState) && abandoned) {
+      readyContent = <Button variant="contained" type="submit" color="error" size="small"
+                             className={ classes.readyBtn } disabled={ true }>Abandoning</Button>
+    }
     content = (
       <>
         <Box sx={{ display: "flex", justifyContent: 'center' }} pr={1}>
@@ -122,8 +133,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
                className={classes.optionImage} />
         </Box>
         <Typography variant={"h5"} className={classes.playerName}>{playerName}</Typography>
-        {(battleState === FULL && ready) || battleState === GENERATING ?
-          <CheckIcon className={classes.clickableIcon} color="success" /> : null}
+        {readyContent}
       </>
     )
   } else if (isAuthed && !currentBattleId) {
