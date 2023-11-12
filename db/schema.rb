@@ -284,6 +284,7 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
     t.integer "vps", default: 0, null: false, comment: "WAR VPs earned"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"

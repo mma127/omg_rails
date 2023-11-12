@@ -10,8 +10,10 @@
 #  last_sign_in_ip             :string
 #  name(Player screen name)    :string
 #  provider(Omniauth provider) :string
+#  remember_created_at         :datetime
 #  sign_in_count               :integer          default(0), not null
 #  uid(Omniauth uid)           :string
+#  vps(WAR VPs earned)         :integer          default(0), not null
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #
