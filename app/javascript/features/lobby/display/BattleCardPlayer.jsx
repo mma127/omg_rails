@@ -8,9 +8,11 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import CheckIcon from '@mui/icons-material/Check';
+import CancelIcon from '@mui/icons-material/Cancel';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch, useSelector } from "react-redux";
-import { createBattle, leaveBattle, readyPlayer, selectIsPending } from "../lobbySlice";
+import { createBattle, leaveBattle, readyPlayer, selectIsPending, abandonPlayer, unabandonPlayer, unreadyPlayer } from "../lobbySlice";
 import { ErrorTypography } from "../../../components/ErrorTypography";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 import { doctrineImgMapping } from "../../../constants/doctrines";
@@ -49,10 +51,14 @@ const useStyles = makeStyles(theme => ({
   readyBtn: {
     marginLeft: '20px',
     lineHeight: '1'
+  },
+  abandonBtn: {
+    marginLeft: '20px',
+    lineHeight: '1'
   }
 }))
 
-export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctrine, side, battleState, ready }) => {
+export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctrine, side, battleState, ready, abandoned }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   // const companies = useSelector(selectAllCompanies)
@@ -82,6 +88,18 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
     dispatch(readyPlayer({ battleId: battleId, playerId: playerId }))
   }
 
+  const handleUnreadyClick = () => {
+    dispatch(unreadyPlayer({ battleId: battleId, playerId: playerId }))
+  }
+
+  const handleAbandonClick = () => {
+    dispatch(abandonPlayer({ battleId: battleId, playerId: playerId }))
+  }
+
+  const handleUnabandonClick = () => {
+    dispatch(unabandonPlayer({ battleId: battleId, playerId: playerId }))
+  }
+
   const leaveGame = () => {
     if (isCurrentPlayer && !isPending) {
       dispatch(leaveBattle({ battleId: battleId, playerId: player.id }))
@@ -92,14 +110,17 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
   if (playerId && isCurrentPlayer) {
     // Filled spot by logged in player
     let readyContent
-    if ((battleState === FULL && ready) || battleState === GENERATING) {
+    if (battleState === GENERATING) {
       readyContent = <CheckIcon className={classes.clickableIcon} color="success" />
+    } else if (battleState === FULL && ready) {
+      readyContent = <CheckIcon className={classes.clickableIcon} onClick={handleUnreadyClick} color="success" />
     } else if (battleState === FULL && !ready) {
       readyContent = <Button variant="contained" type="submit" color="secondary" size="small"
                              className={classes.readyBtn} onClick={handleReadyClick} disabled={isPending}>Ready</Button>
-    } else if (battleState === INGAME) {
-      // TODO Abandon
-
+    } else if (battleState === INGAME && !abandoned) {
+      readyContent = <HighlightOffIcon className={classes.clickableIcon} onClick={handleAbandonClick} color="error"/>
+    } else if (battleState === INGAME && abandoned) {
+      readyContent = <CancelIcon  className={classes.clickableIcon} onClick={handleUnabandonClick} color="success"/>
     }
 
     content = (

@@ -66,15 +66,51 @@ export const leaveBattle = createAsyncThunk(
 )
 
 export const readyPlayer = createAsyncThunk(
-  "lobby/readyPlayer",
-  async ({ battleId, playerId }, {_, rejectWithValue}) => {
-    try {
-      const response = await axios.post("/battles/player/ready", { battleId, playerId })
-      return response.data
-    } catch (err) {
-      return rejectWithValue(err.response.data)
+    "lobby/readyPlayer",
+    async ({ battleId, playerId }, {_, rejectWithValue}) => {
+        try {
+            const response = await axios.post("/battles/player/ready", { battleId, playerId })
+            return response.data
+        } catch (err) {
+            return rejectWithValue(err.response.data)
+        }
     }
-  }
+)
+
+export const unreadyPlayer = createAsyncThunk(
+    "lobby/unreadyPlayer",
+    async ({ battleId, playerId }) => {
+        try {
+            const response = await axios.post("/battles/player/unready", { battleId, playerId })
+            return response.data
+        } catch (err) {
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
+
+export const abandonPlayer = createAsyncThunk(
+    "lobby/abandonPlayer",
+    async ({ battleId, playerId }) => {
+        try {
+            const response = await axios.post("/battles/player/abandon", { battleId, playerId })
+            return response.data
+        } catch (err) {
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
+
+export const unabandonPlayer = createAsyncThunk(
+    "lobby/unabandonPlayer",
+    async ({ battleId, playerId }) => {
+        try {
+            const response = await axios.post("/battles/player/unabandon", { battleId, playerId })
+            return response.data
+        } catch (err) {
+            return rejectWithValue(err.response.data)
+        }
+    }
 )
 
 export const downloadBattlefile = createAsyncThunk(

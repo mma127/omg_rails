@@ -45,6 +45,10 @@ class BattlePlayer < ApplicationRecord
     Entity.new(self)
   end
 
+  def abandoned?
+    abandoned
+  end
+
   class Entity < Grape::Entity
     expose :id
     expose :battle_id, as: :battleId

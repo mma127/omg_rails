@@ -91,6 +91,7 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                         side={ALLIED_SIDE}
                                                         battleState={battle.state}
                                                         ready={p.ready}
+                                                        abandoned={p.abandoned}
               />)}
             </Box>
           </Grid>
@@ -110,6 +111,7 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                       side={AXIS_SIDE}
                                                       battleState={battle.state}
                                                       ready={p.ready}
+                                                      abandoned={p.abandoned}
               />)}
             </Box>
           </Grid>
