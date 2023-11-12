@@ -47,13 +47,18 @@ RSpec.describe BattleService do
   end
 
   describe "#join_battle" do
+    # TODO
   end
 
   describe "#ready_player" do
-
+    # TODO
   end
 
   describe "#leave_battle" do
-    
+    # TODO
+  end
+
+  describe "#abandon_battle" do
+    # TODO
   end
 end
