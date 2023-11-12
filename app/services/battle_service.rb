@@ -95,11 +95,11 @@ class BattleService
     validate_player_in_battle(battle)
 
     battle_player = BattlePlayer.includes(:company).find_by(battle: battle, player: @player)
-
+    company = battle_player.company
     # Validate company has all valid platoons
     validate_company_platoons(company)
     # Validate player's company can ready
-    validate_player_company_resources(battle_player.company)
+    validate_player_company_resources(company)
 
     battle_player.update!(ready: true)
 
