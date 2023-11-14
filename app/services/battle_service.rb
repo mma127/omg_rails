@@ -6,6 +6,7 @@ class BattleService
   PLAYER_JOINED = "player_joined".freeze
   PLAYER_JOINED_FULL = "player_joined_full".freeze
   PLAYER_READY = "player_ready".freeze
+  PLAYER_UNREADY = "player_unready".freeze
   PLAYERS_ALL_READY = "players_all_ready".freeze
   BATTLEFILE_GENERATED = "battlefile_generated".freeze
   PLAYER_LEFT = "player_left".freeze
@@ -136,7 +137,7 @@ class BattleService
 
     battle.reload
     # Broadcast battle update
-    message_hash = { type: PLAYER_READY, battle: battle }
+    message_hash = { type: PLAYER_UNREADY, battle: battle }
     battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
     broadcast_cable(battle_message)
   end
