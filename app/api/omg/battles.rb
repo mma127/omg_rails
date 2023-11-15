@@ -88,6 +88,16 @@ module OMG
           service.ready_player(declared_params[:battleId])
         end
 
+        # Ready up in Battle
+        desc "Unready a player in a battle"
+        params do
+          requires :battleId, type: Integer, desc: "Battle id to ready in"
+        end
+        post 'unready' do
+          service = BattleService.new(current_player)
+          service.unready_player(declared_params[:battleId])
+        end
+
         # Abandon a 'generating', 'ingame', 'reporting'? Battle
         desc "Mark a player as abandoned in a battle"
         params do
