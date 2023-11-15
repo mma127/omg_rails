@@ -63,4 +63,19 @@ class Restriction < ApplicationRecord
       errors.add("Must have one of faction_id, doctrine_id, doctrine_unlock_id, unlock_id")
     end
   end
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :description
+    expose :name
+    expose :vet_requirement, as: :vetRequirement
+    expose :faction_id, as: :factionId
+    expose :doctrine_id, as: :doctrineId
+    expose :doctrine_unlock_id, as: :doctrineUnlockId
+    expose :unlock_id, as: :unlockId
+  end
 end

@@ -48,6 +48,7 @@ class DisabledUnit < RestrictionUnit
     expose :id
     expose :internal_description, as: :internalDescription
     expose :unit, using: Unit::Entity
+    expose :type
   end
 
   private

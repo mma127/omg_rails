@@ -2,10 +2,6 @@ module OMG
   class Units < Grape::API
     helpers OMG::Helpers::RequestHelpers
 
-    before do
-      authenticate!
-    end
-
     resource :units do
       desc 'get all units'
       get do
