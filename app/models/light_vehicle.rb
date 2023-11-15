@@ -24,5 +24,7 @@
 #  index_units_on_name  (name) UNIQUE
 #
 class LightVehicle < Unit
-
+  def sort_priority
+    3
+  end
 end

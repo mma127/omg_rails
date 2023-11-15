@@ -24,5 +24,7 @@
 #  index_units_on_name  (name) UNIQUE
 #
 class Emplacement < Unit
-
+  def sort_priority
+    5
+  end
 end

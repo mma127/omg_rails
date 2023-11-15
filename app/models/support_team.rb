@@ -24,5 +24,7 @@
 #  index_units_on_name  (name) UNIQUE
 #
 class SupportTeam < Unit
-
+  def sort_priority
+    2
+  end
 end

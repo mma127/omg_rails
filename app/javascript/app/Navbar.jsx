@@ -18,6 +18,7 @@ export const Navbar = () => {
         <Tabs value={currentRoot} sx={{ marginTop: 'auto' }}>
           <Tab label="Lobby" value="/" component={Link} to="/" />
           <Tab label="Companies" value="/companies" component={Link} to="/companies" />
+          <Tab label="Restrictions" value="/restrictions" component={Link} to="/restrictions" />
         </Tabs>
         <PlayerAuthStatus />
       </Toolbar>

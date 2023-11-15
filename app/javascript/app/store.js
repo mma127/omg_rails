@@ -13,6 +13,7 @@ import availableUpgradesSlice from "../features/companies/manage/available_upgra
 import upgradesSlice from "../features/companies/manage/upgrades/upgradesSlice";
 import squadUpgradesSlice from "../features/companies/manage/squad_upgrades/squadUpgradesSlice";
 import companyBonusesSlice from "../features/companies/manage/bonuses/companyBonusesSlice";
+import restrictionUnitsSlice from "../features/restrictions/restriction_units/restrictionUnitsSlice";
 
 export default configureStore({
   reducer: {
@@ -29,6 +30,7 @@ export default configureStore({
     lobby: lobbySlice,
     availableUpgrades: availableUpgradesSlice,
     upgrades: upgradesSlice,
-    squadUpgrades: squadUpgradesSlice
+    squadUpgrades: squadUpgradesSlice,
+    restrictionUnits: restrictionUnitsSlice
   },
 })

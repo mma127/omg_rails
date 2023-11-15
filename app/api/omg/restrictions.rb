@@ -13,7 +13,7 @@ module OMG
         get do
           declared_params = declared(params)
           service = RestrictionUnitsService.new(declared_params[:ruleset_id], declared_params[:faction_id], declared_params[:doctrine_id])
-          present service.get_units, with: Entities::RestrictionUnitsResult, type: :include_restriction
+          present service.get_restriction_units, with: Entities::RestrictionUnitsResult, type: :include_restriction
         end
       end
     end

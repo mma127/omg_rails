@@ -24,5 +24,7 @@
 #  index_units_on_name  (name) UNIQUE
 #
 class Tank < Unit
-
+  def sort_priority
+    4
+  end
 end

@@ -6,7 +6,7 @@ class RestrictionUnitsService
   end
 
   # Retrieve restriction units by ruleset and faction, optionally narrowed by doctrine
-  def get_units
+  def get_restriction_units
     faction_enabled_units = EnabledUnit.includes(:restriction, :unit).where(restriction: faction_restriction, ruleset: ruleset)
     doctrine_enabled_units = EnabledUnit.includes(:restriction, :unit).where(restriction: doctrine_restriction, ruleset: ruleset)
     doctrine_disabled_units = DisabledUnit.includes(:restriction, :unit).where(restriction: doctrine_restriction, ruleset: ruleset)
@@ -19,8 +19,21 @@ class RestrictionUnitsService
     unit_ids = Set.new(faction_enabled_units_by_unit_id.keys +
                          doctrine_enabled_units_by_unit_id.keys +
                          doctrine_disabled_units_by_unit_id.keys)
-    unit_ids.map do |unit_id|
+    result = unit_ids.map do |unit_id|
       build_result(unit_id, faction_enabled_units_by_unit_id, doctrine_enabled_units_by_unit_id, doctrine_disabled_units_by_unit_id)
+    end
+
+    result.sort do |a, b|
+      # Sort on unit sort_priority (smaller is better), then unit name alpha
+      unit_a = a[:active_restriction_unit].unit
+      unit_b = b[:active_restriction_unit].unit
+      if unit_a.sort_priority < unit_b.sort_priority
+        -1
+      elsif unit_a.sort_priority > unit_b.sort_priority
+        1
+      else
+        unit_a.name <=> unit_b.name
+      end
     end
   end
 

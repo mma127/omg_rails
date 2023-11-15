@@ -24,5 +24,7 @@
 #  index_units_on_name  (name) UNIQUE
 #
 class Glider < Unit
-
+  def sort_priority
+    6
+  end
 end
