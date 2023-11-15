@@ -32,6 +32,7 @@ module OMG
     mount Companies
     mount Units
     mount Battles
+    mount Restrictions
 
     route :any, '*path' do
       error! "Not implemented", 404

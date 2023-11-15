@@ -46,4 +46,27 @@ class RestrictionUnit < ApplicationRecord
   belongs_to :ruleset
 
   scope :modified, -> { where(type: RestrictionUnit::MODIFY_CLASSES)}
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :internal_description, as: :internalDescription
+    expose :man
+    expose :mun
+    expose :fuel
+    expose :pop
+    expose :resupply
+    expose :resupply_max, as: :resupplyMax
+    expose :company_max, as: :companyMax
+    expose :callin_modifier, as: :callinModifier
+    expose :upgrade_slots, as: :upgradeSlots
+    expose :unitwide_upgrade_slots, as: :unitwideUpgradeSlots
+    expose :unit, using: Unit::Entity
+    expose :restriction, using: Restriction::Entity, if: { type: :include_restriction }
+    expose :priority
+    expose :type
+  end
 end
