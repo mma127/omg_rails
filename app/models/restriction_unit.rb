@@ -47,6 +47,18 @@ class RestrictionUnit < ApplicationRecord
 
   scope :modified, -> { where(type: RestrictionUnit::MODIFY_CLASSES)}
 
+  def pop_display
+    return nil if pop.blank?
+    # Format display to 3 significant digits, if necessary. Ie, if double digit pop with decimal
+    # Assume 1 decimal
+    "%.3g" % pop
+  end
+  def callin_modifier_display
+    return nil if callin_modifier.blank?
+    # Format display to 2 significant digits, if necessary. Ie, 0.15
+    "%.2g" % callin_modifier
+  end
+
   def entity
     Entity.new(self)
   end
@@ -57,11 +69,11 @@ class RestrictionUnit < ApplicationRecord
     expose :man
     expose :mun
     expose :fuel
-    expose :pop
+    expose :pop_display, as: :pop
     expose :resupply
     expose :resupply_max, as: :resupplyMax
     expose :company_max, as: :companyMax
-    expose :callin_modifier, as: :callinModifier
+    expose :callin_modifier_display, as: :callinModifier
     expose :upgrade_slots, as: :upgradeSlots
     expose :unitwide_upgrade_slots, as: :unitwideUpgradeSlots
     expose :unit, using: Unit::Entity

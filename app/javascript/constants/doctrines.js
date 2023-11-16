@@ -1,4 +1,10 @@
-// Sides
+import americans from "../../assets/images/factions/flags_usa.png"
+import british from "../../assets/images/factions/flags_british.png"
+import wehrmacht from "../../assets/images/factions/flags_german.png"
+import panzer_elite from "../../assets/images/factions/flags_panzer.png"
+import soviets from "../../assets/images/factions/flags_ussr.png"
+import ostheer from "../../assets/images/factions/flags_ostheer.png"
+
 import airborne from "../../assets/images/doctrine_banners/airborne.png";
 import armor from "../../assets/images/doctrine_banners/armor.png";
 import canadians from "../../assets/images/doctrine_banners/canadians.png";
@@ -12,6 +18,7 @@ import scorched_earth from "../../assets/images/doctrine_banners/scorched_earth.
 import tank_hunters from "../../assets/images/doctrine_banners/tank_hunters.png";
 import terror from "../../assets/images/doctrine_banners/terror.png";
 
+// Sides
 export const ALLIED_SIDE = 'allied';
 export const AXIS_SIDE = 'axis';
 
@@ -20,6 +27,17 @@ export const AMERICANS = 'americans';
 export const BRITISH = 'british';
 export const WEHRMACHT = 'wehrmacht';
 export const PANZER_ELITE = 'panzer_elite';
+export const SOVIETS = 'soviets';
+export const OSTHEER = 'ostheer';
+
+export const factionImgMapping = {
+  [AMERICANS]: americans,
+  [BRITISH]: british,
+  [WEHRMACHT]: wehrmacht,
+  [PANZER_ELITE]: panzer_elite,
+  [SOVIETS]: soviets,
+  [OSTHEER]: ostheer
+}
 
 // Doctrines
 export const AIRBORNE = 'airborne';

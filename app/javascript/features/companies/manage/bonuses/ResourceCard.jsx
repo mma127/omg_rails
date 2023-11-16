@@ -23,13 +23,10 @@ import {
   Typography
 } from "@mui/material";
 import { FUEL, MAN, MUN, RESOURCE_TO_ICON, RESOURCE_TO_NAME } from "../../../../constants/resources";
+import { ResourceIcon } from "../../../resources/ResourceIcon";
 
 const getResourceTitle = (resource) => {
   return RESOURCE_TO_NAME[resource]
-}
-
-const getResourceIcon = (resource) => {
-  return RESOURCE_TO_ICON[resource]
 }
 
 const useStyles = makeStyles(theme => ({
@@ -60,14 +57,6 @@ const useStyles = makeStyles(theme => ({
     lineHeight: '1'
   }
 }))
-
-const ResourceIcon = ({ resource, small = false }) => {
-  const classes = useStyles()
-  const style = small ? classes.resourceIconSmall : classes.resourceIcon
-  return (
-    <img src={ getResourceIcon(resource) } className={ style } alt={ getResourceTitle(resource) }/>
-  )
-}
 
 const ResourceQuantity = ({ quantity, isEmpty = false }) => {
   if (isEmpty) {

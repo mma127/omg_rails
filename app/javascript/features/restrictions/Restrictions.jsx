@@ -6,6 +6,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import { Link, Route, Routes } from "react-router-dom";
 import { RestrictionUnits } from "./restriction_units/RestrictionUnits";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { fetchRestrictionUnits } from "./restriction_units/restrictionUnitsSlice";
+import { fetchFactions } from "../factions/factionsSlice";
+import { fetchDoctrines } from "../doctrines/doctrinesSlice";
 
 
 const useStyles = makeStyles(theme => ({
@@ -36,11 +39,17 @@ export const Restrictions = () => {
   const classes = useStyles()
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('md'));
+  const dispatch = useDispatch()
 
   const [ currentTab, setCurrentTab ] = useState(DEFAULT_TAB)
   const onTabChange = (event, newTab) => {
     setCurrentTab(newTab)
   }
+
+  useEffect(() => {
+    dispatch(fetchFactions())
+    dispatch(fetchDoctrines())
+  }, [])
 
   return (
     <Container maxWidth="xl" disableGutters>

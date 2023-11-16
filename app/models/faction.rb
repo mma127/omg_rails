@@ -39,4 +39,16 @@ class Faction < ApplicationRecord
       1
     end
   end
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :name
+    expose :display_name, as: :displayName
+    expose :internal_name, as: :internalName
+    expose :side
+  end
 end

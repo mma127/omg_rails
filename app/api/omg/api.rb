@@ -29,6 +29,7 @@ module OMG
 
     mount Players
     mount Doctrines
+    mount Factions
     mount Companies
     mount Units
     mount Battles

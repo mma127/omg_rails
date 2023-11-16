@@ -11,7 +11,7 @@ module OMG
       route_param :id, type: Integer do
         desc 'get requested doctrine'
         params do
-          requires :id, type: Integer, desc: "Company ID"
+          requires :id, type: Integer, desc: "Doctrine ID"
         end
         get do
           present Doctrine.find(params[:id])
@@ -19,7 +19,7 @@ module OMG
 
         desc 'get unlocks for the doctrine'
         params do
-          requires :id, type: Integer, desc: "Company ID"
+          requires :id, type: Integer, desc: "Doctrine ID"
         end
         get 'unlocks' do
           present Doctrine.includes(doctrine_unlocks: [:restriction, unlock: :restriction]).find(params[:id]).doctrine_unlocks, type: :full

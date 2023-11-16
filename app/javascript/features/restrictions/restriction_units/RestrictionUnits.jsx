@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Container, Grid, Table, TableBody, TableContainer, TableHead } from "@mui/material";
+import { Box, Table, TableBody, TableContainer, TableHead } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { fetchRestrictionUnits, selectRestrictionUnits } from "./restrictionUnitsSlice";
 import { RestrictionUnit } from "./RestrictionUnit";
@@ -31,10 +31,9 @@ export const RestrictionUnits = () => {
       <TableContainer>
         <Table size="small">
           <TableHead>
-
           </TableHead>
           <TableBody>
-            { restrictionUnits.map(ru => <RestrictionUnit entity={ ru }/>) }
+            { restrictionUnits.map(ru => <RestrictionUnit entity={ ru } key={ru.activeRestrictionUnit.id} />) }
           </TableBody>
         </Table>
       </TableContainer>
