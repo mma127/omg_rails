@@ -5,7 +5,8 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
   unitCard: {
-    display: 'inline-flex'
+    display: 'inline-flex',
+    verticalAlign: "middle"
   }
 }))
 

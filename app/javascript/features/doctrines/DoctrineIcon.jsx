@@ -15,6 +15,6 @@ export const DoctrineIcon = ({ doctrineName, alt, height }) => {
 
   return (
     <img src={doctrineImgMapping[doctrineName]} alt={alt}
-         className={!_.isNumber(height) ? classes.image : null} height={height}/>
+         className={!_.isNumber(height) ? classes.image : null} style={{verticalAlign: "middle"}} height={height}/>
   )
 }

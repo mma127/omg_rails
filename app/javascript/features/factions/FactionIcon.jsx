@@ -15,6 +15,6 @@ export const FactionIcon = ({ factionName, alt, height }) => {
 
   return (
     <img src={factionImgMapping[factionName]} alt={alt}
-         className={!_.isNumber(height) ? classes.image : null} height={height}/>
+         className={!_.isNumber(height) ? classes.image : null} style={{verticalAlign: "middle"}} height={height}/>
   )
 }
