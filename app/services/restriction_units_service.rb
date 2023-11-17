@@ -78,19 +78,11 @@ class RestrictionUnitsService
     @_ruleset ||= Ruleset.find_by(id: @ruleset_id)
   end
 
-  def faction
-    @_faction ||= Faction.find_by(id: @faction_id)
-  end
-
-  def doctrine
-    @_doctrine ||= Doctrine.find_by(id: @doctrine_id)
-  end
-
   def faction_restriction
-    @_faction_restriction ||= Restriction.find_by(faction_id: @faction_id)
+    @_faction_restriction ||= Restriction.find_by(faction_id: @faction_id, doctrine_id: nil, doctrine_unlock_id: nil)
   end
 
   def doctrine_restriction
-    @_doctrine_restriction ||= Restriction.find_by(doctrine_id: @doctrine_id)
+    @_doctrine_restriction ||= Restriction.find_by(doctrine_id: @doctrine_id, faction_id: nil, doctrine_unlock_id: nil)
   end
 end

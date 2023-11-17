@@ -86,6 +86,11 @@ export const {
   selectById: selectDoctrineById
 } = doctrinesAdapter.getSelectors(state => state.doctrines)
 
+export const selectDoctrinesByFactionId = (state, factionId) =>{
+  const docs = _.values(state.doctrines.entities)
+  return docs.filter(doctrine => doctrine.factionId === factionId)
+}
+
 export const selectDoctrineUnlockRowsByDoctrineId = (state, doctrineId) => state.doctrines.entities[doctrineId].unlocksByRow
 
 

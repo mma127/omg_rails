@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import { useDispatch, useSelector } from "react-redux";
-import { Box, Popover, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
+import { useSelector } from "react-redux";
+import { Box, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
 import { selectFactionById } from "../../factions/factionsSlice";
 import { selectDoctrineById } from "../../doctrines/doctrinesSlice";
 import { FactionIcon } from "../../factions/FactionIcon";
@@ -10,6 +10,7 @@ import { ResourceQuantity } from "../../resources/ResourceQuantity";
 import { FUEL, MAN, MUN, POP } from "../../../constants/resources";
 import { StaticUnitIcon } from "../../companies/manage/unlocks/StaticUnitIcon";
 import { BorderlessCell } from "../../../components/BorderlessCell";
+import { nanoid } from "@reduxjs/toolkit";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -156,31 +157,31 @@ export const RestrictionUnit = ({ entity }) => {
 
   let content = []
   if (activeRU.type === "EnabledUnit") {
-    content.push(<EnabledUnit enabledUnit={activeRU} isActive={true}/>)
+    content.push(<EnabledUnit enabledUnit={activeRU} isActive={true} key={activeRU.id}/>)
   } else if (activeRU.type === "DisabledUnit") {
-    content.push(<DisabledUnit disabledUnit={activeRU} isActive={true}/>)
+    content.push(<DisabledUnit disabledUnit={activeRU} isActive={true} key={activeRU.id}/>)
   }
 
   if (overriddenRUs.length > 0) {
     overriddenRUs.forEach(oru => {
-      content.push(<TableRow><BorderlessCell></BorderlessCell></TableRow>)
+      content.push(<TableRow key={nanoid()}><BorderlessCell></BorderlessCell></TableRow>)
 
       if (oru.type === "EnabledUnit") {
-        content.push(<EnabledUnit enabledUnit={oru} isActive={false}/>)
+        content.push(<EnabledUnit enabledUnit={oru} isActive={false} key={oru.id}/>)
       } else if (oru.type === "DisabledUnit") {
-        content.push(<DisabledUnit disabledUnit={oru} isActive={false}/>)
+        content.push(<DisabledUnit disabledUnit={oru} isActive={false} key={oru.id}/>)
       }
     })
   }
 
   return (
     <>
-      <TableRow><BorderlessCell></BorderlessCell></TableRow>
+      <TableRow key={nanoid()}><BorderlessCell></BorderlessCell></TableRow>
       {content}
-      <TableRow><BorderlessCell></BorderlessCell></TableRow>
-      <TableRow><BorderlessCell></BorderlessCell></TableRow>
-      <TableRow><BorderlessCell></BorderlessCell></TableRow>
-      <TableRow><BorderlessCell></BorderlessCell></TableRow>
+      <TableRow key={nanoid()}><BorderlessCell></BorderlessCell></TableRow>
+      <TableRow key={nanoid()}><BorderlessCell></BorderlessCell></TableRow>
+      <TableRow key={nanoid()}><BorderlessCell></BorderlessCell></TableRow>
+      <TableRow key={nanoid()}><BorderlessCell></BorderlessCell></TableRow>
     </>
   )
 }

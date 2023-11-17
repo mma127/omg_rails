@@ -16,16 +16,19 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const RestrictionUnits = () => {
+export const RestrictionUnits = ({currentFactionId, currentDoctrineId}) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [currentFactionId, currentDoctrineId])
 
+  // TODO RULESET
   const fetchData = () => {
-    dispatch(fetchRestrictionUnits({ rulesetId: 1, factionId: 2, doctrineId: 11 }))
+    if (currentFactionId !== null) {
+      dispatch(fetchRestrictionUnits({ rulesetId: 1, factionId: currentFactionId, doctrineId: currentDoctrineId }))
+    }
   }
 
   const restrictionUnits = useSelector(selectRestrictionUnits)
