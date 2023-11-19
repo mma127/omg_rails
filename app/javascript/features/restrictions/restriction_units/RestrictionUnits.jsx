@@ -10,9 +10,13 @@ import { BorderlessCell } from "../../../components/BorderlessCell";
 const useStyles = makeStyles(() => ({
   wrapper: {
     paddingLeft: '1rem',
+    flexGrow: "1"
   },
   cell: {
     border: "none"
+  },
+  narrowCell: {
+    maxWidth: "87px"
   }
 }))
 
@@ -48,19 +52,25 @@ export const RestrictionUnits = ({currentFactionId, currentDoctrineId}) => {
               <BorderlessCell><Typography variant="subtitle1">Pop</Typography></BorderlessCell>
               <BorderlessCell>
                 <Tooltip title="Unit availability gained per battle" placement="top" followCursor={true} arrow>
-                  <Typography variant="subtitle1">Resupply</Typography>
+                  <Typography variant="subtitle1">Avail/B</Typography>
                 </Tooltip>
               </BorderlessCell>
               <BorderlessCell>
                 <Tooltip title="Maximum number of this unit available to purchase at a time" placement="top" followCursor={true} arrow>
-                  <Typography variant="subtitle1">Resupply Max</Typography>
+                  <Typography variant="subtitle1">Avail Max</Typography>
                 </Tooltip>
               </BorderlessCell>
               <BorderlessCell>
                 <Tooltip title="Maximum number of this unit allowed in a company" placement="top" followCursor={true} arrow>
-                  <Typography variant="subtitle1">Company Max</Typography>
+                  <Typography variant="subtitle1">Co Max</Typography>
                 </Tooltip>
               </BorderlessCell>
+              <BorderlessCell><Typography variant="subtitle1" className={classes.narrowCell}>Upgrade Slots</Typography></BorderlessCell>
+              <BorderlessCell><Typography variant="subtitle1" className={classes.narrowCell}>Unitwide Slots</Typography></BorderlessCell>
+              {/* Commenting these out as there are relatively few transports per doctrine/faction and the columns would be too much whitespace */}
+              {/*<BorderlessCell><Typography variant="subtitle1" className={classes.narrowCell}>TP Model Slots</Typography></BorderlessCell>*/}
+              {/*<BorderlessCell><Typography variant="subtitle1" className={classes.narrowCell}>TP Squad Slots</Typography></BorderlessCell>*/}
+              {/*<BorderlessCell><Typography variant="subtitle1">TP Units</Typography></BorderlessCell>*/}
             </TableRow>
           </TableHead>
           <TableBody>

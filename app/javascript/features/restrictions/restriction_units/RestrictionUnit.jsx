@@ -119,6 +119,21 @@ const EnabledUnit = ({ enabledUnit, isActive }) => {
       <BorderlessCell>
         <Typography>{enabledUnit.companyMax}</Typography>
       </BorderlessCell>
+      <BorderlessCell>
+        <Typography>{enabledUnit.upgradeSlots}</Typography>
+      </BorderlessCell>
+      <BorderlessCell>
+        <Typography>{enabledUnit.unitwideUpgradeSlots}</Typography>
+      </BorderlessCell>
+      {/*<BorderlessCell>*/}
+      {/*  <Typography>{unit.transportModelSlots}</Typography>*/}
+      {/*</BorderlessCell>*/}
+      {/*<BorderlessCell>*/}
+      {/*  <Typography>{unit.transportSquadSlots}</Typography>*/}
+      {/*</BorderlessCell>*/}
+      {/*<BorderlessCell>*/}
+      {/*  <Typography>{unit.transportableUnitIds}</Typography>*/}
+      {/*</BorderlessCell>*/}
     </TableRow>
   )
 }
