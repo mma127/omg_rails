@@ -15,6 +15,7 @@ import {
   PLAYER_JOINED_FULL,
   PLAYER_LEFT,
   PLAYER_READY,
+  PLAYER_UNREADY,
   REMOVE_BATTLE,
   BATTLE_FINALIZED, PLAYER_ABANDONED, PLAYERS_ALL_ABANDONED
 } from "../../constants/battles/events";
@@ -90,6 +91,10 @@ export const Lobby = () => {
         break
       }
       case PLAYER_READY: {
+        dispatch(updateBattle({ battle: message.battle }))
+        break
+      }
+      case PLAYER_UNREADY: {
         dispatch(updateBattle({ battle: message.battle }))
         break
       }

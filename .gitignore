@@ -86,6 +86,9 @@ yarn-debug.log*
 *.iml
 *.ipr
 
+# vscode
+.vscode/*
+
 # CMake
 cmake-build-*/
 

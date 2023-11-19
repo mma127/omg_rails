@@ -6,6 +6,7 @@ class BattleService
   PLAYER_JOINED = "player_joined".freeze
   PLAYER_JOINED_FULL = "player_joined_full".freeze
   PLAYER_READY = "player_ready".freeze
+  PLAYER_UNREADY = "player_unready".freeze
   PLAYERS_ALL_READY = "players_all_ready".freeze
   BATTLEFILE_GENERATED = "battlefile_generated".freeze
   PLAYER_LEFT = "player_left".freeze
@@ -116,6 +117,27 @@ class BattleService
 
     # Broadcast battle update
     message_hash = { type: type, battle: battle }
+    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+    broadcast_cable(battle_message)
+  end
+
+  def unready_player(battle_id)
+    # Validate battle exists
+    battle = validate_battle(battle_id)
+
+    # Validate battle is readyable
+    validate_battle_readyable(battle)
+
+    # Validate the player is in the battle
+    validate_player_in_battle(battle)
+
+    unless battle.reload.players_ready?
+      BattlePlayer.find_by(battle: battle, player: @player).update!(ready: false)
+    end
+
+    battle.reload
+    # Broadcast battle update
+    message_hash = { type: PLAYER_UNREADY, battle: battle }
     battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
     broadcast_cable(battle_message)
   end
