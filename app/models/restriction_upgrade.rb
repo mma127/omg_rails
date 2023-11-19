@@ -42,9 +42,29 @@ class RestrictionUpgrade < ApplicationRecord
   belongs_to :restriction
   belongs_to :upgrade
   belongs_to :ruleset
-  has_many :restriction_upgrade_units
+  has_many :restriction_upgrade_units, inverse_of: :restriction_upgrade
   has_many :units, through: :restriction_upgrade_units
 
   scope :modified, -> { where(type: RestrictionUpgrade::MODIFY_CLASSES)}
 
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :internal_description, as: :internalDescription
+    expose :man
+    expose :mun
+    expose :fuel
+    expose :pop
+    expose :uses
+    expose :max
+    expose :upgrade_slots, as: :upgradeSlots
+    expose :unitwide_upgrade_slots, as: :unitwideUpgradeSlots
+    expose :upgrade, using: Upgrade::Entity
+    expose :restriction, using: Restriction::Entity, if: { type: :include_restriction }
+    expose :priority
+    expose :type
+  end
 end
