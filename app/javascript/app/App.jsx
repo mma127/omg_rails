@@ -12,6 +12,7 @@ import { Lobby } from "../features/lobby/Lobby";
 import { Companies } from "../features/companies/Companies";
 import { CompanyManager } from "../features/companies/manage/CompanyManager";
 import { ActionCableConsumer, ActionCableProvider } from "@thrash-industries/react-actioncable-provider";
+import { Restrictions } from "../features/restrictions/Restrictions";
 
 const theme = createTheme({
   palette: {
@@ -61,6 +62,7 @@ export const App = () => (
                 <Route index element={<Lobby />} />
                 <Route path="companies" element={<Companies />} />
                 <Route path="companies/:companyId/*" element={<CompanyManager />} />
+                <Route path="restrictions/*" element={<Restrictions />} />
               </Route>
             </Routes>
           </Router>

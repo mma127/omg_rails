@@ -25,4 +25,7 @@
 #
 class Infantry < Unit
 
+  def sort_priority
+    1
+  end
 end
