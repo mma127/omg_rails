@@ -19,7 +19,7 @@
 #  fk_rails_...  (unit_id => units.id)
 #
 class RestrictionUpgradeUnit < ApplicationRecord
-  belongs_to :restriction_upgrade
+  belongs_to :restriction_upgrade, inverse_of: :restriction_upgrade_units
   belongs_to :unit
 
   validates :unit, uniqueness: { scope: :restriction_upgrade }

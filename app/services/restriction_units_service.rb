@@ -1,15 +1,9 @@
-class RestrictionUnitsService
-  def initialize(ruleset_id, faction_id, doctrine_id)
-    @ruleset_id = ruleset_id
-    @faction_id = faction_id
-    @doctrine_id = doctrine_id # optional
-  end
-
+class RestrictionUnitsService < RestrictionsService
   # Retrieve restriction units by ruleset and faction, optionally narrowed by doctrine
   def get_restriction_units
-    faction_enabled_units = EnabledUnit.includes(:restriction, :unit).where(restriction: faction_restriction, ruleset: ruleset)
-    doctrine_enabled_units = EnabledUnit.includes(:restriction, :unit).where(restriction: doctrine_restriction, ruleset: ruleset)
-    doctrine_disabled_units = DisabledUnit.includes(:restriction, :unit).where(restriction: doctrine_restriction, ruleset: ruleset)
+    faction_enabled_units = EnabledUnit.includes(:restriction, unit: :transport_allowed_units).where(restriction: faction_restriction, ruleset: ruleset)
+    doctrine_enabled_units = EnabledUnit.includes(:restriction, unit: :transport_allowed_units).where(restriction: doctrine_restriction, ruleset: ruleset)
+    doctrine_disabled_units = DisabledUnit.includes(:restriction, unit: :transport_allowed_units).where(restriction: doctrine_restriction, ruleset: ruleset)
 
     faction_enabled_units_by_unit_id = faction_enabled_units.index_by(&:unit_id)
     doctrine_enabled_units_by_unit_id = doctrine_enabled_units.index_by(&:unit_id)
@@ -20,7 +14,10 @@ class RestrictionUnitsService
                          doctrine_enabled_units_by_unit_id.keys +
                          doctrine_disabled_units_by_unit_id.keys)
     result = unit_ids.map do |unit_id|
-      build_result(unit_id, faction_enabled_units_by_unit_id, doctrine_enabled_units_by_unit_id, doctrine_disabled_units_by_unit_id)
+      build_result(unit_id,
+                   faction_enabled_units_by_unit_id,
+                   doctrine_enabled_units_by_unit_id,
+                   doctrine_disabled_units_by_unit_id)
     end
 
     result.sort do |a, b|
@@ -64,25 +61,5 @@ class RestrictionUnitsService
       active_restriction_unit: restriction_units.first,
       overridden_restriction_units: restriction_units[1..]
     }
-  end
-
-  def base_restriction
-    if doctrine_restriction.present?
-      doctrine_restriction
-    else
-      faction_restriction
-    end
-  end
-
-  def ruleset
-    @_ruleset ||= Ruleset.find_by(id: @ruleset_id)
-  end
-
-  def faction_restriction
-    @_faction_restriction ||= Restriction.find_by(faction_id: @faction_id, doctrine_id: nil, doctrine_unlock_id: nil)
-  end
-
-  def doctrine_restriction
-    @_doctrine_restriction ||= Restriction.find_by(doctrine_id: @doctrine_id, faction_id: nil, doctrine_unlock_id: nil)
   end
 end
