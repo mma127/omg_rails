@@ -79,8 +79,6 @@ task generate_elo_csv: :environment do
 
     # Build lists of team ratings
     # Rate the match using the model (first team is the winner)
-    # allies_ts_ratings = Hash[match.allies_players.map{ |p| [p.name, p.ts_rating]}]
-    # axis_ts_ratings = Hash[match.axis_players.map{ |p| [p.name, p.ts_rating]}]
     allies_ts_ratings = match.allies_players.map{ |p| p.ts_rating}
     axis_ts_ratings = match.axis_players.map{ |p| p.ts_rating}
 
