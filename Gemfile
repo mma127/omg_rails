@@ -56,6 +56,9 @@ gem 'sidekiq'
 
 gem 'rubyzip', require: false
 
+# Skill rating
+gem 'trueskill'
+
 # Pretty printing
 gem 'pry'
 gem 'pry-rails'
