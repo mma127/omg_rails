@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_15_015147) do
+ActiveRecord::Schema.define(version: 2023_12_01_053817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -258,6 +258,15 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "historical_player_ratings", force: :cascade do |t|
+    t.string "player_name", comment: "historical player name"
+    t.integer "elo", comment: "trueskill mu normalized between 1000 and 2000"
+    t.decimal "mu", comment: "trueskill mu"
+    t.decimal "sigma", comment: "trueskill sigma"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "offmaps", force: :cascade do |t|
     t.string "name", null: false, comment: "Offmap name"
     t.string "display_name", null: false, comment: "Offmap display name"
@@ -274,6 +283,16 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
     t.integer "shells_fired", comment: "Number of shells fired during the offmap"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "player_ratings", force: :cascade do |t|
+    t.bigint "player_id"
+    t.integer "elo", comment: "trueskill mu normalized between 1000 and 2000"
+    t.decimal "mu", comment: "trueskill mu"
+    t.decimal "sigma", comment: "trueskill sigma"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id"], name: "index_player_ratings_on_player_id"
   end
 
   create_table "players", comment: "Player record", force: :cascade do |t|
@@ -589,6 +608,7 @@ ActiveRecord::Schema.define(version: 2023_05_15_015147) do
   add_foreign_key "doctrine_unlocks", "doctrines"
   add_foreign_key "doctrine_unlocks", "unlocks"
   add_foreign_key "doctrines", "factions"
+  add_foreign_key "player_ratings", "players"
   add_foreign_key "restriction_callin_modifiers", "callin_modifiers"
   add_foreign_key "restriction_callin_modifiers", "restrictions"
   add_foreign_key "restriction_callin_modifiers", "rulesets"
