@@ -36,6 +36,7 @@ class Player < ApplicationRecord
   has_many :doctrines, through: :companies
   has_many :factions, through: :companies
   has_one :player_rating, inverse_of: :player
+  has_many :historical_player_ratings, inverse_of: :player
 
   def entity
     Entity.new(self)
