@@ -4,6 +4,7 @@
 #
 #  id                                                 :bigint           not null, primary key
 #  elo(trueskill mu normalized between 1000 and 2000) :integer
+#  last_played(last played match)                     :date
 #  mu(trueskill mu)                                   :decimal(, )
 #  player_name(historical player name)                :string
 #  sigma(trueskill sigma)                             :decimal(, )
@@ -21,6 +22,6 @@ RSpec.describe HistoricalPlayerRating, type: :model do
   let!(:historical_player_rating) { create :historical_player_rating }
 
   describe 'associations' do
-    it { should belong_to(:player) }
+    it { should belong_to(:player).optional }
   end
 end

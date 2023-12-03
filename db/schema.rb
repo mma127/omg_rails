@@ -264,6 +264,7 @@ ActiveRecord::Schema.define(version: 2023_12_01_053817) do
     t.integer "elo", comment: "trueskill mu normalized between 1000 and 2000"
     t.decimal "mu", comment: "trueskill mu"
     t.decimal "sigma", comment: "trueskill sigma"
+    t.date "last_played", comment: "last played match"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_id"], name: "index_historical_player_ratings_on_player_id"
@@ -292,6 +293,7 @@ ActiveRecord::Schema.define(version: 2023_12_01_053817) do
     t.integer "elo", comment: "trueskill mu normalized between 1000 and 2000"
     t.decimal "mu", comment: "trueskill mu"
     t.decimal "sigma", comment: "trueskill sigma"
+    t.date "last_played", comment: "last played match"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_id"], name: "index_player_ratings_on_player_id"

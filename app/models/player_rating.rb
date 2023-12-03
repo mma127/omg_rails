@@ -4,6 +4,7 @@
 #
 #  id                                                 :bigint           not null, primary key
 #  elo(trueskill mu normalized between 1000 and 2000) :integer
+#  last_played(last played match)                     :date
 #  mu(trueskill mu)                                   :decimal(, )
 #  sigma(trueskill sigma)                             :decimal(, )
 #  created_at                                         :datetime         not null
