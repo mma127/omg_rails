@@ -22,6 +22,6 @@ RSpec.describe HistoricalPlayerRating, type: :model do
   let!(:historical_player_rating) { create :historical_player_rating }
 
   describe 'associations' do
-    it { should belong_to(:player) }
+    it { should belong_to(:player).optional }
   end
 end
