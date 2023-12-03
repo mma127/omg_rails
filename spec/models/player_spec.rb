@@ -27,5 +27,6 @@ RSpec.describe Player, type: :model do
     it { should have_many(:factions) }
     it { should have_many(:doctrines) }
     it { should have_one(:player_rating) }
+    it { should have_many(:historical_player_ratings) }
   end
 end

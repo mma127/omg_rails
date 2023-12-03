@@ -15,6 +15,12 @@
 #
 #  index_historical_player_ratings_on_player_id  (player_id)
 #
-class HistoricalPlayerRating < ApplicationRecord
-  belongs_to :player, inverse_of: :historical_player_ratings
+require "rails_helper"
+
+RSpec.describe HistoricalPlayerRating, type: :model do
+  let!(:historical_player_rating) { create :historical_player_rating }
+
+  describe 'associations' do
+    it { should belong_to(:player) }
+  end
 end

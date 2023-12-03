@@ -260,11 +260,13 @@ ActiveRecord::Schema.define(version: 2023_12_01_053817) do
 
   create_table "historical_player_ratings", force: :cascade do |t|
     t.string "player_name", comment: "historical player name"
+    t.bigint "player_id"
     t.integer "elo", comment: "trueskill mu normalized between 1000 and 2000"
     t.decimal "mu", comment: "trueskill mu"
     t.decimal "sigma", comment: "trueskill sigma"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id"], name: "index_historical_player_ratings_on_player_id"
   end
 
   create_table "offmaps", force: :cascade do |t|
