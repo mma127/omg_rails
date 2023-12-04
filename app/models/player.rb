@@ -17,6 +17,10 @@
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
 #
+# Indexes
+#
+#  index_players_on_provider_and_uid  (provider,uid) UNIQUE
+#
 class Player < ApplicationRecord
   include ActiveModel::Serializers::JSON
   # Include default devise modules. Others available are:
@@ -24,10 +28,27 @@ class Player < ApplicationRecord
   devise :rememberable, :trackable, :timeoutable, :omniauthable, omniauth_providers: %i[steam]
 
   def self.from_omniauth(auth)
-    player = where(provider: auth.provider, uid: auth.uid).first_or_create!
-    player.name = auth.info.nickname
-    player.avatar = auth.info.image
-    player.save!
+    player = find_by(provider: auth.provider, uid: auth.uid)
+    if player.present?
+      Rails.logger.info("Player found from omniauth: #{player.name}")
+      player.name = auth.info.nickname
+      player.avatar = auth.info.image
+      player.save!
+    else
+      player = create!(provider: auth.provider, uid: auth.uid, name: auth.info.nickname, avatar: auth.info.image)
+      Rails.logger.info("Player created from omniauth: #{player.name}")
+
+      # try to match nickname to historical player rating with nil player_id
+      hpr = HistoricalPlayerRating.find_by(player_name: player.name.upcase, player_id: nil)
+      if hpr.present?
+        Rails.logger.info("Found historical player rating for player #{player.name}")
+        PlayerRating.create!(player: player, elo: hpr.elo, mu: hpr.mu, sigma: hpr.sigma, last_played: hpr.last_played)
+      else
+        Rails.logger.info("Created default PlayerRating for player #{player.name}")
+        PlayerRating.for_new_player(player)
+      end
+    end
+
     player.remember_me!
     player
   end

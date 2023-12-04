@@ -27,4 +27,37 @@ RSpec.describe PlayerRating, type: :model do
   describe 'associations' do
     it { should belong_to(:player) }
   end
+
+  describe "#from_historical" do
+    let!(:player) { create :player }
+    let(:elo) { 1400 }
+    let(:mu) { 24.3484584 }
+    let(:sigma) { 4.294785963 }
+    let(:last_played) { "2023-04-01" }
+    let!(:hpr) { create :historical_player_rating, player_name: player.name, player: nil, elo: elo, mu: mu, sigma: sigma, last_played: last_played }
+
+    subject { described_class.from_historical(player, hpr) }
+
+    it "is created with hpr values" do
+      expect(subject.player).to eq player
+      expect(subject.elo).to eq elo
+      expect(subject.mu).to eq mu
+      expect(subject.sigma).to eq sigma
+      expect(subject.last_played).to eq Date.parse(last_played)
+    end
+  end
+
+  describe "#for_new_player" do
+    let!(:player) { create :player }
+
+    subject { described_class.for_new_player(player) }
+
+    it "is created with default values" do
+      expect(subject.player).to eq player
+      expect(subject.elo).to eq PlayerRating::DEFAULT_ELO
+      expect(subject.mu).to eq PlayerRating::DEFAULT_MU
+      expect(subject.sigma).to eq PlayerRating::DEFAULT_SIGMA
+      expect(subject.last_played).to be nil
+    end
+  end
 end
