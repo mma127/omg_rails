@@ -20,5 +20,17 @@
 #  fk_rails_...  (player_id => players.id)
 #
 class PlayerRating < ApplicationRecord
+  DEFAULT_ELO = 1500
+  DEFAULT_MU = 25.0
+  DEFAULT_SIGMA = 25.0 / 3.0
+
   belongs_to :player, inverse_of: :player_rating
+
+  def self.from_historical(player, hpr)
+    PlayerRating.create!(player: player, elo: hpr.elo, mu: hpr.mu, sigma: hpr.sigma, last_played: hpr.last_played)
+  end
+
+  def self.for_new_player(player)
+    PlayerRating.create!(player: player, elo: DEFAULT_ELO, mu: DEFAULT_MU, sigma: DEFAULT_SIGMA, last_played: nil)
+  end
 end

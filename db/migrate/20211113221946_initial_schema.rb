@@ -24,6 +24,8 @@ class InitialSchema < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
+    add_index :players, [:provider, :uid], unique: true
+
     create_table :doctrines, comment: "Faction doctrines" do |t|
       t.string :name, null: false, comment: "Raw name"
       t.string :display_name, null: false, comment: "Display name"

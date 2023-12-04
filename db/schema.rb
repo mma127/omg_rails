@@ -262,8 +262,8 @@ ActiveRecord::Schema.define(version: 2023_12_01_053817) do
     t.string "player_name", comment: "historical player name"
     t.bigint "player_id"
     t.integer "elo", comment: "trueskill mu normalized between 1000 and 2000"
-    t.decimal "mu", comment: "trueskill mu"
-    t.decimal "sigma", comment: "trueskill sigma"
+    t.float "mu", comment: "trueskill mu"
+    t.float "sigma", comment: "trueskill sigma"
     t.date "last_played", comment: "last played match"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -291,8 +291,8 @@ ActiveRecord::Schema.define(version: 2023_12_01_053817) do
   create_table "player_ratings", force: :cascade do |t|
     t.bigint "player_id"
     t.integer "elo", comment: "trueskill mu normalized between 1000 and 2000"
-    t.decimal "mu", comment: "trueskill mu"
-    t.decimal "sigma", comment: "trueskill sigma"
+    t.float "mu", comment: "trueskill mu"
+    t.float "sigma", comment: "trueskill sigma"
     t.date "last_played", comment: "last played match"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -313,6 +313,7 @@ ActiveRecord::Schema.define(version: 2023_12_01_053817) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.index ["provider", "uid"], name: "index_players_on_provider_and_uid", unique: true
   end
 
   create_table "resource_bonuses", force: :cascade do |t|
