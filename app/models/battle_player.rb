@@ -18,7 +18,7 @@
 #  index_battle_players_on_player_id   (player_id)
 #
 class BattlePlayer < ApplicationRecord
-  belongs_to :battle
+  belongs_to :battle, inverse_of: :battle_players
   belongs_to :player
   belongs_to :company
 

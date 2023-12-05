@@ -18,8 +18,9 @@
 #
 class Battle < ApplicationRecord
   belongs_to :ruleset
-  has_many :battle_players, dependent: :destroy
+  has_many :battle_players, dependent: :destroy, inverse_of: :battle
   has_many :players, through: :battle_players
+  has_many :player_ratings, through: :players, class_name: "PlayerRating"
   has_many :companies, through: :battle_players
   has_many :squads, through: :companies
 
@@ -41,7 +42,7 @@ class Battle < ApplicationRecord
     end
 
     event :ready do
-      transition :full =>  :generating
+      transition :full => :generating
     end
 
     event :generated do
@@ -93,6 +94,19 @@ class Battle < ApplicationRecord
     %w[generating ingame reporting].include? state
   end
 
+  def allied_battle_players
+    battle_players.filter { |bp| bp.side == BattlePlayer::sides[:allied] }
+  end
+
+  def axis_battle_players
+    battle_players.filter { |bp| bp.side == BattlePlayer::sides[:axis] }
+  end
+
+  # Positive is allied favored, negative is axis favored
+  def elo_difference
+    Ratings::BattleRatingsService.new(self).get_elo_difference
+  end
+
   def entity
     Entity.new(self)
   end
@@ -105,6 +119,7 @@ class Battle < ApplicationRecord
     expose :ruleset_id, as: :rulesetId
     expose :winner
 
-    expose :battle_players, as: :battlePlayers, using: BattlePlayer::Entity, if: {type: :include_players}
+    expose :battle_players, as: :battlePlayers, using: BattlePlayer::Entity, if: { type: :include_players }
+    expose :elo_difference, as: :eloDifference, if: { type: :include_players }
   end
 end

@@ -9,7 +9,7 @@ module OMG
         optional :rulesetId, type: Integer, desc: "Optional ruleset to filter by"
       end
       get do
-        query = Battle.where(state: params[:statuses])
+        query = Battle.includes(battle_players: { player: :player_rating }).where(state: params[:statuses])
         if params[:ruleset_id].present?
           query.where(ruleset_id: params[:ruleset_id])
         end
