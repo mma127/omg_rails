@@ -2,6 +2,7 @@ require "rails_helper"
 
 RSpec.describe BattleService do
   let!(:player) { create :player }
+  let!(:player_rating) { create :player_rating, player: player }
   subject { described_class.new(player) }
 
   let!(:ruleset) { create :ruleset }

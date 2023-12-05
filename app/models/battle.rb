@@ -104,7 +104,11 @@ class Battle < ApplicationRecord
 
   # Positive is allied favored, negative is axis favored
   def elo_difference
-    Ratings::BattleRatingsService.new(self).get_elo_difference
+    if players_full?
+      Ratings::BattleRatingsService.new(self).get_elo_difference
+    else
+      nil
+    end
   end
 
   def entity
