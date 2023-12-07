@@ -76,6 +76,7 @@ class BattleService
       if battle.reload.players_full?
         battle.full!
         type = PLAYER_JOINED_FULL
+        Ratings::BattleRatingsService.new(battle).find_most_balanced_teams
       else
         type = PLAYER_JOINED
       end

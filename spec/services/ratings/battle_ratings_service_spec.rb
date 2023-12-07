@@ -117,6 +117,16 @@ RSpec.describe Ratings::BattleRatingsService do
           expect(team1).to match_array [bp1, bp3]
           expect(team2).to match_array [bp2, bp4]
         end
+
+        it "persists the results" do
+          subject
+
+          expect(battle.reload.elo_diff).to eq 0
+          expect(bp1.reload.team_balance).to eq 1
+          expect(bp2.reload.team_balance).to eq 2
+          expect(bp3.reload.team_balance).to eq 1
+          expect(bp4.reload.team_balance).to eq 2
+        end
       end
 
       context "when there is non-zero elo diff" do
@@ -131,6 +141,16 @@ RSpec.describe Ratings::BattleRatingsService do
           expect(elo_diff).to eq 200
           expect(team1).to match_array [bp1, bp2]
           expect(team2).to match_array [bp3, bp4]
+        end
+
+        it "persists the results" do
+          subject
+
+          expect(battle.reload.elo_diff).to eq 200
+          expect(bp1.reload.team_balance).to eq 1
+          expect(bp2.reload.team_balance).to eq 1
+          expect(bp3.reload.team_balance).to eq 2
+          expect(bp4.reload.team_balance).to eq 2
         end
       end
     end
@@ -163,6 +183,20 @@ RSpec.describe Ratings::BattleRatingsService do
           expect(team1).to match_array [bp1, bp3, bp5, bp7]
           expect(team2).to match_array [bp2, bp4, bp6, bp8]
         end
+
+        it "persists the results" do
+          subject
+
+          expect(battle.reload.elo_diff).to eq 0
+          expect(bp1.reload.team_balance).to eq 1
+          expect(bp2.reload.team_balance).to eq 2
+          expect(bp3.reload.team_balance).to eq 1
+          expect(bp4.reload.team_balance).to eq 2
+          expect(bp5.reload.team_balance).to eq 1
+          expect(bp6.reload.team_balance).to eq 2
+          expect(bp7.reload.team_balance).to eq 1
+          expect(bp8.reload.team_balance).to eq 2
+        end
       end
 
       context "when there is non-zero elo diff" do
@@ -181,6 +215,20 @@ RSpec.describe Ratings::BattleRatingsService do
           expect(elo_diff).to eq 9
           expect(team1).to match_array [bp1, bp2, bp6, bp8]
           expect(team2).to match_array [bp3, bp4, bp5, bp7]
+        end
+
+        it "persists the results" do
+          subject
+
+          expect(battle.reload.elo_diff).to eq 9
+          expect(bp1.reload.team_balance).to eq 1
+          expect(bp2.reload.team_balance).to eq 1
+          expect(bp3.reload.team_balance).to eq 2
+          expect(bp4.reload.team_balance).to eq 2
+          expect(bp5.reload.team_balance).to eq 2
+          expect(bp6.reload.team_balance).to eq 1
+          expect(bp7.reload.team_balance).to eq 2
+          expect(bp8.reload.team_balance).to eq 1
         end
       end
     end

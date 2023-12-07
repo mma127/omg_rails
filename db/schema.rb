@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_01_053817) do
+ActiveRecord::Schema.define(version: 2023_12_07_042011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,11 +105,11 @@ ActiveRecord::Schema.define(version: 2023_12_01_053817) do
     t.boolean "abandoned", default: false, comment: "Is this player abandoning?"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "team_balance", comment: "Assigned team for balance"
     t.index ["battle_id"], name: "index_battle_players_on_battle_id"
     t.index ["company_id"], name: "index_battle_players_on_company_id"
     t.index ["player_id"], name: "index_battle_players_on_player_id"
   end
-
 
   create_table "battles", force: :cascade do |t|
     t.string "name", comment: "Optional battle name"
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 2023_12_01_053817) do
     t.bigint "ruleset_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "elo_diff", comment: "Elo difference between most balanced teams, absolute value"
     t.index ["ruleset_id"], name: "index_battles_on_ruleset_id"
     t.index ["state"], name: "index_battles_on_state"
   end

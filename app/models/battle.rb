@@ -2,14 +2,15 @@
 #
 # Table name: battles
 #
-#  id                         :bigint           not null, primary key
-#  name(Optional battle name) :string
-#  size(Size of each team)    :integer          not null
-#  state(Battle status)       :string           not null
-#  winner(Winning side)       :string
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#  ruleset_id                 :bigint           not null
+#  id                                                                   :bigint           not null, primary key
+#  elo_diff(Elo difference between most balanced teams, absolute value) :integer
+#  name(Optional battle name)                                           :string
+#  size(Size of each team)                                              :integer          not null
+#  state(Battle status)                                                 :string           not null
+#  winner(Winning side)                                                 :string
+#  created_at                                                           :datetime         not null
+#  updated_at                                                           :datetime         not null
+#  ruleset_id                                                           :bigint           not null
 #
 # Indexes
 #
@@ -102,15 +103,6 @@ class Battle < ApplicationRecord
     battle_players.filter { |bp| bp.side == BattlePlayer::sides[:axis] }
   end
 
-  # Positive is allied favored, negative is axis favored
-  def elo_difference
-    if players_full?
-      Ratings::BattleRatingsService.new(self).get_elo_difference
-    else
-      nil
-    end
-  end
-
   def entity
     Entity.new(self)
   end
@@ -124,6 +116,6 @@ class Battle < ApplicationRecord
     expose :winner
 
     expose :battle_players, as: :battlePlayers, using: BattlePlayer::Entity, if: { type: :include_players }
-    expose :elo_difference, as: :eloDifference, if: { type: :include_players }
+    expose :elo_diff, as: :eloDifference, if: { type: :include_players }
   end
 end
