@@ -36,6 +36,12 @@ module Ratings
       [lowest_elo_diff, sort_battle_players(lowest_elo_diff_team1), sort_battle_players(lowest_elo_diff_team2)]
     end
 
+    def clear_battle_balance_data
+      @battle.update!(elo_diff: nil)
+      bps = @battle.battle_players.each { |bp| bp.team_balance = nil }.to_a
+      BattlePlayer.import! bps, on_duplicate_key_update: { conflict_target: [:id], columns: [:team_balance] }
+    end
+
     private
 
     def average_elo(battle_players)

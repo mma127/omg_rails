@@ -234,4 +234,24 @@ RSpec.describe Ratings::BattleRatingsService do
     end
   end
 
+  describe "#clear_battle_balance_data" do
+    let!(:battle) { create :battle, elo_diff: 100 }
+    let!(:bp1) { create :battle_player, battle: battle, player: player1, team_balance: 1 }
+    let!(:bp2) { create :battle_player, battle: battle, player: player2, team_balance: 2 }
+    let!(:bp3) { create :battle_player, :axis, battle: battle, player: player3, team_balance: 1 }
+
+    subject { described_class.new(battle).clear_battle_balance_data }
+
+    it "clears battle elo_diff" do
+      subject
+      expect(battle.reload.elo_diff).to be nil
+    end
+
+    it "clears battle players team_balance" do
+      subject
+      expect(bp1.reload.team_balance).to be nil
+      expect(bp2.reload.team_balance).to be nil
+      expect(bp3.reload.team_balance).to be nil
+    end
+  end
 end
