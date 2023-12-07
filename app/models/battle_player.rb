@@ -2,14 +2,16 @@
 #
 # Table name: battle_players
 #
-#  id                                    :bigint           not null, primary key
-#  abandoned(Is this player abandoning?) :boolean
-#  side(Team side)                       :string           not null
-#  created_at                            :datetime         not null
-#  updated_at                            :datetime         not null
-#  battle_id                             :bigint           not null
-#  company_id                            :bigint           not null
-#  player_id                             :bigint           not null
+#  id                                      :bigint           not null, primary key
+#  abandoned(Is this player abandoning?)   :boolean          default(FALSE)
+#  ready(Ready flag for the player)        :boolean          default(FALSE)
+#  side(Team side)                         :string           not null
+#  team_balance(Assigned team for balance) :integer
+#  created_at                              :datetime         not null
+#  updated_at                              :datetime         not null
+#  battle_id                               :bigint           not null
+#  company_id                              :bigint           not null
+#  player_id                               :bigint           not null
 #
 # Indexes
 #
@@ -41,6 +43,11 @@ class BattlePlayer < ApplicationRecord
     company.doctrine.name
   end
 
+  # TODO Are we sure we want to surface this?
+  def player_elo
+    player.player_rating.elo
+  end
+
   def entity
     Entity.new(self)
   end
@@ -55,5 +62,6 @@ class BattlePlayer < ApplicationRecord
     expose :abandoned
     expose :company_doctrine, as: :companyDoctrine
     expose :ready
+    expose :team_balance, as: :teamBalance
   end
 end
