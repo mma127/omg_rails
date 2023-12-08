@@ -75,6 +75,15 @@ class BattleReportService
       # Catch but don't raise again
       Rails.logger.error("Failed to broadcast battle_finalized cable for battle #{@battle.id}, error: #{e.full_message}")
     end
+
+    begin
+      Rails.logger.info("Attempting to save battle report to S3")
+      save_report_file(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,
+                       dead_squads, surviving_squads, dropped_players, battle_stats)
+    rescue StandardError => e
+      # Catch but don't raise again
+      Rails.logger.error("Failed to upload battle report to S3 for battle #{@battle.id}, error: #{e.full_message}")
+    end
   end
 
   private
@@ -207,5 +216,23 @@ class BattleReportService
     # Transition battle to final
     Rails.logger.info("Transitioning battle #{@battle.id} state to final")
     @battle.finalize!
+  end
+
+  def save_report_file(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,
+                       dead_squads, surviving_squads, dropped_players, battle_stats)
+    report_hash = {
+      battle_id: battle_id,
+      final: is_final,
+      is_final: is_final == 1,
+      reporting_player_name: reporting_player_name,
+      time_elapsed: time_elapsed,
+      race_winner: race_winner,
+      map: map_name,
+      dead_squads: dead_squads,
+      surviving_squads: surviving_squads,
+      dropped_players: dropped_players,
+      stats: battle_stats
+    }
+    @battle.report_file.attach(io: StringIO.new(report_hash.to_json), filename: "battle_#{battle_id}_report.json")
   end
 end
