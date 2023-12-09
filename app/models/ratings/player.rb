@@ -1,4 +1,4 @@
-module Skill
+module Ratings
   class Player
     attr_accessor :name, :ts_rating, :last_played, :games_played, :wins, :losses
 

@@ -5,9 +5,11 @@
 #  id                                                 :bigint           not null, primary key
 #  elo(trueskill mu normalized between 1000 and 2000) :integer
 #  last_played(last played match)                     :date
-#  mu(trueskill mu)                                   :decimal(, )
+#  losses(losses to date)                             :integer          default(0)
+#  mu(trueskill mu)                                   :float
 #  player_name(historical player name)                :string
-#  sigma(trueskill sigma)                             :decimal(, )
+#  sigma(trueskill sigma)                             :float
+#  wins(wins to date)                                 :integer          default(0)
 #  created_at                                         :datetime         not null
 #  updated_at                                         :datetime         not null
 #  player_id                                          :bigint

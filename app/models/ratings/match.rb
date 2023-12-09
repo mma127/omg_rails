@@ -1,4 +1,4 @@
-module Skill
+module Ratings
   class Match
     attr_accessor :match_id, :winner, :date, :allies_players, :axis_players
     def initialize(match_id, winner, date)

@@ -43,12 +43,12 @@ task generate_elo_csv: :environment do
     else
       # Create a new Player model for this name
       ts_rating = Rating.new(MU, SIGMA)
-      player = Skill::Player.new(name, ts_rating)
+      player = Ratings::Player.new(name, ts_rating)
       @players_by_name[name] = player
     end
 
     side = get_side_from_doctrine(row["Doctrine"])
-    match_player = Skill::MatchPlayer.new(name, side, player.ts_rating, player.last_played)
+    match_player = Ratings::MatchPlayer.new(name, side, player.ts_rating, player.last_played)
 
     [row["Game-ID"], parse_date(row["Date"]), row["Winner"], match_player]
   end
@@ -130,7 +130,7 @@ task generate_elo_csv: :environment do
 
       # Set the first match or reset the current match id and players
       if current_match.blank? || match_id != current_match.match_id
-        current_match = Skill::Match.new(match_id, match_winner, match_date)
+        current_match = Ratings::Match.new(match_id, match_winner, match_date)
       end
 
       current_match.add_player(match_player)

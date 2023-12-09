@@ -30,6 +30,11 @@ class Battle < ApplicationRecord
   has_one_attached :zip_file
   has_one_attached :report_file
 
+  enum winner: {
+    allied: "allied",
+    axis: "axis"
+  }
+
   validates_presence_of :ruleset
   validates_presence_of :size
   validates_numericality_of :size
