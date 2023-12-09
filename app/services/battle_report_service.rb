@@ -54,12 +54,17 @@ class BattleReportService
       add_company_vps
       add_player_vps
 
-      # TODO Update battle stats
-      # TODO Reset squad stats after autorebuild
+      winner = map_winner(race_winner)
 
-      # BattleReports table to hold historical?
+      ## Update player skill ratings
+      update_player_ratings(winner)
 
-      finalize_battle(race_winner)
+      # TODO BattleReports table to hold historical?
+
+
+      # TODO Update company stats
+
+      finalize_battle(winner)
 
       Rails.logger.info("Finished processing battle report for battle #{battle_id}")
     rescue StandardError => e
@@ -91,6 +96,17 @@ class BattleReportService
   def validate_battle_ingame
     # Validate it is still in "ingame" state
     raise BattleReportValidationError.new "Invalid battle state '#{@battle.state}', expected 'ingame'" unless @battle.ingame?
+  end
+
+  def map_winner(race_winner)
+    case race_winner
+    when "Allies"
+      Battle.winners[:allied]
+    when "Axis"
+      Battle.winners[:axis]
+    else
+      raise BattleReportValidationError.new "Unknown race winner #{race_winner}"
+    end
   end
 
   # surviving_squads is a string in the format [squad_id],[experience];[squad_id],[experience];...
@@ -207,6 +223,10 @@ class BattleReportService
       end
     end
     Player.import!(players, on_duplicate_key_update: { conflict_target: [:id], columns: [:vps] })
+  end
+
+  def update_player_ratings(winner)
+    Ratings::BattleRatingsService.new(@battle.id).update_player_ratings(winner)
   end
 
   def finalize_battle(winner)

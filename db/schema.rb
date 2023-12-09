@@ -267,6 +267,8 @@ ActiveRecord::Schema.define(version: 2023_12_07_042011) do
     t.float "mu", comment: "trueskill mu"
     t.float "sigma", comment: "trueskill sigma"
     t.date "last_played", comment: "last played match"
+    t.integer "wins", default: 0, comment: "wins to date"
+    t.integer "losses", default: 0, comment: "losses to date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_id"], name: "index_historical_player_ratings_on_player_id"
@@ -296,6 +298,8 @@ ActiveRecord::Schema.define(version: 2023_12_07_042011) do
     t.float "mu", comment: "trueskill mu"
     t.float "sigma", comment: "trueskill sigma"
     t.date "last_played", comment: "last played match"
+    t.integer "wins", default: 0, comment: "wins to date"
+    t.integer "losses", default: 0, comment: "losses to date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_id"], name: "index_player_ratings_on_player_id"

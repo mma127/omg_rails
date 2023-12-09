@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Ratings::BattleRatingsService do
+RSpec.describe Ratings::BalanceService do
   let!(:player1) { create :player }
   let(:elo1) { 1500 }
   let!(:player1_rating) { create :player_rating, player: player1, elo: elo1 }
@@ -30,7 +30,7 @@ RSpec.describe Ratings::BattleRatingsService do
   let!(:battle) { create :battle, size: size }
 
   describe "#get_elo_difference" do
-    subject { described_class.new(battle).get_elo_difference }
+    subject { described_class.new(battle.id).get_elo_difference }
     context "with 1v1 battle" do
       before do
         create :battle_player, battle: battle, player: player1
@@ -95,7 +95,7 @@ RSpec.describe Ratings::BattleRatingsService do
   end
 
   describe "#find_most_balanced_teams" do
-    subject { described_class.new(battle).find_most_balanced_teams }
+    subject { described_class.new(battle.id).find_most_balanced_teams }
 
     context "with 2v2" do
       let(:size) { 2 }
@@ -240,7 +240,7 @@ RSpec.describe Ratings::BattleRatingsService do
     let!(:bp2) { create :battle_player, battle: battle, player: player2, team_balance: 2 }
     let!(:bp3) { create :battle_player, :axis, battle: battle, player: player3, team_balance: 1 }
 
-    subject { described_class.new(battle).clear_battle_balance_data }
+    subject { described_class.new(battle.id).clear_battle_balance_data }
 
     it "clears battle elo_diff" do
       subject

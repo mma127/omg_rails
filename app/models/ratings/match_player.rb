@@ -1,4 +1,4 @@
-module Skill
+module Ratings
   class MatchPlayer
     attr_accessor :name, :side, :ts_rating, :last_played
     def initialize(name, side, ts_rating, last_played)

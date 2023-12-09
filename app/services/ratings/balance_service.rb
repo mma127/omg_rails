@@ -1,8 +1,7 @@
 module Ratings
-  class BattleRatingsService
-
-    def initialize(battle)
-      @battle = battle
+  class BalanceService
+    def initialize(battle_id)
+      @battle = Battle.includes(battle_players: { player: :player_rating }).find(battle_id)
     end
 
     # TODO is there a use anymore for this?
