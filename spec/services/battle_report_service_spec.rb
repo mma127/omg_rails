@@ -19,11 +19,15 @@ RSpec.describe BattleReportService do
   let!(:squad23) { create :squad, available_unit: available_unit2, company: company2, tab_category: "infantry", category_position: 2 }
   let!(:squad23) { create :squad, available_unit: available_unit2, company: company2, tab_category: "infantry", category_position: 2 }
 
+  let(:update_service_double) { instance_double("Ratings::UpdateService", update_player_ratings: nil)}
+
   subject(:instance) { described_class.new(battle.id) }
 
   before do
     create :battle_player, battle: battle, player: player1, company: company1
     create :battle_player, battle: battle, player: player2, company: company2
+
+    allow(Ratings::UpdateService).to receive(:new).and_return(update_service_double)
   end
 
   describe "#process_report" do
@@ -91,7 +95,7 @@ RSpec.describe BattleReportService do
 
       it "finalizes the battle" do
         process_report
-        expect(battle.reload.winner).to eq race_winner
+        expect(battle.reload.winner).to eq Battle.winners[:allied]
         expect(battle.final?).to be true
       end
     end
@@ -359,7 +363,7 @@ RSpec.describe BattleReportService do
   end
 
   describe "#finalize_battle" do
-    let(:winner) { "Allies" }
+    let(:winner) { Battle.winners[:allied] }
     before do
       battle.update!(state: "reporting")
     end

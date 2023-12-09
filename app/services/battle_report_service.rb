@@ -226,7 +226,7 @@ class BattleReportService
   end
 
   def update_player_ratings(winner)
-    Ratings::BattleRatingsService.new(@battle.id).update_player_ratings(winner)
+    Ratings::UpdateService.new(@battle.id).update_player_ratings(winner)
   end
 
   def finalize_battle(winner)
