@@ -44,7 +44,7 @@ module Ratings
         weeks_since_last_played -= 3
 
         sigma_decay = WEEKLY_DECAY * weeks_since_last_played
-        ts_rating = Rating.new(ts_rating.mean, [SIGMA, ts_rating.deviation + sigma_decay].min)
+        ts_rating = ::Ratings::NamedRating.new(ts_rating.name, ts_rating.mean, [SIGMA, ts_rating.deviation + sigma_decay].min)
       end
       ts_rating
     end
@@ -90,7 +90,7 @@ module Ratings
 
       player_ratings = PlayerRating.all.to_a
       player_ratings.each do |p|
-        p.elo = normalize_to_elo(p.mu,  min_mu, max_mu)
+        p.elo = normalize_to_elo(p.mu, min_mu, max_mu)
       end
 
       PlayerRating.import! player_ratings,

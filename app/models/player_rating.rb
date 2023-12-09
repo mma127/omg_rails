@@ -51,6 +51,6 @@ class PlayerRating < ApplicationRecord
   end
 
   def ts_rating
-    Rating.new(mu, sigma)
+    Ratings::NamedRating.new(player.name, mu, sigma)
   end
 end
