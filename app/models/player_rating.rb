@@ -15,6 +15,7 @@
 #
 # Indexes
 #
+#  index_player_ratings_on_mu         (mu)
 #  index_player_ratings_on_player_id  (player_id)
 #
 # Foreign Keys

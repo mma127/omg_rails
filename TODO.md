@@ -14,3 +14,6 @@ Company
 
 Redux
 1. Fix missing rejectWithValue. See fetchCompanyBonuses for example
+
+BattlePlayer
+1. Pass `side` back for the BattlePlayer to create, to avoid relying on `company.faction.side` which may not be correct (ie, mixed teams)

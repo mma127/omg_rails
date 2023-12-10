@@ -3,8 +3,9 @@
 # Table name: historical_battle_players
 #
 #  id                                                                                    :bigint           not null, primary key
+#  date(date of the battle)                                                              :date
 #  elo(Trueskill mu normalized, after battle)                                            :integer
-#  is_winner(Whether the player won)                                                     :string           not null
+#  is_winner(Whether the player won)                                                     :boolean          not null
 #  losses(losses to date)                                                                :integer          default(0)
 #  mu(Trueskill mu, after battle)                                                        :float
 #  player_name(Denormalized player name in case player record is deleted)                :string           not null

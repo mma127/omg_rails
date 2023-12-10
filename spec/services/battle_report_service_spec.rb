@@ -20,6 +20,7 @@ RSpec.describe BattleReportService do
   let!(:squad23) { create :squad, available_unit: available_unit2, company: company2, tab_category: "infantry", category_position: 2 }
 
   let(:update_service_double) { instance_double("Ratings::UpdateService", update_player_ratings: nil)}
+  let(:historical_player_service_double) { instance_double("HistoricalBattlePlayerService", create_historical_battle_players_for_battle: nil)}
 
   subject(:instance) { described_class.new(battle.id) }
 
@@ -28,6 +29,7 @@ RSpec.describe BattleReportService do
     create :battle_player, battle: battle, player: player2, company: company2
 
     allow(Ratings::UpdateService).to receive(:new).and_return(update_service_double)
+    allow(HistoricalBattlePlayerService).to receive(:new).and_return(historical_player_service_double)
   end
 
   describe "#process_report" do

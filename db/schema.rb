@@ -266,12 +266,13 @@ ActiveRecord::Schema.define(version: 2023_12_10_051226) do
     t.string "battle_id", null: false, comment: "Battle id, could be duplicates in the long run through multiple war resets"
     t.bigint "faction_id", null: false
     t.bigint "doctrine_id", null: false
-    t.string "is_winner", null: false, comment: "Whether the player won"
+    t.boolean "is_winner", null: false, comment: "Whether the player won"
     t.integer "elo", comment: "Trueskill mu normalized, after battle"
     t.float "mu", comment: "Trueskill mu, after battle"
     t.float "sigma", comment: "Trueskill sigma, after battle"
     t.integer "wins", default: 0, comment: "wins to date"
     t.integer "losses", default: 0, comment: "losses to date"
+    t.date "date", comment: "date of the battle"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["doctrine_id"], name: "index_historical_battle_players_on_doctrine_id"
@@ -322,6 +323,7 @@ ActiveRecord::Schema.define(version: 2023_12_10_051226) do
     t.integer "losses", default: 0, comment: "losses to date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["mu"], name: "index_player_ratings_on_mu"
     t.index ["player_id"], name: "index_player_ratings_on_player_id"
   end
 
