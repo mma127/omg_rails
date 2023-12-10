@@ -54,17 +54,11 @@ class BattleReportService
       add_company_vps
       add_player_vps
 
-      winner = map_winner(race_winner)
-
-      ## Update player skill ratings
-      update_player_ratings(winner)
-
-      # TODO BattleReports table to hold historical?
-
-
       # TODO Update company stats
 
+      winner = map_winner(race_winner)
       finalize_battle(winner)
+      maybe_update_player_ratings(winner)
 
       Rails.logger.info("Finished processing battle report for battle #{battle_id}")
     rescue StandardError => e
@@ -225,8 +219,23 @@ class BattleReportService
     Player.import!(players, on_duplicate_key_update: { conflict_target: [:id], columns: [:vps] })
   end
 
+  # Skip updating ratings if battle is only 1v1
+  def maybe_update_player_ratings(winner)
+    return unless @battle.size > 1
+
+    ## Update player skill ratings
+    update_player_ratings(winner)
+
+    # Save historical battle player records
+    save_historical_battle_players(@battle.id)
+  end
+
   def update_player_ratings(winner)
     Ratings::UpdateService.new(@battle.id).update_player_ratings(winner)
+  end
+
+  def save_historical_battle_players(battle_id)
+    HistoricalBattlePlayer.new(battle_id).create_historical_battle_players_for_battle
   end
 
   def finalize_battle(winner)

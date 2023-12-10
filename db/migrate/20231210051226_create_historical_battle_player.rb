@@ -6,12 +6,13 @@ class CreateHistoricalBattlePlayer < ActiveRecord::Migration[6.1]
       t.string :battle_id, null: false, comment: "Battle id, could be duplicates in the long run through multiple war resets"
       t.references :faction, index: true, null: false
       t.references :doctrine, index: true, null: false
-      t.string :is_winner, null: false, comment: "Whether the player won"
+      t.boolean :is_winner, null: false, comment: "Whether the player won"
       t.integer :elo, comment: "Trueskill mu normalized, after battle"
       t.float :mu, comment: "Trueskill mu, after battle"
       t.float :sigma, comment: "Trueskill sigma, after battle"
       t.integer :wins, default: 0, comment: "wins to date"
       t.integer :losses, default: 0, comment: "losses to date"
+      t.date :date, comment: "date of the battle"
 
       t.timestamps
     end
