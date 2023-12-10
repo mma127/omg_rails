@@ -264,6 +264,7 @@ ActiveRecord::Schema.define(version: 2023_12_10_051226) do
     t.bigint "player_id"
     t.string "player_name", null: false, comment: "Denormalized player name in case player record is deleted"
     t.string "battle_id", null: false, comment: "Battle id, could be duplicates in the long run through multiple war resets"
+    t.bigint "faction_id", null: false
     t.bigint "doctrine_id", null: false
     t.string "is_winner", null: false, comment: "Whether the player won"
     t.integer "elo", comment: "Trueskill mu normalized, after battle"
@@ -274,6 +275,7 @@ ActiveRecord::Schema.define(version: 2023_12_10_051226) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["doctrine_id"], name: "index_historical_battle_players_on_doctrine_id"
+    t.index ["faction_id"], name: "index_historical_battle_players_on_faction_id"
     t.index ["player_id"], name: "index_historical_battle_players_on_player_id"
     t.index ["player_name"], name: "index_historical_battle_players_on_player_name"
   end

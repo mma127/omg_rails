@@ -4,6 +4,7 @@ class CreateHistoricalBattlePlayer < ActiveRecord::Migration[6.1]
       t.references :player, index: true, null: true
       t.string :player_name, null: false, comment: "Denormalized player name in case player record is deleted"
       t.string :battle_id, null: false, comment: "Battle id, could be duplicates in the long run through multiple war resets"
+      t.references :faction, index: true, null: false
       t.references :doctrine, index: true, null: false
       t.string :is_winner, null: false, comment: "Whether the player won"
       t.integer :elo, comment: "Trueskill mu normalized, after battle"
