@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_07_042011) do
+ActiveRecord::Schema.define(version: 2023_12_10_051226) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -258,6 +258,24 @@ ActiveRecord::Schema.define(version: 2023_12_07_042011) do
     t.string "name", comment: "Game name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "historical_battle_players", comment: "Historical record of battle results by player", force: :cascade do |t|
+    t.bigint "player_id"
+    t.string "player_name", null: false, comment: "Denormalized player name in case player record is deleted"
+    t.string "battle_id", null: false, comment: "Battle id, could be duplicates in the long run through multiple war resets"
+    t.bigint "doctrine_id", null: false
+    t.string "is_winner", null: false, comment: "Whether the player won"
+    t.integer "elo", comment: "Trueskill mu normalized, after battle"
+    t.float "mu", comment: "Trueskill mu, after battle"
+    t.float "sigma", comment: "Trueskill sigma, after battle"
+    t.integer "wins", default: 0, comment: "wins to date"
+    t.integer "losses", default: 0, comment: "losses to date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["doctrine_id"], name: "index_historical_battle_players_on_doctrine_id"
+    t.index ["player_id"], name: "index_historical_battle_players_on_player_id"
+    t.index ["player_name"], name: "index_historical_battle_players_on_player_name"
   end
 
   create_table "historical_player_ratings", force: :cascade do |t|
