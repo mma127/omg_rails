@@ -289,6 +289,39 @@ RSpec.describe Ratings::UpdateService do
           expect(player8_rating.mu).to eq 22.279620003258092
           expect(player8_rating.sigma).to eq 7.780003165756892
         end
+
+        context "when axis wins" do
+          let(:winner) { Battle.winners[:axis] }
+
+          it "updates player ratings", :aggregate_failures do
+            subject
+
+            expect(player1_rating.reload.elo).to eq 1378
+            expect(player1_rating.mu).to eq 21.354695772475225
+            expect(player1_rating.sigma).to eq 7.704028159317005
+            expect(player2_rating.reload.elo).to eq 1448
+            expect(player2_rating.mu).to eq 23.455226129443165
+            expect(player2_rating.sigma).to eq 4.050136360454276
+            expect(player3_rating.reload.elo).to eq 1621
+            expect(player3_rating.mu).to eq 28.650765848242003
+            expect(player3_rating.sigma).to eq 3.2953331826435988
+            expect(player4_rating.reload.elo).to eq 1190
+            expect(player4_rating.mu).to eq 15.71387281850332
+            expect(player4_rating.sigma).to eq 2.321454656983777
+            expect(player5_rating.reload.elo).to eq 1403
+            expect(player5_rating.mu).to eq 22.093674559532708
+            expect(player5_rating.sigma).to eq 1.3334332556499822
+            expect(player6_rating.reload.elo).to eq 1720
+            expect(player6_rating.mu).to eq 31.61775208592651
+            expect(player6_rating.sigma).to eq 2.7567814363294625
+            expect(player7_rating.reload.elo).to eq 1109
+            expect(player7_rating.mu).to eq 13.286127181496681
+            expect(player7_rating.sigma).to eq 2.321454656983777
+            expect(player8_rating.reload.elo).to eq 1621
+            expect(player8_rating.mu).to eq 28.64530422752479
+            expect(player8_rating.sigma).to eq 7.704028159317005
+          end
+        end
       end
     end
   end

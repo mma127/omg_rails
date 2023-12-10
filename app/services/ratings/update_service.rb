@@ -21,11 +21,14 @@ module Ratings
       calculate_team_ratings(team_ratings_list)
 
       time_played = Time.now
-      update_team_players(winner == allied, allied_player_ratings, allied_ts_ratings, time_played)
-      update_team_players(winner == axis, axis_player_ratings, axis_ts_ratings, time_played)
 
-      # Should this be async?
-      reconcile_player_elo
+      PlayerRating.transaction do
+        update_team_players(winner == allied, allied_player_ratings, allied_ts_ratings, time_played)
+        update_team_players(winner == axis, axis_player_ratings, axis_ts_ratings, time_played)
+
+        # Should this be async?
+        reconcile_player_elo
+      end
     end
 
     private
