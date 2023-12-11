@@ -40,5 +40,7 @@ class CreateCompanyStats < ActiveRecord::Migration[6.1]
       
       t.timestamps
     end
+
+    add_index :company_stats, :company_id, unique: true, name: "idx_company_stats_company_id_uniq"
   end
 end

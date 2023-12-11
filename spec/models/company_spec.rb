@@ -64,6 +64,20 @@ RSpec.describe Company, type: :model do
     it { should validate_presence_of(:ruleset) }
   end
 
+  describe 'callbacks' do
+    context "#maybe_create_company_stats" do
+      it "should create a CompanyStats object after creation" do
+        expect { create :company }.to change { CompanyStats.count }.by 1
+      end
+
+      it "does not create a CompanyStats object on update" do
+        c = create :company
+
+        expect { c.update!(name: "new name") }.not_to change { CompanyStats.count }
+      end
+    end
+  end
+
   describe "#resources_valid?" do
     context "when valid" do
       let(:company) { create :company, man: 100, mun: 100, fuel: 0 }
