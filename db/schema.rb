@@ -234,6 +234,7 @@ ActiveRecord::Schema.define(version: 2023_12_11_042537) do
     t.integer "streak_4v4", default: 0, null: false, comment: "win streak 4v4"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "idx_company_stats_company_id_uniq", unique: true
     t.index ["company_id"], name: "index_company_stats_on_company_id"
   end
 

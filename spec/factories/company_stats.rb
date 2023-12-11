@@ -37,10 +37,11 @@
 #
 # Indexes
 #
+#  idx_company_stats_company_id_uniq  (company_id) UNIQUE
 #  index_company_stats_on_company_id  (company_id)
 #
 FactoryBot.define do
-  factory :company_stats do
+  factory :company_stats, class: "CompanyStats" do
     association :company
   end
 end

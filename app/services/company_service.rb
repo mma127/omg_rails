@@ -50,9 +50,12 @@ class CompanyService
       available_offmaps_service = AvailableOffmapService.new(new_company)
       available_offmaps_service.build_new_company_available_offmaps
 
-      # Create AvailableUpgrades for the company
+      # Create AvailableUpgrades for the Company
       available_upgrade_service = AvailableUpgradeService.new(new_company)
       available_upgrade_service.build_new_company_available_upgrades
+
+      # Create CompanyStats for the Company
+      CompanyStats.create!(company: new_company)
 
       new_company
     end
