@@ -73,6 +73,10 @@ RSpec.describe CompanyService do
       expect(company.available_upgrades.find_by(upgrade: upgrade3, unit: unit3)).not_to be nil
     end
 
+    it "creates the Company's CompanyStats" do
+      expect { subject }.to change { CompanyStats.count }.by 1
+    end
+
     it "raises a validation error when the Player has too many Companies of that side" do
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
@@ -425,7 +429,7 @@ RSpec.describe CompanyService do
           expect { subject }
             .to raise_error(
                   CompanyService::CompanyUpdateValidationError,
-                  "Found 2 uses of available upgrade #{available_upgrade_1_1.id} with max 1, for company #{company.id} update and squad available unit id #{available_unit_1.id}" )
+                  "Found 2 uses of available upgrade #{available_upgrade_1_1.id} with max 1, for company #{company.id} update and squad available unit id #{available_unit_1.id}")
         end
       end
 
@@ -450,7 +454,7 @@ RSpec.describe CompanyService do
           expect { subject }
             .to raise_error(
                   CompanyService::CompanyUpdateValidationError,
-                  "Found 2 upgrade slots used for unit #{unit1.id} with #{unit1.upgrade_slots} upgrade slots, for company #{company.id} update and squad available unit id #{available_unit_1.id}" )
+                  "Found 2 upgrade slots used for unit #{unit1.id} with #{unit1.upgrade_slots} upgrade slots, for company #{company.id} update and squad available unit id #{available_unit_1.id}")
         end
       end
 
@@ -475,7 +479,7 @@ RSpec.describe CompanyService do
           expect { subject }
             .to raise_error(
                   CompanyService::CompanyUpdateValidationError,
-                  "Found 2 unitwide upgrade slots used for unit #{unit1.id} with #{unit1.unitwide_upgrade_slots} unitwide upgrade slots, for company #{company.id} update and squad available unit id #{available_unit_1.id}" )
+                  "Found 2 unitwide upgrade slots used for unit #{unit1.id} with #{unit1.unitwide_upgrade_slots} unitwide upgrade slots, for company #{company.id} update and squad available unit id #{available_unit_1.id}")
         end
       end
 
@@ -2343,7 +2347,7 @@ RSpec.describe CompanyService do
       end
 
       it "returns the correct resources when the override is forced" do
-        man, mun, fuel = instance.send(:calculate_remaining_resources, ruleset, company.reload.company_resource_bonuses, 4500, 1200, 1400, force_update=true)
+        man, mun, fuel = instance.send(:calculate_remaining_resources, ruleset, company.reload.company_resource_bonuses, 4500, 1200, 1400, force_update = true)
         expect(man).to eq 500 + 100 + 100 - 50
         expect(mun).to eq 800 - 10 - 10 + 40
         expect(fuel).to eq 0 - 15 - 15 - 10

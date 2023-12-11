@@ -62,12 +62,6 @@ class Company < ApplicationRecord
   validates_presence_of :player
   validates_presence_of :ruleset
 
-  after_create :maybe_create_company_stats
-
-  def maybe_create_company_stats
-    CompanyStats.find_or_create_by!(company: self)
-  end
-
   def resources_valid?
     !man.negative? && !mun.negative? && !fuel.negative?
   end
