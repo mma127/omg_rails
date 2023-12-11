@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_10_051226) do
+ActiveRecord::Schema.define(version: 2023_12_11_042537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -200,6 +200,41 @@ ActiveRecord::Schema.define(version: 2023_12_10_051226) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id"], name: "index_company_resource_bonuses_on_company_id"
     t.index ["resource_bonus_id"], name: "index_company_resource_bonuses_on_resource_bonus_id"
+  end
+
+  create_table "company_stats", comment: "Holds company stats updated after every battle", force: :cascade do |t|
+    t.bigint "company_id", null: false
+    t.integer "infantry_kills_1v1", default: 0, null: false
+    t.integer "infantry_kills_2v2", default: 0, null: false
+    t.integer "infantry_kills_3v3", default: 0, null: false
+    t.integer "infantry_kills_4v4", default: 0, null: false
+    t.integer "vehicle_kills_1v1", default: 0, null: false
+    t.integer "vehicle_kills_2v2", default: 0, null: false
+    t.integer "vehicle_kills_3v3", default: 0, null: false
+    t.integer "vehicle_kills_4v4", default: 0, null: false
+    t.integer "infantry_losses_1v1", default: 0, null: false
+    t.integer "infantry_losses_2v2", default: 0, null: false
+    t.integer "infantry_losses_3v3", default: 0, null: false
+    t.integer "infantry_losses_4v4", default: 0, null: false
+    t.integer "vehicle_losses_1v1", default: 0, null: false
+    t.integer "vehicle_losses_2v2", default: 0, null: false
+    t.integer "vehicle_losses_3v3", default: 0, null: false
+    t.integer "vehicle_losses_4v4", default: 0, null: false
+    t.integer "wins_1v1", default: 0, null: false
+    t.integer "wins_2v2", default: 0, null: false
+    t.integer "wins_3v3", default: 0, null: false
+    t.integer "wins_4v4", default: 0, null: false
+    t.integer "losses_1v1", default: 0, null: false
+    t.integer "losses_2v2", default: 0, null: false
+    t.integer "losses_3v3", default: 0, null: false
+    t.integer "losses_4v4", default: 0, null: false
+    t.integer "streak_1v1", default: 0, null: false, comment: "win streak 1v1"
+    t.integer "streak_2v2", default: 0, null: false, comment: "win streak 2v2"
+    t.integer "streak_3v3", default: 0, null: false, comment: "win streak 3v3"
+    t.integer "streak_4v4", default: 0, null: false, comment: "win streak 4v4"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["company_id"], name: "index_company_stats_on_company_id"
   end
 
   create_table "company_unlocks", force: :cascade do |t|

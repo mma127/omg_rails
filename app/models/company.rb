@@ -55,6 +55,7 @@ class Company < ApplicationRecord
   has_many :upgrades, -> { distinct }, through: :available_upgrades
   has_many :company_resource_bonuses, dependent: :destroy
   has_many :battle_players
+  has_one :company_stats
 
   validates_presence_of :faction
   validates_presence_of :doctrine
@@ -109,5 +110,7 @@ class Company < ApplicationRecord
     expose :company_unlocks, as: :unlocks, using: CompanyUnlock::Entity
     # TODO offmaps
     # TODO resource bonuses
+
+    expose :company_stats, as: :companyStats, using: CompanyStats::Entity, if: { type: :with_stats }
   end
 end
