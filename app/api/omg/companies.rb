@@ -10,7 +10,7 @@ module OMG
     resource :companies do
       desc 'get all companies for the player'
       get do
-        present Company.where(player: current_player)
+        present Company.includes(:company_stats).where(player: current_player), type: :with_stats
       end
 
       desc 'create new company for the player'
