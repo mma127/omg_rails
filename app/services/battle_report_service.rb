@@ -54,11 +54,16 @@ class BattleReportService
       add_company_vps
       add_player_vps
 
-      # TODO Update company stats
-
       winner = map_winner(race_winner)
+
+      # Mark battle as final with winner
       finalize_battle(winner)
+
+      # Update player ratings
       maybe_update_player_ratings(winner)
+
+      # Update company stats
+      process_battle_stats(battle_stats)
 
       Rails.logger.info("Finished processing battle report for battle #{battle_id}")
     rescue StandardError => e
@@ -235,7 +240,7 @@ class BattleReportService
   end
 
   def save_historical_battle_players(battle_id)
-    HistoricalBattlePlayer.new(battle_id).create_historical_battle_players_for_battle
+    HistoricalBattlePlayerService.new(battle_id).create_historical_battle_players_for_battle
   end
 
   def finalize_battle(winner)
@@ -263,5 +268,9 @@ class BattleReportService
       stats: battle_stats
     }
     @battle.report_file.attach(io: StringIO.new(report_hash.to_json), filename: "battle_#{battle_id}_report.json")
+  end
+
+  def process_battle_stats(battle_stats)
+    BattleReportStats::ReportParseService.new(@battle.id, battle_stats).process_battle_stats
   end
 end

@@ -4,7 +4,8 @@ RSpec.describe BattleReportService do
   let!(:player1) { create :player }
   let!(:player2) { create :player }
   let(:ruleset) { create :ruleset }
-  let!(:battle) { create :battle, ruleset: ruleset, state: "ingame" }
+  let(:size) { 1 }
+  let!(:battle) { create :battle, ruleset: ruleset, state: "ingame", size: size }
   let(:unit1) { create :unit }
   let(:unit2) { create :unit }
 
@@ -21,6 +22,7 @@ RSpec.describe BattleReportService do
 
   let(:update_service_double) { instance_double("Ratings::UpdateService", update_player_ratings: nil)}
   let(:historical_player_service_double) { instance_double("HistoricalBattlePlayerService", create_historical_battle_players_for_battle: nil)}
+  let(:report_parse_service_double) { instance_double("BattleReportStats::ReportParseService", process_battle_stats: nil)}
 
   subject(:instance) { described_class.new(battle.id) }
 
@@ -30,6 +32,7 @@ RSpec.describe BattleReportService do
 
     allow(Ratings::UpdateService).to receive(:new).and_return(update_service_double)
     allow(HistoricalBattlePlayerService).to receive(:new).and_return(historical_player_service_double)
+    allow(BattleReportStats::ReportParseService).to receive(:new).and_return(report_parse_service_double)
   end
 
   describe "#process_report" do
@@ -99,6 +102,37 @@ RSpec.describe BattleReportService do
         process_report
         expect(battle.reload.winner).to eq Battle.winners[:allied]
         expect(battle.final?).to be true
+      end
+
+      it "calls battle report stats" do
+        expect(report_parse_service_double).to receive(:process_battle_stats).once
+        process_report
+      end
+
+      context "when battle size is one" do
+        it "does not call rating update service" do
+          expect(update_service_double).not_to receive(:update_player_ratings)
+          process_report
+        end
+
+        it "does not call historical player service" do
+          expect(historical_player_service_double).not_to receive(:create_historical_battle_players_for_battle)
+          process_report
+        end
+      end
+
+      context "when battle size is larger than one" do
+        let(:size) { 4 }
+
+        it "calls rating update service" do
+          expect(update_service_double).to receive(:update_player_ratings).once
+          process_report
+        end
+
+        it "calls historical player service" do
+          expect(historical_player_service_double).to receive(:create_historical_battle_players_for_battle).once
+          process_report
+        end
       end
     end
 

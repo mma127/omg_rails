@@ -35,6 +35,8 @@ class Battle < ApplicationRecord
     axis: "axis"
   }
 
+  BATTLE_SIZES = [1,2,3,4].freeze
+
   validates_presence_of :ruleset
   validates_presence_of :size
   validates_numericality_of :size
