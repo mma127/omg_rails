@@ -48,6 +48,10 @@ class BattlePlayer < ApplicationRecord
     player.player_rating.elo
   end
 
+  def win?
+    side == battle.winner
+  end
+
   def entity
     Entity.new(self)
   end
