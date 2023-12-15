@@ -253,7 +253,7 @@ after :doctrines do
 
   ## Luft
   Infantry.create!(name: "falls", const_name: "PE.FALLSHIRMJAGERS", display_name: "Fallshirmjäger",
-                   unitwide_upgrade_slots: 1, upgrade_slots: 1, model_count: 4)
+                   unitwide_upgrade_slots: 1, upgrade_slots: 1, model_count: 4, is_airdrop: true, is_infiltrate: true)
   Infantry.create!(name: "gebirgs", const_name: "PE.FSJ_SCOUT", display_name: "Gebirgsjäger",
                    unitwide_upgrade_slots: 1, upgrade_slots: 1, model_count: 3)
   Infantry.create!(name: "luft_infantry", const_name: "PE.LUFTWAFFE", display_name: "Luftwaffe Infantry",
