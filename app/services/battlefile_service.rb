@@ -190,8 +190,8 @@ end
   def build_platoon_block(platoon, team_index, player_index, callin_modifiers)
     callin_modifier = calculate_callin_modifier_total(platoon.squads, callin_modifiers)
     glider = "false,"
-    paradrop = ""
-    infiltrate = ""
+    paradrop = true
+    infiltrate = true
     halftrack = ""
 
     squadnumber = 0
@@ -201,11 +201,12 @@ end
         glider = build_glider_squad_block(squad) # Should only have 1 glider per platoon
       elsif squad.transporting_transported_squads.present?
         halftrack << build_squad_block(squad)
-        # TODO PARADROP, INFILTRATE
       else
         squad_blocks << build_squad_block(squad)
         squadnumber += 1
       end
+      paradrop = paradrop && squad.unit.is_airdrop
+      infiltrate = infiltrate && squad.unit.is_infiltrate
     end
 
     @ucs_contents << platoon.ucs_string(team_index, player_index)
@@ -218,8 +219,8 @@ end
           NotAvailUntil = 0,
           Squadnumber = #{squadnumber},
           Glider = #{glider}
-          ParaDrop = #{format_squad_list(paradrop)}
-          Infiltrate = #{format_squad_list(infiltrate)}
+          ParaDrop = #{paradrop},
+          Infiltrate = #{infiltrate},
           HalfTrack = #{format_squad_list(halftrack)}\n#{squad_blocks}
         },
     PLATOON
