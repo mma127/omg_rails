@@ -18,6 +18,7 @@ import { makeStyles } from "@mui/styles";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { deleteCompanyById } from "../companiesSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { StatsDisplay } from "./StatsDisplay";
 
 const useStyles = makeStyles(theme => ({
   optionImage: {
@@ -49,26 +50,23 @@ export const CompanySummary = ({ company }) => {
   return (
     <Box m={5} sx={{ maxWidth: '600px' }} justifyContent="center">
       <Card elevation={3}>
-          <CardActionArea onClick={manageCompany}>
-            <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>
-              <img src={doctrineImgMapping[doctrine.name]} alt={doctrine.displayName}
-                   className={classes.optionImage} />
-            </Box>
-            <CardContent>
-              <Typography variant="h6">{company.name}</Typography>
-              <Typography variant="body2">Company Stats Here</Typography>
-              <Typography variant="body2">Company Stats Here</Typography>
-              <Typography variant="body2">Company Stats Here</Typography>
-              <Typography variant="body2">Company Stats Here</Typography>
-            </CardContent>
-          </CardActionArea>
+        <CardActionArea onClick={manageCompany}>
+          <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>
+            <img src={doctrineImgMapping[doctrine.name]} alt={doctrine.displayName}
+                 className={classes.optionImage}/>
+          </Box>
+          <CardContent>
+            <Typography variant="h6">{company.name}</Typography>
+            <StatsDisplay stats={company.companyStats}/>
+          </CardContent>
+        </CardActionArea>
         <CardActions>
           <Grid container>
             <Grid item xs={11}>
               <Button variant="contained" to={managementLink} component={Link} color="secondary">Manage Company</Button>
             </Grid>
             <Grid item xs={1}>
-              <DeleteOutlineIcon onClick={deleteCompany} className={classes.deleteIcon} color="error" />
+              <DeleteOutlineIcon onClick={deleteCompany} className={classes.deleteIcon} color="error"/>
             </Grid>
           </Grid>
         </CardActions>
