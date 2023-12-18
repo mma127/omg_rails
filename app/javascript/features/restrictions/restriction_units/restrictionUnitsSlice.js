@@ -23,7 +23,11 @@ export const fetchRestrictionUnits = createAsyncThunk(
 const restrictionUnitsSlice = createSlice({
   name: "restrictionUnits",
   initialState,
-  reducers: {},
+  reducers: {
+    clearRestrictionUnits(state) {
+      state.restrictionUnits = [];
+    }
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchRestrictionUnits.pending, (state) => {
@@ -41,5 +45,7 @@ const restrictionUnitsSlice = createSlice({
 })
 
 export default restrictionUnitsSlice.reducer
+
+export const { clearRestrictionUnits } = restrictionUnitsSlice.actions
 
 export const selectRestrictionUnits = state => state.restrictionUnits.restrictionUnits
