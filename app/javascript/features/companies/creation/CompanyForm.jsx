@@ -49,7 +49,6 @@ export const CompanyForm = ({ side, back, company, single = false, companyCallba
   const { reset, handleSubmit, setValue, control, formState: { errors, isSubmitting } } = useForm({
     resolver: yupResolver(schema),
   });
-  console.log(`Submitting ${isSubmitting}`)
 
   useEffect(() => {
     reset()
