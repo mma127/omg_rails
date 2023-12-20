@@ -25,7 +25,7 @@ module OMG
           company_service = CompanyService.new(current_player)
           new_company = company_service.create_company(doctrine, declared_params[:name])
 
-          present new_company
+          present new_company, type: :with_stats
         rescue StandardError => e
           Rails.logger.warn("Failed to create company for Player #{current_player.id} with params #{params}: #{e.message}\n#{e.backtrace.first(15).join("\n")}")
           error! e.message, 400

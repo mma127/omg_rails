@@ -1,16 +1,16 @@
 da_id,internal_name,const,tree,branch,tier,description,vp
 1,Bombing Run,OMGDOCUPG.ALLY.AIRBOURNE.TR1.B1.T1,1,1,1,Bombing Run now available for purchase. 180 mu per use.,3
-127,Heavy Recon,OMGDOCUPG.ALLY.AIRBOURNE.TR1.B1.T2,1,1,2,M8 and T17 now take 15% less received accuracy while moving.,2
+127,Heavy Recon,OMGDOCUPG.ALLY.AIRBOURNE.TR1.B1.T2,1,1,2,M8 and T17 now take 15% less received accuracy while moving and have +5 LOS.,2
 201,Behind Enemy Lines,OMGDOCUPG.ALLY.AIRBOURNE.TR1.B1.T3,1,1,3,Airborne squads can purchase radios allowing them to capture unconnected territory.,3
 2,Pitching Practice,OMGDOCUPG.ALLY.AIRBOURNE.TR1.B2.T1,1,2,1,"All Airborne may now throw Grenades and Smoke Grenades 50% further, as well as from buildings. Satchels may also be thrown 50% further.",6
 128,Hellhounds,OMGDOCUPG.ALLY.AIRBOURNE.TR1.B2.T2,1,2,2,Allows the Hellcat to purchase the Staghound 50.Cal. Ambush bonus now last for a second shot. Lowers turret rotation speed by 20%.,4
 202,Flamethrower Envy,OMGDOCUPG.ALLY.AIRBOURNE.TR1.B2.T3,1,2,3,Sherman Crocs can purchase a .50 cal turret MG. Engineer Flamethrowers gain +5 range and +15% damage.,3
 4,Big Boom,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T1,2,1,1,All Airborne now throw a second Satchel Charge after throwing the first.,4
-129,Long Range Options,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T2,2,1,2,"All Airborne may equip 4 Ranger Garands for free, and may purchase up to 2 M1919A6 LMGs for 90 MU.",5
-203,Raid Assault,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T3,2,1,3,"Airborne have +10% sightrange, accuracy, health, and 50% reduced ability cooldowns for 60 seconds after a drop. Fireup grants heroic charge bonuses and extra speed. | Testing, use at your own risk",5
+129,Long Range Options,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T2,2,1,2,"All Airborne may equip 4 Ranger Garands for free, and may purchase up to 2 M1919A6 LMGs for 80 MU.",5
+203,Hot Drop,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T3,2,1,3,"Airborne have +15% sight range and health for 90 seconds after a dropping in hostile territory, and reset Fireup cooldown after 45 seconds. Assault Airborne Squads now spawn a smoke cloud on drop. ",999
 5,Weighted Packs,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B2.T1,2,2,1,All purely airdropped platoons deploy 50% faster. Includes Airborne support teams.,2
 130,Improved Carbines,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B2.T2,2,2,2,All Airborne may equip 4 M1A1 Carbines for free. Assault Airborne Thompson upgrade is replaced by M2 Carbines.,5
-204,Tier 3 alpha,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B2.T3,2,2,3,"",1000
+204,Raid Assault,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B2.T3,2,2,3,Fireup grants heroic charge bonuses instead. Ending the charge in hostile territory delays the exhaustion. Note: Heroic Charge does NOT grant suppression immunity.,3
 7,Support Teams,OMGDOCUPG.ALLY.AIRBOURNE.TR3.B1.T1,3,1,1,"Machine Guns, Mortars, and Anti-Tank Guns now have Airborne crews. Mortars and Machine Guns may also use fireup when they have these crews.",3
 131,Medical Supplies,OMGDOCUPG.ALLY.AIRBOURNE.TR3.B1.T2,3,1,2,Medical Crates now available for purchase. Airdrops a supply crate which quickly heals nearby infantry for a short duration. 55 mu per use.,5
 205,Tier 3 alpha,OMGDOCUPG.ALLY.AIRBOURNE.TR3.B1.T3,3,1,3,"",1000
@@ -20,27 +20,27 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 19,Mechanics,OMGDOCUPG.ALLY.ARMOUR.TR1.B1.T1,1,1,1,Jeeps and M3 Half-tracks (excluding quads) now have Bren Carrier Self-Repair.,2
 115,Patton's War,OMGDOCUPG.ALLY.ARMOUR.TR1.B1.T2,1,1,2,All platoons with tanks or vehicles (excluding Jeeps) will arrive on field instantly.,5
 189,Red Ones Go Faster,OMGDOCUPG.ALLY.ARMOUR.TR1.B1.T3,1,1,3,Halftracks gain overdrive and 50% faster turret rotation. Quad .50s gain overdrive and 25% faster turret rotation.,3
-116,Tracking the Tracks,OMGDOCUPG.ALLY.ARMOUR.TR1.B2.T2,1,3,2,"Mechanized Infantry, Snipers, Jeeps, and Armored Cars gain the Tracking the Tracks&amp ability to use on enemy vehicles, which grants x1.2 received accuracy, penetration, and fog of war detection.",4
-190,Alternative Rounds,OMGDOCUPG.ALLY.ARMOUR.TR1.B2.T3,1,3,3,Calliopes can fire an armour piercing barrage. Sherman 105 can fire bunker buster and smoke rounds.,3
 21,Specialized Optics,OMGDOCUPG.ALLY.ARMOUR.TR1.B3.T1,1,3,1,"M10s, M18s, M36, and Easy Eights now have +5 sight range.",3
+116,Tracking the Tracks,OMGDOCUPG.ALLY.ARMOUR.TR1.B2.T2,1,3,2,"Mechanized Infantry, Snipers, Jeeps, and Armored Cars gain the Tracking the Tracks ability to use on enemy vehicles, which grants x1.2 received accuracy, penetration, and fog of war detection.",4
+190,Alternative Rounds,OMGDOCUPG.ALLY.ARMOUR.TR1.B2.T3,1,3,3,Calliopes can fire an armour piercing barrage. Sherman 105 can fire bunker buster and smoke rounds.,3
 22,TC Can Do His Job!,OMGDOCUPG.ALLY.ARMOUR.TR2.B1.T1,2,1,1,Purchasing the 50 cal machine gun upgrade on vehicles now also increase line of sight by 5.,5
 117,Smokey Shots,OMGDOCUPG.ALLY.ARMOUR.TR2.B1.T2,2,1,2,Shermans and Pershings may fire smoke rounds.,2
 191,Tier 3 alpha,OMGDOCUPG.ALLY.ARMOUR.TR2.B1.T3,2,1,3,"",1000
 23,A Tool For Every Job,OMGDOCUPG.ALLY.ARMOUR.TR2.B2.T1,2,2,1,"All Sherman variants may now purchase either the Mine flail or Bulldozer. Bulldozers and Mine flails reduce speed by 25% instead of 50%. In addition, Mine fails give 10% more hitpoints.",3
 118,Next Generation Vehicles,OMGDOCUPG.ALLY.ARMOUR.TR2.B2.T2,2,2,2,"Increases acceleration, deceleration, and turret rotation on all tanks except the 105 and E8 by 25%.",6
 192,Tier 3 alpha,OMGDOCUPG.ALLY.ARMOUR.TR2.B2.T3,2,2,3,"",1000
+26,Quadruple Bypass,OMGDOCUPG.ALLY.ARMOUR.TR3.B2.T1,3,2,1,Quad 50. Cal Halftracks may now use AP Rounds.,3
 119,Take and Hold,OMGDOCUPG.ALLY.ARMOUR.TR3.B1.T2,3,2,2,All nontank vehicles except jeeps may now capture territory.,5
 193,Tier 3 alpha,OMGDOCUPG.ALLY.ARMOUR.TR3.B1.T3,3,2,3,"",1000
-26,Quadruple Bypass,OMGDOCUPG.ALLY.ARMOUR.TR3.B2.T1,3,2,1,Quad 50. Cal Halftracks may now use AP Rounds.,3
+27,Field Mechanics,OMGDOCUPG.ALLY.ARMOUR.TR3.B3.T1,3,3,1,All Engineers can now repair 30% faster.,6
 120,Vehicular Repair Manuals,OMGDOCUPG.ALLY.ARMOUR.TR3.B2.T2,3,3,2,Vehicles and tanks may purchase self repair kits.,6
 194,Tier 3 alpha,OMGDOCUPG.ALLY.ARMOUR.TR3.B2.T3,3,3,3,"",1000
-27,Field Mechanics,OMGDOCUPG.ALLY.ARMOUR.TR3.B3.T1,3,3,1,All Engineers can now repair 30% faster.,6
 10,Second Wind,OMGDOCUPG.ALLY.INFANTRY.TR1.B1.T1,1,1,1,Fire-up and Sprint cooldowns reduced by 30 seconds.,3
 133,Here to Clean Up This Mess,OMGDOCUPG.ALLY.INFANTRY.TR1.B1.T2,1,1,2,"Rangers are no longer purchased with bazookas. May purchase 2 Bazookas, 4 Thompsons, and/or 2 BARs.",5
 207,Rangers Lead the Way,OMGDOCUPG.ALLY.INFANTRY.TR1.B1.T3,1,1,3,Rifleman can replace their squad leader with a Ranger for 20mp. Those squads also recover from suppression 20% faster.,4
 11,Reinforced Structures,OMGDOCUPG.ALLY.INFANTRY.TR1.B2.T1,1,2,1,"Medic Tents, Triage Centers, and Machine Gun Nests have 25% more hit points.",2
 134,Purple Heart Soldiers,OMGDOCUPG.ALLY.INFANTRY.TR1.B2.T2,1,2,2,"Riflemen equipped with BARs receive 0.85 received damage at 5 men, an additional 0.85 received damage at 3 men, and an additional 0.85 damage at 2 men.",4
-208,Machine Guns as Primary Weapon,OMGDOCUPG.ALLY.INFANTRY.TR1.B2.T3,1,2,3,"Shermans receive +20% reload time, but in return hull/coaxial machine guns receive +25% increased damage, -25% cooldown, +25% burst duration and +15 range. Turret MGs receive +5 range, +25% burst duration, -25% cooldown.",3
+208,Machine Guns as Primary Weapon,OMGDOCUPG.ALLY.INFANTRY.TR1.B2.T3,1,2,3,"Shermans receive +20% reload time, but in return hull/coaxial machine guns receive +25% increased damage, firerate and burst duration, -25% cooldown, and +15 range. Turret MGs receive +5 range, +20% burst duration and firerate, -20% cooldown.",3
 13,Setting up the Field,OMGDOCUPG.ALLY.INFANTRY.TR2.B1.T1,2,1,1,Riflemen and Ambush Riflemen can build Barbed Wire and Sandbags.,3
 135,Mk. 3 Potato Grenade,OMGDOCUPG.ALLY.INFANTRY.TR2.B1.T2,2,1,2,Potato Grenade ability is now given to squads who purchase grenades. Throws a fake grenade at target.,1
 209,Tier 3 alpha,OMGDOCUPG.ALLY.INFANTRY.TR2.B1.T3,2,1,3,"",1000

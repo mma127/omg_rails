@@ -4,6 +4,8 @@
 #
 #  id                                                                    :bigint           not null, primary key
 #  branch(Which branch of the doctrine tree this unlock will appear at)  :integer
+#  disabled(Is this doctrine unlock disabled?)                           :boolean          default(FALSE), not null
+#  internal_description(Doctrine and Unlock names)                       :string
 #  row(Which row of the doctrine tree branch this unlock will appear at) :integer
 #  tree(Which tree of the doctrine this unlock will appear at)           :integer
 #  vp_cost(VP cost of this doctrine unlock)                              :integer          default(0), not null

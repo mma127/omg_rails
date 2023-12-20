@@ -62,7 +62,7 @@ const buildUnitSwaps = (unitSwaps) => {
         unitSwaps.map(us => (
           <Box sx={{ display: "flex", alignItems: "center" }} key={us.id}>
             <StaticUnitIcon name={us.oldUnit.name} />
-            <Box sx={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+            <Box sx={{ paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
               <EastIcon />
             </Box>
             <StaticUnitIcon name={us.newUnit.name} />
@@ -123,10 +123,11 @@ export const UnlockDetails = ({ doctrineUnlock }) => {
         <Accordion sx={{ backgroundColor: '#232323' }}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
+            sx={{paddingLeft: "8px", paddingRight: "8px"}}
           >
             <Typography>Details</Typography>
           </AccordionSummary>
-          <AccordionDetails>
+          <AccordionDetails sx={{paddingLeft: "8px", paddingRight: "8px"}}>
             {detailsContent}
           </AccordionDetails>
         </Accordion>

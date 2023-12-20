@@ -32,6 +32,7 @@ medic_station,ALLY.MEDIC_STATION,Medic Station,"Tent that spawns medics to colle
 triage_center,ALLY.TRIAGE_CENTER,Triage Center,Building that heals nearby infantry,building,americans,,,0,160,0,0,1,0,0,,,,engineers
 ally_mines,ALLY.MINES,Mines,Camouflaged explosives that detonate on enemy contact. ,consumable,americans,,,0,35,0,0,2,0,0,1,,,engineers
 57mm_ap_rounds,ALLY.AT_AP_ROUNDS,AP Rounds,Increases armor penetration and damage for 10 seconds,ability,americans,,,0,60,0,0,0,1,0,1,,,57mm_atg
+57mm_ap_rounds,ALLY.AT_AP_ROUNDS,AP Rounds,Increases armor penetration and damage for 10 seconds,ability,,airborne,,0,60,0,0,0,1,0,1,,,airborne_atg
 m8_side_skirts,ALLY.M8_SIDE_SKIRTS,Side Skirts,Side skirts that double the M8's health,passive,americans,,,100,0,20,0,0,0,0,1,,,greyhound
 m8_50_cal,ALLY.M8_50_CAL,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,americans,,,0,50,0,0,0,0,0,1,,,greyhound
 m8_mines,ALLY.M8_MINES,Greyhound Mines,"Camouflaged explosives that detonate on enemy contact, more powerful than engineer-laid mines",consumable,americans,,,0,40,0,0,1,1,0,1,,,greyhound
