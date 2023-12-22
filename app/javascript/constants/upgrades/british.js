@@ -9,6 +9,8 @@ import churchill_plow from "../../../assets/images/doctrines/british/upgrades/ch
 import flank_speed from "../../../assets/images/doctrines/british/upgrades/flank_speed.png"
 import heroic_charge from "../../../assets/images/doctrines/british/upgrades/heroic_charge.png"
 import johnson_lmg from "../../../assets/images/doctrines/british/upgrades/johnson_lmg.png"
+import mg_pit from "../../../assets/images/doctrines/british/upgrades/mg_pit.png"
+import mortar_pit from "../../../assets/images/doctrines/british/upgrades/mortar_pit.png"
 import piat_commando_four from "../../../assets/images/doctrines/british/upgrades/piat_commando_four.png"
 import piats from "../../../assets/images/doctrines/british/upgrades/piats.png"
 import rifle_grenade from "../../../assets/images/doctrines/british/upgrades/rifle_grenade.png"
@@ -47,6 +49,8 @@ export const CMW_TANK_SMOKE = 'cmw_tank_smoke'
 export const CMW_TIMED_DEMO = 'cmw_timed_demo'
 export const COMMANDO_GRENADE = 'commando_grenade'
 export const COMMANDO_DEMO_CHARGE = 'commando_demo_charge'
+export const EMPTY_MORTAR_PIT = 'empty_mortar_pit'
+export const EMPTY_MG_NEST = 'empty_mg_nest'
 export const FLANK_SPEED = 'flank_speed'
 export const HEROIC_CHARGE = 'heroic_charge'
 export const JOHNSON_LMG = 'johnson_lmg'
@@ -86,6 +90,8 @@ export const upgradeImageMapping = {
   [CMW_TIMED_DEMO]: timed_demo,
   [COMMANDO_DEMO_CHARGE]: timed_demo,
   [COMMANDO_GRENADE]: grenade,
+  [EMPTY_MG_NEST]: mg_pit,
+  [EMPTY_MORTAR_PIT]: mortar_pit,
   [FLANK_SPEED]: flank_speed,
   [HEROIC_CHARGE]: heroic_charge,
   [JOHNSON_LMG]: johnson_lmg,

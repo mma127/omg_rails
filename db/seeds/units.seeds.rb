@@ -93,6 +93,7 @@ after :doctrines do
                    unitwide_upgrade_slots: 0, upgrade_slots: 2, model_count: 4)
 
   Tank.create!(name: "stuart_recce", const_name: "CMW.STUART_RECON", display_name: "Stuart Recce")
+  Tank.create!(name: "achilles", const_name: "CMW.ACHILLES", display_name: "Achilles")
   Tank.create!(name: "comet", const_name: "CMW.COMET", display_name: "Comet")
   Tank.create!(name: "priest", const_name: "CMW.PRIEST", display_name: "Priest")
 

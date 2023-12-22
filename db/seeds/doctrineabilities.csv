@@ -107,11 +107,11 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 162,Propaganda Ministry,OMGDOCUPG.AXIS.TERROR.TR3.B2.T2,15,3,2,Propaganda Towers may now be built by Pioneers for 1 population. Propaganda Towers reduce accuracy by 15% and increase received suppression by 15% on nearby enemy infantry.,3
 236,Tier 3 alpha,OMGDOCUPG.AXIS.TERROR.TR3.B2.T3,15,3,3,"",1000
 72,Fog of War,OMGDOCUPG.AXIS.TERROR.TR3.B3.T1,15,3,1,"Offmap ability which lowers LoS and Stealth Detection of all the squads within a circle for a short time. Recharging cooldown, 50 mu.",2
-46,Release the Hounds,OMGDOCUPG.CMW.COMMANDO.TR1.B1.T1,34,1,1,Bren Gun Carriers now have an ability which adds +10 sight range and grants +18 stealth detection.,3
-151,Disappearing Act,OMGDOCUPG.CMW.COMMANDO.TR1.B1.T2,34,1,2,&quot;Concealing Smoke&quot; cloaks units 30% longer.,5
-225,Commando Officers,OMGDOCUPG.CMW.COMMANDO.TR1.B1.T3,34,1,3,LTs and Captains gain Commando smoke on a 5 minute cooldown. LTs get an unreasonable increase in health.,3
+46,Release the Hounds,OMGDOCUPG.CMW.COMMANDO.TR1.B1.T1,34,1,1,Bren Gun Carriers now have an ability which adds +10 sight range and grants +18 stealth detection. SAS Jeeps receive half the bonus.,3
+151,Disappearing Act,OMGDOCUPG.CMW.COMMANDO.TR1.B1.T2,34,1,2,"Concealing Smoke cloaks units 30% longer, but has 25% longer cooldown.",5
+225,Commando Officers,OMGDOCUPG.CMW.COMMANDO.TR1.B1.T3,34,1,3,LTs and Captains gain Commando smoke on a 5 minute cooldown.,3
 47,Packing Heat,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T1,34,2,1,"Lieutenants and Captains may now purchase Commando Grenades for 40 Munitions, a PIAT for 30 Munitions, a Bren Gun for 20 Munitions, or a Boys AT Rifle for free.",3
-152,Commando Fire Teams,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T2,34,2,2,"PIAT Commandos may purchase a fourth squad member. They may also choose to swap their PIATs for Three Bren Guns with a 20 MU refund, or Three Boys AT Rifles and a 60 MU refund.",4
+152,Commando Fire Teams,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T2,34,2,2,"PIAT Commandos may purchase a 4th squad member. They may also choose to swap their PIATs for 3 Bren Guns with a 20 MU refund, or 3 Boys AT Rifles and a 60 MU refund.",4
 226,Commando Hospitals,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T3,34,2,3,Gilder CCS is available for deployment. [Bugged],4
 49,Quick Reaction Force,OMGDOCUPG.CMW.COMMANDO.TR2.B1.T1,35,1,1,Pure Commando platoons now deploy 75% faster (including Polish Paras and gliders).,2
 153,25 Pounder Artillery Barrage,OMGDOCUPG.CMW.COMMANDO.TR2.B1.T2,35,1,2,25 Pounder Artillery Barrage (80 mu per use) and Decoy Smoke (5 mu per use) now available for purchase.,3
@@ -127,25 +127,25 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 230,Tier 3 alpha,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T3,36,2,3,"",1000
 28,Mechanized Escorts,OMGDOCUPG.CMW.ENGINEERS.TR1.B1.T1,28,1,1,"Emplacement trucks have 50% higher speed, acceleration, and deceleration along with 20% more hitpoints. In addition, 25 Pounders and Bofors now have 35% more hitpoints and gain the Hunker Down ability.",1
 139,Prepared Fighting Positions,OMGDOCUPG.CMW.ENGINEERS.TR1.B1.T2,28,1,2,"When in proper emplacements, Vickers Machine Gun and 3 Inch Mortars receive Lieutenant buff[BUGGED]. 17 Pounder Nests will provide Captain aura buff to the sector(working)",3
-213,AVRE Piat,OMGDOCUPG.CMW.ENGINEERS.TR1.B1.T3,28,1,3,"The AVRE gains a high penetration, low AoE anti-tank shell capable of doing significant damage.",3
+213,AVRE PIAT,OMGDOCUPG.CMW.ENGINEERS.TR1.B1.T3,28,1,3,"The AVRE gains a high penetration, low AoE anti-tank shell capable of doing significant damage.",3
 29,I need drugs NOW!,OMGDOCUPG.CMW.ENGINEERS.TR1.B2.T1,28,2,1,Casualty Clearing Station have 30% less cooldown timer and +10 healing radius.,3
 140,The Greatest Heroes,OMGDOCUPG.CMW.ENGINEERS.TR1.B2.T2,28,2,2,Captains gain the &quot;Heroic Sit and Shoot&quot; ability which makes all infantry near the captain fight harder while moving slowly.,3
-214,Proactive Medics,OMGDOCUPG.CMW.ENGINEERS.TR1.B2.T3,28,2,3,CCS medics are replaced with active healing medics. [Bugged],4
+214,Proactive Medics,OMGDOCUPG.CMW.ENGINEERS.TR1.B2.T3,28,2,3,CCS medics are replaced with active healing medics.,4
 31,Behaving Like Officers,OMGDOCUPG.CMW.ENGINEERS.TR2.B1.T1,29,1,1,"Tank Commanders grant 15% increased experience gain. In addition, Churchills may now purchase the Tank Commander upgrade for 25 Munitions.",2
 141,I Can See for Miiiiles Up Here,OMGDOCUPG.CMW.ENGINEERS.TR2.B1.T2,29,1,2,I Can See For Miles ability is given to all tanks with Tank Commanders. Grants line of sight to a selected area.,4
 215,Tier 3 alpha,OMGDOCUPG.CMW.ENGINEERS.TR2.B1.T3,29,1,3,"",1000
-32,Speaking from the pulpit,OMGDOCUPG.CMW.ENGINEERS.TR2.B2.T1,29,2,1,Cromwell Command Tanks now grant Lieutenant aura buff to infantry.,1
+32,Speaking from the Pulpit,OMGDOCUPG.CMW.ENGINEERS.TR2.B2.T1,29,2,1,Cromwell Command Tanks now grant Lieutenant aura buff to infantry.,1
 142,Maneuver Training,OMGDOCUPG.CMW.ENGINEERS.TR2.B2.T2,29,2,2,Firefly 17pdr's moving accuracy penalty is removed. Cromwell and Churchill 6pdrs' moving accuracy penalty is reduced to 0.75. All Churchills may buy mineplows.,4
 216,Tier 3 alpha,OMGDOCUPG.CMW.ENGINEERS.TR2.B2.T3,29,2,3,"",1000
 34,Hulldown,OMGDOCUPG.CMW.ENGINEERS.TR3.B1.T1,30,1,1,"British Armor gains the Hulldown ability, which disables movement but grants 0.75 received penetration and 0.75 received damage.",3
 143,Armor Ingenuity,OMGDOCUPG.CMW.ENGINEERS.TR3.B1.T2,30,1,2,"AVRE turret rotation, acceleration, and max speed increased by 30%. Flame-Stuarts gain +5 range.",3
-217,Infantry Fighting Vehicle,OMGDOCUPG.CMW.ENGINEERS.TR3.B1.T3,30,1,3,Tommies and Sappers grant nearby Tanks -1% received penetration and accuracy per man. Tankshock grants nearby troops -10% rec. accuracy.,4
+217,Infantry Fighting Vehicle,OMGDOCUPG.CMW.ENGINEERS.TR3.B1.T3,30,1,3,Tommies and Sappers grant nearby Tanks -1% received penetration and accuracy per man. Tank Shock grants nearby troops -10% rec. accuracy.,4
 35,Now This is a Big Sodding Gun,OMGDOCUPG.CMW.ENGINEERS.TR3.B2.T1,30,2,1,Sappers may now purchase Rifle Grenades and Bren Guns. (Clearing charges will be available with demos with a coming patch),1
 144,Golden Wrenches,OMGDOCUPG.CMW.ENGINEERS.TR3.B2.T2,30,2,2,Sappers gain Golden Wrenches ability which instantly restores 100 health on tanks.,5
 218,Tier 3 alpha,OMGDOCUPG.CMW.ENGINEERS.TR3.B2.T3,30,2,3,"",1000
 37,Rifled Barrels,OMGDOCUPG.CMW.RCA.TR1.B1.T1,31,1,1,"25 Pounders, Priests, and Supercharged 3 Inch Mortars have 15% less scatter and 15% more accuracy.",3
 145,Supercharged Shells,OMGDOCUPG.CMW.RCA.TR1.B1.T2,31,1,2,"Supercharge upgrade available on Mortars, Priests, and 25 Pounders.",5
-219,Has been moved,OMGDOCUPG.CMW.RCA.TR1.B1.T3,31,1,3,"",25
+219,Has been moved,OMGDOCUPG.CMW.RCA.TR1.B1.T3,31,1,3,Artillery Overwatch is being tested here. It is remarkably difficult to get to work.,25
 38,Cancer Causing,OMGDOCUPG.CMW.RCA.TR1.B2.T1,31,2,1,[No longer purchaseable. Will be replaced] ,100
 146,Creeping Barrage,OMGDOCUPG.CMW.RCA.TR1.B2.T2,31,2,2,Creeping Barrage ability available for purchase. 90 mu per use. Cromwell Command Tanks are also given 1 use of Creeping Smoke Barrage.,4
 220,Observational Capacity,OMGDOCUPG.CMW.RCA.TR1.B2.T3,31,2,3,Captains and LTs can lockdown to gain +15 LOS.,3
@@ -158,8 +158,8 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 43,High Velocity Ammo,OMGDOCUPG.CMW.RCA.TR3.B1.T1,33,1,1,Stuarts and Staghounds now have +5 weapon range on their cannons. Does not stack with the range bonus from command tanks.,3
 149,Armored Discipline,OMGDOCUPG.CMW.RCA.TR3.B1.T2,33,1,2,Tank Commanders increase accuracy by 10%. Flank Speed increases penetration by 50%.,6
 223,Tier 3 alpha,OMGDOCUPG.CMW.RCA.TR3.B1.T3,33,1,3,"",1000
-44,Toolboxes,OMGDOCUPG.CMW.RCA.TR3.B2.T1,33,2,1,"Self Repair on Bren Carriers and Bren Gun Carriers now have 0.80 speed reduction instead of 0.35 speed reduction. In addition, the cooldown on Self Repair has been reduced by 15%.",1
-150,Carrier Tactics,OMGDOCUPG.CMW.RCA.TR3.B2.T2,33,2,2,Lockdown ability given to Bren Gun Carrier and Universal carrier which increases accuracy and suppression by 25%. Acceleration and max speed also increased 20%.,1
+44,Toolboxes,OMGDOCUPG.CMW.RCA.TR3.B2.T1,33,2,1,"Self Repair on Bren Carriers and Bren Gun Carriers now have 0.80 speed reduction instead of 0.35 speed reduction. In addition, the cooldown on Self Repair has been reduced by 15%. Repair manuals may be purchased to allow garrisoned combat repairs.",1
+150,Carrier Tactics,OMGDOCUPG.CMW.RCA.TR3.B2.T2,33,2,2,Lockdown ability given to Bren Gun Carrier and Universal carrier which increases accuracy and suppression by 25%. Acceleration and max speed also increased 20%. Infantry in carriers retain 60% of thier reveal radius.,2
 224,Spare Room for Ammo,OMGDOCUPG.CMW.RCA.TR3.B2.T3,33,2,3,Units inside universal carriers reload 25% faster.,1
 100,Stuka Terror Dive,OMGDOCUPG.PE.LUFTWAFFE.TR1.B1.T1,25,1,1,Stuka Terror Dive Offmap available for purchase. Suppresses infantry in an area you select. 45 mu per use.,3
 175,Butterfly Bomblets,OMGDOCUPG.PE.LUFTWAFFE.TR1.B1.T2,25,1,2,Butterfly Bombs now available for purchase. 85 mu per use.,3
