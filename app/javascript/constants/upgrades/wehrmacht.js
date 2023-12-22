@@ -24,6 +24,7 @@ import tank_smoke from '../../../assets/images/doctrines/wehrmacht/upgrades/tank
 
 import charismatic_leaders from '../../../assets/images/doctrines/wehrmacht/unlocks/defensive/charismatic_leaders.png'
 import g43 from '../../../assets/images/doctrines/panzer_elite/upgrades/g43.png'
+import advanced_repair from '../../../assets/images/doctrines/panzer_elite/upgrades/advanced_repair.png'
 
 import repair_manuals from '../../../assets/images/doctrines/americans/upgrades/repair_manuals.png'
 
@@ -64,6 +65,7 @@ export const P4_SKIRTS = 'p4_skirts'
 export const PANTHER_MG42 = 'panther_mg42'
 export const PANTHER_SKIRTS = 'panther_skirts'
 export const PANTHERTURM = 'pantherturm'
+export const PERFECTIONISM_REPAIRS = 'perfectionism_repairs'
 export const PUMA_UPGUN = 'puma_upgun'
 export const REPAIR_BUNKER = 'repair_bunker'
 export const STUG_MG42 = 'stug_mg42'
@@ -108,6 +110,7 @@ export const upgradeImageMapping = {
   [PANTHER_MG42]: mg42_gunner,
   [PANTHER_SKIRTS]: skirts,
   [PANTHERTURM]: pantherturm,
+  [PERFECTIONISM_REPAIRS]: advanced_repair,
   [PUMA_UPGUN]: puma_upgun,
   [REPAIR_BUNKER]: repair_bunker,
   [STUG_MG42]: mg42_gunner,

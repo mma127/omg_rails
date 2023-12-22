@@ -46,6 +46,8 @@ import tracer_rounds from '../../../assets/images/doctrines/wehrmacht/unlocks/te
 import a_valued_cargo from "../../../assets/images/doctrines/panzer_elite/unlocks/luftwaffe/a_valued_cargo.png";
 import { A_VALUED_CARGO } from "./panzer_elite";
 
+import strafing_run from '../../../assets/images/doctrines/americans/unlocks/airborne/strafing_run.png'
+
 
 //blitz
 export const ARMORED_ADVANCE = 'armored_advance'
@@ -62,6 +64,7 @@ export const PANZERKRIEG = 'panzerkrieg'
 export const PERSONAL_CLOAKING_DEVICES = 'personal_cloaking_devices'
 export const REINFORCED_LOGISTICS = 'reinforced_logistics'
 export const RUSH_TO_THE_FRONT = 'rush_to_the_front'
+export const SHOCK_EFFECT = 'shock_effect'
 //defensive
 export const ADVANCED_WARNING = 'advanced_warning'
 export const CHARISMATIC_LEADERS = 'charismatic_leaders'
@@ -70,6 +73,7 @@ export const ENTRENCHMENT = 'entrenchment'
 export const FOR_THE_FATHERLAND = 'for_the_fatherland'
 export const GUN_CREWS = 'gun_crews'
 export const HEAVY_SUPPORT = 'heavy_support'
+export const IMPROVED_AT = 'improved_at'
 export const KARBINES = 'karbines'
 export const LEADERSHIP = 'leadership'
 export const REGISTERED_ARTILLERY = 'registered_artillery'
@@ -79,6 +83,7 @@ export const STUKA_BARRAGE = 'stuka_barrages'
 export const SURPLUS_MUNITIONS = 'surplus_munitions'
 //terror
 export const BURST_OF_FURY = 'burst_of_fury'
+export const FANTACISM = 'fanaticism'
 export const FIRESTORM = 'firestorm'
 export const FOG_OF_WAR = 'fog_of_war'
 export const HEROES_OF_THE_WEHRMACT = 'heroes_of_the_wehrmacht'
@@ -108,6 +113,7 @@ export const unlockImageMapping = {
   [PERSONAL_CLOAKING_DEVICES]: personal_cloaking_devices,
   [REINFORCED_LOGISTICS]: reinforced_logistics,
   [RUSH_TO_THE_FRONT]: rush_to_the_front,
+  [SHOCK_EFFECT]: strafing_run,
 //defensive
   [ADVANCED_WARNING]: advanced_warning,
   [CHARISMATIC_LEADERS]: charismatic_leaders,
@@ -116,6 +122,7 @@ export const unlockImageMapping = {
   [FOR_THE_FATHERLAND]: for_the_fatherland,
   [GUN_CREWS]: gun_crews,
   [HEAVY_SUPPORT]: heavy_support,
+  [IMPROVED_AT]: strafing_run,
   [KARBINES]: karbines,
   [LEADERSHIP]: leadership,
   [REGISTERED_ARTILLERY]: registered_artillery,
@@ -125,6 +132,7 @@ export const unlockImageMapping = {
   [SURPLUS_MUNITIONS]: surplus_munitions,
 //terror
   [BURST_OF_FURY]: burst_of_fury,
+  [FANTACISM]: strafing_run,
   [FIRESTORM]: firestorm,
   [FOG_OF_WAR]: fog_of_war,
   [HEROES_OF_THE_WEHRMACT]: heroes_of_the_wehrmacht,

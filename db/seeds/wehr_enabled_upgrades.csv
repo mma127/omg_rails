@@ -65,14 +65,14 @@ puma_upgun,AXIS.PUMA_UPGUN,50mm Upgun,"Replace the Puma main gun with a 50mm can
 puma_upgun,AXIS.PUMA_UPGUN,50mm Upgun,"Replace the Puma main gun with a 50mm cannon, granting increased anti-tank performance",passive,,blitz,,0,0,10,0,0,0,0,1,,,puma_blitz
 stug_mg42,AXIS.STUG_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,wehrmacht,,,0,45,0,0,0,0,0,1,,,stug
 stug_mg42,AXIS.STUG_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,blitz,,0,45,0,0,0,0,0,1,,,stug_blitz
-stug_skirts,AXIS.STUG_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,70,0,0,0,0,1,,,stug
-stug_skirts,AXIS.STUG_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,70,0,0,0,0,1,,,stug_blitz
+stug_skirts,AXIS.STUG_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,60,0,0,0,0,1,,,stug
+stug_skirts,AXIS.STUG_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,60,0,0,0,0,1,,,stug_blitz
 stuh_mg42,AXIS.STUH_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,wehrmacht,,,0,45,0,0,0,0,0,1,,,stuh
 stuh_skirts,AXIS.STUH_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,80,0,0,0,0,1,,,stuh
 p4_mg42,AXIS.P4_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,wehrmacht,,,0,45,0,0,0,0,0,1,,,p4
 p4_mg42,AXIS.P4_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,blitz,,0,45,0,0,0,0,0,1,,,p4_blitz
-p4_skirts,AXIS.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,100,0,0,0,0,1,,,p4
-p4_skirts,AXIS.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,100,0,0,0,0,1,,,p4_blitz
+p4_skirts,AXIS.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,130,0,0,0,0,1,,,p4
+p4_skirts,AXIS.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,130,0,0,0,0,1,,,p4_blitz
 panther_mg42,AXIS.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,wehrmacht,,,0,45,0,0,0,0,0,1,,,panther_axis
 panther_mg42,AXIS.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,blitz,,0,45,0,0,0,0,0,1,,,panther_blitz
 panther_skirts,AXIS.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,110,0,0,0,0,1,,,panther_axis
@@ -92,15 +92,17 @@ booby_trap,PE.BOOBY_TRAP,Booby Trap Building,"Rig a building with explosives. Wh
 axis_at_mines,AXIS.MINES,AT Mines,Anti tank mines,consumable,,terror,,0,50,0,0,2,0,0,1,,,saboteurs
 terror_karbines,AXIS.TERROR_KARBINES,Volksgrenadier Rifles,Equip the squad with Volksgrenadier Rifles,squad_weapon,,terror,hunter_killers,0,0,0,0,0,2,0,1,,,pioneers
 terror_karbines,AXIS.TERROR_KARBINES,Volksgrenadier Rifles,Equip the squad with Volksgrenadier Rifles,squad_weapon,,terror,hunter_killers,0,0,0,0,0,2,0,1,,,sturmpioneers
+perfectionism_repairs,AXIS.TERROR_REPAIR,Perfectionism Repairs,Repair at 0.8x speed but 0.165 wear and tear,passive,,terror,perfectionism,0,0,0,0,0,0,0,1,,,pioneers
+perfectionism_repairs,AXIS.TERROR_REPAIR,Perfectionism Repairs,Repair at 0.8x speed but 0.165 wear and tear,passive,,terror,perfectionism,0,0,0,0,0,0,0,1,,,sturmpioneers
 crew_repair_kit,ALLY.REPAIR_MANUAL,Crew Repair Kit,"Vehicle self repair kits, accelerates repairs",consumable,,terror,in_the_name_of_the_king,0,80,0,0,1,0,0,1,,,king_tiger
-axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,halftrack_axis
-axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,flammenwerfer
-axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,puma_blitz
-axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,ostwind_blitz
-axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,geschutzwagen_blitz
-axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,stug_blitz
-axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,p4_blitz
-axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,panther_blitz
-axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,stuh
-axis_tank_smoke,AXIS.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,tiger
+axis_tank_smoke,AXIS.TANK_SMOKE,Dynamic Cover,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,halftrack_axis
+axis_tank_smoke,AXIS.TANK_SMOKE,Dynamic Cover,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,flammenwerfer
+axis_tank_smoke,AXIS.TANK_SMOKE,Dynamic Cover,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,puma_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Dynamic Cover,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,ostwind_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Dynamic Cover,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,geschutzwagen_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Dynamic Cover,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,stug_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Dynamic Cover,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,p4_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Dynamic Cover,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,panther_blitz
+axis_tank_smoke,AXIS.TANK_SMOKE,Dynamic Cover,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,stuh
+axis_tank_smoke,AXIS.TANK_SMOKE,Dynamic Cover,Defensive smoke grenade,consumable,,blitz,dynamic_cover,0,15,0,0,3,0,0,1,,,tiger
 camo_smocks,AXIS.CAMOUFLAGE_SMOCKS,Camouflage Smocks,Gain Elite armor,passive,,blitz,personal_cloaking_devices,50,0,0,0,0,2,0,1,,,stormtroopers

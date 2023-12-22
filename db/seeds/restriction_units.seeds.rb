@@ -381,12 +381,12 @@ after :restrictions do
                       unitwide_upgrade_slots: 1, upgrade_slots: 5)
   kch = Infantry.find_by_name("kch")
   EnabledUnit.create!(restriction: wehrmacht_restriction, unit: kch, ruleset: war_ruleset,
-                      man: 300, mun: 120, fuel: 0, pop: 6, resupply: 2, resupply_max: 4, company_max: 6, priority: 1,
+                      man: 300, mun: 110, fuel: 0, pop: 6, resupply: 2, resupply_max: 4, company_max: 6, priority: 1,
                       unitwide_upgrade_slots: 1, upgrade_slots: 1)
 
   medic = SupportTeam.find_by_name("medic")
   EnabledUnit.create!(restriction: wehrmacht_restriction, unit: medic, ruleset: war_ruleset,
-                      man: 180, mun: 100, fuel: 0, pop: 2, resupply: 1, resupply_max: 2, company_max: 2, priority: 1,
+                      man: 150, mun: 60, fuel: 0, pop: 1, resupply: 1, resupply_max: 2, company_max: 2, priority: 1,
                       upgrade_slots: 1)
   mg42 = SupportTeam.find_by_name("mg42")
   EnabledUnit.create!(restriction: wehrmacht_restriction, unit: mg42, ruleset: war_ruleset,
@@ -423,7 +423,7 @@ after :restrictions do
                       man: 250, mun: 0, fuel: 225, pop: 7, resupply: 2, resupply_max: 4, company_max: 4, priority: 1)
   puma = LightVehicle.find_by_name("puma")
   EnabledUnit.create!(restriction: wehrmacht_restriction, unit: puma, ruleset: war_ruleset,
-                      man: 280, mun: 0, fuel: 70, pop: 7, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
+                      man: 250, mun: 0, fuel: 70, pop: 7, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
                       upgrade_slots: 2)
 
   ostwind = Tank.find_by_name("ostwind")
@@ -434,15 +434,15 @@ after :restrictions do
                       man: 270, mun: 0, fuel: 180, pop: 7, resupply: 3, resupply_max: 6, company_max: 10, priority: 1)
   stug = Tank.find_by_name("stug")
   EnabledUnit.create!(restriction: wehrmacht_restriction, unit: stug, ruleset: war_ruleset,
-                      man: 280, mun: 0, fuel: 170, pop: 8, resupply: 3, resupply_max: 6, company_max: 10, priority: 1,
+                      man: 280, mun: 0, fuel: 150, pop: 8, resupply: 3, resupply_max: 6, company_max: 10, priority: 1,
                       upgrade_slots: 1)
   p4 = Tank.find_by_name("p4")
   EnabledUnit.create!(restriction: wehrmacht_restriction, unit: p4, ruleset: war_ruleset,
-                      man: 350, mun: 0, fuel: 300, pop: 12, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
+                      man: 350, mun: 0, fuel: 250, pop: 12, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
                       upgrade_slots: 2)
   panther_axis = Tank.find_by_name("panther_axis")
   EnabledUnit.create!(restriction: wehrmacht_restriction, unit: panther_axis, ruleset: war_ruleset,
-                      man: 600, mun: 0, fuel: 520, pop: 15, resupply: 1, resupply_max: 3, company_max: 3, priority: 1)
+                      man: 600, mun: 0, fuel: 500, pop: 15, resupply: 1, resupply_max: 3, company_max: 3, priority: 1)
 
   ## DEFENSIVE
   defensive = Doctrine.find_by_name("defensive")
@@ -522,7 +522,7 @@ after :restrictions do
   
   stuh = Tank.find_by_name("stuh")
   EnabledUnit.create!(restriction: blitz_restriction, unit: stuh, ruleset: war_ruleset,
-                      man: 320, mun: 0, fuel: 180, pop: 9, resupply: 2, resupply_max: 4, company_max: 6, priority: 1)
+                      man: 320, mun: 0, fuel: 150, pop: 9, resupply: 2, resupply_max: 4, company_max: 6, priority: 1)
   tiger = Tank.find_by_name("tiger")
   EnabledUnit.create!(restriction: blitz_restriction, unit: tiger, ruleset: war_ruleset,
                       man: 725, mun: 0, fuel: 725, pop: 16, resupply: 1, resupply_max: 2, company_max: 3, priority: 1)
@@ -538,7 +538,7 @@ after :restrictions do
 
   saboteurs = SupportTeam.find_by_name("saboteurs")
   EnabledUnit.create!(restriction: terror_restriction, unit: saboteurs, ruleset: war_ruleset,
-                      man: 100, mun: 0, fuel: 0, pop: 4, resupply: 2, resupply_max: 6, company_max: 6, priority: 1,
+                      man: 200, mun: 0, fuel: 0, pop: 4, resupply: 2, resupply_max: 6, company_max: 6, priority: 1,
                       upgrade_slots: 2)
   officer_terror = SupportTeam.find_by_name("officer_terror")
   EnabledUnit.create!(restriction: terror_restriction, unit: officer_terror, ruleset: war_ruleset,
@@ -550,7 +550,7 @@ after :restrictions do
 
   king_tiger = Tank.find_by_name("king_tiger")
   EnabledUnit.create!(restriction: terror_restriction, unit: king_tiger, ruleset: war_ruleset,
-                      man: 800, mun: 0, fuel: 800, pop: 17, resupply: 1, resupply_max: 1, company_max: 1, priority: 1)
+                      man: 800, mun: 0, fuel: 800, pop: 16, resupply: 1, resupply_max: 1, company_max: 1, priority: 1)
 
   lefh = Emplacement.find_by_name("lefh")
   EnabledUnit.create!(restriction: terror_restriction, unit: lefh, ruleset: war_ruleset,
