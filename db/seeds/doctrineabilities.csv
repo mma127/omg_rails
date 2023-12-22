@@ -60,7 +60,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 184,Better than Walking,OMGDOCUPG.AXIS.BLITZ.TR1.B2.T3,16,3,3,"Infantry inside halftracks regenerates at KCH speed. Infantry unloading from halftracks gain +10% accuracy,damage and sprint for 15 seconds.",3
 57,Dynamic Cover ,OMGDOCUPG.AXIS.BLITZ.TR1.B3.T1,16,3,1,"All Tanks, Half-Tracks, and Armored Cars may now purchase Tank Smoke for 15 Munitions.",3
 111,Personal Cloaking Devices,OMGDOCUPG.AXIS.BLITZ.TR2.B1.T2,17,2,2,Stormtroopers may now purchase Elite Armor instead of weapon upgrades.,3
-185,Tier 3 alpha,OMGDOCUPG.AXIS.BLITZ.TR2.B1.T3,17,2,3,"",1000
+185,Tier 3 alpha,OMGDOCUPG.AXIS.BLITZ.TR2.B1.T3,17,2,3,Regular Crits for Tiger,1000
 59,Organized Platoons,OMGDOCUPG.AXIS.BLITZ.TR2.B2.T1,17,2,1,Platoons with only Volksgrenadiers or Grenadiers have 75% less deployment timer.,3
 112,Medical Expertise,OMGDOCUPG.AXIS.BLITZ.TR2.B2.T2,17,3,2,Medpacks no longer slow squads. Walking Wounded move normally in neutral and enemy territory.,6
 186,Shock Effect,OMGDOCUPG.AXIS.BLITZ.TR2.B2.T3,17,3,3,"After throwing a grenade, units gain sprint and +50% suppression for 3 seconds. Assault also gains +50% suppression.",2
@@ -70,16 +70,16 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 187,Tier 3 alpha,OMGDOCUPG.AXIS.BLITZ.TR3.B1.T3,18,1,3,"",1000
 114,Heavy Mortar Bombardment,OMGDOCUPG.AXIS.BLITZ.TR3.B2.T2,18,3,2,Heavy Mortar Bombardment barrage available for purchase. Lightly saturates an area with mortar shells for 45 seconds. 65 mu per use.,3
 188,Tier 3 alpha,OMGDOCUPG.AXIS.BLITZ.TR3.B2.T3,18,3,3,"",1000
-63,Artillery Observation,OMGDOCUPG.AXIS.BLITZ.TR3.B3.T1,18,3,1,"Designate an area in the FoW for a flare to fired into. Flare makes a small area in the fog of war visible. Recharging cooldown, 60 mu.",3
+63,Artillery Observation,OMGDOCUPG.AXIS.BLITZ.TR3.B3.T1,18,3,1,"Designate an area in the Fog of War for a flare to fired into. Flare makes a small area in the fog of war visible. Recharging cooldown, 60 mu.",3
 73,Advanced Warning,OMGDOCUPG.AXIS.DEFENSIVE.TR1.B1.T1,10,1,1,"Grenadiers, Volksgrenadiers, Knight Cross Holders, and Pioneers now have +4 sight range.",5
-121,Leadership,OMGDOCUPG.AXIS.DEFENSIVE.TR1.B1.T2,10,1,2,Officers may now supervise all infantry in an aura around them (20% accuracy) but are immobile while doing so. Medics can purchase LMG42 and Officer may also purchase LMG42 or Panzershreck.,4
+121,Leadership,OMGDOCUPG.AXIS.DEFENSIVE.TR1.B1.T2,10,1,2,Officers may now supervise all infantry in an aura around them (+20% accuracy) but are immobile while doing so. Medics can purchase an LMG42 and Officer may also purchase an LMG42 or Panzershreck.,4
 195,Charismatic Leaders,OMGDOCUPG.AXIS.DEFENSIVE.TR1.B1.T3,10,1,3,Officers can purchase an upgrade granting Lieutenant aura buffs in exchange for -35% maximum hitpoints on the officer.,5
 74,Karbines,OMGDOCUPG.AXIS.DEFENSIVE.TR1.B2.T1,10,2,1,Grenadier Rifles may now be purchased for support weapons and Pioneers for 5 Munitions.,3
 122,Surplus Munitions,OMGDOCUPG.AXIS.DEFENSIVE.TR1.B2.T2,10,2,2,Volksgrenadiers and Pioneers may purchase Grenades. Burst length increased by 10% on LMG42s and 25% on Volksgrenadier MP40s.,5
 196,Effective Triage,OMGDOCUPG.AXIS.DEFENSIVE.TR1.B2.T3,10,2,3,Medic bunkers create Grenadier Walking Wounded instead of Volksgrenadier Walking Wounded.,4
 76,Stuka Barrages,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B1.T1,11,1,1,Walking Stukas now have Incendiary and Smoke Barrages.,2
 123,Gun Crews,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B1.T2,11,1,2,"MG42 Teams, and Mortars gain the Sprint ability. Pak38s and Nebelwerfers move faster.",6
-197,Tier 3 alpha,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B1.T3,11,1,3,"",1000
+197,Improved AT,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B1.T3,11,1,3,"StuGs gain +5% range in friendly territory and benefit from For the Fatherland. Geschützwagens gain +5% range, -15% received damage during rapid fire.",3
 77,Heavy Support,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B2.T1,11,2,1,"Support weapons have +1 resupply. In addition, all support weapons have 15% more hitpoints on the weapon.",3
 124,Rocket Artillery,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B2.T2,11,2,2,Rocket Artillery barrages are available for purchase. 130 mu.,4
 198,Tier 3 alpha,OMGDOCUPG.AXIS.DEFENSIVE.TR2.B2.T3,11,2,3,"",1000
@@ -93,16 +93,16 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 157,Heroes of the Wehrmacht,OMGDOCUPG.AXIS.TERROR.TR1.B1.T2,13,1,2,Knights Cross Holders and Terror Officers inspire nearby troops to fight better. They are 10% more accurate and receive 10% less damage.,6
 231,Robotics,OMGDOCUPG.AXIS.TERROR.TR1.B1.T3,13,1,3,Goliaths gain line of sight.,2
 158,Rain of Fire,OMGDOCUPG.AXIS.TERROR.TR1.B2.T2,13,3,2,"Hostile Infantry in the target area of Stuka and Nebelwerfer barrages may be slowed before the barrage hits. Nebelwerfer rockets now travel 50% faster, fire 33% faster, and have a 30% larger suppression radius. ",5
-232,In the Name of the King,OMGDOCUPG.AXIS.TERROR.TR1.B2.T3,13,3,3,Infantry within 30m of the King Tiger gain 20% increased accuracy.,4
-66,Snap Shooting,OMGDOCUPG.AXIS.TERROR.TR1.B3.T1,13,3,1,Snipers have 50% less setup time and 15% cooldown reduction.,2
+232,In the Name of the King,OMGDOCUPG.AXIS.TERROR.TR1.B2.T3,13,3,3,"Infantry within 30m of the King Tiger gain 20% increased accuracy. The KT can buy a crew repair kit (accelerates repairs, requires extra pios for maximum effect).",4
+66,Snap Shooting,OMGDOCUPG.AXIS.TERROR.TR1.B3.T1,13,3,1,Snipers have 50% less setup time and gain 15% cooldown reduction.,2
 159,Medical Reformation,OMGDOCUPG.AXIS.TERROR.TR2.B1.T2,14,2,2,Walking Wounded squads return to the field with 2 MP40s and Panzerfausts.,4
-233,Tier 3 alpha,OMGDOCUPG.AXIS.TERROR.TR2.B1.T3,14,2,3,"",1000
+233,Tier 3 alpha KT,OMGDOCUPG.AXIS.TERROR.TR2.B1.T3,14,2,3,Regular Crits for KT,1000
 68,Hunter Killers,OMGDOCUPG.AXIS.TERROR.TR2.B2.T1,14,2,1,Pioneers and Sturmpioneers may purchase Volksgrenadier Rifles for free.,1
 160,Firestorm,OMGDOCUPG.AXIS.TERROR.TR2.B2.T2,14,3,2,Firestorm barrage now unlocked for purchase. 110 mu per use.,4
 234,Tier 3 alpha,OMGDOCUPG.AXIS.TERROR.TR2.B2.T3,14,3,3,"",1000
 69,Perfectionism,OMGDOCUPG.AXIS.TERROR.TR2.B3.T1,14,3,1,"Pioneers and Sturmpioneers may now purchase Perfectionism Repairs, which repairs at 0.8 speed and 0.165 wear and tear.",3
 161,Burst of Fury,OMGDOCUPG.AXIS.TERROR.TR3.B1.T2,15,2,2,"Inspired Assault ability now available for purchase, granting infantry powerful offensive bonuses while making them more vulnerable to incoming fire. Recharging cooldown, 85 mu.",2
-235,Tier 3 alpha,OMGDOCUPG.AXIS.TERROR.TR3.B1.T3,15,2,3,"",1000
+235,Fanaticism,OMGDOCUPG.AXIS.TERROR.TR3.B1.T3,15,2,3,Dev Test: Inspired Assault reduces damage taken by 15% (secondary effect still being tested),10
 71,Tracer Rounds,OMGDOCUPG.AXIS.TERROR.TR3.B2.T1,15,2,1,MG42s grant 1.1 received accuracy on the target they are firing on.,3
 162,Propaganda Ministry,OMGDOCUPG.AXIS.TERROR.TR3.B2.T2,15,3,2,Propaganda Towers may now be built by Pioneers for 1 population. Propaganda Towers reduce accuracy by 15% and increase received suppression by 15% on nearby enemy infantry.,3
 236,Tier 3 alpha,OMGDOCUPG.AXIS.TERROR.TR3.B2.T3,15,3,3,"",1000

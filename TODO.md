@@ -17,3 +17,11 @@ Redux
 
 BattlePlayer
 1. Pass `side` back for the BattlePlayer to create, to avoid relying on `company.faction.side` which may not be correct (ie, mixed teams)
+
+
+Pre-Launch:
+1. UI for team balance
+2. Discord integration for full battles
+3. 6 companies
+4. Restrictions view should default to only enabled (ex, Blitz tanks)
+5. Dev mode to allow taking disabled doctrines
