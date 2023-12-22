@@ -51,7 +51,7 @@ after :restrictions do
                       upgrade_slots: 2)
   t17 = LightVehicle.find_by_name("t17")
   EnabledUnit.create!(restriction: american_restriction, unit: t17, ruleset: war_ruleset,
-                      man: 220, mun: 0, fuel: 70, pop: 7, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
+                      man: 190, mun: 0, fuel: 70, pop: 7, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
                       upgrade_slots: 2)
 
   sherman = Tank.find_by_name("sherman")
@@ -77,7 +77,7 @@ after :restrictions do
 
   rangers = Infantry.find_by_name("rangers")
   EnabledUnit.create!(restriction: infantry_restriction, unit: rangers, ruleset: war_ruleset,
-                      man: 300, mun: 90, fuel: 0, pop: 6, resupply: 2, resupply_max: 6, company_max: 10, priority: 1,
+                      man: 300, mun: 85, fuel: 0, pop: 6, resupply: 2, resupply_max: 6, company_max: 10, priority: 1,
                       unitwide_upgrade_slots: 1, upgrade_slots: 1)
   ambush_riflemen = Infantry.find_by_name("ambush_riflemen")
   EnabledUnit.create!(restriction: infantry_restriction, unit: ambush_riflemen, ruleset: war_ruleset,
@@ -174,7 +174,7 @@ after :restrictions do
                       upgrade_slots: 2)
   calliope = Tank.find_by_name("calliope")
   EnabledUnit.create!(restriction: armor_restriction, unit: calliope, ruleset: war_ruleset,
-                      man: 400, mun: 0, fuel: 450, pop: 13, resupply: 1, resupply_max: 2, company_max: 3, priority: 1,
+                      man: 400, mun: 0, fuel: 450, pop: 12, resupply: 1, resupply_max: 2, company_max: 3, priority: 1,
                       upgrade_slots: 2)
   easy_eight = Tank.find_by_name("easy_eight")
   EnabledUnit.create!(restriction: armor_restriction, unit: easy_eight, ruleset: war_ruleset,
