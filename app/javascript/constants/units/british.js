@@ -38,8 +38,11 @@ import tetrarch from '../../../assets/images/doctrines/british/units/tetrarch.pn
 import universal_carrier from '../../../assets/images/doctrines/british/units/universal_carrier.png'
 import vickers_hmg from '../../../assets/images/doctrines/british/units/vickers_hmg.png'
 
+import m10 from '../../../assets/images/doctrines/americans/units/m10.png'
+
 export const _17PDR = '17pdr'
 export const _25PDR = '25pdr'
+export const ACHILLES = 'achilles'
 export const ARMOR_GLIDER = 'armor_glider'
 export const BOFORS = 'bofors'
 export const BREN_CARRIER = 'bren_carrier'
@@ -81,6 +84,7 @@ export const VICKERS_HMG = 'vickers_hmg'
 export const unitImageMapping = {
   [_17PDR]: _17pdr,
   [_25PDR]: _25pdr,
+  [ACHILLES]: m10,
   [ARMOR_GLIDER]: armor_glider,
   [BOFORS]: bofors,
   [BREN_CARRIER]: bren_carrier,

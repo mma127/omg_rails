@@ -201,7 +201,7 @@ after :restrictions do
                       unitwide_upgrade_slots: 0, upgrade_slots: 1)
   recon_section = Infantry.find_by_name("recon_section")
   EnabledUnit.create!(restriction: british_restriction, unit: recon_section, ruleset: war_ruleset,
-                      man: 200, mun: 0, fuel: 0, pop: 5, resupply: 4, resupply_max: 8, company_max: 10, priority: 1,
+                      man: 210, mun: 0, fuel: 0, pop: 5, resupply: 4, resupply_max: 8, company_max: 10, priority: 1,
                       unitwide_upgrade_slots: 0, upgrade_slots: 1)
   sappers = Infantry.find_by_name("sappers")
   EnabledUnit.create!(restriction: british_restriction, unit: sappers, ruleset: war_ruleset,
@@ -240,7 +240,7 @@ after :restrictions do
                       upgrade_slots: 1)
   staghound = LightVehicle.find_by_name("staghound")
   EnabledUnit.create!(restriction: british_restriction, unit: staghound, ruleset: war_ruleset,
-                      man: 320, mun: 0, fuel: 120, pop: 9, resupply: 1, resupply_max: 3, company_max: 6, priority: 1)
+                      man: 320, mun: 0, fuel: 140, pop: 9, resupply: 1, resupply_max: 3, company_max: 6, priority: 1)
 
   stuart = Tank.find_by_name("stuart")
   EnabledUnit.create!(restriction: british_restriction, unit: stuart, ruleset: war_ruleset,
@@ -253,7 +253,7 @@ after :restrictions do
                       man: 250, mun: 0, fuel: 120, pop: 3, resupply: 1, resupply_max: 1, company_max: 1, priority: 1)
   kangaroo = Tank.find_by_name("kangaroo")
   EnabledUnit.create!(restriction: british_restriction, unit: kangaroo, ruleset: war_ruleset,
-                      man: 320, mun: 0, fuel: 110, pop: 4, resupply: 2, resupply_max: 4, company_max: 8, priority: 1)
+                      man: 320, mun: 0, fuel: 140, pop: 4, resupply: 3, resupply_max: 4, company_max: 8, priority: 1)
   firefly = Tank.find_by_name("firefly")
   EnabledUnit.create!(restriction: british_restriction, unit: firefly, ruleset: war_ruleset,
                       man: 320, mun: 0, fuel: 380, pop: 11, resupply: 1, resupply_max: 3, company_max: 4, priority: 1)
@@ -263,7 +263,7 @@ after :restrictions do
                       man: 250, mun: 0, fuel: 110, pop: 7, resupply: 2, resupply_max: 4, company_max: 4, priority: 1)
   bofors = Emplacement.find_by_name("bofors")
   EnabledUnit.create!(restriction: british_restriction, unit: bofors, ruleset: war_ruleset,
-                      man: 350, mun: 0, fuel: 60, pop: 3, resupply: 3, resupply_max: 4, company_max: 6, priority: 1)
+                      man: 250, mun: 0, fuel: 60, pop: 3, resupply: 2, resupply_max: 4, company_max: 6, priority: 1)
 
   ## RCA
   rca = Doctrine.find_by_name("canadians")
@@ -285,6 +285,9 @@ after :restrictions do
   stuart_recce = Tank.find_by_name("stuart_recce")
   EnabledUnit.create!(restriction: rca_restriction, unit: stuart_recce, ruleset: war_ruleset,
                       man: 280, mun: 0, fuel: 50, pop: 4, resupply: 1, resupply_max: 1, company_max: 1, priority: 1)
+  achilles = Tank.find_by_name("achilles")
+  EnabledUnit.create!(restriction: rca_restriction, unit: achilles, ruleset: war_ruleset,
+                      man: 320, mun: 0, fuel: 280, pop: 9, resupply: 1, resupply_max: 1, company_max: 1, priority: 1)
   comet = Tank.find_by_name("comet")
   EnabledUnit.create!(restriction: rca_restriction, unit: comet, ruleset: war_ruleset,
                       man: 320, mun: 0, fuel: 320, pop: 12, resupply: 1, resupply_max: 3, company_max: 3, priority: 1)
@@ -326,12 +329,12 @@ after :restrictions do
                       unitwide_upgrade_slots: 0, upgrade_slots: 1)
   polish_commandos = Infantry.find_by_name("polish_commandos")
   EnabledUnit.create!(restriction: commandos_restriction, unit: polish_commandos, ruleset: war_ruleset,
-                      man: 250, mun: 0, fuel: 0, pop: 7, resupply: 1, resupply_max: 1, company_max: 1, priority: 1,
+                      man: 300, mun: 0, fuel: 0, pop: 7, resupply: 1, resupply_max: 1, company_max: 1, priority: 1,
                       unitwide_upgrade_slots: 0, upgrade_slots: 1)
 
   commando_2pdr = SupportTeam.find_by_name("commando_2pdr")
   EnabledUnit.create!(restriction: commandos_restriction, unit: commando_2pdr, ruleset: war_ruleset,
-                      man: 350, mun: 120, fuel: 0, pop: 4, resupply: 1, resupply_max: 3, company_max: 3, priority: 1)
+                      man: 350, mun: 120, fuel: 0, pop: 4, resupply: 2, resupply_max: 3, company_max: 3, priority: 1)
   commando_hmg = SupportTeam.find_by_name("commando_hmg")
   EnabledUnit.create!(restriction: commandos_restriction, unit: commando_hmg, ruleset: war_ruleset,
                       man: 300, mun: 40, fuel: 0, pop: 3, resupply: 3, resupply_max: 6, company_max: 6, priority: 1)
