@@ -10,6 +10,7 @@ import { fetchFactions } from "../factions/factionsSlice";
 import { fetchDoctrines } from "../doctrines/doctrinesSlice";
 import { FactionSelector } from "./FactionSelector";
 import { DoctrineSelector } from "./DoctrineSelector";
+import { clearRestrictionUnits } from "./restriction_units/restrictionUnitsSlice";
 
 
 const useStyles = makeStyles(theme => ({
@@ -63,6 +64,13 @@ export const Restrictions = () => {
   useEffect(() => {
     dispatch(fetchFactions())
     dispatch(fetchDoctrines())
+    return () => {
+      setCurrentFactionName(null)
+      setCurrentFactionId(null)
+      setCurrentDoctrineName(null)
+      setCurrentDoctrineId(null)
+      dispatch(clearRestrictionUnits())
+    }
   }, [])
 
   const handleFactionSelect = ({ factionName, factionId }) => {
