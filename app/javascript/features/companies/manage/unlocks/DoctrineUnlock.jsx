@@ -1,25 +1,10 @@
 import React from 'react'
-import { styled } from '@mui/material/styles';
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Paper,
-  Tooltip,
-  tooltipClasses,
-  Typography
-} from "@mui/material";
-import EastIcon from '@mui/icons-material/East';
+import { Box, Button, Paper, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { unlockImageMapping } from "../../../../constants/unlocks/all_factions";
 import { UnlockCard } from "./UnlockCard";
 import { useDispatch, useSelector } from "react-redux";
 import { purchaseUnlock, refundUnlock } from "./companyUnlocksSlice";
-import { StaticUnitIcon } from "./StaticUnitIcon";
-import { OffmapIcon } from "../offmaps/OffmapIcon";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { UnlockDetails } from "./UnlockDetails";
 import { selectCompanyById } from "../../companiesSlice";
 
@@ -48,6 +33,9 @@ const useStyles = makeStyles(theme => ({
   },
   titleText: {
     minHeight: '4rem'
+  },
+  constText: {
+    fontSize: "0.65rem"
   },
   ownedText: {
     color: theme.palette.secondary.light
@@ -107,6 +95,7 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId }) => 
                     className={`${classes.titleText} ${isOwned ? classes.ownedText : null}`}>
           {unlock.displayName}
         </Typography>
+        {/*<Typography className={classes.constText}>{unlock.constName}</Typography>*/}
         <Box className={classes.unlockCardBox}>
           <UnlockCard image={unlockImageMapping[unlock.name]} label={unlock.name} />
         </Box>

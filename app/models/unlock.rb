@@ -36,6 +36,7 @@ class Unlock < ApplicationRecord
     expose :id
     expose :name
     expose :display_name, as: :displayName
+    expose :const_name, as: :constName
     expose :description
     expose :image_path, as: :imagePath
   end
