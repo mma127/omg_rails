@@ -226,6 +226,8 @@ after :doctrines do
   Infantry.create!(name: "tank_busters", const_name: "PE.TANK_BUSTERS", display_name: "Tank Busters",
                    unitwide_upgrade_slots: 1, upgrade_slots: 4, model_count: 3)
 
+  SupportTeam.create!(name: "mg_pe", const_name: "PE.HMG_TEAM", display_name: "Machine Gun Team", model_count: 3)
+
   LightVehicle.create!(name: "infantry_halftrack", const_name: "PE.INFANTRY_HT", display_name: "Infantry Halftrack",
                        upgrade_slots: 1, transport_squad_slots: 2, transport_model_slots: 8)
   LightVehicle.create!(name: "mortar_halftrack", const_name: "PE.MORTAR_HT", display_name: "Mortar Halftrack", upgrade_slots: 2)
@@ -245,6 +247,8 @@ after :doctrines do
   Infantry.create!(name: "ostfront_veterans", const_name: "PE.OST_GREN", display_name: "Ostfront Veterans",
                    unitwide_upgrade_slots: 1, upgrade_slots: 1, model_count: 5)
 
+  SupportTeam.create!(name: "pak40_se", const_name: "PE.PAK40_SCORCH", display_name: "Pak 40 Incendiary")
+
   LightVehicle.create!(name: "kettenkrad_se", const_name: "PE.KETTENRAD", display_name: "Scorched Earth Kettengrad")
   LightVehicle.create!(name: "schwimmwagen_se", const_name: "PE.SCHWIMMWAGEN", display_name: "Scorched Earth Schwimmwagon")
 
@@ -262,7 +266,7 @@ after :doctrines do
   Infantry.create!(name: "crete_vets", const_name: "PE.FSJ_AT", display_name: "Crete Veterans",
                    unitwide_upgrade_slots: 1, upgrade_slots: 1, model_count: 5)
 
-  SupportTeam.create!(name: "pak40", const_name: "PE.PANZER_ATG", display_name: "Pak 40")
+  SupportTeam.create!(name: "pak40_luft", const_name: "PE.PAK40_LUFT", display_name: "Pak 40 Camo")
 
   LightVehicle.create!(name: "kettenkrad_luft", const_name: "PE.KETTENRAD_3POP", display_name: "Luftwaffe Kettengrad")
   LightVehicle.create!(name: "schwimmwagen_luft", const_name: "PE.SCHWIMMWAGEN", display_name: "Luftwaffe Schwimmwagon")
@@ -273,6 +277,11 @@ after :doctrines do
   Emplacement.create!(name: "flak88_luft", const_name: "PE.FLAK", display_name: "Flak 36 88mm")
 
   ## TH
+  Infantry.create!(name: "ost_troops", const_name: "PE.OST_TRUPPEN", display_name: "Ost Troops",
+                   unitwide_upgrade_slots: 1, upgrade_slots: 1, model_count: 5)
+
+  SupportTeam.create!(name: "pak40_th", const_name: "PE.PAK40_TANKHUNT", display_name: "Pak 40 Rapid Acquisition")
+
   LightVehicle.create!(name: "kettenkrad_th", const_name: "PE.KETTENRAD", display_name: "Tank Hunters Kettengrad")
   LightVehicle.create!(name: "schwimmwagen_th", const_name: "PE.SCHWIMMWAGEN", display_name: "Tank Hunters Schwimmwagon")
   LightVehicle.create!(name: "vampire_th", const_name: "PE.TH_VAMPIRE", display_name: "Vampire Halftrack Fully Aware")

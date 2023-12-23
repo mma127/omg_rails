@@ -46,13 +46,14 @@ pe_goliath,PE.GOLIATH,Goliath,Deploy a remote controlled explosive Goliath,consu
 spotting_scope,PE.HETZER_SPOTTING,Spotting Scope,Grants increased sight range and weapon range,passive,,tank_hunters,,0,50,50,0,0,0,0,1,,,hetzer
 hotchkiss_stuka,PE.HOTCHKISS_STUKA,Hotchkiss Stuka Upgrade,Equip the tank with four rocket launchers,passive,panzer_elite,,,0,75,0,1,0,0,0,1,,,hotchkiss
 hotchkiss_upgun,PE.HOTCHUPGUN,Hotchkiss Upgun,Grants increased penetration against armor,passive,panzer_elite,,,0,0,70,0,0,0,0,1,,,hotchkiss
-p4_ist_mg42,PE.P4_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,panzer_elite,,,0,45,0,0,0,0,0,1,,,p4_ist
-p4_ist_skirts,AXIS.STUG_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,panzer_elite,,,0,0,100,0,0,0,0,1,,,p4_ist
-panther_pe_mg42,PE.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,panzer_elite,,,0,45,0,0,0,0,0,1,,,panther_pe
+p4_ist_mg42,PE.P4_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,panzer_elite,,,0,40,0,0,0,0,0,1,,,p4_ist
+p4_ist_skirts,AXIS.STUG_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,panzer_elite,,,0,0,60,0,0,0,0,1,,,p4_ist
+panther_pe_mg42,PE.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,panzer_elite,,,0,40,0,0,0,0,0,1,,,panther_pe
 panther_pe_skirts,PE.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,panzer_elite,,,0,0,110,0,0,0,0,1,,,panther_pe
 faustpatrone,PE.FAUST,Faustpatrone,Disposable anti-tank weapons,consumable,,tank_hunters,faustpatrone,0,35,0,0,2,0,0,1,,,panzer_grenadiers
 faustpatrone,PE.FAUST,Faustpatrone,Disposable anti-tank weapons,consumable,,tank_hunters,faustpatrone,0,35,0,0,2,0,0,1,,,assault_grenadiers
 faustpatrone,PE.FAUST,Faustpatrone,Disposable anti-tank weapons,consumable,,tank_hunters,faustpatrone,0,35,0,0,2,0,0,1,,,tank_busters
+ost_panzerfaust,AXIS.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,panzer_elite,,,0,35,0,0,2,0,0,1,,,ost_troops
 pe_panzerfaust,PE.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,,luftwaffe,,0,35,0,0,2,0,0,1,,,falls
 pe_panzerfaust,PE.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,,luftwaffe,,0,35,0,0,2,0,0,1,,,crete_vets
 pe_panzerfaust,PE.FAUST,Panzerfaust,Disposable anti-tank weapons,consumable,,luftwaffe,,0,35,0,0,2,0,0,1,,,gebirgs
@@ -73,13 +74,13 @@ improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passi
 improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,mortar_halftrack
 improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,medic_halftrack
 improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,vampire_halftrack
-improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,hotchkiss
-improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,marder
-improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,nashorn
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,30,0,0,0,0,0,1,,,hotchkiss
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,30,0,0,0,0,0,1,,,marder
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,50,0,0,0,0,0,1,,,nashorn
 improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,p4_ist
-improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,stug_ace_pe
-improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,panther_pe
-improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,jagdpanther
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,30,0,0,0,0,0,1,,,stug_ace_pe
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,50,0,0,0,0,0,1,,,panther_pe
+improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,50,0,0,0,0,0,1,,,jagdpanther
 fg42,PE.FG42,FG42s,Equip the squad with FG42s,squad_weapon,,luftwaffe,,0,120,0,0,0,0,1,1,,,falls
 fg42,PE.FG42,FG42s,Equip the squad with FG42s,squad_weapon,,luftwaffe,,0,120,0,0,0,0,1,1,,,crete_vets
 luft_lmg42,PE.LUFT_LMG,LMG42 w/Suppressing Fire,A single LMG42 with the Suppressing Fire ability,single_weapon,,luftwaffe,combat_arms_requisition,0,55,0,0,0,1,0,1,,,luft_infantry
@@ -91,6 +92,7 @@ se_mp40s,PE.SE_ASSAULT,MP40s,Equip the squad with MP40s,squad_weapon,,scorched_e
 flame_hotchkiss_stuka,PE.FLAME_HOTCH_STUKA,Hotchkiss Stuka Upgrade,Equip the tank with four rocket launchers,passive,,scorched_earth,,0,75,0,2,0,0,0,1,,,flammen_hotchkiss
 stup_mg42,PE.STUP_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,scorched_earth,,0,40,0,0,0,0,0,1,,,stup
 stup_skirts,PE.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,scorched_earth,,0,0,70,0,0,0,0,1,,,stup
+molotov,PE.MOLOTOVS,Molotov Cocktails,"A longer range sticky bomb style projectile that sets tanks on fire doing minor damage over time, -40% speed reduction, -75% sight.",consumable,,scorched_earth,molotov_cocktails,0,25,0,0,3,0,0,1,,,ostfront_veterans
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,panzer_grenadiers
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,assault_grenadiers
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,tank_busters
@@ -99,4 +101,4 @@ booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,abilit
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,assault_grenadiers
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,tank_busters
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,ostfront_veterans
-p4_ist_wp,ALLY.T17WHITE,White Phosphorus,"Fire a white phosphorus round at a target vehicle, blinding and slowing it",consumable,,scorched_earth,surplus_armaments,0,40,0,0,0,0,0,1,,,p4_ist
+p4_ist_wp,ALLY.T17WHITE,Thermite Rounds,"Fire a white phosphorus round at a target vehicle, blinding and slowing it",ability,,scorched_earth,surplus_armaments,0,40,0,0,0,0,0,1,,,p4_ist

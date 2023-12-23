@@ -19,8 +19,10 @@ import light_at_halftrack from "../../../assets/images/doctrines/panzer_elite/un
 import luft_infantry from "../../../assets/images/doctrines/panzer_elite/units/luft_infantry.png";
 import marder from "../../../assets/images/doctrines/panzer_elite/units/marder.png";
 import medic_halftrack from "../../../assets/images/doctrines/panzer_elite/units/medic_halftrack.png";
+import mg_team from "../../../assets/images/doctrines/panzer_elite/units/mg_team.png";
 import mortar_halftrack from "../../../assets/images/doctrines/panzer_elite/units/mortar_halftrack.png";
 import nashorn from "../../../assets/images/doctrines/panzer_elite/units/nashorn.png";
+import ost_troops from "../../../assets/images/doctrines/panzer_elite/units/ost_troops.png";
 import ostfront_veterans from "../../../assets/images/doctrines/panzer_elite/units/ostfront_veterans.png";
 import p4_ist from "../../../assets/images/doctrines/panzer_elite/units/p4_ist.png";
 import pak40 from "../../../assets/images/doctrines/panzer_elite/units/pak40.png";
@@ -57,11 +59,15 @@ export const LIGHT_AT_HALFTRACK = 'light_at_halftrack'
 export const LUFT_INFANTRY = 'luft_infantry'
 export const MARDER = 'marder'
 export const MEDIC_HALFTRACK = 'medic_halftrack'
+export const MG_PE = 'mg_pe'
 export const MORTAR_HALFTRACK = 'mortar_halftrack'
 export const NASHORN = 'nashorn'
+export const OST_TROOPS = 'ost_troops'
 export const OSTFRONT_VETERANS = 'ostfront_veterans'
 export const P4_IST = 'p4_ist'
-export const PAK40 = 'pak40'
+export const PAK40_LUFT = 'pak40_luft'
+export const PAK40_SE = 'pak40_se'
+export const PAK40_TH = 'pak40_th'
 export const PANZER_GRENADIERS = 'panzer_grenadiers'
 export const PANTHER_PE = 'panther_pe'
 export const SCHWIMMWAGEN_LUFT = 'schwimmwagen_luft'
@@ -97,11 +103,15 @@ export const unitImageMapping = {
   [LUFT_INFANTRY]: luft_infantry,
   [MARDER]: marder,
   [MEDIC_HALFTRACK]: medic_halftrack,
+  [MG_PE]: mg_team,
   [MORTAR_HALFTRACK]: mortar_halftrack,
   [NASHORN]: nashorn,
+  [OST_TROOPS]: ost_troops,
   [OSTFRONT_VETERANS]: ostfront_veterans,
   [P4_IST]: p4_ist,
-  [PAK40]: pak40,
+  [PAK40_LUFT]: pak40,
+  [PAK40_SE]: pak40,
+  [PAK40_TH]: pak40,
   [PANZER_GRENADIERS]: panzer_grenadiers,
   [PANTHER_PE]: panther_pe,
   [SCHWIMMWAGEN_LUFT]: schwimmwagen_luft,

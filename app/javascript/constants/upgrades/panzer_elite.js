@@ -14,6 +14,7 @@ import g43_suppress from '../../../assets/images/doctrines/panzer_elite/upgrades
 import hotchkiss_stuka from '../../../assets/images/doctrines/panzer_elite/upgrades/hotchkiss_stuka.png'
 import hotchkiss_upgun from '../../../assets/images/doctrines/panzer_elite/upgrades/hotchkiss_upgun.png'
 import light_armor_upgrade from '../../../assets/images/doctrines/panzer_elite/upgrades/light_armor_upgrade.png'
+import molotov from '../../../assets/images/doctrines/panzer_elite/upgrades/molotov.png'
 import overdrive from '../../../assets/images/doctrines/panzer_elite/upgrades/overdrive.png'
 import second_schreck from '../../../assets/images/doctrines/panzer_elite/upgrades/second_schreck.png'
 import spotting_scope from '../../../assets/images/doctrines/panzer_elite/upgrades/spotting_scope.png'
@@ -65,6 +66,8 @@ export const HOTCHKISS_STUKA = 'hotchkiss_stuka'
 export const HOTCHKISS_UPGUN = 'hotchkiss_upgun'
 export const IMPROVED_SCOPES = 'improved_scopes'
 export const LUFT_LMG42 = 'luft_lmg42'
+export const MOLOTOV = 'molotov'
+export const OST_PANZERFAUST = 'ost_panzerfaust'
 export const OVERDRIVE = 'overdrive'
 export const P4_IST_MG42 = 'p4_ist_mg42'
 export const P4_IST_SKIRTS = 'p4_ist_skirts'
@@ -117,7 +120,9 @@ export const upgradeImageMapping = {
 
   [IMPROVED_SCOPES]: spotting_scope,
   [LUFT_LMG42]: lmg42,
+  [MOLOTOV]: molotov,
   [OVERDRIVE]: overdrive,
+  [OST_PANZERFAUST]: panzerfaust,
 
   [P4_IST_MG42]: mg_gunner,
   [P4_IST_SKIRTS]: skirts,
