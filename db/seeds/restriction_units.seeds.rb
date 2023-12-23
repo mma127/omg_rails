@@ -564,16 +564,23 @@ after :restrictions do
   ## Common
   panzer_grenadiers = Infantry.find_by_name("panzer_grenadiers")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: panzer_grenadiers, ruleset: war_ruleset,
-                      man: 170, mun: 0, fuel: 0, pop: 3, resupply: 99, resupply_max: 100, company_max: 100, priority: 1,
+                      man: 150, mun: 0, fuel: 0, pop: 3, resupply: 99, resupply_max: 100, company_max: 100, priority: 1,
                       unitwide_upgrade_slots: 1, upgrade_slots: 1)
   assault_grenadiers = Infantry.find_by_name("assault_grenadiers")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: assault_grenadiers, ruleset: war_ruleset,
-                      man: 170, mun: 85, fuel: 0, pop: 3, resupply: 10, resupply_max: 15, company_max: 15, priority: 1,
+                      man: 150, mun: 70, fuel: 0, pop: 3, resupply: 10, resupply_max: 15, company_max: 15, priority: 1,
                       unitwide_upgrade_slots: 1, upgrade_slots: 4)
   tank_busters = Infantry.find_by_name("tank_busters")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: tank_busters, ruleset: war_ruleset,
-                      man: 170, mun: 110, fuel: 0, pop: 3, resupply: 10, resupply_max: 20, company_max: 20, priority: 1,
+                      man: 160, mun: 105, fuel: 0, pop: 3, resupply: 10, resupply_max: 20, company_max: 20, priority: 1,
                       unitwide_upgrade_slots: 1, upgrade_slots: 4)
+  ost_troops = Infantry.find_by(name: "ost_troops")
+  EnabledUnit.create!(restriction: panzer_elite_restriction, unit: ost_troops, ruleset: war_ruleset,
+                      man: 180, mun: 0, fuel: 0, pop: 5, resupply: 99, resupply_max: 99, company_max: 99, priority: 1)
+
+  mg_team_pe = SupportTeam.find_by(name: "mg_pe")
+  EnabledUnit.create!(restriction: panzer_elite_restriction, unit: mg_team_pe, ruleset: war_ruleset,
+                      man: 300, mun: 40, fuel: 0, pop: 4, resupply: 3, resupply_max: 4, company_max: 8, priority: 1)
 
   infantry_halftrack = LightVehicle.find_by_name("infantry_halftrack")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: infantry_halftrack, ruleset: war_ruleset,
@@ -581,14 +588,14 @@ after :restrictions do
                       upgrade_slots: 1)
   mortar_halftrack = LightVehicle.find_by_name("mortar_halftrack")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: mortar_halftrack, ruleset: war_ruleset,
-                      man: 500, mun: 70, fuel: 50, pop: 6, resupply: 2, resupply_max: 4, company_max: 6, priority: 1,
+                      man: 500, mun: 70, fuel: 50, pop: 5, resupply: 2, resupply_max: 4, company_max: 6, priority: 1,
                       upgrade_slots: 2)
   vampire_halftrack = LightVehicle.find_by_name("vampire_halftrack")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: vampire_halftrack, ruleset: war_ruleset,
                       man: 240, mun: 0, fuel: 40, pop: 3, resupply: 2, resupply_max: 4, company_max: 5, priority: 1)
   medic_halftrack = LightVehicle.find_by_name("medic_halftrack")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: medic_halftrack, ruleset: war_ruleset,
-                      man: 300, mun: 100, fuel: 50, pop: 4, resupply: 2, resupply_max: 3, company_max: 3, priority: 1)
+                      man: 280, mun: 80, fuel: 50, pop: 3, resupply: 2, resupply_max: 3, company_max: 3, priority: 1)
   light_at_halftrack = LightVehicle.find_by_name("light_at_halftrack")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: light_at_halftrack, ruleset: war_ruleset,
                       man: 230, mun: 75, fuel: 70, pop: 4, resupply: 3, resupply_max: 6, company_max: 8, priority: 1)
@@ -605,18 +612,18 @@ after :restrictions do
                       man: 270, mun: 0, fuel: 180, pop: 6, resupply: 4, resupply_max: 8, company_max: 10, priority: 1)
   hotchkiss = Tank.find_by_name("hotchkiss")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: hotchkiss, ruleset: war_ruleset,
-                      man: 260, mun: 0, fuel: 70, pop: 8, resupply: 3, resupply_max: 6, company_max: 8, priority: 1)
+                      man: 260, mun: 0, fuel: 70, pop: 7, resupply: 3, resupply_max: 6, company_max: 8, priority: 1)
   p4_ist = Tank.find_by_name("p4_ist")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: p4_ist, ruleset: war_ruleset,
-                      man: 350, mun: 0, fuel: 180, pop: 9, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
+                      man: 350, mun: 0, fuel: 170, pop: 9, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
                       upgrade_slots: 2)
   panther_pe = Tank.find_by_name("panther_pe")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: panther_pe, ruleset: war_ruleset,
-                      man: 600, mun: 0, fuel: 520, pop: 15, resupply: 1, resupply_max: 3, company_max: 3, priority: 1,
+                      man: 600, mun: 0, fuel: 500, pop: 15, resupply: 1, resupply_max: 3, company_max: 3, priority: 1,
                       upgrade_slots: 2)
   bergetiger = Tank.find_by_name("bergetiger")
   EnabledUnit.create!(restriction: panzer_elite_restriction, unit: bergetiger, ruleset: war_ruleset,
-                      man: 240, mun: 0, fuel: 180, pop: 4, resupply: 1, resupply_max: 2, company_max: 2, priority: 1)
+                      man: 240, mun: 0, fuel: 160, pop: 4, resupply: 1, resupply_max: 2, company_max: 2, priority: 1)
 
   ## SE
   scorched_earth = Doctrine.find_by_name("scorched_earth")
@@ -627,6 +634,10 @@ after :restrictions do
                       man: 300, mun: 0, fuel: 0, pop: 5, resupply: 2, resupply_max: 4, company_max: 6, priority: 1,
                       unitwide_upgrade_slots: 1, upgrade_slots: 1)
 
+  pak40_se = SupportTeam.find_by_name("pak40_se")
+  EnabledUnit.create!(restriction: scorched_earth_restriction, unit: pak40_se, ruleset: war_ruleset,
+                      man: 450, mun: 160, fuel: 0, pop: 5, resupply: 3, resupply_max: 6, company_max: 6, priority: 1)
+
   kettenkrad_se = LightVehicle.find_by_name("kettenkrad_se")
   EnabledUnit.create!(restriction: scorched_earth_restriction, unit: kettenkrad_se, ruleset: war_ruleset,
                       man: 100, mun: 20, fuel: 5, pop: 2, resupply: 4, resupply_max: 10, company_max: 15, priority: 1)
@@ -636,7 +647,7 @@ after :restrictions do
 
   stup = Tank.find_by_name("stup")
   EnabledUnit.create!(restriction: scorched_earth_restriction, unit: stup, ruleset: war_ruleset,
-                      man: 400, mun: 0, fuel: 300, pop: 11, resupply: 1, resupply_max: 2, company_max: 2, priority: 1)
+                      man: 400, mun: 0, fuel: 270, pop: 10, resupply: 1, resupply_max: 2, company_max: 2, priority: 1)
   hummel = Tank.find_by_name("hummel")
   EnabledUnit.create!(restriction: scorched_earth_restriction, unit: hummel, ruleset: war_ruleset,
                       man: 400, mun: 0, fuel: 240, pop: 10, resupply: 1, resupply_max: 3, company_max: 3, priority: 1)
@@ -665,8 +676,8 @@ after :restrictions do
                       man: 320, mun: 20, fuel: 0, pop: 6, resupply: 1, resupply_max: 1, company_max: 1, priority: 1,
                       unitwide_upgrade_slots: 1, upgrade_slots: 1)
 
-  pak40 = SupportTeam.find_by_name("pak40")
-  EnabledUnit.create!(restriction: luftwaffe_restriction, unit: pak40, ruleset: war_ruleset,
+  pak40_luft = SupportTeam.find_by_name("pak40_luft")
+  EnabledUnit.create!(restriction: luftwaffe_restriction, unit: pak40_luft, ruleset: war_ruleset,
                       man: 450, mun: 160, fuel: 0, pop: 5, resupply: 3, resupply_max: 6, company_max: 6, priority: 1)
 
   kettenkrad_luft = LightVehicle.find_by_name("kettenkrad_luft")
@@ -690,6 +701,10 @@ after :restrictions do
   ## TH
   tank_hunters = Doctrine.find_by_name("tank_hunters")
   tank_hunters_restriction = Restriction.find_by_doctrine_id(tank_hunters.id)
+
+  pak40_th = SupportTeam.find_by_name("pak40_th")
+  EnabledUnit.create!(restriction: tank_hunters_restriction, unit: pak40_th, ruleset: war_ruleset,
+                      man: 450, mun: 160, fuel: 0, pop: 5, resupply: 3, resupply_max: 6, company_max: 6, priority: 1)
 
   kettenkrad_th = LightVehicle.find_by_name("kettenkrad_th")
   EnabledUnit.create!(restriction: tank_hunters_restriction, unit: kettenkrad_th, ruleset: war_ruleset,
