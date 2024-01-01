@@ -45,7 +45,8 @@ const addPlaceholders = (battlePlayers, size) => {
       battlePlayersCopy.push({
         playerId: null,
         playerName: null,
-        companyDoctrine: null
+        companyDoctrine: null,
+        playerElo: null
       })
     }
   }
@@ -63,6 +64,50 @@ export const BattleCard = ({ id, rulesetId }) => {
   const axisPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'axis'), size)
   const generatingContent = battle.state === GENERATING ? <Typography>Generating</Typography> : ""
   const ingameContent = battle.state === INGAME ? <Link to={`/api/battles/${id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link> : ""
+  const balanceColor = (balance) => {
+    switch (balance) {
+      case "Perfect":
+        return "gold";
+      case "Balanced":
+        return "green";
+      case "Allied Stomp":
+        return "blue";
+      case "Axis Stomp":
+        return "red";
+      case "Allied Favoured":
+        return "teal";
+      case "Axis Favoured":
+        return "pink";
+      default:
+        return "white";
+    }}
+  const minDiff = (size) => {
+    if (size == 4)
+      return 50
+    else
+      return 35
+  }
+
+  const balanceState = (balance) => {
+    const min = minDiff(battle.size)
+    const val = Math.abs(balance)
+    if (!balance)
+      return "Pending"
+
+    if (balance < (0-100))
+      return "Allied Stomp"
+    else if (balance > 100)
+      return "Axis Stomp"
+    else if (balance < (0-min))
+      return "Allied Favoured"
+    else if (balance > min)
+      return "Axis Favoured"
+    else if (balance < 10)
+      return "Perfect"
+
+    else
+      return "Balanced"
+  };
 
   return (
     <Box>
@@ -72,6 +117,10 @@ export const BattleCard = ({ id, rulesetId }) => {
           <Box className={classes.headerRow}>
             <Typography variant={"h5"} pl={"9px"} gutterBottom>Battle ID: </Typography>
             <Typography variant={"h5"} pl={"9px"} gutterBottom color="secondary">{battle.id}</Typography>
+          </Box>
+          <Box className={classes.headerRow}>
+            <Typography variant={"h5"} pl={"9px"} gutterBottom>Balance: </Typography>
+            <Typography variant={"h5"} pl={"9px"} gutterBottom color={balanceColor(balanceState(battle.eloDifference))}>{balanceState(battle.eloDifference)}</Typography>
           </Box>
         </Box>
         {generatingContent}
@@ -87,6 +136,8 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                         battleId={id}
                                                         playerId={p.playerId}
                                                         playerName={p.playerName}
+                                                        teamBalance={p.teamBalance}
+                                                        playerElo={p.playerElo}
                                                         companyDoctrine={p.companyDoctrine}
                                                         side={ALLIED_SIDE}
                                                         battleState={battle.state}
@@ -107,6 +158,8 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                       battleId={id}
                                                       playerId={p.playerId}
                                                       playerName={p.playerName}
+                                                      teamBalance={p.teamBalance}
+                                                      playerElo={p.playerElo}
                                                       companyDoctrine={p.companyDoctrine}
                                                       side={AXIS_SIDE}
                                                       battleState={battle.state}

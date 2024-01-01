@@ -1,8 +1,9 @@
 import React from 'react'
-import { Box, Button, Popover, Typography } from "@mui/material";
+import { Box, Stack, Button, Popover, Typography, Divider, createTheme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import CheckIcon from '@mui/icons-material/Check';
 import LogoutIcon from '@mui/icons-material/Logout';
+import SquareIcon from '@mui/icons-material/Square';
 import { useDispatch, useSelector } from "react-redux";
 import { abandonBattle, fetchActiveBattles, leaveBattle, readyPlayer, unreadyPlayer, selectIsPending } from "../lobbySlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
@@ -10,10 +11,30 @@ import { doctrineImgMapping } from "../../../constants/doctrines";
 import { JoinBattlePopover } from "./JoinBattlePopover";
 import { ABANDONABLE_STATES, FULL, GENERATING, INGAME, OPEN } from "../../../constants/battles/states";
 
+const teamColor = (team) => {
+  switch (team) {
+    case 1:
+      return "error";
+    case 2:
+      return "success";
+    default:
+      return "pink";
+  }}
+
 const useStyles = makeStyles(theme => ({
   wrapperRow: {
     display: 'flex',
     alignItems: 'center',
+    height: '60px',
+    paddingTop: '5px',
+    paddingBottom: '5px',
+  },
+  balanceTeam: {
+    marginRight: '10px',
+  },
+  playerRow: {
+    display: 'flex',
+    alignItems: 'left',
     height: '60px',
     paddingTop: '5px',
     paddingBottom: '5px'
@@ -36,7 +57,7 @@ const useStyles = makeStyles(theme => ({
   },
   playerName: {
     overflowX: 'clip',
-    maxWidth: '80%',
+    maxWidth: '100%',
     textOverflow: 'ellipsis'
   },
   readyBtn: {
@@ -45,7 +66,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctrine, side, battleState, ready, abandoned }) => {
+export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, teamBalance, companyDoctrine, side, battleState, ready, abandoned }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   // const companies = useSelector(selectAllCompanies)
@@ -89,6 +110,14 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
     dispatch(abandonBattle({ battleId, playerId }))
   }
 
+  const eloTheme = createTheme({
+    typography: {
+      // In Chinese and Japanese the characters are usually larger,
+      // so a smaller fontsize may be appropriate.
+      fontSize: 8,
+    },
+  });
+
   let content
   if (playerId && isCurrentPlayer) {
     // Filled spot by logged in player
@@ -110,15 +139,28 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
       }
     }
 
+    
+
     content = (
       <>
+
         <Box sx={{ display: "flex", justifyContent: 'center' }} pr={1}>
           <img src={doctrineImgMapping[companyDoctrine]} alt={companyDoctrine}
                className={classes.optionImage} />
         </Box>
-        <Typography variant={"h5"} color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
-        {readyContent}
-        {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame} /> : ""}
+        <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
+      
+        
+          <Box className={classes.wrapperRow}>
+            <SquareIcon className={classes.balanceTeam} color={teamColor(teamBalance)} />
+            <Typography variant={"h5"} color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
+            {readyContent}
+            {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame} /> : ""}
+          </Box>
+        
+          <Typography variant={"h6"} color="darkgrey" theme={eloTheme} className={classes.PlayerElo}>{playerElo}</Typography>
+        
+        </Stack>
       </>
     )
   } else if (playerId) {
@@ -136,8 +178,16 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, companyDoctri
           <img src={doctrineImgMapping[companyDoctrine]} alt={companyDoctrine}
                className={classes.optionImage} />
         </Box>
-        <Typography variant={"h5"} className={classes.playerName}>{playerName}</Typography>
+        <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
+
+        <Box className={classes.wrapperRow}>
+        <SquareIcon className={classes.balanceTeam} color={teamColor(teamBalance)} />
+        <Typography variant={"h5"} className={classes.playerName}> {playerName}</Typography>
         {readyContent}
+        </Box>
+        <Typography variant={"h6"} color="darkgrey" theme={eloTheme} className={classes.PlayerElo}>{playerElo}</Typography>
+        </Stack>
+
       </>
     )
   } else if (isAuthed && !currentBattleId) {
