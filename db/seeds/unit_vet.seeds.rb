@@ -20,6 +20,9 @@ after :units do
   end
 
   const_to_vet_hash = {}
+
+  # Generated from query
+  # select CONSTNAME, Vet1, Vet2, Vet3, Vet4, Vet5 from units;
   CSV.foreach('db/seeds/unit_vet.csv', headers: true) do |row|
     next if row["CONSTNAME"].blank?
 
