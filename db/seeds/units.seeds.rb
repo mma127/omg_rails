@@ -12,7 +12,7 @@ after :doctrines do
 
   LightVehicle.create!(name: "jeep", const_name: "ALLY.JEEP", display_name: "Jeep", upgrade_slots: 1)
   LightVehicle.create!(name: "halftrack_allied", const_name: "ALLY.HALFTRACK", display_name: "Halftrack", upgrade_slots: 1, transport_squad_slots: 3, transport_model_slots: 12)
-  LightVehicle.create!(name: "quad_halftrack", const_name: "ALLY_QUAD", display_name: "Quad .50cal HT")
+  LightVehicle.create!(name: "quad_halftrack", const_name: "ALLY.QUAD", display_name: "Quad .50cal HT")
   LightVehicle.create!(name: "greyhound", const_name: "ALLY.GREYHOUND", display_name: "M8 Greyhound", upgrade_slots: 2)
   LightVehicle.create!(name: "t17", const_name: "ALLY.T17", display_name: "T17 Armored Car", upgrade_slots: 2)
 
