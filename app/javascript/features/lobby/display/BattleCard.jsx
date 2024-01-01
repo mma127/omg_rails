@@ -108,6 +108,17 @@ export const BattleCard = ({ id, rulesetId }) => {
     else
       return "Balanced"
   };
+  var optimumBalance = false;
+  var k = 0;
+  // Loop through axis players and check sum of team balance equals match size or twice match size
+  for (let i = 0; i < axisPlayers.length; i++) {
+    k += axisPlayers[i].teamBalance;
+  }
+  if (k == size || k == size*2) {
+    optimumBalance = true;
+  }
+
+  
 
   return (
     <Box>
@@ -123,6 +134,7 @@ export const BattleCard = ({ id, rulesetId }) => {
             <Typography variant={"h5"} pl={"9px"} gutterBottom color={balanceColor(balanceState(battle.eloDifference))}>{balanceState(battle.eloDifference)}</Typography>
           </Box>
         </Box>
+        <Typography variant={"h6"} pl={"9px"} hidden={optimumBalance} color="error" align="center" gutterBottom>Warning: Balance not optimium, rearrange teams into matching colours for optimum balance</Typography>
         {generatingContent}
         {ingameContent}
         <Grid container>

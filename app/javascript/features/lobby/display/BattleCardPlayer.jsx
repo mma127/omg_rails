@@ -3,23 +3,13 @@ import { Box, Stack, Button, Popover, Typography, Divider, createTheme } from "@
 import { makeStyles } from "@mui/styles";
 import CheckIcon from '@mui/icons-material/Check';
 import LogoutIcon from '@mui/icons-material/Logout';
-import SquareIcon from '@mui/icons-material/Square';
+import { TeamBalanceIcon } from '../../resources/TeamBalanceIcon';
 import { useDispatch, useSelector } from "react-redux";
 import { abandonBattle, fetchActiveBattles, leaveBattle, readyPlayer, unreadyPlayer, selectIsPending } from "../lobbySlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 import { doctrineImgMapping } from "../../../constants/doctrines";
 import { JoinBattlePopover } from "./JoinBattlePopover";
 import { ABANDONABLE_STATES, FULL, GENERATING, INGAME, OPEN } from "../../../constants/battles/states";
-
-const teamColor = (team) => {
-  switch (team) {
-    case 1:
-      return "error";
-    case 2:
-      return "success";
-    default:
-      return "pink";
-  }}
 
 const useStyles = makeStyles(theme => ({
   wrapperRow: {
@@ -152,7 +142,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, te
       
         
           <Box className={classes.wrapperRow}>
-            <SquareIcon className={classes.balanceTeam} color={teamColor(teamBalance)} />
+            <TeamBalanceIcon team={teamBalance} />
             <Typography variant={"h5"} color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
             {readyContent}
             {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame} /> : ""}
@@ -181,7 +171,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, te
         <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
 
         <Box className={classes.wrapperRow}>
-        <SquareIcon className={classes.balanceTeam} color={teamColor(teamBalance)} />
+        <TeamBalanceIcon team={teamBalance} />
         <Typography variant={"h5"} className={classes.playerName}> {playerName}</Typography>
         {readyContent}
         </Box>
