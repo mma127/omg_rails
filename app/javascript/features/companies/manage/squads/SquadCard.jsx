@@ -1,21 +1,62 @@
 import React from 'react'
-import {UnitCard} from "./UnitCard";
-import {Box, Card, Tooltip, Typography} from "@mui/material";
-import {makeStyles} from "@mui/styles";
-import {DragDropContainer} from "react-drag-drop-container";
+import { UnitCard } from "./UnitCard";
+import { Box, Card, Tooltip, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { DragDropContainer } from "react-drag-drop-container";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import {formatResourceCost} from "../../../../utils/company";
-import {useSelector} from "react-redux";
-import {selectUnitById} from "../units/unitsSlice";
+import { formatResourceCost } from "../../../../utils/company";
+import { useSelector } from "react-redux";
+import { selectUnitById } from "../units/unitsSlice";
 import {
   selectSelectedSquadUuid,
   selectSquadInTabIndexTransportUuid,
   selectSquadInTabIndexUuid
 } from "../units/squadsSlice";
-import {TransportSlots} from "./TransportSlots";
-import {TransportDropTarget} from "./TransportDropTarget";
-import {SquadUpgrades} from "../squad_upgrades/SquadUpgrades";
-import {selectSquadUpgradesForSquad} from "../squad_upgrades/squadUpgradesSlice";
+import { TransportSlots } from "./TransportSlots";
+import { TransportDropTarget } from "./TransportDropTarget";
+import { SquadUpgrades } from "../squad_upgrades/SquadUpgrades";
+import { selectSquadUpgradesForSquad } from "../squad_upgrades/squadUpgradesSlice";
+import { SquadVetIcon } from "./SquadVetIcon";
+
+
+const getVetLevel = (exp, unitVet) => {
+  if (exp < unitVet.vet1Exp) {
+    return [0, unitVet.vet1Exp]
+  } else if (exp < unitVet.vet2Exp) {
+    return [1, unitVet.vet2Exp]
+  } else if (exp < unitVet.vet3Exp) {
+    return [2, unitVet.vet3Exp]
+  } else if (exp < unitVet.vet4Exp) {
+    return [3, unitVet.vet4Exp]
+  } else if (exp < unitVet.vet5Exp) {
+    return [4, unitVet.vet5Exp]
+  } else {
+    return [5, null]
+  }
+}
+
+const buildVetBonuses = (level, unitVet) => {
+  let bonuses = []
+  if (level === 0) {
+    return bonuses
+  }
+  if (level >= 1) {
+    bonuses.push({ level: 1, desc: unitVet.vet1Desc })
+  }
+  if (level >= 2) {
+    bonuses.push({ level: 2, desc: unitVet.vet2Desc })
+  }
+  if (level >= 3) {
+    bonuses.push({ level: 3, desc: unitVet.vet3Desc })
+  }
+  if (level >= 4) {
+    bonuses.push({ level: 4, desc: unitVet.vet4Desc })
+  }
+  if (level === 5) {
+    bonuses.push({ level: 5, desc: unitVet.vet5Desc })
+  }
+  return bonuses
+}
 
 const useStyles = makeStyles(() => ({
   squadCard: {
@@ -175,6 +216,14 @@ export const SquadCard = (
     onSquadClick(availableUnitId, squad.tab, squad.index, squad.uuid, transportUuid)
   }
 
+  // Vet
+  const [level, nextLevel] = getVetLevel(parseFloat(squad.vet), unit.vet)
+  let nextLevelContent = ""
+  if (nextLevel) {
+    nextLevelContent = `(Next: ${nextLevel})`
+  }
+  const vetBonuses = buildVetBonuses(level, unit.vet)
+
   let deleteContent = ""
   if (enabled) {
     deleteContent = <DeleteOutlineIcon
@@ -233,7 +282,8 @@ export const SquadCard = (
               <Typography variant="subtitle2" className={classes.tooltipHeader}>{unit.displayName}</Typography>
               <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
               <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
-              <Box><Typography variant="body"><b>Exp:</b> {squad.vet}</Typography></Box>
+              <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
+              {vetBonuses.map(vb => <Box key={vb.level} className={classes.squadCardItems}><SquadVetIcon level={vb.level}/> {vb.desc}</Box>)}
             </>
           }
           // TransitionComponent={Zoom}
@@ -244,6 +294,7 @@ export const SquadCard = (
           <Box sx={{ p: 1 }} className={classes.squadCardItems}>
             <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
                       onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
+            <SquadVetIcon level={level}/>
             <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeDestroyClick}
                            enabled={enabled}/>
             {transportContent}

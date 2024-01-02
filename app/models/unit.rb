@@ -59,5 +59,7 @@ class Unit < ApplicationRecord
     expose :transport_squad_slots, as: :transportSquadSlots
     expose :transport_model_slots, as: :transportModelSlots
     expose :transportable_unit_ids, as: :transportableUnitIds
+
+    expose :unit_vet, as: :vet, using: UnitVet::Entity
   end
 end

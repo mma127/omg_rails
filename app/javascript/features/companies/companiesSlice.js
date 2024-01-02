@@ -11,6 +11,7 @@ const initialState = companiesAdapter.getInitialState({
   creatingStatus: "idle",
   creatingError: null,
   deletingError: null,
+  currentCompany: null,
   needsRefresh: false //Bad hack for triggering another action
 })
 
@@ -88,6 +89,9 @@ const companiesSlice = createSlice({
         company.mun += mun
         company.fuel += fuel
       }
+    },
+    setCurrentCompany(state, action) {
+      state.currentCompany = action.payload
     }
   },
   extraReducers(builder) {
@@ -149,7 +153,7 @@ const companiesSlice = createSlice({
 
 export default companiesSlice.reducer
 
-export const { addCost, removeCost } = companiesSlice.actions
+export const { addCost, removeCost, setCurrentCompany } = companiesSlice.actions
 
 export const {
   selectAll: selectAllCompanies,
@@ -164,3 +168,4 @@ export const selectCompanyActiveBattleId = (state, companyId) => state.companies
 export const selectCompanyDoctrineId = (state, companyId) => state.companies.entities[companyId].doctrineId
 export const selectCompanyName = (state, companyId) => state.companies.entities[companyId].name
 export const selectCreatingCompanyStatus = (state) => state.companies.creatingStatus
+export const selectCurrentCompany = state => state.companies.currentCompany

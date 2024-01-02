@@ -16,7 +16,7 @@ import {
 import { doctrineImgMapping } from "../../../constants/doctrines";
 import { makeStyles } from "@mui/styles";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { deleteCompanyById } from "../companiesSlice";
+import { deleteCompanyById, setCurrentCompany } from "../companiesSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { StatsDisplay } from "./StatsDisplay";
 
@@ -44,6 +44,7 @@ export const CompanySummary = ({ company }) => {
   const managementLink = `/companies/${company.id}`
 
   const manageCompany = () => {
+    dispatch(setCurrentCompany(company))
     navigate(managementLink)
   }
 
