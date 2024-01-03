@@ -8,7 +8,8 @@ import { DoctrineIcon } from "../doctrines/DoctrineIcon";
 const useStyles = makeStyles(theme => ({
   wrapper: {
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
+    minHeight: "76px" // hardcode for spacing
   }
 }))
 

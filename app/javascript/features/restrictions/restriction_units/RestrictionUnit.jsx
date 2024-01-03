@@ -162,7 +162,7 @@ const DisabledUnit = ({ disabledUnit, isActive }) => {
   )
 }
 
-export const RestrictionUnit = ({ entity }) => {
+export const RestrictionUnit = ({ entity, showDisabled }) => {
   const classes = useStyles()
 
   const unitId = entity.unitId
@@ -174,7 +174,11 @@ export const RestrictionUnit = ({ entity }) => {
   if (activeRU.type === "EnabledUnit") {
     content.push(<EnabledUnit enabledUnit={activeRU} isActive={true} key={activeRU.id}/>)
   } else if (activeRU.type === "DisabledUnit") {
-    content.push(<DisabledUnit disabledUnit={activeRU} isActive={true} key={activeRU.id}/>)
+    if (showDisabled) {
+      content.push(<DisabledUnit disabledUnit={activeRU} isActive={true} key={activeRU.id}/>)
+    } else {
+      return null
+    }
   }
 
   if (overriddenRUs.length > 0) {
