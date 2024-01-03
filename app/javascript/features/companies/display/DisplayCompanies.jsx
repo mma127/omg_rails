@@ -58,9 +58,9 @@ export const DisplayCompanies = () => {
 
   let companyError
   let content
-  if (alliedCompanies.length > 2) {
+  if (alliedCompanies.length > 3) {
     companyError = "Invalid number of Allied companies"
-  } else if (axisCompanies.length > 2) {
+  } else if (axisCompanies.length > 3) {
     companyError = "Invalid number of Axis companies"
   } else {
     content = (
@@ -74,8 +74,15 @@ export const DisplayCompanies = () => {
         }
         {
           buildRow(
-            alliedCompanies.length === 2 ? alliedCompanies[1] : null,
-            axisCompanies.length === 2 ? axisCompanies[1] : null,
+            alliedCompanies.length >= 2 ? alliedCompanies[1] : null,
+            axisCompanies.length >= 2 ? axisCompanies[1] : null,
+            createNewCompany
+          )
+        }
+        {
+          buildRow(
+            alliedCompanies.length === 3 ? alliedCompanies[2] : null,
+            axisCompanies.length === 3 ? axisCompanies[2] : null,
             createNewCompany
           )
         }
