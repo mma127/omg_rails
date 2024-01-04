@@ -1,3 +1,27 @@
+# == Schema Information
+#
+# Table name: unit_vet
+#
+#  id         :bigint           not null, primary key
+#  vet1_desc  :string           not null
+#  vet1_exp   :integer          default(0), not null
+#  vet2_desc  :string           not null
+#  vet2_exp   :integer          default(0), not null
+#  vet3_desc  :string           not null
+#  vet3_exp   :integer          default(0), not null
+#  vet4_desc  :string           not null
+#  vet4_exp   :integer          default(0), not null
+#  vet5_desc  :string           not null
+#  vet5_exp   :integer          default(0), not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  unit_id    :bigint           not null
+#
+# Indexes
+#
+#  idx_unit_vet_unit_id_uniq  (unit_id) UNIQUE
+#  index_unit_vet_on_unit_id  (unit_id)
+#
 FactoryBot.define do
   factory :unit_vet do
     association :unit

@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: unit_vets
+# Table name: unit_vet
 #
 #  id         :bigint           not null, primary key
 #  vet1_desc  :string           not null
@@ -19,10 +19,12 @@
 #
 # Indexes
 #
-#  idx_unit_vet_unit_id_uniq   (unit_id) UNIQUE
-#  index_unit_vets_on_unit_id  (unit_id)
+#  idx_unit_vet_unit_id_uniq  (unit_id) UNIQUE
+#  index_unit_vet_on_unit_id  (unit_id)
 #
 class UnitVet < ApplicationRecord
+  self.table_name = 'unit_vet'
+
   belongs_to :unit, inverse_of: :unit_vet
 
   validates_numericality_of :vet1_exp

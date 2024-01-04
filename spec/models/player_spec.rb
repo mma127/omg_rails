@@ -16,6 +16,7 @@
 #  vps(WAR VPs earned)         :integer          default(0), not null
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  discord_id(Discord id)      :string
 #
 # Indexes
 #
@@ -54,6 +55,19 @@ RSpec.describe Player, type: :model do
         expect(p.avatar).to eq image
         expect(p.provider).to eq provider
         expect(p.uid).to eq uid
+        expect(p.discord_id).to be nil
+      end
+
+      context "when there is a matching player name in PlayerDiscordTemp" do
+        let!(:pdt) { create :player_discord_temp, player_name: nickname, discord_id: 123456 }
+
+        it 'creates a Player with discord_id populated' do
+          expect { subject }.to change { Player.count }.by 1
+
+          p = Player.last
+          expect(p.name).to eq nickname
+          expect(p.discord_id).to eq pdt.discord_id
+        end
       end
 
       context "when there is no historical player rating" do

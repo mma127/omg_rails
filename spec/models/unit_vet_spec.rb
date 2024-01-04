@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: unit_vets
+# Table name: unit_vet
 #
 #  id         :bigint           not null, primary key
 #  vet1_desc  :string           not null
@@ -19,8 +19,8 @@
 #
 # Indexes
 #
-#  idx_unit_vet_unit_id_uniq   (unit_id) UNIQUE
-#  index_unit_vets_on_unit_id  (unit_id)
+#  idx_unit_vet_unit_id_uniq  (unit_id) UNIQUE
+#  index_unit_vet_on_unit_id  (unit_id)
 #
 require "rails_helper"
 
