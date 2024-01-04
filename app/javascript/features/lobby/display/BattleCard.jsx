@@ -64,6 +64,7 @@ export const BattleCard = ({ id, rulesetId }) => {
   const axisPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'axis'), size)
   const generatingContent = battle.state === GENERATING ? <Typography>Generating</Typography> : ""
   const ingameContent = battle.state === INGAME ? <Link to={`/api/battles/${id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link> : ""
+
   const balanceColor = (balance) => {
     switch (balance) {
       case "Perfect":
@@ -81,6 +82,7 @@ export const BattleCard = ({ id, rulesetId }) => {
       default:
         return "white";
     }}
+  
   const minDiff = (size) => {
     if (size == 4)
       return 50
@@ -108,16 +110,14 @@ export const BattleCard = ({ id, rulesetId }) => {
     else
       return "Balanced"
   };
-  var optimumBalance = false;
-  var k = 0;
-  // Loop through axis players and check sum of team balance equals match size or twice match size
-  for (let i = 0; i < axisPlayers.length; i++) {
-    k += axisPlayers[i].teamBalance;
-  }
+
+  let optimumBalance = false;
+  const  k = axisPlayers.reduce((accumulator, currentValue) => accumulator + currentValue.teamBalance, 0)
   if (k == size || k == size*2) {
     optimumBalance = true;
   }
 
+  balanceState = balanceState(battle.eloDifference)
   
 
   return (
@@ -131,10 +131,10 @@ export const BattleCard = ({ id, rulesetId }) => {
           </Box>
           <Box className={classes.headerRow}>
             <Typography variant={"h5"} pl={"9px"} gutterBottom>Balance: </Typography>
-            <Typography variant={"h5"} pl={"9px"} gutterBottom color={balanceColor(balanceState(battle.eloDifference))}>{balanceState(battle.eloDifference)}</Typography>
+            <Typography variant={"h5"} pl={"9px"} gutterBottom color={balanceColor(balanceState)}>{balanceState}</Typography>
           </Box>
         </Box>
-        <Typography variant={"h6"} pl={"9px"} hidden={optimumBalance} color="error" align="center" gutterBottom>Warning: Balance not optimium, rearrange teams into matching colours for optimum balance</Typography>
+        <Typography variant={"h6"} pl={"9px"} hidden={optimumBalance} color="error" align="center" gutterBottom>Warning: Balance not optimum, rearrange teams into matching colours for optimum balance</Typography>
         {generatingContent}
         {ingameContent}
         <Grid container>
