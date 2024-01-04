@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_04_044711) do
+ActiveRecord::Schema.define(version: 2024_01_04_050400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 2024_01_04_044711) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "elo_diff", comment: "Elo difference between most balanced teams, absolute value"
+    t.datetime "last_notified", comment: "Last time a notification was sent to players"
     t.index ["ruleset_id"], name: "index_battles_on_ruleset_id"
     t.index ["state"], name: "index_battles_on_state"
   end

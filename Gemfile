@@ -42,6 +42,9 @@ gem 'grape'
 gem 'grape-entity'
 gem 'grape_logging'
 
+# HTTP requests
+gem "http"
+
 # Openid
 gem 'devise'
 gem 'omniauth-steam'
