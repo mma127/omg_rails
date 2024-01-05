@@ -20,22 +20,22 @@ export const StatsDisplay = ({ stats }) => {
   const totalKD = totalLosses > 0 ? totalKills / totalLosses : "-"
 
   return (
-    <Grid container>
-      <Grid item container key="win-loss">
+    <Grid container mt={1}>
+      <Grid item container key="win-loss" mt={1}>
         <Grid item xs={6}><Box><Typography variant="body"><b>Wins/Losses:</b> {wins}/{losses}</Typography></Box></Grid>
         <Grid item xs={6}><Box><Typography variant="body"><b>Win Ratio:</b> {winRatio}%</Typography></Box></Grid>
       </Grid>
-      <Grid item container key="kills">
+      <Grid item container key="kills" mt={1}>
         <Grid item sm={4} xs={12}><Box><Typography variant="body"><b>Total Kills:</b> {totalKills}</Typography></Box></Grid>
         <Grid item sm={4} xs={6}><Box><Typography variant="body"><b>Inf Kills:</b> {totalInfKills}</Typography></Box></Grid>
         <Grid item sm={4} xs={6}><Box><Typography variant="body"><b>Veh Kills:</b> {totalVehKills}</Typography></Box></Grid>
       </Grid>
-      <Grid item container key="losses">
+      <Grid item container key="losses" mt={1}>
         <Grid item sm={4} xs={12}><Box><Typography variant="body"><b>Total Losses:</b> {totalLosses}</Typography></Box></Grid>
         <Grid item sm={4} xs={6}><Box><Typography variant="body"><b>Inf Losses:</b> {totalInfLosses}</Typography></Box></Grid>
         <Grid item sm={4} xs={6}><Box><Typography variant="body"><b>Veh Losses:</b> {totalVehLosses}</Typography></Box></Grid>
       </Grid>
-      <Grid item container key="kd">
+      <Grid item container key="kd" mt={1}>
         <Grid item xs={6}><Box><Typography variant="body"><b>Total K/D:</b> {totalKD}</Typography></Box></Grid>
       </Grid>
     </Grid>

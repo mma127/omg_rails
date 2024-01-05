@@ -144,7 +144,7 @@ export const CompanyForm = ({ side, back, company, single = false, companyCallba
       <Card elevation={3} sx={{padding: '16px'}}>
         <Typography variant={"h5"} pl={"9px"} gutterBottom>New {sideTitle} Company</Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Box pl={"9px"} pb={2}>
+          <Box pl={"9px"} pb={1}>
             <Controller
               name="name" control={control} rules={{ required: true }} defaultValue=""
               render={({ field }) => (
@@ -158,7 +158,7 @@ export const CompanyForm = ({ side, back, company, single = false, companyCallba
                 />)}
             />
           </Box>
-          <Box pt={2} pb={2}>
+          <Box pt={1} pb={1}>
             <Typography pl={"9px"}>Select Doctrine</Typography>
             <Controller
               name="doctrine" control={control} rules={{ required: true }} defaultValue={company.doctrine}
@@ -170,7 +170,7 @@ export const CompanyForm = ({ side, back, company, single = false, companyCallba
             />
             <ErrorTypography pl={"9px"}>{errors.doctrine?.message}</ErrorTypography>
           </Box>
-          <Grid container pt={4}>
+          <Grid container pt={1}>
             {backButton}
             <Grid item xs={2} container justifyContent="flex-end">
               <Button variant="contained" type="submit" color="secondary" size="small"
