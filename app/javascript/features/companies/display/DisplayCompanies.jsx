@@ -7,6 +7,7 @@ import { ErrorTypography } from "../../../components/ErrorTypography";
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
 import { CompanyForm } from "../creation/CompanyForm";
 import { selectAllDoctrines } from "../../doctrines/doctrinesSlice";
+import { EmptyCompanySpot } from "./EmptyCompanySpot";
 
 /**
  * Expect there will be up to 4 companies, 2 allied + 2 axis
@@ -15,23 +16,26 @@ import { selectAllDoctrines } from "../../doctrines/doctrinesSlice";
  *  [ ALLIED ] [ AXIS ]
  *  [ ALLIED ] [ AXIS ]
  * If the player only has one Allied or one Axis company, preferentially display that at the top row
- * Display the company creation form for any company spots that are empty
+ * Display the company creation form for any company spots that are empty where the previous company spot of that side
+ * is not null
  */
-const buildCompanyElement = (company, side, createCallback) => {
+const buildCompanyElement = (company, side, previousCompanyExists, createCallback) => {
   if (company) {
     return <CompanySummary key={company.id} company={company} />
-  } else {
+  } else if (previousCompanyExists) {
     return <CompanyForm side={side} company={{ name: "", doctrine: "" }} companyCallback={createCallback} single />
+  } else {
+    return <EmptyCompanySpot />
   }
 }
 
-const buildRow = (alliedCompany, axisCompany, createCallback) => (
+const buildRow = (alliedCompany, axisCompany, previousAlliedExists, previousAxisExists, createCallback) => (
   <Grid item xs={12} container>
     <Grid item md={6}>
-      {buildCompanyElement(alliedCompany, ALLIED_SIDE, createCallback)}
+      {buildCompanyElement(alliedCompany, ALLIED_SIDE, previousAlliedExists, createCallback)}
     </Grid>
     <Grid item md={6}>
-      {buildCompanyElement(axisCompany, AXIS_SIDE, createCallback)}
+      {buildCompanyElement(axisCompany, AXIS_SIDE, previousAxisExists, createCallback)}
     </Grid>
   </Grid>
 )
@@ -63,26 +67,38 @@ export const DisplayCompanies = () => {
   } else if (axisCompanies.length > 3) {
     companyError = "Invalid number of Axis companies"
   } else {
+    const alliedCompany1 = alliedCompanies.length >= 1 ? alliedCompanies[0] : null
+    const alliedCompany2 = alliedCompanies.length >= 2 ? alliedCompanies[1] : null
+    const alliedCompany3 = alliedCompanies.length === 3 ? alliedCompanies[2] : null
+    const axisCompany1 = axisCompanies.length >= 1 ? axisCompanies[0] : null
+    const axisCompany2 = axisCompanies.length >= 2 ? axisCompanies[1] : null
+    const axisCompany3 = axisCompanies.length === 3 ? axisCompanies[2] : null
     content = (
       <>
         {
           buildRow(
-            alliedCompanies.length >= 1 ? alliedCompanies[0] : null,
-            axisCompanies.length >= 1 ? axisCompanies[0] : null,
+            alliedCompany1,
+            axisCompany1,
+            true,
+            true,
             createNewCompany
           )
         }
         {
           buildRow(
-            alliedCompanies.length >= 2 ? alliedCompanies[1] : null,
-            axisCompanies.length >= 2 ? axisCompanies[1] : null,
+            alliedCompany2,
+            axisCompany2,
+            alliedCompany1 !== null,
+            axisCompany1 !== null,
             createNewCompany
           )
         }
         {
           buildRow(
-            alliedCompanies.length === 3 ? alliedCompanies[2] : null,
-            axisCompanies.length === 3 ? axisCompanies[2] : null,
+            alliedCompany3,
+            axisCompany3,
+            alliedCompany2 !== null,
+            axisCompany2 !== null,
             createNewCompany
           )
         }
