@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_11_042537) do
+ActiveRecord::Schema.define(version: 2023_12_31_234856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -581,6 +581,24 @@ ActiveRecord::Schema.define(version: 2023_12_11_042537) do
     t.index ["unlock_id", "new_unit_id"], name: "index_unit_swaps_on_unlock_id_and_new_unit_id", unique: true
     t.index ["unlock_id", "old_unit_id"], name: "index_unit_swaps_on_unlock_id_and_old_unit_id", unique: true
     t.index ["unlock_id"], name: "index_unit_swaps_on_unlock_id"
+  end
+
+  create_table "unit_vets", comment: "Unit veterancy levels and descriptions", force: :cascade do |t|
+    t.bigint "unit_id", null: false
+    t.integer "vet1_exp", default: 0, null: false
+    t.string "vet1_desc", null: false
+    t.integer "vet2_exp", default: 0, null: false
+    t.string "vet2_desc", null: false
+    t.integer "vet3_exp", default: 0, null: false
+    t.string "vet3_desc", null: false
+    t.integer "vet4_exp", default: 0, null: false
+    t.string "vet4_desc", null: false
+    t.integer "vet5_exp", default: 0, null: false
+    t.string "vet5_desc", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["unit_id"], name: "idx_unit_vet_unit_id_uniq", unique: true
+    t.index ["unit_id"], name: "index_unit_vets_on_unit_id"
   end
 
   create_table "units", comment: "Metadata for a unit", force: :cascade do |t|
