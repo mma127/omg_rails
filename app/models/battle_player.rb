@@ -39,6 +39,10 @@ class BattlePlayer < ApplicationRecord
     player.name
   end
 
+  def player_elo
+    player.elo
+  end
+
   def company_doctrine
     company.doctrine.name
   end
@@ -61,6 +65,7 @@ class BattlePlayer < ApplicationRecord
     expose :battle_id, as: :battleId
     expose :player_id, as: :playerId
     expose :player_name, as: :playerName
+    expose :player_elo, as: :playerElo
     expose :company_id, as: :companyId
     expose :side
     expose :abandoned
