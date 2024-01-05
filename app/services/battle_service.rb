@@ -78,6 +78,7 @@ class BattleService
         battle.full!
         type = PLAYER_JOINED_FULL
         Ratings::BalanceService.new(battle.id).find_most_balanced_teams
+        BattleNotificationService.new(battle.id).notify_battle_full # TODO This could be async
       else
         type = PLAYER_JOINED
       end
