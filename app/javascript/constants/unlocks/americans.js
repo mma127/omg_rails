@@ -52,6 +52,7 @@ export const BOMBING_RUN = 'bombing_run'
 export const FLAMETHROWER_ENVY = 'flamethrower_envy'
 export const HEAVY_RECON = 'heavy_recon'
 export const HELLHOUNDS = 'hellhounds'
+export const HOT_DROP = 'hot_drop'
 export const IMPROVED_CARBINES = 'improved_carbines'
 export const LONG_RANGE_OPTIONS = 'long_range_options'
 export const MEDICAL_SUPPLIES = 'medical_supplies'
@@ -99,6 +100,7 @@ export const unlockImageMapping = {
  [FLAMETHROWER_ENVY]: flamethrower_envy,
  [HEAVY_RECON]: heavy_recon,
  [HELLHOUNDS]: hellhounds,
+ [HOT_DROP]: strafing_run,
  [IMPROVED_CARBINES]: improved_carbines,
  [LONG_RANGE_OPTIONS]: long_range_options,
  [MEDICAL_SUPPLIES]: medical_supplies,
