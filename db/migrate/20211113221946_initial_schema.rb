@@ -19,6 +19,7 @@ class InitialSchema < ActiveRecord::Migration[6.1]
       t.text :avatar, comment: "Player avatar url"
       t.string :provider, comment: "Omniauth provider"
       t.string :uid, comment: "Omniauth uid"
+      t.string :discord_id, comment: "Discord id"
       t.integer :vps, default: 0, null: false, comment: "WAR VPs earned"
 
       t.timestamps

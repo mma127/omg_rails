@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_31_234856) do
+ActiveRecord::Schema.define(version: 2024_01_04_044711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -349,6 +349,11 @@ ActiveRecord::Schema.define(version: 2023_12_31_234856) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "player_discord_temp", comment: "Temporary table for migrating player discord ids", force: :cascade do |t|
+    t.string "player_name"
+    t.string "discord_id"
+  end
+
   create_table "player_ratings", force: :cascade do |t|
     t.bigint "player_id"
     t.integer "elo", comment: "trueskill mu normalized between 1000 and 2000"
@@ -368,6 +373,7 @@ ActiveRecord::Schema.define(version: 2023_12_31_234856) do
     t.text "avatar", comment: "Player avatar url"
     t.string "provider", comment: "Omniauth provider"
     t.string "uid", comment: "Omniauth uid"
+    t.string "discord_id", comment: "Discord id"
     t.integer "vps", default: 0, null: false, comment: "WAR VPs earned"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -583,7 +589,7 @@ ActiveRecord::Schema.define(version: 2023_12_31_234856) do
     t.index ["unlock_id"], name: "index_unit_swaps_on_unlock_id"
   end
 
-  create_table "unit_vets", comment: "Unit veterancy levels and descriptions", force: :cascade do |t|
+  create_table "unit_vet", comment: "Unit veterancy levels and descriptions", force: :cascade do |t|
     t.bigint "unit_id", null: false
     t.integer "vet1_exp", default: 0, null: false
     t.string "vet1_desc", null: false
@@ -598,7 +604,7 @@ ActiveRecord::Schema.define(version: 2023_12_31_234856) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["unit_id"], name: "idx_unit_vet_unit_id_uniq", unique: true
-    t.index ["unit_id"], name: "index_unit_vets_on_unit_id"
+    t.index ["unit_id"], name: "index_unit_vet_on_unit_id"
   end
 
   create_table "units", comment: "Metadata for a unit", force: :cascade do |t|

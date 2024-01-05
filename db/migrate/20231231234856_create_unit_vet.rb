@@ -1,6 +1,6 @@
 class CreateUnitVet < ActiveRecord::Migration[6.1]
   def change
-    create_table :unit_vets, comment: "Unit veterancy levels and descriptions" do |t|
+    create_table :unit_vet, comment: "Unit veterancy levels and descriptions" do |t|
       t.references :unit, index: true, null: false
       t.integer :vet1_exp, default: 0, null: false
       t.string :vet1_desc, null: false
@@ -16,6 +16,6 @@ class CreateUnitVet < ActiveRecord::Migration[6.1]
       t.timestamps
     end
 
-    add_index :unit_vets, :unit_id, unique: true, name: "idx_unit_vet_unit_id_uniq"
+    add_index :unit_vet, :unit_id, unique: true, name: "idx_unit_vet_unit_id_uniq"
   end
 end

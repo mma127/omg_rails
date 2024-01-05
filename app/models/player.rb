@@ -16,6 +16,7 @@
 #  vps(WAR VPs earned)         :integer          default(0), not null
 #  created_at                  :datetime         not null
 #  updated_at                  :datetime         not null
+#  discord_id(Discord id)      :string
 #
 # Indexes
 #
@@ -35,7 +36,8 @@ class Player < ApplicationRecord
       player.avatar = auth.info.image
       player.save!
     else
-      player = create!(provider: auth.provider, uid: auth.uid, name: auth.info.nickname, avatar: auth.info.image)
+      pdt = PlayerDiscordTemp.find_by(player_name: auth.info.nickname)
+      player = create!(provider: auth.provider, uid: auth.uid, name: auth.info.nickname, avatar: auth.info.image, discord_id: pdt&.discord_id)
       Rails.logger.info("Player created from omniauth: #{player.name}")
 
       # try to match nickname to historical player rating with nil player_id
