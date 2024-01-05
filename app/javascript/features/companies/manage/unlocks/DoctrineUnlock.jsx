@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { purchaseUnlock, refundUnlock } from "./companyUnlocksSlice";
 import { UnlockDetails } from "./UnlockDetails";
 import { selectCompanyById } from "../../companiesSlice";
+import { selectPlayer } from "../../../player/playerSlice";
 
 const useStyles = makeStyles(theme => ({
   unlockContainer: {
@@ -37,6 +38,10 @@ const useStyles = makeStyles(theme => ({
   constText: {
     fontSize: "0.65rem"
   },
+  devOnlyText: {
+    fontSize: "0.85rem",
+    color: theme.palette.error.light
+  },
   ownedText: {
     color: theme.palette.secondary.light
   },
@@ -51,11 +56,11 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId }) => 
   const dispatch = useDispatch()
   const isSaving = useSelector(state => state.companyUnlocks.isSaving)
   const company = useSelector(state => selectCompanyById(state, companyId))
+  const player = useSelector(selectPlayer)
 
   const unlock = doctrineUnlock.unlock
   const isOwned = !_.isNil(companyUnlock)
   const canPurchase = company.vpsCurrent >= doctrineUnlock.vpCost
-
   const disablePurchase = isSaving || !canPurchase
 
   const purchase = () => {
@@ -87,8 +92,12 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId }) => 
     )
   }
 
+  const isAdmin = player.role === "admin"
+  const isDisabled = doctrineUnlock.disabled
+  const showDisabledForAdmin = isDisabled && isAdmin
+
   let innerContent
-  if (!doctrineUnlock.disabled) {
+  if (!isDisabled || isAdmin) {
     innerContent = (
       <Box p={2} className={classes.unlockInnerContainer}>
         <Typography variant="h5" gutterBottom align="center"
@@ -104,6 +113,7 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId }) => 
         </Typography>
         <Box sx={{ marginTop: 'auto', display: 'flex', flexDirection: "column" }}>
           <UnlockDetails doctrineUnlock={doctrineUnlock} />
+          {showDisabledForAdmin ? <Typography className={classes.devOnlyText}>DEV ONLY</Typography> : null}
           {buttonContent}
         </Box>
       </Box>

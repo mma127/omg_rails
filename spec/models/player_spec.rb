@@ -2,21 +2,22 @@
 #
 # Table name: players
 #
-#  id                          :bigint           not null, primary key
-#  avatar(Player avatar url)   :text
-#  current_sign_in_at          :datetime
-#  current_sign_in_ip          :string
-#  last_sign_in_at             :datetime
-#  last_sign_in_ip             :string
-#  name(Player screen name)    :string
-#  provider(Omniauth provider) :string
-#  remember_created_at         :datetime
-#  sign_in_count               :integer          default(0), not null
-#  uid(Omniauth uid)           :string
-#  vps(WAR VPs earned)         :integer          default(0), not null
-#  created_at                  :datetime         not null
-#  updated_at                  :datetime         not null
-#  discord_id(Discord id)      :string
+#  id                                :bigint           not null, primary key
+#  avatar(Player avatar url)         :text
+#  current_sign_in_at                :datetime
+#  current_sign_in_ip                :string
+#  last_sign_in_at                   :datetime
+#  last_sign_in_ip                   :string
+#  name(Player screen name)          :string
+#  provider(Omniauth provider)       :string
+#  remember_created_at               :datetime
+#  role(Player role for permissions) :string           not null
+#  sign_in_count                     :integer          default(0), not null
+#  uid(Omniauth uid)                 :string
+#  vps(WAR VPs earned)               :integer          default(0), not null
+#  created_at                        :datetime         not null
+#  updated_at                        :datetime         not null
+#  discord_id(Discord id)            :string
 #
 # Indexes
 #
@@ -56,6 +57,7 @@ RSpec.describe Player, type: :model do
         expect(p.provider).to eq provider
         expect(p.uid).to eq uid
         expect(p.discord_id).to be nil
+        expect(p.player?).to be true
       end
 
       context "when there is a matching player name in PlayerDiscordTemp" do

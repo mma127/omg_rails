@@ -2,21 +2,22 @@
 #
 # Table name: players
 #
-#  id                          :bigint           not null, primary key
-#  avatar(Player avatar url)   :text
-#  current_sign_in_at          :datetime
-#  current_sign_in_ip          :string
-#  last_sign_in_at             :datetime
-#  last_sign_in_ip             :string
-#  name(Player screen name)    :string
-#  provider(Omniauth provider) :string
-#  remember_created_at         :datetime
-#  sign_in_count               :integer          default(0), not null
-#  uid(Omniauth uid)           :string
-#  vps(WAR VPs earned)         :integer          default(0), not null
-#  created_at                  :datetime         not null
-#  updated_at                  :datetime         not null
-#  discord_id(Discord id)      :string
+#  id                                :bigint           not null, primary key
+#  avatar(Player avatar url)         :text
+#  current_sign_in_at                :datetime
+#  current_sign_in_ip                :string
+#  last_sign_in_at                   :datetime
+#  last_sign_in_ip                   :string
+#  name(Player screen name)          :string
+#  provider(Omniauth provider)       :string
+#  remember_created_at               :datetime
+#  role(Player role for permissions) :string           not null
+#  sign_in_count                     :integer          default(0), not null
+#  uid(Omniauth uid)                 :string
+#  vps(WAR VPs earned)               :integer          default(0), not null
+#  created_at                        :datetime         not null
+#  updated_at                        :datetime         not null
+#  discord_id(Discord id)            :string
 #
 # Indexes
 #
@@ -37,7 +38,7 @@ class Player < ApplicationRecord
       player.save!
     else
       pdt = PlayerDiscordTemp.find_by(player_name: auth.info.nickname)
-      player = create!(provider: auth.provider, uid: auth.uid, name: auth.info.nickname, avatar: auth.info.image, discord_id: pdt&.discord_id)
+      player = create!(provider: auth.provider, uid: auth.uid, name: auth.info.nickname, avatar: auth.info.image, discord_id: pdt&.discord_id, role: roles[:player])
       Rails.logger.info("Player created from omniauth: #{player.name}")
 
       # try to match nickname to historical player rating with nil player_id
@@ -55,6 +56,11 @@ class Player < ApplicationRecord
     player
   end
 
+  enum role: {
+    player: "player",
+    admin: "admin"
+  }
+
   has_many :companies, inverse_of: :player
   has_many :doctrines, through: :companies
   has_many :factions, through: :companies
@@ -70,5 +76,6 @@ class Player < ApplicationRecord
     expose :id
     expose :name
     expose :avatar
+    expose :role
   end
 end
