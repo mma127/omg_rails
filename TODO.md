@@ -20,9 +20,8 @@ BattlePlayer
 
 
 Pre-Launch:
-1. Veterancy icons and levels???
-2. UI for team balance
-3. Discord integration for full battles
-4. 6 companies
-5. Restrictions view should default to only enabled (ex, Blitz tanks)
-6. Dev mode to allow taking disabled doctrine unlocks
+1. UI for team balance
+2. Discord integration for full battles
+3. 6 companies
+4. Restrictions view should default to only enabled (ex, Blitz tanks)
+5. Dev mode to allow taking disabled doctrine unlocks

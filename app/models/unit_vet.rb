@@ -36,4 +36,22 @@ class UnitVet < ApplicationRecord
   validates_presence_of :vet3_desc
   validates_presence_of :vet4_desc
   validates_presence_of :vet5_desc
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :unit_id, as: :unitId
+    expose :vet1_exp, as: :vet1Exp
+    expose :vet1_desc, as: :vet1Desc
+    expose :vet2_exp, as: :vet2Exp
+    expose :vet2_desc, as: :vet2Desc
+    expose :vet3_exp, as: :vet3Exp
+    expose :vet3_desc, as: :vet3Desc
+    expose :vet4_exp, as: :vet4Exp
+    expose :vet4_desc, as: :vet4Desc
+    expose :vet5_exp, as: :vet5Exp
+    expose :vet5_desc, as: :vet5Desc
+  end
 end
