@@ -17,6 +17,7 @@ import {
   PLAYER_READY,
   PLAYER_UNREADY,
   REMOVE_BATTLE,
+  ELO_UPDATED,
   BATTLE_FINALIZED, PLAYER_ABANDONED, PLAYERS_ALL_ABANDONED
 } from "../../constants/battles/events";
 import { AlertSnackbar } from "../companies/AlertSnackbar";
@@ -88,6 +89,10 @@ export const Lobby = () => {
           dispatch(setCurrentBattle({ battleId: message.battle.id }))
           dispatch(fetchActiveBattles())
         }
+        break
+      }
+      case ELO_UPDATED: {
+        dispatch(updateBattle({ battle: message.battle }))
         break
       }
       case PLAYER_READY: {
