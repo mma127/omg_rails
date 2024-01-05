@@ -14,6 +14,7 @@ class BattleService
   BATTLE_FINALIZED = "battle_finalized".freeze
   PLAYER_ABANDONED = "player_abandoned".freeze
   PLAYERS_ALL_ABANDONED = "players_all_abandoned".freeze
+  ELO_UPDATED = "elo_updated".freeze
 
   def initialize(player)
     @player = player
@@ -81,10 +82,15 @@ class BattleService
         type = PLAYER_JOINED
       end
 
+         
+
       # Broadcast battle update
       message_hash = { type: type, battle: battle.reload }
       battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
       broadcast_cable(battle_message)
+    end
+    if battle.full?
+      update_battle_elo(battle)
     end
   end
 
@@ -158,8 +164,9 @@ class BattleService
 
     if battle.full?
       battle.not_full!
+      battle.save!
     end
-
+    
     if battle.reload.battle_players.count == 0
       # Deleted the last player, delete the battle
       battle.destroy
@@ -207,6 +214,32 @@ class BattleService
     message_hash = { type: type, battle: battle.reload }
     battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
     broadcast_cable(battle_message)
+  end
+
+  def update_battle_elo(battle)
+    axisElo = 0
+    alliedElo = 0
+    for player in battle.battle_players
+      if player.side == "axis"
+        axisElo += player.player_elo
+      else
+        alliedElo += player.player_elo
+      end
+    end
+    axisElo = axisElo / battle.size
+    alliedElo = alliedElo / battle.size
+
+    battle.elo_diff = axisElo - alliedElo
+
+
+    ActiveRecord::Base.transaction do
+      battle.save!
+    end
+    message_hash = { type: ELO_UPDATED, battle: battle }
+    # Broadcast battle update
+    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+    broadcast_cable(battle_message)
+  
   end
 
   private
