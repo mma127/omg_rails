@@ -64,6 +64,7 @@ export const BattleCard = ({ id, rulesetId }) => {
   const axisPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'axis'), size)
   const generatingContent = battle.state === GENERATING ? <Typography>Generating</Typography> : ""
   const ingameContent = battle.state === INGAME ? <Link to={`/api/battles/${id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link> : ""
+  const isFull = battle.battlePlayers.length === size * 2
 
   const balanceColor = (balance) => {
     switch (balance) {
@@ -84,7 +85,7 @@ export const BattleCard = ({ id, rulesetId }) => {
     }}
   
   const minDiff = (size) => {
-    if (size == 4)
+    if (size === 4)
       return 50
     else
       return 35
@@ -113,12 +114,11 @@ export const BattleCard = ({ id, rulesetId }) => {
 
   let optimumBalance = false;
   const  k = axisPlayers.reduce((accumulator, currentValue) => accumulator + currentValue.teamBalance, 0)
-  if (k == size || k == size*2) {
+  if (k === size || k === size*2) {
     optimumBalance = true;
   }
 
-  balanceState = balanceState(battle.eloDifference)
-  
+  const calculatedBalanceState = balanceState(battle.eloDifference)
 
   return (
     <Box>
@@ -131,10 +131,10 @@ export const BattleCard = ({ id, rulesetId }) => {
           </Box>
           <Box className={classes.headerRow}>
             <Typography variant={"h5"} pl={"9px"} gutterBottom>Balance: </Typography>
-            <Typography variant={"h5"} pl={"9px"} gutterBottom color={balanceColor(balanceState)}>{balanceState}</Typography>
+            <Typography variant={"h5"} pl={"9px"} gutterBottom color={balanceColor(calculatedBalanceState)}>{calculatedBalanceState}</Typography>
           </Box>
         </Box>
-        <Typography variant={"h6"} pl={"9px"} hidden={optimumBalance} color="error" align="center" gutterBottom>Warning: Balance not optimum, rearrange teams into matching colours for optimum balance</Typography>
+        <Typography variant={"h6"} pl={"9px"} hidden={optimumBalance || !isFull} color="error" align="center" gutterBottom>Warning: Balance not optimum, rearrange teams into matching colours for optimum balance</Typography>
         {generatingContent}
         {ingameContent}
         <Grid container>
