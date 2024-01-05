@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const RestrictionUnits = ({currentFactionId, currentDoctrineId}) => {
+export const RestrictionUnits = ({currentFactionId, currentDoctrineId, showDisabled}) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
@@ -74,7 +74,7 @@ export const RestrictionUnits = ({currentFactionId, currentDoctrineId}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {restrictionUnits.map(ru => <RestrictionUnit entity={ru} key={ru.activeRestrictionUnit.id}/>)}
+            {restrictionUnits.map(ru => <RestrictionUnit entity={ru} key={ru.activeRestrictionUnit.id} showDisabled={showDisabled}/>)}
           </TableBody>
         </Table>
       </TableContainer>

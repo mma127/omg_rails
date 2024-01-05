@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from "react-redux";
-import { Box, Container, Tab, Tabs } from "@mui/material";
+import { Box, Container, Switch, Tab, Tabs } from "@mui/material";
 import { makeStyles, useTheme } from "@mui/styles";
 import PersonIcon from '@mui/icons-material/Person';
 import { Link, Route, Routes } from "react-router-dom";
@@ -11,6 +11,7 @@ import { fetchDoctrines } from "../doctrines/doctrinesSlice";
 import { FactionSelector } from "./FactionSelector";
 import { DoctrineSelector } from "./DoctrineSelector";
 import { clearRestrictionUnits } from "./restriction_units/restrictionUnitsSlice";
+import { DisabledSelector } from "./DisabledSelector";
 
 
 const useStyles = makeStyles(theme => ({
@@ -19,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column"
   },
   selectors: {
-    display: 'flex',
+    display: 'inline-flex',
     flexDirection: "column"
   },
   wrapper: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
   detailTitle: {
     fontWeight: 'bold'
-  },
+  }
 }))
 
 const UNITS = "units"
@@ -61,6 +62,9 @@ export const Restrictions = () => {
   const [currentDoctrineName, setCurrentDoctrineName] = useState(null)
   const [currentDoctrineId, setCurrentDoctrineId] = useState(null)
 
+  // By default, don't show restriction chains that end in a disabled entity
+  const [showDisabled, setShowDisabled] = useState(false)
+
   useEffect(() => {
     dispatch(fetchFactions())
     dispatch(fetchDoctrines())
@@ -82,11 +86,15 @@ export const Restrictions = () => {
     setCurrentDoctrineName(null)
   }
 
-  const handleDoctrineSelect= ({doctrineName, doctrineId}) => {
+  const handleDoctrineSelect = ({ doctrineName, doctrineId }) => {
     if (doctrineId !== currentDoctrineId) {
       setCurrentDoctrineName(doctrineName)
       setCurrentDoctrineId(doctrineId)
     }
+  }
+
+  const handleShowDisabledToggle = (event) => {
+    setShowDisabled(event.target.checked)
   }
 
   return (
@@ -96,6 +104,7 @@ export const Restrictions = () => {
           <FactionSelector currentFactionName={currentFactionName} handleFactionSelect={handleFactionSelect}/>
           <DoctrineSelector currentFactionId={currentFactionId} currentDoctrineName={currentDoctrineName}
                             handleDoctrineSelect={handleDoctrineSelect}/>
+          <DisabledSelector showDisabled={showDisabled} handleShowDisabledToggle={handleShowDisabledToggle} />
         </Box>
         <Box className={classes.wrapper}>
           <Tabs value={currentTab} onChange={onTabChange} orientation="vertical" className={classes.tabs}>
@@ -108,8 +117,12 @@ export const Restrictions = () => {
                  component={Link}/>
           </Tabs>
           <Routes>
-            <Route path={UNITS} element={<RestrictionUnits currentFactionId={currentFactionId} currentDoctrineId={currentDoctrineId}/>}/>
-            <Route index element={<RestrictionUnits currentFactionId={currentFactionId} currentDoctrineId={currentDoctrineId}/>}/>
+            <Route path={UNITS} element={<RestrictionUnits currentFactionId={currentFactionId}
+                                                           currentDoctrineId={currentDoctrineId}
+                                                           showDisabled={showDisabled} />}/>
+            <Route index element={<RestrictionUnits currentFactionId={currentFactionId}
+                                                    currentDoctrineId={currentDoctrineId}
+                                                    showDisabled={showDisabled} />}/>
           </Routes>
         </Box>
       </Box>
