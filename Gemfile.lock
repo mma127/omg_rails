@@ -338,6 +338,11 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
     semantic_range (3.0.0)
+    sentry-rails (5.15.2)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.15.2)
+    sentry-ruby (5.15.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
     shoulda-matchers (5.1.0)
       activesupport (>= 5.2.0)
     sidekiq (6.5.7)
@@ -439,6 +444,8 @@ DEPENDENCIES
   sassc (= 2.1.0)
   seedbank
   selenium-webdriver
+  sentry-rails
+  sentry-ruby
   shoulda-matchers
   sidekiq
   spring
