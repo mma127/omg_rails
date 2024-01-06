@@ -71,6 +71,10 @@ gem 'awesome_print'
 
 gem 'bundler-audit'
 
+# Sentry
+gem "sentry-ruby"
+gem "sentry-rails"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
