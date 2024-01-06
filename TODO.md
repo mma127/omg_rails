@@ -17,3 +17,8 @@ Redux
 
 BattlePlayer
 1. Pass `side` back for the BattlePlayer to create, to avoid relying on `company.faction.side` which may not be correct (ie, mixed teams)
+
+UI
+1. Discord invite icon
+2. Leaderboards for company stats
+3. Show VPs in player battle cards
