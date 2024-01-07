@@ -22,3 +22,9 @@ UI
 1. Discord invite icon
 2. Leaderboards for company stats
 3. Show VPs in player battle cards
+4. Mobile MVP
+5. Confirmation before deleting company
+
+Enhancements
+1. Copy paste squad/upgrade combo
+2. Order available units vertically instead of horizontally. Otherwise too tall to show both available units and all platoon boxes

@@ -155,6 +155,7 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                         battleState={battle.state}
                                                         ready={p.ready}
                                                         abandoned={p.abandoned}
+                                                        isFull={isFull}
               />)}
             </Box>
           </Grid>
@@ -177,6 +178,7 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                       battleState={battle.state}
                                                       ready={p.ready}
                                                       abandoned={p.abandoned}
+                                                      isFull={isFull}
               />)}
             </Box>
           </Grid>

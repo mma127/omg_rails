@@ -17,10 +17,14 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export const TeamBalanceIcon = ({ team }) => {
+export const TeamBalanceIcon = ({ team,isFull }) => {
   const classes = useStyles()
-  const style = team == 1 ? classes.team1BalanceIcon : classes.team2BalanceIcon
-  return (
-    <SquareIcon className={ style } alt={ team }/>
-  )
+  const style = team === 1 ? classes.team1BalanceIcon : classes.team2BalanceIcon
+  if (!isFull) {
+    return null
+  } else {
+    return (
+      <SquareIcon className={style} alt={team}/>
+    )
+  }
 }

@@ -5,7 +5,14 @@ import CheckIcon from '@mui/icons-material/Check';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { TeamBalanceIcon } from '../../resources/TeamBalanceIcon';
 import { useDispatch, useSelector } from "react-redux";
-import { abandonBattle, fetchActiveBattles, leaveBattle, readyPlayer, unreadyPlayer, selectIsPending } from "../lobbySlice";
+import {
+  abandonBattle,
+  fetchActiveBattles,
+  leaveBattle,
+  readyPlayer,
+  unreadyPlayer,
+  selectIsPending
+} from "../lobbySlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 import { doctrineImgMapping } from "../../../constants/doctrines";
 import { JoinBattlePopover } from "./JoinBattlePopover";
@@ -56,7 +63,19 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, teamBalance, companyDoctrine, side, battleState, ready, abandoned }) => {
+export const BattleCardPlayer = ({
+                                   battleId,
+                                   playerId,
+                                   playerName,
+                                   playerElo,
+                                   teamBalance,
+                                   companyDoctrine,
+                                   side,
+                                   battleState,
+                                   ready,
+                                   abandoned,
+                                   isFull
+                                 }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   // const companies = useSelector(selectAllCompanies)
@@ -68,6 +87,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, te
   const isPending = useSelector(selectIsPending)
 
   const isCurrentPlayer = player ? player.id === playerId : false
+  const isAdmin = player.role === "admin"
 
   const leavable = battleState === OPEN || battleState === FULL
 
@@ -113,7 +133,8 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, te
     // Filled spot by logged in player
     let readyContent
     if (battleState === FULL && ready) {
-      readyContent = <CheckIcon className={classes.clickableIcon} onClick={handleUnreadyClick} disabled={isPending} color="success" />
+      readyContent =
+        <CheckIcon className={classes.clickableIcon} onClick={handleUnreadyClick} disabled={isPending} color="success"/>
     } else if (battleState === FULL && !ready) {
       readyContent = <Button variant="contained" type="submit" color="secondary" size="small"
                              className={classes.readyBtn} onClick={handleReadyClick} disabled={isPending}>Ready</Button>
@@ -121,35 +142,35 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, te
       if (abandoned) {
         // Already abandoned
         readyContent = <Button variant="contained" type="submit" color="error" size="small"
-                               className={ classes.readyBtn } disabled={ true }>Abandoning</Button>
+                               className={classes.readyBtn} disabled={true}>Abandoning</Button>
       } else {
         readyContent = <Button variant="contained" type="submit" color="error" size="small"
-                               className={ classes.readyBtn } onClick={ handleAbandonClick }
-                               disabled={ isPending }>Abandon</Button>
+                               className={classes.readyBtn} onClick={handleAbandonClick}
+                               disabled={isPending}>Abandon</Button>
       }
     }
 
-    
 
     content = (
       <>
 
         <Box sx={{ display: "flex", justifyContent: 'center' }} pr={1}>
           <img src={doctrineImgMapping[companyDoctrine]} alt={companyDoctrine}
-               className={classes.optionImage} />
+               className={classes.optionImage}/>
         </Box>
         <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
-      
-        
+
+
           <Box className={classes.wrapperRow}>
-            <TeamBalanceIcon team={teamBalance} />
+            <TeamBalanceIcon team={teamBalance}/>
             <Typography variant={"h5"} color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
             {readyContent}
-            {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame} /> : ""}
+            {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame}/> : ""}
           </Box>
-        
-          <Typography variant={"h6"} color="darkgrey" theme={eloTheme} className={classes.PlayerElo}>{playerElo}</Typography>
-        
+
+          <Typography variant={"h6"} color="darkgrey" theme={eloTheme}
+                      className={classes.PlayerElo}>{playerElo}</Typography>
+
         </Stack>
       </>
     )
@@ -157,25 +178,26 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, te
     // Filled spot
     let readyContent
     if (battleState === FULL && ready) {
-      readyContent = <CheckIcon className={classes.clickableIcon} color="success" />
+      readyContent = <CheckIcon className={classes.clickableIcon} color="success"/>
     } else if (_.includes(ABANDONABLE_STATES, battleState) && abandoned) {
       readyContent = <Button variant="contained" type="submit" color="error" size="small"
-                             className={ classes.readyBtn } disabled={ true }>Abandoning</Button>
+                             className={classes.readyBtn} disabled={true}>Abandoning</Button>
     }
     content = (
       <>
         <Box sx={{ display: "flex", justifyContent: 'center' }} pr={1}>
           <img src={doctrineImgMapping[companyDoctrine]} alt={companyDoctrine}
-               className={classes.optionImage} />
+               className={classes.optionImage}/>
         </Box>
         <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
 
-        <Box className={classes.wrapperRow}>
-        <TeamBalanceIcon team={teamBalance} />
-        <Typography variant={"h5"} className={classes.playerName}> {playerName}</Typography>
-        {readyContent}
-        </Box>
-        <Typography variant={"h6"} color="darkgrey" theme={eloTheme} className={classes.PlayerElo}>{playerElo}</Typography>
+          <Box className={classes.wrapperRow}>
+            <TeamBalanceIcon team={teamBalance} isFull={isFull}/>
+            <Typography variant={"h5"} className={classes.playerName}> {playerName}</Typography>
+            {readyContent}
+          </Box>
+          {isAdmin ? <Typography variant={"h6"} color="darkgrey" theme={eloTheme}
+                                 className={classes.PlayerElo}>{playerElo}</Typography> : null}
         </Stack>
 
       </>
@@ -184,7 +206,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, te
     // Empty spot, Player is logged in but not in a battle
     content = (
       <>
-        <Box mr={1} className={classes.optionImage} /> {/*Used for spacing*/}
+        <Box mr={1} className={classes.optionImage}/> {/*Used for spacing*/}
         <Typography variant={"h6"} color="primary" className={classes.joinText} onClick={handleClick}>Join
           Battle</Typography>
         <Popover id={id}
@@ -192,7 +214,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, te
                  anchorEl={anchorEl}
                  onClose={handleClose}
                  anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-          <JoinBattlePopover battleId={battleId} side={side} handleClose={handleClose} />
+          <JoinBattlePopover battleId={battleId} side={side} handleClose={handleClose}/>
         </Popover>
       </>
     )
@@ -200,7 +222,7 @@ export const BattleCardPlayer = ({ battleId, playerId, playerName, playerElo, te
     // Empty spot, Player is either logged in but already in a battle, or is not logged in. Either way, show read only
     content = (
       <>
-        <Box mr={1} className={classes.optionImage} /> {/* Used for spacing*/}
+        <Box mr={1} className={classes.optionImage}/> {/* Used for spacing*/}
         <Typography variant={"h6"} color="text.secondary">Available</Typography>
       </>)
   }
