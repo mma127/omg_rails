@@ -80,6 +80,7 @@ RSpec.describe CompanyService do
     it "raises a validation error when the Player has too many Companies of that side" do
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
+      create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       expect { subject }
         .to raise_error(
               CompanyService::CompanyCreationValidationError,
@@ -2141,6 +2142,7 @@ RSpec.describe CompanyService do
     end
 
     it "cannot create when the player has the max number of companies for that side" do
+      create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       expect(instance.send(:can_create_company, doctrine)).to be false
