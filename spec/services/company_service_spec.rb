@@ -294,7 +294,7 @@ RSpec.describe CompanyService do
           CompanyService.new(player2).update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
-               "Player #{player2.id} cannot delete Company #{company.id}")
+               "Player #{player2.id} cannot modify Company #{company.id}")
       end
 
       it "raises a validation error if a Squad id is given that's not part of the Company" do
