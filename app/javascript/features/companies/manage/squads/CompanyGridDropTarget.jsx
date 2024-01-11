@@ -12,7 +12,7 @@ import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
 
 const useStyles = makeStyles(() => ({
   placementBox: {
-    minHeight: '15rem',
+    minHeight: '13.5rem',
     minWidth: '4rem'
   },
   popCMBox: {
