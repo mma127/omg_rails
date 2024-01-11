@@ -87,7 +87,7 @@ export const BattleCardPlayer = ({
   const isPending = useSelector(selectIsPending)
 
   const isCurrentPlayer = player ? player.id === playerId : false
-  const isAdmin = player.role === "admin"
+  const isAdmin = player ? player.role === "admin" : false
 
   const leavable = battleState === OPEN || battleState === FULL
 
@@ -191,7 +191,7 @@ export const BattleCardPlayer = ({
         </Box>
         <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
 
-          <Box className={classes.wrapperRow}>
+          <Box className={classes.wrapperRow}>F
             <TeamBalanceIcon team={teamBalance} isFull={isFull}/>
             <Typography variant={"h5"} className={classes.playerName}> {playerName}</Typography>
             {readyContent}
