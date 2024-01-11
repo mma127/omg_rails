@@ -24,7 +24,7 @@ export const CompanyBonuses = () => {
 
   const handleCloseSnackbar = () => setOpenSnackbar(false)
 
-  let snackbarSeverity = null
+  let snackbarSeverity = "warning"
   let snackbarContent = null
   let errorAlert
   if (errorMessage?.length > 0) {

@@ -67,6 +67,19 @@ RSpec.describe CompanyBonusesService do
                          "Company #{company.id} cannot add more resource bonuses")
       end
     end
+
+    context "when the company is in a battle" do
+      before do
+        battle = create :battle
+        create :battle_player, battle: battle, player: player, company: company
+      end
+
+      it "raises an error" do
+        expect { instance.purchase_resource_bonus(ResourceBonus.resources[:man]) }.
+          to raise_error(CompanyBonusesService::CompanyBonusesError,
+                         "Company #{company.id} is in an active battle and cannot be updated")
+      end
+    end
   end
 
   describe "#refund_resource_bonus" do
@@ -97,6 +110,19 @@ RSpec.describe CompanyBonusesService do
         expect { instance.refund_resource_bonus(resource) }.
           to raise_error(CompanyBonusesService::CompanyBonusesError,
                          "Company #{company.id} cannot refund resource bonus of type #{resource}, none exist.")
+      end
+    end
+
+    context "when the company is in a battle" do
+      before do
+        battle = create :battle
+        create :battle_player, battle: battle, player: player, company: company
+      end
+
+      it "raises an error" do
+        expect { instance.refund_resource_bonus(ResourceBonus.resources[:man]) }.
+          to raise_error(CompanyBonusesService::CompanyBonusesError,
+                         "Company #{company.id} is in an active battle and cannot be updated")
       end
     end
   end

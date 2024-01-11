@@ -294,7 +294,7 @@ RSpec.describe CompanyService do
           CompanyService.new(player2).update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param)
         }.to raise_error(
                CompanyService::CompanyUpdateValidationError,
-               "Player #{player2.id} cannot delete Company #{company.id}")
+               "Player #{player2.id} cannot modify Company #{company.id}")
       end
 
       it "raises a validation error if a Squad id is given that's not part of the Company" do
@@ -1392,6 +1392,22 @@ RSpec.describe CompanyService do
                  "Insufficient availability to create squads for available unit #{available_unit_4.id} in company #{company.id}: Existing count 0, payload count 1, available number 0"
                )
         end
+
+        context "when the company is in a battle" do
+          before do
+            battle = create :battle
+            create :battle_player, battle: battle, player: player, company: company
+          end
+
+          it "raises a validation error" do
+            expect {
+              instance.update_company_squads(company.reload, @squads_param, @offmaps_param, @squad_upgrades_param)
+            }.to raise_error(
+                   CompanyService::CompanyUpdateValidationError,
+                   "Company #{company.id} is in an active battle and cannot be updated"
+                 )
+          end
+        end
       end
 
       context "when there are transport uuids in the squads" do
@@ -2102,6 +2118,22 @@ RSpec.describe CompanyService do
     it "destroys the Company's SquadUpgrades" do
       expect { subject }.to change { SquadUpgrade.count }.by -4
       expect(SquadUpgrade.joins(:squad).where(squad: { company_id: @company.id }).size).to eq 0
+    end
+
+    context "when the company is in a battle" do
+      before do
+        battle = create :battle
+        create :battle_player, battle: battle, player: player, company: @company
+      end
+
+      it "raises a validation error" do
+        expect {
+          subject
+        }.to raise_error(
+               CompanyService::CompanyUpdateValidationError,
+               "Company #{@company.id} is in an active battle and cannot be updated"
+             )
+      end
     end
   end
 

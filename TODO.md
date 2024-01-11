@@ -19,8 +19,7 @@ BattlePlayer
 1. Pass `side` back for the BattlePlayer to create, to avoid relying on `company.faction.side` which may not be correct (ie, mixed teams)
 
 URGENT
-1. Lock company modifications for squads, unlocks, bonuses
-2. Guards for full game somehow causing a ready/generating state even if a player leaves at the same time
+1. Guards for full game somehow causing a ready/generating state even if a player leaves at the same time
 
 UI
 1. Discord invite icon

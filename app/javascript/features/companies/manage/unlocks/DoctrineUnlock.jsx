@@ -6,8 +6,9 @@ import { UnlockCard } from "./UnlockCard";
 import { useDispatch, useSelector } from "react-redux";
 import { purchaseUnlock, refundUnlock } from "./companyUnlocksSlice";
 import { UnlockDetails } from "./UnlockDetails";
-import { selectCompanyById } from "../../companiesSlice";
+import { selectCompanyActiveBattleId, selectCompanyById } from "../../companiesSlice";
 import { selectPlayer } from "../../../player/playerSlice";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   unlockContainer: {
@@ -58,6 +59,9 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId }) => 
   const company = useSelector(state => selectCompanyById(state, companyId))
   const player = useSelector(selectPlayer)
 
+  const activeBattleId = useSelector(state => selectCompanyActiveBattleId(state, companyId))
+  const battleLocked = !!activeBattleId
+
   const unlock = doctrineUnlock.unlock
   const isOwned = !_.isNil(companyUnlock)
   const canPurchase = company.vpsCurrent >= doctrineUnlock.vpCost
@@ -75,7 +79,7 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId }) => 
   if (isOwned) {
     buttonContent = (
       <Button variant="contained" color="error" size="small" onClick={refund} className={classes.button}
-              disabled={isSaving}>
+              disabled={isSaving || battleLocked}>
         <Typography variant="button" display="block">
           Refund {doctrineUnlock.vpCost} VP
         </Typography>
@@ -84,7 +88,7 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId }) => 
   } else {
     buttonContent = (
       <Button variant="contained" color="secondary" size="small" onClick={purchase} className={classes.button}
-              disabled={disablePurchase}>
+              disabled={disablePurchase || battleLocked}>
         <Typography variant="button" display="block">
           {doctrineUnlock.vpCost} VP
         </Typography>
@@ -106,13 +110,13 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId }) => 
         </Typography>
         {/*<Typography className={classes.constText}>{unlock.constName}</Typography>*/}
         <Box className={classes.unlockCardBox}>
-          <UnlockCard image={unlockImageMapping[unlock.name]} label={unlock.name} />
+          <UnlockCard image={unlockImageMapping[unlock.name]} label={unlock.name}/>
         </Box>
         <Typography variant="body2" gutterBottom align="center" className={isOwned ? classes.ownedText : null}>
           {unlock.description}
         </Typography>
         <Box sx={{ marginTop: 'auto', display: 'flex', flexDirection: "column" }}>
-          <UnlockDetails doctrineUnlock={doctrineUnlock} />
+          <UnlockDetails doctrineUnlock={doctrineUnlock}/>
           {showDisabledForAdmin ? <Typography className={classes.devOnlyText}>DEV ONLY</Typography> : null}
           {buttonContent}
         </Box>

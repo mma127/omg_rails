@@ -10,6 +10,8 @@ import {selectUpgradeById} from "../upgrades/upgradesSlice";
 import {selectSelectedSquad, selectSquadInTabIndexUuid} from "../units/squadsSlice";
 import {selectUnitById} from "../units/unitsSlice";
 import {selectSquadUpgradesForSquad} from "../squad_upgrades/squadUpgradesSlice";
+import { useParams } from "react-router-dom";
+import { selectCompanyActiveBattleId } from "../../companiesSlice";
 
 const sumSlotsAndExistingUses = (squadUpgrades, upgrade) => {
   let slotsUsed = 0,

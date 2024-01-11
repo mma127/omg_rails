@@ -17,6 +17,9 @@ class CompanyBonusesService
     # Validate company belongs to player
     validate_can_update_company(company)
 
+    # Validate company is not in battle
+    validate_company_not_in_battle(company)
+
     # Validate company has fewer than max resource bonuses
     validate_can_add_resource_bonus(company)
 
@@ -34,6 +37,10 @@ class CompanyBonusesService
 
     # Validate company belongs to player
     validate_can_update_company(company)
+
+    # Validate company is not in battle
+    validate_company_not_in_battle(company)
+
     # Validate company has at least one of the requested type of resource
     resource_bonus = ResourceBonus.find_by(resource: resource)
     validate_can_refund_resource_bonus(company, resource_bonus)
@@ -78,6 +85,12 @@ class CompanyBonusesService
   def validate_can_update_company(company)
     unless company.player == @player
       raise CompanyBonusesError.new("Player #{@player.id} cannot update Company #{company.id}")
+    end
+  end
+
+  def validate_company_not_in_battle(company)
+    if company.active_battle_id.present?
+      raise CompanyBonusesError.new("Company #{company.id} is in an active battle and cannot be updated")
     end
   end
 

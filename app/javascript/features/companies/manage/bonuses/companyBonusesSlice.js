@@ -92,9 +92,9 @@ const companyBonusesSlice = createSlice({
         state.maxResourceBonuses = action.payload.maxResourceBonuses
       })
       .addCase(purchaseCompanyResourceBonus.pending, (state) => {
-        state.errorMessage = null
         state.notifySnackbar = false
-        state.isSaving = false
+        state.errorMessage = null
+        state.isSaving = true
       })
       .addCase(purchaseCompanyResourceBonus.fulfilled, (state, action) => {
         state.manResourceBonus = action.payload.manResourceBonus
@@ -116,8 +116,8 @@ const companyBonusesSlice = createSlice({
       })
 
       .addCase(refundCompanyResourceBonus.pending, (state) => {
-        state.errorMessage = null
         state.notifySnackbar = false
+        state.errorMessage = null
         state.isSaving = true
       })
       .addCase(refundCompanyResourceBonus.fulfilled, (state, action) => {
