@@ -92,7 +92,7 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId }) => 
     )
   }
 
-  const isAdmin = player.role === "admin"
+  const isAdmin = player ? player.role === "admin" : false
   const isDisabled = doctrineUnlock.disabled
   const showDisabledForAdmin = isDisabled && isAdmin
 
