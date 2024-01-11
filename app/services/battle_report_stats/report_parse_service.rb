@@ -6,6 +6,7 @@ module BattleReportStats
     end
 
     def process_battle_stats
+      info_logger("Begin processing battle stats for battle #{@battle.id}: #{@battle_stats_string}")
       stats_by_company_id = parse_stats
 
       @battle.battle_players.each do |bp|

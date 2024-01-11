@@ -19,17 +19,16 @@ RSpec.describe BattleReportService do
   let!(:squad22) { create :squad, available_unit: available_unit2, company: company2, vet: 45 }
   let!(:squad23) { create :squad, available_unit: available_unit2, company: company2, tab_category: "infantry", category_position: 2 }
   let!(:squad23) { create :squad, available_unit: available_unit2, company: company2, tab_category: "infantry", category_position: 2 }
+  let!(:battle_player1) { create :battle_player, battle: battle, player: player1, company: company1 }
+  let!(:battle_player2) { create :battle_player, battle: battle, player: player2, company: company2 }
 
-  let(:update_service_double) { instance_double("Ratings::UpdateService", update_player_ratings: nil)}
-  let(:historical_player_service_double) { instance_double("HistoricalBattlePlayerService", create_historical_battle_players_for_battle: nil)}
-  let(:report_parse_service_double) { instance_double("BattleReportStats::ReportParseService", process_battle_stats: nil)}
+  let(:update_service_double) { instance_double("Ratings::UpdateService", update_player_ratings: nil) }
+  let(:historical_player_service_double) { instance_double("HistoricalBattlePlayerService", create_historical_battle_players_for_battle: nil) }
+  let(:report_parse_service_double) { instance_double("BattleReportStats::ReportParseService", process_battle_stats: nil) }
 
   subject(:instance) { described_class.new(battle.id) }
 
   before do
-    create :battle_player, battle: battle, player: player1, company: company1
-    create :battle_player, battle: battle, player: player2, company: company2
-
     allow(Ratings::UpdateService).to receive(:new).and_return(update_service_double)
     allow(HistoricalBattlePlayerService).to receive(:new).and_return(historical_player_service_double)
     allow(BattleReportStats::ReportParseService).to receive(:new).and_return(report_parse_service_double)
@@ -39,10 +38,13 @@ RSpec.describe BattleReportService do
     let(:race_winner) { "Allies" }
     let(:dead_squads_str) { "#{squad12.id};#{squad22.id}" }
     let(:surviving_squads) { "#{squad11.id},1.0;#{squad21.id},5.0" }
+    let(:is_final) { 1 }
+    let(:dropped_players) { "" }
+    let(:time_elapsed) { 600 }
 
-    subject(:process_report) { instance.process_report(battle.id, true, player1.name, 600,
+    subject(:process_report) { instance.process_report(battle.id, is_final, player1.name, time_elapsed,
                                                        race_winner, "",
-                                                       dead_squads_str, surviving_squads, "", {}) }
+                                                       dead_squads_str, surviving_squads, dropped_players, {}) }
 
     context "when the game is valid for processing" do
       it "updates surviving squads' vet" do
@@ -161,6 +163,122 @@ RSpec.describe BattleReportService do
 
       it "does not change squads" do
         expect { process_report }.to raise_error(StandardError, "Unexpected error")
+        expect(squad11.reload.vet).to eq 0
+        expect(squad21.reload.vet).to eq 0
+        expect(squad12.reload.vet).to eq 20
+        expect(squad22.reload.vet).to eq 45
+        expect(squad23.reload.vet).to eq 0
+      end
+    end
+
+    context "when there is a dropped player but battle is not final" do
+      let(:is_final) { 0 }
+      let(:dropped_players) { "#{player2.name}; " }
+
+      it "does not finalize the battle" do
+        process_report
+        expect(battle.reload.ingame?).to be true
+        expect(battle.winner).to eq nil
+      end
+
+      it "sets the dropped flag on battle player 2" do
+        process_report
+        expect(battle_player2.reload.is_dropped).to be true
+      end
+    end
+
+    context "when there is a dropped player and battle is final" do
+      let(:is_final) { 1 }
+      let(:dropped_players) { "#{player2.name}; " }
+
+      it "updates surviving squads' vet" do
+        expect(squad11.vet).to eq 0
+        expect(squad21.vet).to eq 0
+        process_report
+        expect(squad11.reload.vet).to eq 1
+        expect(squad21.reload.vet).to eq 5
+      end
+
+      it "autorebuilds the dead squads" do
+        expect(squad12.vet).to eq 20
+        expect(squad22.vet).to eq 45
+
+        process_report
+
+        expect(squad12.reload.vet).to eq 0
+        expect(squad22.reload.vet).to eq 0
+      end
+
+      it "adds rubberband vet to non-called in squads" do
+        expect(squad23.vet).to eq 0
+        process_report
+        expect(squad23.reload.vet).to eq described_class::RUBBERBAND_VET
+      end
+
+      it "updates availability" do
+        process_report
+        expect(available_unit1.reload.available).to eq 9
+        expect(available_unit2.reload.available).to eq 89
+      end
+
+      it "updates company resources" do
+        process_report
+        expect(company1.reload.man).to eq ruleset.starting_man - available_unit1.man * 2
+        expect(company1.mun).to eq ruleset.starting_mun - available_unit1.mun * 2
+        expect(company1.fuel).to eq ruleset.starting_fuel - available_unit1.fuel * 2
+
+        expect(company2.reload.man).to eq ruleset.starting_man - available_unit2.man * 3
+        expect(company2.mun).to eq ruleset.starting_mun - available_unit2.mun * 3
+        expect(company2.fuel).to eq ruleset.starting_fuel - available_unit2.fuel * 3
+      end
+
+      it "updates company VPs" do
+        process_report
+        expect(company1.reload.vps_earned).to eq 1
+        expect(company2.reload.vps_earned).to eq 1
+      end
+
+      it "updates player VPs" do
+        process_report
+        expect(player1.reload.vps).to eq 1
+        expect(player2.reload.vps).to eq 1
+      end
+
+      it "finalizes the battle" do
+        process_report
+        expect(battle.reload.winner).to eq Battle.winners[:allied]
+        expect(battle.final?).to be true
+      end
+
+      it "calls battle report stats" do
+        expect(report_parse_service_double).to receive(:process_battle_stats).once
+        process_report
+      end
+    end
+
+    context "when the battle reports before the minimum threshold" do
+      let(:time_elapsed) { 200 }
+
+      it "sets the battle's state to abandoned" do
+        process_report
+        expect(battle.reload.abandoned?).to be true
+        expect(battle.winner).to eq nil
+      end
+
+      it "does not change company values" do
+        process_report
+        expect(company1.reload.vps_earned).to eq 0
+        expect(company2.reload.vps_earned).to eq 0
+        expect(company1.man).to eq 7000
+        expect(company1.mun).to eq 1600
+        expect(company1.fuel).to eq 1400
+        expect(company2.man).to eq 7000
+        expect(company2.mun).to eq 1600
+        expect(company2.fuel).to eq 1400
+      end
+
+      it "does not change squads" do
+        process_report
         expect(squad11.reload.vet).to eq 0
         expect(squad21.reload.vet).to eq 0
         expect(squad12.reload.vet).to eq 20
@@ -412,6 +530,27 @@ RSpec.describe BattleReportService do
     it "sets the battle state to 'final'" do
       instance.send(:finalize_battle, winner)
       expect(battle.reload.final?).to be true
+    end
+  end
+
+  describe "#handle_dropped_players" do
+    context "when the string is empty" do
+      let(:dropped_players) { "" }
+
+      it "does nothing" do
+        instance.send(:handle_dropped_players, dropped_players)
+        expect(battle_player1.reload.is_dropped).to be false
+        expect(battle_player2.reload.is_dropped).to be false
+      end
+    end
+
+    context "when there are dropped players" do
+      let(:dropped_players) { "#{player2.name}; " }
+
+      it "updates the battle player is_dropped flag" do
+        instance.send(:handle_dropped_players, dropped_players)
+        expect(battle_player2.reload.is_dropped).to be true
+      end
     end
   end
 end

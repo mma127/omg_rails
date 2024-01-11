@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_05_044432) do
+ActiveRecord::Schema.define(version: 2024_01_10_051309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(version: 2024_01_05_044432) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "team_balance", comment: "Assigned team for balance"
+    t.boolean "is_dropped", default: false, comment: "Has this player dropped?"
     t.index ["battle_id"], name: "index_battle_players_on_battle_id"
     t.index ["company_id"], name: "index_battle_players_on_company_id"
     t.index ["player_id"], name: "index_battle_players_on_player_id"

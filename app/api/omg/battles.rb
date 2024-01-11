@@ -116,12 +116,12 @@ module OMG
           requires :final, type: Integer, desc: "Battle final flag, 1 for final, 0 for not"
           requires :battleReport, type: String, desc: "Display name of reporting player"
           requires :timeElapsed, type: Float, desc: "Battle elapsed time"
-          requires :raceWinner, type: String, desc: "Axis or Allies"
+          requires :raceWinner, type: String, desc: "Axis or Allies or Intermediate if no winner (drop report)"
           requires :map, type: String, desc: "Map name"
           requires :deadSGroups, type: String, desc: "List of dead squads, semicolon separated"
           requires :surviveSGroups, type: String, desc: "List of surviving squads with xp, semicolon separated in format: [squad id],[exp];..."
           optional :newSGroups, type: String, desc: "List of new squads" # Not using for now
-          requires :dropPlayers, type: String, desc: "List of dropped player names, possible to receive a blank string name"
+          requires :dropPlayers, type: String, desc: "List of dropped player names, possible to receive a blank string name, semicolon separated in format: [player name]; ..."
           requires :battleStats, type: String, desc: "Stats string by player semicolon separated in format: " \
             "[player name],CompanyId:[company id],Inf Lost:[int] ,Vehicles Lost:[int] ,Inf Killed[int] ,Vehicles Killed:[int];..."
         end
