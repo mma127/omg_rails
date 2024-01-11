@@ -191,7 +191,7 @@ export const BattleCardPlayer = ({
         </Box>
         <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
 
-          <Box className={classes.wrapperRow}>F
+          <Box className={classes.wrapperRow}>
             <TeamBalanceIcon team={teamBalance} isFull={isFull}/>
             <Typography variant={"h5"} className={classes.playerName}> {playerName}</Typography>
             {readyContent}

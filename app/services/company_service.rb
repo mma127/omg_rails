@@ -5,7 +5,7 @@ class CompanyService
 
   class CompanyDeletionValidationError < StandardError; end
 
-  MAX_COMPANIES_PER_SIDE = 2.freeze
+  MAX_COMPANIES_PER_SIDE = 3.freeze
 
   MIN_POP_PER_PLATOON = 7.freeze
   MAX_POP_PER_PLATOON = 25.freeze
