@@ -4,6 +4,7 @@
 #
 #  id                                      :bigint           not null, primary key
 #  abandoned(Is this player abandoning?)   :boolean          default(FALSE)
+#  is_dropped(Has this player dropped?)    :boolean          default(FALSE)
 #  ready(Ready flag for the player)        :boolean          default(FALSE)
 #  side(Team side)                         :string           not null
 #  team_balance(Assigned team for balance) :integer
@@ -37,10 +38,6 @@ class BattlePlayer < ApplicationRecord
 
   def player_name
     player.name
-  end
-
-  def player_elo
-    player.elo
   end
 
   def company_doctrine
