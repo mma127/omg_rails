@@ -359,7 +359,7 @@ RSpec.describe CompanyUnlockService do
       it "removes the AvailableUpgrade for the disabled upgrade" do
         subject
         expect(AvailableUpgrade.exists?(available_upgrade1.id)).to be false
-        expect(AvailableUpgrade.exists?(available_upgrade2.id)).to be true #only upgrade for unit1 removed
+        expect(AvailableUpgrade.exists?(available_upgrade2.id)).to be true # only upgrade for unit1 removed
       end
 
       it "swaps the AvailableUpgrade out in the relevant SquadUpgrades" do
@@ -458,6 +458,18 @@ RSpec.describe CompanyUnlockService do
       create :company_unlock, company: company, doctrine_unlock: doctrine_unlock
       expect { instance.purchase_doctrine_unlock(doctrine_unlock) }.
         to raise_error "Company #{company.id} already owns doctrine unlock #{doctrine_unlock.id}"
+    end
+
+    context "when the company is in a battle" do
+      before do
+        battle = create :battle
+        create :battle_player, battle: battle, player: company.player, company: company
+      end
+
+      it "raises an error" do
+        expect { instance.purchase_doctrine_unlock(doctrine_unlock) }.
+          to raise_error "Company #{company.id} is in an active battle and cannot be updated"
+      end
     end
   end
 
@@ -977,6 +989,18 @@ RSpec.describe CompanyUnlockService do
 
       it "raises an error" do
         expect { subject }.to raise_error "Company #{company.id} does not have a company_unlock with id #{company_unlock.id}"
+      end
+    end
+
+    context "when the company is in a battle" do
+      before do
+        battle = create :battle
+        create :battle_player, battle: battle, player: company.player, company: company
+      end
+
+      it "raises an error" do
+        expect { subject }.
+          to raise_error "Company #{company.id} is in an active battle and cannot be updated"
       end
     end
   end

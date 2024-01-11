@@ -1,10 +1,12 @@
 import React from 'react'
 import { useSelector } from "react-redux";
-import { selectAllAvailableUpgrades, selectAvailableUpgradesByUnitId } from "./availableUpgradesSlice";
+import { selectAvailableUpgradesByUnitId } from "./availableUpgradesSlice";
 import { Box, Typography } from "@mui/material";
 import { AvailableUpgradeClickable } from "./AvailableUpgradeClickable";
 import { selectSelectedSquad } from "../units/squadsSlice";
 import { makeStyles } from "@mui/styles";
+import { useParams } from "react-router-dom";
+import { selectCompanyActiveBattleId } from "../../companiesSlice";
 
 const generateContent = (au, onSelect, enabled) =>
   <AvailableUpgradeClickable
@@ -28,7 +30,12 @@ export const AvailableUpgrades = ({ unitId, onSelect }) => {
   const availableUpgrades = useSelector(state => selectAvailableUpgradesByUnitId(state, unitId))
   const selectedSquad = useSelector(selectSelectedSquad)
 
-  const enabled = !!selectedSquad
+  let params = useParams()
+  const companyId = params.companyId
+  const activeBattleId = useSelector(state => selectCompanyActiveBattleId(state, companyId))
+  const battleLocked = !!activeBattleId
+
+  const enabled = !!selectedSquad && !battleLocked
 
   let content
   if (availableUpgrades.length > 0) {

@@ -24,6 +24,8 @@ import {
 } from "@mui/material";
 import { FUEL, MAN, MUN, RESOURCE_TO_ICON, RESOURCE_TO_NAME } from "../../../../constants/resources";
 import { ResourceIcon } from "../../../resources/ResourceIcon";
+import { useParams } from "react-router-dom";
+import { selectCompanyActiveBattleId } from "../../companiesSlice";
 
 const getResourceTitle = (resource) => {
   return RESOURCE_TO_NAME[resource]
@@ -78,6 +80,11 @@ export const ResourceCard = ({ resource, availableRB }) => {
 
   const companyBonuses = useSelector(selectCompanyBonuses);
 
+  let params = useParams()
+  const companyId = params.companyId
+  const activeBattleId = useSelector(state => selectCompanyActiveBattleId(state, companyId))
+  const battleLocked = !!activeBattleId
+
   const maxRB = companyBonuses.maxResourceBonuses
   const rbKey = `${ resource }ResourceBonus`
   const countKey = `${ resource }BonusCount`
@@ -99,12 +106,12 @@ export const ResourceCard = ({ resource, availableRB }) => {
 
   if (count > 0) {
     refundContent = <Button variant="contained" type="submit" color="secondary" size="small"
-                            className={ classes.actionBtn } onClick={ handleRefundClick }>Refund</Button>
+                            className={ classes.actionBtn } onClick={ handleRefundClick } disabled={battleLocked}>Refund</Button>
   }
 
   if (availableRB > 0) {
     purchaseContent = <Button variant="contained" type="submit" color="secondary" size="small"
-                              className={ classes.actionBtn } onClick={ handlePurchaseClick }>Purchase</Button>
+                              className={ classes.actionBtn } onClick={ handlePurchaseClick } disabled={battleLocked}>Purchase</Button>
   } else {
     purchaseContent = <Button variant="contained" type="submit" color="secondary" size="small"
                               className={ classes.actionBtn } disabled>Purchase</Button>

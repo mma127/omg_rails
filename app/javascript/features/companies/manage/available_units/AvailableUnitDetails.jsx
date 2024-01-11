@@ -1,16 +1,13 @@
 import React, { useEffect } from 'react'
-import { Box, CircularProgress, Grid, Paper, Typography } from "@mui/material";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUnitById, selectUnitById } from "../units/unitsSlice";
-import {
-  selectAvailableUnitById, selectSelectedAvailableUnitId
-} from "./availableUnitsSlice";
+import { selectAvailableUnitById, selectSelectedAvailableUnitId } from "./availableUnitsSlice";
 import { unitImageMapping } from "../../../../constants/units/all_factions";
 import { formatResourceCost } from "../../../../utils/company";
-import { selectAvailableUpgradesByUnitId } from "../available_upgrades/availableUpgradesSlice";
 import { AvailableUpgrades } from "../available_upgrades/AvailableUpgrades";
-import { selectSelectedSquad, selectSelectedSquadId } from "../units/squadsSlice";
+import { selectSelectedSquad } from "../units/squadsSlice";
 
 
 const useStyles = makeStyles(theme => ({

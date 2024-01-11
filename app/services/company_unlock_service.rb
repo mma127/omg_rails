@@ -8,6 +8,8 @@ class CompanyUnlockService
   def purchase_doctrine_unlock(doctrine_unlock)
     unlock = doctrine_unlock.unlock
 
+    # Validate company not in battle
+    validate_company_not_in_battle
     # Validate company's doctrine matches doctrine unlock's doctrine
     validate_correct_doctrine(doctrine_unlock)
     # Validate company has enough vps to pay the vp cost
@@ -110,6 +112,8 @@ class CompanyUnlockService
   end
 
   def refund_company_unlock(company_unlock_id)
+    # Validate company not in battle
+    validate_company_not_in_battle
     # Validate company owns this company unlock
     validate_purchased(company_unlock_id)
 
@@ -326,6 +330,12 @@ class CompanyUnlockService
     new_vps = @company.vps_current + company_unlock.doctrine_unlock.vp_cost
     @company.update!(vps_current: new_vps)
     company_unlock.destroy!
+  end
+
+  def validate_company_not_in_battle
+    if @company.active_battle_id.present?
+      raise CompanyUnlockValidationError.new("Company #{@company.id} is in an active battle and cannot be updated")
+    end
   end
 
   def validate_correct_doctrine(doctrine_unlock)

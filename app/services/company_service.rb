@@ -87,8 +87,11 @@ class CompanyService
   def update_company_squads(company, squads, offmaps, squad_upgrades, override = false)
     unless can_update_company(company, override)
       # Raise validation error if the company does not belong to the player
-      raise CompanyUpdateValidationError.new("Player #{@player.id} cannot delete Company #{company.id}")
+      raise CompanyUpdateValidationError.new("Player #{@player.id} cannot modify Company #{company.id}")
     end
+
+    # Validate not in battle
+    validate_company_not_in_battle(company)
 
     ## Squads
     existing_squads = company.squads
@@ -317,6 +320,9 @@ class CompanyService
       raise CompanyUpdateValidationError.new("Player #{@player.id} cannot update Company #{company.id}")
     end
 
+    # Validate not in battle
+    validate_company_not_in_battle(company)
+
     company.destroy!
   end
 
@@ -374,6 +380,12 @@ class CompanyService
 
   def can_update_company(company, override)
     company.player == @player || override
+  end
+
+  def validate_company_not_in_battle(company)
+    if company.active_battle_id.present?
+      raise CompanyUpdateValidationError.new("Company #{company.id} is in an active battle and cannot be updated")
+    end
   end
 
   # Validates that all squad ids in the squads payload are unique and correspond to an existing squad id in the company
