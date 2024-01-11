@@ -535,11 +535,22 @@ RSpec.describe BattleReportService do
 
   describe "#handle_dropped_players" do
     context "when the string is empty" do
+      let(:dropped_players) { "" }
 
+      it "does nothing" do
+        instance.send(:handle_dropped_players, dropped_players)
+        expect(battle_player1.reload.is_dropped).to be false
+        expect(battle_player2.reload.is_dropped).to be false
+      end
     end
 
     context "when there are dropped players" do
+      let(:dropped_players) { "#{player2.name}; " }
 
+      it "updates the battle player is_dropped flag" do
+        instance.send(:handle_dropped_players, dropped_players)
+        expect(battle_player2.reload.is_dropped).to be true
+      end
     end
   end
 end
