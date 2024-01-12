@@ -18,7 +18,7 @@ import { SquadBuilder } from "./SquadBuilder";
 import { CompanyUnlocks } from "./unlocks/CompanyUnlocks";
 import { doctrineImgMapping } from "../../../constants/doctrines";
 import { selectDoctrineById } from "../../doctrines/doctrinesSlice";
-import {CompanyBonuses} from "./bonuses/CompanyBonuses";
+import { CompanyBonuses } from "./bonuses/CompanyBonuses";
 import { selectIsCompanyBonusesChanged } from "./bonuses/companyBonusesSlice";
 
 const useStyles = makeStyles(theme => ({
@@ -50,6 +50,20 @@ const useStyles = makeStyles(theme => ({
     height: '90px',
     width: '180px'
   },
+  lockedContainer: {
+    display: "flex",
+    alignItems: "center"
+  },
+  lockedAlert: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  lockedAlertTitle: {
+    margin: 0,
+    fontWeight: "bold",
+    fontSize: "20px"
+  }
 }))
 
 const SQUADS = "squads"
@@ -87,9 +101,13 @@ export const CompanyManager = () => {
   const editEnabled = !activeBattleId
   let companyLockedContent = ""
   if (!editEnabled) {
-    companyLockedContent = <Alert severity={"warning"}>
-      <AlertTitle>In Battle - Company Locked</AlertTitle>
-    </Alert>
+    companyLockedContent = (
+      <Box className={classes.lockedContainer}>
+        <Alert severity="warning" variant="filled" className={classes.lockedAlert}>
+          <AlertTitle className={classes.lockedAlertTitle}>In Battle - Company Locked</AlertTitle>
+        </Alert>
+      </Box>
+    )
   }
 
   return (
@@ -99,7 +117,7 @@ export const CompanyManager = () => {
         <Grid item md={6} xs={12} className={`${classes.titleItem} ${classes.companyDocImage}`}>
           <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>
             <img src={doctrineImgMapping[doctrine.name]} alt={doctrine.displayName}
-                 className={classes.doctrineImage} />
+                 className={classes.doctrineImage}/>
           </Box>
         </Grid>
         <Grid item md={6} xs={12} className={`${classes.titleItem} ${classes.companyName}`}>
@@ -109,32 +127,32 @@ export const CompanyManager = () => {
       <Box className={classes.contentContainer}>
         <Tabs value={currentTab} onChange={onTabChange} orientation="vertical" className={classes.tabs}>
           <Tab key={`company-manager-tab-${SQUADS}`}
-               icon={matches ? <PersonAddIcon /> : null}
+               icon={matches ? <PersonAddIcon/> : null}
                label={matches ? null : "Squads"}
                value="squads"
                to="squads"
                className={classes.tab}
-               component={Link} />
+               component={Link}/>
           <Tab key={`company-manager-tab-${UNLOCKS}`}
-               icon={matches ? <AccountTreeIcon /> : null}
+               icon={matches ? <AccountTreeIcon/> : null}
                label={matches ? null : "Unlocks"}
                value="unlocks"
                to="unlocks"
                className={classes.tab}
-               component={Link} />
+               component={Link}/>
           <Tab key={`company-manager-tab-${BONUSES}`}
-               icon={matches ? <AddBoxIcon /> : null}
+               icon={matches ? <AddBoxIcon/> : null}
                label={matches ? null : "Bonuses"}
                value="bonuses"
                to="bonuses"
                className={classes.tab}
-               component={Link} />
+               component={Link}/>
         </Tabs>
         <Routes>
-          <Route path="squads" element={<SquadBuilder />} />
-          <Route path="unlocks" element={<CompanyUnlocks />} />
-          <Route path="bonuses" element={<CompanyBonuses />} />
-          <Route index element={<SquadBuilder />} />
+          <Route path="squads" element={<SquadBuilder/>}/>
+          <Route path="unlocks" element={<CompanyUnlocks/>}/>
+          <Route path="bonuses" element={<CompanyBonuses/>}/>
+          <Route index element={<SquadBuilder/>}/>
         </Routes>
       </Box>
     </Container>

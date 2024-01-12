@@ -162,7 +162,7 @@ export const BattleCardPlayer = ({
 
 
           <Box className={classes.wrapperRow}>
-            <TeamBalanceIcon team={teamBalance}/>
+            <TeamBalanceIcon team={teamBalance} isFull={isFull}/>
             <Typography variant={"h5"} color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
             {readyContent}
             {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame}/> : ""}

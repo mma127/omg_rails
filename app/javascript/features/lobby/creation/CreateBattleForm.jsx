@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Box,
   Button,
@@ -12,15 +12,15 @@ import {
   TextField, Tooltip,
   Typography
 } from "@mui/material";
-import {makeStyles} from "@mui/styles";
-import {Controller, useForm} from "react-hook-form";
+import { makeStyles } from "@mui/styles";
+import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup"
-import {yupResolver} from "@hookform/resolvers/yup";
-import {useDispatch, useSelector} from "react-redux";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch, useSelector } from "react-redux";
 import { createBattle, selectIsPending } from "../lobbySlice";
-import {ErrorTypography} from "../../../components/ErrorTypography";
-import {selectAllCompanies} from "../../companies/companiesSlice";
-import {doctrineImgMapping} from "../../../constants/doctrines";
+import { ErrorTypography } from "../../../components/ErrorTypography";
+import { selectAllCompanies } from "../../companies/companiesSlice";
+import { doctrineImgMapping } from "../../../constants/doctrines";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
@@ -68,23 +68,23 @@ const nameSort = (a, b) => {
   return 0;
 }
 
-export const CreateBattleForm = ({rulesetId, onCreateCallback}) => {
+export const CreateBattleForm = ({ rulesetId, onCreateCallback }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const companies = useSelector(selectAllCompanies)
   const sortedCompanies = companies.sort(nameSort);
   const isPending = useSelector(selectIsPending)
 
-  const {reset, handleSubmit, setValue, control, formState: {errors}} = useForm({
+  const { reset, handleSubmit, setValue, control, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({name, size, initialCompanyId}) => {
+  const onSubmit = ({ name, size, initialCompanyId }) => {
     if (name.length === 0) {
       name = `${size}v${size}`
     }
     // Submit
-    dispatch(createBattle({name, size, rulesetId, initialCompanyId}))
+    dispatch(createBattle({ name, size, rulesetId, initialCompanyId }))
     onCreateCallback()
   }
 
@@ -92,11 +92,11 @@ export const CreateBattleForm = ({rulesetId, onCreateCallback}) => {
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container>
-          <Grid item xs={6}>
+          <Grid item xs={5}>
             <Box pl={"9px"} pb={2}>
               <Controller
                 name="name" control={control} defaultValue=""
-                render={({field}) => (
+                render={({ field }) => (
                   <TextField
                     variant="standard"
                     label="Name"
@@ -108,11 +108,11 @@ export const CreateBattleForm = ({rulesetId, onCreateCallback}) => {
               />
             </Box>
           </Grid>
-          <Grid item xs={6}>
-            <Box pt={2} pb={2}>
+          <Grid item xs={2}>
+            <Box pt={2} pb={2} sx={{display: "flex", justifyContent: "center"}}>
               <Controller
                 name="size" control={control} defaultValue={3}
-                render={({field}) => (
+                render={({ field }) => (
                   <FormControl>
                     <InputLabel id="battle-size-select-label">Size</InputLabel>
                     <Select
@@ -133,35 +133,37 @@ export const CreateBattleForm = ({rulesetId, onCreateCallback}) => {
               <ErrorTypography pl={"9px"}>{errors.size?.message}</ErrorTypography>
             </Box>
           </Grid>
+          <Grid item xs={5}>
+            <Box pt={2} pb={2}>
+              <Controller
+                name="initialCompanyId" control={control} defaultValue=""
+                render={({ field }) => (
+                  <FormControl sx={{ minWidth: '120px' }}>
+                    <InputLabel id="join-company-select-label">Company</InputLabel>
+                    <Select
+                      labelId="join-company-select"
+                      id="join-company-select"
+                      label="Company"
+                      color="secondary"
+                      error={Boolean(errors.initialCompanyId)}
+                      {...field}
+                    >
+                      {sortedCompanies.map(c => <MenuItem key={c.id} value={c.id} className={classes.optionMenuItem}>
+                        <Tooltip title={c.name} placement="right" arrow>
+                          <img src={doctrineImgMapping[c.doctrineName]} alt={c.doctrineName}
+                               className={classes.optionImage}/>
+                        </Tooltip>
+                      </MenuItem>)}
+                    </Select>
+                  </FormControl>)}
+              />
+              <ErrorTypography pl={"9px"}>{errors.initialCompanyId?.message}</ErrorTypography>
+            </Box>
+          </Grid>
         </Grid>
-        <Box pt={2} pb={2}>
-          <Controller
-            name="initialCompanyId" control={control} defaultValue=""
-            render={({field}) => (
-              <FormControl sx={{minWidth: '120px'}}>
-                <InputLabel id="join-company-select-label">Company</InputLabel>
-                <Select
-                  labelId="join-company-select"
-                  id="join-company-select"
-                  label="Company"
-                  color="secondary"
-                  error={Boolean(errors.initialCompanyId)}
-                  {...field}
-                >
-                  {sortedCompanies.map(c => <MenuItem key={c.id} value={c.id} className={classes.optionMenuItem}>
-                    <Tooltip title={c.name} placement="right" arrow>
-                      <img src={doctrineImgMapping[c.doctrineName]} alt={c.doctrineName}
-                           className={classes.optionImage}/>
-                    </Tooltip>
-                  </MenuItem>)}
-                </Select>
-              </FormControl>)}
-          />
-          <ErrorTypography pl={"9px"}>{errors.initialCompanyId?.message}</ErrorTypography>
-        </Box>
         <Grid container pt={4} justifyContent="center">
           <Button variant="contained" type="submit" color="secondary" size="small"
-                  sx={{marginRight: '9px'}} disabled={isPending}>Create</Button>
+                  sx={{ marginRight: '9px' }} disabled={isPending}>Create</Button>
         </Grid>
       </form>
     </Box>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
+  Alert, AlertTitle,
   Box,
   Button,
   Card,
@@ -29,11 +30,51 @@ const useStyles = makeStyles(theme => ({
   column: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alignItems: "inherit",
+    flex: 1
   },
-  headerRow: {
+  vcColumn: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%'
+  },
+  row: {
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center"
+  },
+  battleId: {
+    textAlign: "center",
+    display: "flex"
+  },
+  battleName: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start"
+  },
+  balanceText: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end"
+  },
+  balanceAlertContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: "1rem"
+  },
+  balanceAlert: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  balanceAlertTitle: {
+    margin: 0
   }
 }))
 
@@ -63,7 +104,8 @@ export const BattleCard = ({ id, rulesetId }) => {
   const alliedPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'allied'), size)
   const axisPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'axis'), size)
   const generatingContent = battle.state === GENERATING ? <Typography>Generating</Typography> : ""
-  const ingameContent = battle.state === INGAME ? <Link to={`/api/battles/${id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link> : ""
+  const ingameContent = battle.state === INGAME ?
+    <Link to={`/api/battles/${id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link> : ""
   const isFull = battle.battlePlayers.length === size * 2
 
   const balanceColor = (balance) => {
@@ -82,8 +124,9 @@ export const BattleCard = ({ id, rulesetId }) => {
         return "pink";
       default:
         return "white";
-    }}
-  
+    }
+  }
+
   const minDiff = (size) => {
     if (size === 4)
       return 50
@@ -97,11 +140,11 @@ export const BattleCard = ({ id, rulesetId }) => {
     if (!balance)
       return "Pending"
 
-    if (balance < (0-100))
+    if (balance < (0 - 100))
       return "Allied Stomp"
     else if (balance > 100)
       return "Axis Stomp"
-    else if (balance < (0-min))
+    else if (balance < (0 - min))
       return "Allied Favoured"
     else if (balance > min)
       return "Axis Favoured"
@@ -113,77 +156,81 @@ export const BattleCard = ({ id, rulesetId }) => {
   };
 
   let optimumBalance = false;
-  const  k = axisPlayers.reduce((accumulator, currentValue) => accumulator + currentValue.teamBalance, 0)
-  if (k === size || k === size*2) {
-    optimumBalance = true;
+  const k = axisPlayers.reduce((accumulator, currentValue) => accumulator + currentValue.teamBalance, 0)
+  if (k === size || k === size * 2) {
+    optimumBalance = false;
   }
 
   const calculatedBalanceState = balanceState(battle.eloDifference)
 
+  let optimumBalanceContent
+  if (!optimumBalance && isFull) {
+    optimumBalanceContent = (
+      <Box className={classes.balanceAlertContainer}>
+        <Alert severity="warning" className={classes.balanceAlert}>
+          <AlertTitle className={classes.balanceAlertTitle}>
+            Warning: Balance not optimum, rearrange teams into matching colours for optimum balance
+          </AlertTitle>
+        </Alert>
+      </Box>
+    )
+  }
+
   return (
     <Box>
       <Card elevation={3} sx={{ padding: '16px' }}>
-        <Box className={classes.headerRow}>
-          <Typography variant={"h5"} pl={"9px"} gutterBottom>{battle.name}</Typography>
-          <Box className={classes.headerRow}>
-            <Typography variant={"h5"} pl={"9px"} gutterBottom>Battle ID: </Typography>
-            <Typography variant={"h5"} pl={"9px"} gutterBottom color="secondary">{battle.id}</Typography>
+        <Box className={classes.row}>
+          <Box className={classes.battleName}>
+            <Typography variant="h5" pl="9px" gutterBottom>{battle.name}</Typography>
           </Box>
-          <Box className={classes.headerRow}>
-            <Typography variant={"h5"} pl={"9px"} gutterBottom>Balance: </Typography>
-            <Typography variant={"h5"} pl={"9px"} gutterBottom color={balanceColor(calculatedBalanceState)}>{calculatedBalanceState}</Typography>
+          <Box className={classes.battleId}>
+            <Typography variant="h5" pl="9px" gutterBottom>Battle ID: </Typography>
+            <Typography variant="h5" pl="9px" gutterBottom color="secondary">{battle.id}</Typography>
+          </Box>
+          <Box className={classes.balanceText}>
+            <Typography variant="h5" pl="9px" gutterBottom>Balance: </Typography>
+            <Typography variant="h5" pl="9px" gutterBottom
+                        color={balanceColor(calculatedBalanceState)}>{calculatedBalanceState}</Typography>
           </Box>
         </Box>
-        <Typography variant={"h6"} pl={"9px"} hidden={optimumBalance || !isFull} color="error" align="center" gutterBottom>Warning: Balance not optimum, rearrange teams into matching colours for optimum balance</Typography>
+        {optimumBalanceContent}
         {generatingContent}
         {ingameContent}
-        <Grid container>
-          <Grid item xs={1}>
-            <Box className={classes.column}>
-            </Box>
-          </Grid>
-          <Grid item xs={5}>
-            <Box className={classes.column}>
-              {alliedPlayers.map(p => <BattleCardPlayer key={p.playerId || nanoid()}
-                                                        battleId={id}
-                                                        playerId={p.playerId}
-                                                        playerName={p.playerName}
-                                                        teamBalance={p.teamBalance}
-                                                        playerElo={p.playerElo}
-                                                        companyDoctrine={p.companyDoctrine}
-                                                        side={ALLIED_SIDE}
-                                                        battleState={battle.state}
-                                                        ready={p.ready}
-                                                        abandoned={p.abandoned}
-                                                        isFull={isFull}
-              />)}
-            </Box>
-          </Grid>
-          <Grid item xs={1}>
-            <Box pt={2} pb={2} className={classes.column} sx={{alignItems: 'center', height: '100%'}}>
-              vs
-            </Box>
-          </Grid>
-
-          <Grid item xs={5}>
-            <Box className={classes.column}>
-              {axisPlayers.map(p => <BattleCardPlayer key={p.playerId || nanoid()}
+        <Box className={classes.row}>
+          <Box className={classes.column}>
+            {alliedPlayers.map(p => <BattleCardPlayer key={p.playerId || nanoid()}
                                                       battleId={id}
                                                       playerId={p.playerId}
                                                       playerName={p.playerName}
                                                       teamBalance={p.teamBalance}
                                                       playerElo={p.playerElo}
                                                       companyDoctrine={p.companyDoctrine}
-                                                      side={AXIS_SIDE}
+                                                      side={ALLIED_SIDE}
                                                       battleState={battle.state}
                                                       ready={p.ready}
                                                       abandoned={p.abandoned}
                                                       isFull={isFull}
-              />)}
-            </Box>
-          </Grid>
-
-        </Grid>
+            />)}
+          </Box>
+          <Box pt={2} pb={2} className={classes.vsColumn}>
+            vs
+          </Box>
+          <Box className={classes.column}>
+            {axisPlayers.map(p => <BattleCardPlayer key={p.playerId || nanoid()}
+                                                    battleId={id}
+                                                    playerId={p.playerId}
+                                                    playerName={p.playerName}
+                                                    teamBalance={p.teamBalance}
+                                                    playerElo={p.playerElo}
+                                                    companyDoctrine={p.companyDoctrine}
+                                                    side={AXIS_SIDE}
+                                                    battleState={battle.state}
+                                                    ready={p.ready}
+                                                    abandoned={p.abandoned}
+                                                    isFull={isFull}
+            />)}
+          </Box>
+        </Box>
       </Card>
     </Box>
   )
