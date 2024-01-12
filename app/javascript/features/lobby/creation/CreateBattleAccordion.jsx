@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
+import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Button } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { ActionCableConsumer, ActionCableProvider } from '@thrash-industries/react-actioncable-provider';
@@ -39,7 +39,7 @@ export const CreateBattleAccordion = ({rulesetId}) => {
         expandIcon={<ExpandMoreIcon />}
         id="create-battle-header"
       >
-        <Typography>Create new battle</Typography>
+        <Button variant="contained" color="secondary" disabled={isExpanded || isDisabled}>Create New Battle</Button>
       </AccordionSummary>
       <AccordionDetails>
         <CreateBattleForm rulesetId={rulesetId} onCreateCallback={onCreateCallback} />

@@ -33,7 +33,25 @@ const useStyles = makeStyles(theme => ({
   },
   headerRow: {
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center"
+  },
+  battleId: {
+    textAlign: "center",
+    display: "flex"
+  },
+  battleName: {
+    flex: 1,
+    display: "flex",
+    alignItems:"center",
+    justifyContent: "flex-start"
+  },
+  balanceText: {
+    flex: 1,
+    display: "flex",
+    alignItems:"center",
+    justifyContent: "flex-end"
   }
 }))
 
@@ -63,7 +81,8 @@ export const BattleCard = ({ id, rulesetId }) => {
   const alliedPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'allied'), size)
   const axisPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'axis'), size)
   const generatingContent = battle.state === GENERATING ? <Typography>Generating</Typography> : ""
-  const ingameContent = battle.state === INGAME ? <Link to={`/api/battles/${id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link> : ""
+  const ingameContent = battle.state === INGAME ?
+    <Link to={`/api/battles/${id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link> : ""
   const isFull = battle.battlePlayers.length === size * 2
 
   const balanceColor = (balance) => {
@@ -82,8 +101,9 @@ export const BattleCard = ({ id, rulesetId }) => {
         return "pink";
       default:
         return "white";
-    }}
-  
+    }
+  }
+
   const minDiff = (size) => {
     if (size === 4)
       return 50
@@ -97,11 +117,11 @@ export const BattleCard = ({ id, rulesetId }) => {
     if (!balance)
       return "Pending"
 
-    if (balance < (0-100))
+    if (balance < (0 - 100))
       return "Allied Stomp"
     else if (balance > 100)
       return "Axis Stomp"
-    else if (balance < (0-min))
+    else if (balance < (0 - min))
       return "Allied Favoured"
     else if (balance > min)
       return "Axis Favoured"
@@ -113,8 +133,8 @@ export const BattleCard = ({ id, rulesetId }) => {
   };
 
   let optimumBalance = false;
-  const  k = axisPlayers.reduce((accumulator, currentValue) => accumulator + currentValue.teamBalance, 0)
-  if (k === size || k === size*2) {
+  const k = axisPlayers.reduce((accumulator, currentValue) => accumulator + currentValue.teamBalance, 0)
+  if (k === size || k === size * 2) {
     optimumBalance = true;
   }
 
@@ -124,17 +144,22 @@ export const BattleCard = ({ id, rulesetId }) => {
     <Box>
       <Card elevation={3} sx={{ padding: '16px' }}>
         <Box className={classes.headerRow}>
-          <Typography variant={"h5"} pl={"9px"} gutterBottom>{battle.name}</Typography>
-          <Box className={classes.headerRow}>
-            <Typography variant={"h5"} pl={"9px"} gutterBottom>Battle ID: </Typography>
-            <Typography variant={"h5"} pl={"9px"} gutterBottom color="secondary">{battle.id}</Typography>
+          <Box className={classes.battleName}>
+            <Typography variant="h5" pl="9px" gutterBottom>{battle.name}</Typography>
           </Box>
-          <Box className={classes.headerRow}>
-            <Typography variant={"h5"} pl={"9px"} gutterBottom>Balance: </Typography>
-            <Typography variant={"h5"} pl={"9px"} gutterBottom color={balanceColor(calculatedBalanceState)}>{calculatedBalanceState}</Typography>
+          <Box className={classes.battleId}>
+            <Typography variant="h5" pl="9px" gutterBottom>Battle ID: </Typography>
+            <Typography variant="h5" pl="9px" gutterBottom color="secondary">{battle.id}</Typography>
+          </Box>
+          <Box className={classes.balanceText}>
+            <Typography variant="h5" pl="9px" gutterBottom>Balance: </Typography>
+            <Typography variant="h5" pl="9px" gutterBottom
+                        color={balanceColor(calculatedBalanceState)}>{calculatedBalanceState}</Typography>
           </Box>
         </Box>
-        <Typography variant={"h6"} pl={"9px"} hidden={optimumBalance || !isFull} color="error" align="center" gutterBottom>Warning: Balance not optimum, rearrange teams into matching colours for optimum balance</Typography>
+        <Typography variant={"h6"} pl={"9px"} hidden={optimumBalance || !isFull} color="error" align="center"
+                    gutterBottom>Warning: Balance not optimum, rearrange teams into matching colours for optimum
+          balance</Typography>
         {generatingContent}
         {ingameContent}
         <Grid container>
@@ -160,7 +185,7 @@ export const BattleCard = ({ id, rulesetId }) => {
             </Box>
           </Grid>
           <Grid item xs={1}>
-            <Box pt={2} pb={2} className={classes.column} sx={{alignItems: 'center', height: '100%'}}>
+            <Box pt={2} pb={2} className={classes.column} sx={{ alignItems: 'center', height: '100%' }}>
               vs
             </Box>
           </Grid>

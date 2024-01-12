@@ -27,6 +27,8 @@ UI
 3. Show VPs in player battle cards
 4. Mobile MVP
 5. Confirmation before deleting company
+6. Make Company in Battle alert notification more prominent
+7. Compact mode for squad builder
 
 Enhancements
 1. Copy paste squad/upgrade combo
