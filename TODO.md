@@ -27,9 +27,9 @@ UI
 3. Show VPs in player battle cards
 4. Mobile MVP
 5. Confirmation before deleting company
-6. Make Company in Battle alert notification more prominent
-7. Compact mode for squad builder
+6. Compact mode for squad builder
 
 Enhancements
 1. Copy paste squad/upgrade combo
 2. Order available units vertically instead of horizontally. Otherwise too tall to show both available units and all platoon boxes
+3. 
