@@ -70,7 +70,8 @@ const useStyles = makeStyles(() => ({
   squadCardItems: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingRight: '2px' // The delete icon has spacing built into it, so we don't need this as wide on the right
   },
   deleteIcon: {
     cursor: 'pointer'

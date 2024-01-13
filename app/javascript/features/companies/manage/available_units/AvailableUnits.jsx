@@ -10,6 +10,7 @@ import {
 } from "./availableUnitsSlice";
 import { AvailableUnitDroppable } from "./AvailableUnitDroppable";
 import { Box, Typography } from "@mui/material";
+import { selectIsCompanyManagerCompact } from "../units/squadsSlice";
 
 
 const generateContentForUnitType = (availableUnits, onUnitSelect, enabled) => availableUnits.map(
@@ -33,6 +34,34 @@ export const AvailableUnits = ({ onUnitSelect, enabled }) => {
   const emplacements = useSelector(selectEmplacementAvailableUnits)
   const gliders = useSelector(selectGliderAvailableUnits)
 
+  const isCompact = useSelector(selectIsCompanyManagerCompact)
+
+  if (isCompact) {
+    return (
+      <Box>
+        <Typography variant="subtitle2" color="text.secondary" gutterBottom>Units</Typography>
+        {infantry.length > 0 ?
+          generateContentForUnitType(infantry, onUnitSelect, enabled)
+          : null}
+        {supportTeams.length > 0 ?
+          generateContentForUnitType(supportTeams, onUnitSelect, enabled)
+          : null}
+        {lightVehicles.length > 0 ?
+          generateContentForUnitType(lightVehicles, onUnitSelect, enabled)
+          : null}
+        {tanks.length > 0 ?
+          generateContentForUnitType(tanks, onUnitSelect, enabled)
+          : null}
+        {emplacements.length > 0 ?
+          generateContentForUnitType(emplacements, onUnitSelect, enabled)
+          : null}
+        {gliders.length > 0 ?
+          generateContentForUnitType(gliders, onUnitSelect, enabled)
+          : null}
+      </Box>
+    )
+  }
+
   return (
     <>
       {infantry.length > 0 ? <Box>
@@ -52,11 +81,11 @@ export const AvailableUnits = ({ onUnitSelect, enabled }) => {
         {generateContentForUnitType(tanks, onUnitSelect, enabled)}
       </Box> : null}
       <Box sx={{ display: 'flex' }}>
-        {emplacements.length > 0 ? <Box sx={{flexGrow: 1}}>
+        {emplacements.length > 0 ? <Box sx={{ flexGrow: 1 }}>
           <Typography variant="subtitle2" color="text.secondary" gutterBottom>Emplacements</Typography>
           {generateContentForUnitType(emplacements, onUnitSelect, enabled)}
         </Box> : null}
-        {gliders.length > 0 ? <Box sx={{flexGrow: 2}}>
+        {gliders.length > 0 ? <Box sx={{ flexGrow: 2 }}>
           <Typography variant="subtitle2" color="text.secondary" gutterBottom>Gliders</Typography>
           {generateContentForUnitType(gliders, onUnitSelect, enabled)}
         </Box> : null}

@@ -62,6 +62,9 @@ const useStyles = makeStyles(theme => ({
   },
   saveButton: {
     height: 'fit-content'
+  },
+  gridTargetWrapper: {
+    display: "flex"
   }
 }))
 
@@ -294,7 +297,7 @@ export const SquadBuilder = ({}) => {
             <SquadsGridTabs selectedTab={currentTab} changeCallback={onTabChange}/>
           </Grid>
           <Grid item container spacing={2}>
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.gridTargetWrapper}>
               <CompanyGridDropTarget gridIndex={0} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
@@ -304,7 +307,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.gridTargetWrapper}>
               <CompanyGridDropTarget gridIndex={1} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
@@ -314,7 +317,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.gridTargetWrapper}>
               <CompanyGridDropTarget gridIndex={2} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
@@ -324,7 +327,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.gridTargetWrapper}>
               <CompanyGridDropTarget gridIndex={3} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
@@ -336,7 +339,7 @@ export const SquadBuilder = ({}) => {
             </Grid>
           </Grid>
           <Grid item container spacing={2}>
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.gridTargetWrapper}>
               <CompanyGridDropTarget gridIndex={4} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
@@ -346,7 +349,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.gridTargetWrapper}>
               <CompanyGridDropTarget gridIndex={5} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
@@ -356,7 +359,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.gridTargetWrapper}>
               <CompanyGridDropTarget gridIndex={6} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}
@@ -366,7 +369,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.gridTargetWrapper}>
               <CompanyGridDropTarget gridIndex={7} currentTab={currentTab}
                                      onNonTransportSquadCreate={onNonTransportSquadCreate}
                                      onTransportedSquadCreate={onTransportedSquadCreate}

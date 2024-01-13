@@ -20,17 +20,33 @@ import { doctrineImgMapping } from "../../../constants/doctrines";
 import { selectDoctrineById } from "../../doctrines/doctrinesSlice";
 import { CompanyBonuses } from "./bonuses/CompanyBonuses";
 import { selectIsCompanyBonusesChanged } from "./bonuses/companyBonusesSlice";
+import { CompactSelector } from "./CompactSelector";
 
 const useStyles = makeStyles(theme => ({
+  headerRow: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center"
+  },
   titleItem: {
     display: 'flex'
   },
   companyDocImage: {
-    justifyContent: 'flex-end'
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end"
   },
   companyName: {
     justifyContent: 'flex-start',
     alignItems: 'center'
+  },
+  compactWrapper: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end"
   },
   contentContainer: {
     display: 'flex'
@@ -97,7 +113,6 @@ export const CompanyManager = () => {
     dispatch(fetchCompanyById({ companyId }))
   }, [companyId, isCompanyBonusesChanged])
 
-
   const editEnabled = !activeBattleId
   let companyLockedContent = ""
   if (!editEnabled) {
@@ -113,17 +128,20 @@ export const CompanyManager = () => {
   return (
     <Container maxWidth="xl" sx={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
       {companyLockedContent}
-      <Grid container spacing={2}>
-        <Grid item md={6} xs={12} className={`${classes.titleItem} ${classes.companyDocImage}`}>
+      <Box className={classes.headerRow}>
+        <Box className={`${classes.titleItem} ${classes.companyDocImage}`}>
           <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>
             <img src={doctrineImgMapping[doctrine.name]} alt={doctrine.displayName}
                  className={classes.doctrineImage}/>
           </Box>
-        </Grid>
-        <Grid item md={6} xs={12} className={`${classes.titleItem} ${classes.companyName}`}>
+        </Box>
+        <Box className={`${classes.titleItem} ${classes.companyName}`}>
           <Typography variant="h5" gutterBottom>{companyName}</Typography>
-        </Grid>
-      </Grid>
+        </Box>
+        <Box className={classes.compactWrapper}>
+          <CompactSelector />
+        </Box>
+      </Box>
       <Box className={classes.contentContainer}>
         <Tabs value={currentTab} onChange={onTabChange} orientation="vertical" className={classes.tabs}>
           <Tab key={`company-manager-tab-${SQUADS}`}
