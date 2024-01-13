@@ -5,18 +5,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUnitById, selectUnitById } from "../units/unitsSlice";
 import { selectAvailableUnitById, selectSelectedAvailableUnitId } from "./availableUnitsSlice";
 import { unitImageMapping } from "../../../../constants/units/all_factions";
-import { formatResourceCost } from "../../../../utils/company";
 import { AvailableUpgrades } from "../available_upgrades/AvailableUpgrades";
-import { selectSelectedSquad } from "../units/squadsSlice";
+import { selectIsCompanyManagerCompact, selectSelectedSquad } from "../units/squadsSlice";
+import { ResourcesCost } from "../../../resources/ResourcesCost";
+import { POP } from "../../../../constants/resources";
+import { ResourceQuantity } from "../../../resources/ResourceQuantity";
 
 
 const useStyles = makeStyles(theme => ({
   statsBox: {
     minHeight: '10rem',
-    height: '90%'
   },
   detailTitle: {
     fontWeight: 'bold'
+  },
+  detailHeroIcon: {
+    height: '45px'
   }
 }))
 
@@ -31,6 +35,8 @@ export const AvailableUnitDetails = ({ onAvailableUpgradeClick }) => {
   const selectedUnitDetails = useSelector(state => selectUnitById(state, unitId))
   const selectedSquad = useSelector(selectSelectedSquad)
 
+  const isCompact = useSelector(selectIsCompanyManagerCompact)
+
   useEffect(() => {
     // Dispatch a fetch if the unit id is valid and the selector failed to find a matching unit
     if (unitId && !selectedUnitDetails)
@@ -39,7 +45,8 @@ export const AvailableUnitDetails = ({ onAvailableUpgradeClick }) => {
 
   let content
   if (selectedUnitDetails && availableUnit) {
-    const cost = formatResourceCost({ man: availableUnit.man, mun: availableUnit.mun, fuel: availableUnit.fuel })
+    const cost = <ResourcesCost man={availableUnit.man} mun={availableUnit.mun} fuel={availableUnit.fuel} />
+    const pop = <ResourceQuantity resource={POP} quantity={parseFloat(availableUnit.pop)} />
 
     let squadContent
     if (selectedSquad) {
@@ -52,57 +59,94 @@ export const AvailableUnitDetails = ({ onAvailableUpgradeClick }) => {
       )
     }
 
-    content = (
-      <Box p={2}>
-        <Grid container spacing={2}>
-          <Grid item container spacing={2}>
-            <Grid item xs={10}>
-              <Typography variant="h5" gutterBottom className={classes.detailTitle}>
-                {selectedUnitDetails.displayName}
-              </Typography>
+    if (isCompact) {
+      content = (
+        <Box p={2}>
+          <Grid container spacing={2}>
+            <Grid item container spacing={2}>
+              <Grid item xs={10}>
+                <Typography variant="h5" gutterBottom className={classes.detailTitle}>
+                  {selectedUnitDetails.displayName}
+                </Typography>
+              </Grid>
+              <Grid item xs={2}>
+                <img src={unitImageMapping[selectedUnitDetails.name]} alt={selectedUnitDetails.name} className={classes.detailHeroIcon}/>
+              </Grid>
             </Grid>
-            <Grid item xs={2}>
-              <img src={unitImageMapping[selectedUnitDetails.name]} alt={selectedUnitDetails.name} />
-            </Grid>
-          </Grid>
-          <Grid item container spacing={2}>
-            <Grid item xs={6}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                          pr={1}>Cost</Typography>
-              <Typography variant="body2" gutterBottom>{cost}</Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                          pr={1}>Population</Typography>
-              <Typography variant="body2" gutterBottom>{parseFloat(availableUnit.pop)}</Typography>
-            </Grid>
-          </Grid>
-          <Grid item container spacing={2}>
-            <Grid item xs={3}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                          pr={1}>Available</Typography>
-              <Typography variant="body2" gutterBottom>{availableUnit.available}</Typography>
-            </Grid>
-            <Grid item xs={3}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                          pr={1}>Resupply</Typography>
-              <Typography variant="body2" gutterBottom>{availableUnit.resupply} (per Battle)</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                          pr={1}>Company Max</Typography>
-              <Typography variant="body2" gutterBottom>{availableUnit.companyMax}</Typography>
+            <Grid item container spacing={2}>
+              <Grid item xs={3}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                            pr={1}>Cost</Typography>
+                {cost}
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                            pr={1}>Population</Typography>
+                {pop}
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                            pr={1}>Available</Typography>
+                <Typography>{availableUnit.available}</Typography>
+              </Grid>
             </Grid>
           </Grid>
-          <Grid item container>
-            <Grid item>
-              <AvailableUpgrades unitId={unitId} onSelect={onAvailableUpgradeClick} />
+          <AvailableUpgrades unitId={unitId} onSelect={onAvailableUpgradeClick}/>
+        </Box>
+      )
+    } else {
+      content = (
+        <Box p={2}>
+          <Grid container spacing={2}>
+            <Grid item container spacing={2}>
+              <Grid item xs={10}>
+                <Typography variant="h5" gutterBottom className={classes.detailTitle}>
+                  {selectedUnitDetails.displayName}
+                </Typography>
+              </Grid>
+              <Grid item xs={2}>
+                <img src={unitImageMapping[selectedUnitDetails.name]} alt={selectedUnitDetails.name}/>
+              </Grid>
+            </Grid>
+            <Grid item container spacing={2}>
+              <Grid item xs={3}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                            pr={1}>Cost</Typography>
+                {cost}
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                            pr={1}>Population</Typography>
+                {pop}
+              </Grid>
+              <Grid item xs={2}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                            pr={1}>Available</Typography>
+                <Typography>{availableUnit.available}</Typography>
+              </Grid>
+            </Grid>
+            <Grid item container spacing={2}>
+              <Grid item xs={3}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                            pr={1}>Resupply</Typography>
+                <Typography variant="body2" gutterBottom>{availableUnit.resupply} (per Battle)</Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
+                            pr={1}>Company Max</Typography>
+                <Typography variant="body2" gutterBottom>{availableUnit.companyMax}</Typography>
+              </Grid>
+            </Grid>
+            <Grid item container>
+              <Grid item>
+                <AvailableUpgrades unitId={unitId} onSelect={onAvailableUpgradeClick}/>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
 
-      </Box>
-    )
+        </Box>
+      )
+    }
   }
 
   return (

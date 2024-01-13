@@ -5,7 +5,7 @@ import { makeStyles } from "@mui/styles";
 import '../../../../../assets/stylesheets/CompanyGridDropTarget.css'
 import { SquadCard } from "./SquadCard";
 import { useSelector } from "react-redux";
-import { selectCallinModifiers, selectSquadsInTabIndex } from "../units/squadsSlice";
+import { selectCallinModifiers, selectIsCompanyManagerCompact, selectSquadsInTabIndex } from "../units/squadsSlice";
 import { GLIDER } from "../../../../constants/units/types";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
@@ -13,7 +13,11 @@ import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
 const useStyles = makeStyles(() => ({
   placementBox: {
     minHeight: '13.5rem',
-    minWidth: '4rem'
+    minWidth: '4rem',
+    flexGrow: 1,
+    "&.compact": {
+      minHeight: '10rem'
+    }
   },
   popCMBox: {
     display: 'flex',
@@ -63,6 +67,8 @@ export const CompanyGridDropTarget = ({
   const [snackbarSeverity, setSnackbarSeverity] = useState("success")
 
   const callinModifiers = useSelector(selectCallinModifiers)
+
+  const isCompact = useSelector(selectIsCompanyManagerCompact)
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false)
@@ -159,9 +165,9 @@ export const CompanyGridDropTarget = ({
                      handleClose={handleCloseSnackbar}
                      severity={snackbarSeverity}
                      content={snackbarContent} />
-      <DropTarget targetKey="unit" onHit={onUnitHit}>
-        <DropTarget targetKey="squad" onHit={onSquadMoveHit}>
-          <Paper key={gridIndex} className={classes.placementBox}>
+      <DropTarget targetKey="unit" onHit={onUnitHit} className={classes.gridDropTarget}>
+        <DropTarget targetKey="squad" onHit={onSquadMoveHit} className={classes.gridDropTarget}>
+          <Paper key={gridIndex} className={`${classes.placementBox} ${isCompact ? 'compact' : null}`}>
             <Box sx={{ position: 'relative', p: 1 }}>
               {squadCards}
               <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }} className={classes.popCMBox}>
