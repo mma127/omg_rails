@@ -98,8 +98,6 @@ export const CompanyManager = () => {
     setCurrentTab(newTab)
   }
 
-  const [isCompact, setIsCompact] = useState(false);
-
   const classes = useStyles()
 
   let params = useParams()
@@ -114,10 +112,6 @@ export const CompanyManager = () => {
     console.log("dispatching company fetch from CompanyManager")
     dispatch(fetchCompanyById({ companyId }))
   }, [companyId, isCompanyBonusesChanged])
-
-  const handleToggleCompact = (event) => {
-    setIsCompact(event.target.checked)
-  }
 
   const editEnabled = !activeBattleId
   let companyLockedContent = ""
@@ -145,7 +139,7 @@ export const CompanyManager = () => {
           <Typography variant="h5" gutterBottom>{companyName}</Typography>
         </Box>
         <Box className={classes.compactWrapper}>
-          <CompactSelector isCompact={isCompact} handleToggleCompact={handleToggleCompact} />
+          <CompactSelector />
         </Box>
       </Box>
       <Box className={classes.contentContainer}>

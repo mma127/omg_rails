@@ -1,6 +1,8 @@
 import React from 'react'
 import { Box, Switch, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { selectIsCompanyManagerCompact, setIsCompanyManagerCompact } from "./units/squadsSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   toggleContainer: {
@@ -15,8 +17,15 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const CompactSelector = ({ isCompact, handleToggleCompact }) => {
+export const CompactSelector = ({ }) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
+  const isCompact = useSelector(selectIsCompanyManagerCompact)
+
+  const handleToggleCompact = (event) => {
+    dispatch(setIsCompanyManagerCompact(event.target.checked))
+  }
 
   return (
     <Box className={classes.toggleContainer}>
