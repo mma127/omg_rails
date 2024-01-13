@@ -32,4 +32,4 @@ UI
 Enhancements
 1. Copy paste squad/upgrade combo
 2. Order available units vertically instead of horizontally. Otherwise too tall to show both available units and all platoon boxes
-3. 
+3. Holding area for squad cards outside of tabs
