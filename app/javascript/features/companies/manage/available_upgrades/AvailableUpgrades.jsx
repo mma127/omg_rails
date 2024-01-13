@@ -17,6 +17,9 @@ const generateContent = (au, onSelect, enabled) =>
   />
 
 const useStyles = makeStyles(() => ({
+  title: {
+    fontWeight: 'bold'
+  },
   placeholder: {
     minHeight: "54px" // 54px instead of 49px because when there are upgrades, we get 5px extra on the bottom for some reason
   }
@@ -47,7 +50,7 @@ export const AvailableUpgrades = ({ unitId, onSelect }) => {
     return (
     <>
       <Box>
-        <Typography variant="subtitle2" color="text.secondary" gutterBottom>Available Upgrades</Typography>
+        <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.title}>Available Upgrades</Typography>
         {content}
       </Box>
     </>

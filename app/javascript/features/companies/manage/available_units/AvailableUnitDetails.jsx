@@ -62,7 +62,7 @@ export const AvailableUnitDetails = ({ onAvailableUpgradeClick }) => {
     if (isCompact) {
       content = (
         <Box p={2}>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} pb={1}>
             <Grid item container spacing={2}>
               <Grid item xs={10}>
                 <Typography variant="h5" gutterBottom className={classes.detailTitle}>
