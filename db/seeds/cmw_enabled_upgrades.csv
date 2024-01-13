@@ -5,8 +5,6 @@ two_bren_guns,CMW.BREN_GUN,Bren Gun,Two Bren Guns,single_weapon,,engineers,now_t
 two_bren_guns,CMW.BREN_GUN,Bren Gun,Two Bren Guns,single_weapon,,engineers,now_this_is_a_big_sodding_gun,0,60,0,0,0,1,0,1,,,expert_sappers
 two_bren_guns_button,CMW.BREN_WITH_BUTTON,Two Bren Guns with Button,"Two Bren Guns with the Button ability. When activated, prevents the targeted tank or vehicle from firing or moving quickly",single_weapon,british,,,0,100,0,0,0,1,0,1,,,infantry_section
 two_bren_guns_button,CMW.BREN_WITH_BUTTON,Two Bren Guns with Button,"Two Bren Guns with the Button ability. When activated, prevents the targeted tank or vehicle from firing or moving quickly",single_weapon,,canadians,,0,100,0,0,0,1,0,1,,,canadian_section
-mortar_pit,AXIS.BUNKER,Mortar Pit,"A empty mortar pit emplacement, can be garrisoned by mortar teams",building,british,,,0,30,0,0,1,0,0,1,,,infantry_section
-mortar_pit,AXIS.BUNKER,Mortar Pit,"A empty mortar pit emplacement, can be garrisoned by mortar teams",building,,canadians,,0,30,0,0,1,0,0,1,,,canadian_section
 cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,british,,,0,10,0,0,2,0,0,1,,,infantry_section
 cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,,canadians,,0,10,0,0,2,0,0,1,,,canadian_section
 cmw_smoke_grenade,CMW.SMOKE_GRENADES,Smoke Grenades,Grenade that provides smoke cover,consumable,,canadians,,0,10,0,0,2,0,0,1,,,ssf
