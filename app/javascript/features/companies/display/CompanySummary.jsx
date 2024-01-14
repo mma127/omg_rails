@@ -49,9 +49,9 @@ export const CompanySummary = ({ company }) => {
   }
 
   return (
-    <Box ml={5} mr={5} mt={1} mb={1} sx={{ maxWidth: '600px' }} justifyContent="center">
-      <Card elevation={3}>
-        <CardActionArea onClick={manageCompany}>
+    <Box ml={5} mr={5} mt={1} mb={1} sx={{ maxWidth: '600px', flexGrow: 1, display: "flex" }} justifyContent="center">
+      <Card elevation={3} sx={{display: "flex", flexDirection: "column"}}>
+        <CardActionArea onClick={manageCompany} sx={{flexGrow: 1}}>
           <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>
             <img src={doctrineImgMapping[doctrine.name]} alt={doctrine.displayName}
                  className={classes.optionImage}/>

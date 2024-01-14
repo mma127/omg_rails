@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { Alert, Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 
 import { CompanyGridDropTarget } from "./squads/CompanyGridDropTarget";
 import { SquadsGridTabs } from "./squads/SquadsGridTabs";
 
-import { ANTI_ARMOUR, ARMOUR, ASSAULT, CORE, INFANTRY, SUPPORT } from "../../../constants/company";
-import { addCost, removeCost, selectCompanyActiveBattleId, selectCompanyById } from "../companiesSlice";
+import { CORE } from "../../../constants/company";
+import { addCost, removeCost, selectCompanyActiveBattleId } from "../companiesSlice";
 import {
   resetAvailableUnitState,
   selectAvailableUnitsStatus,
@@ -41,12 +41,8 @@ import {
 import { PurchasedOffmaps } from "./company_offmaps/PurchasedOffmaps";
 import { CompanyResources } from "./CompanyResources";
 import { createSquadUpgrade } from "./squad_upgrades/squadUpgrade";
-import {
-  addNewSquadUpgrade,
-  removeSquadUpgrade,
-} from "./squad_upgrades/squadUpgradesSlice";
+import { addNewSquadUpgrade, removeSquadUpgrade, } from "./squad_upgrades/squadUpgradesSlice";
 import { SaveCompanyButton } from "./SaveCompanyButton";
-import { selectIsCompanyBonusesChanged } from "./bonuses/companyBonusesSlice";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {

@@ -31,10 +31,10 @@ const buildCompanyElement = (company, side, previousCompanyExists, createCallbac
 
 const buildRow = (alliedCompany, axisCompany, previousAlliedExists, previousAxisExists, createCallback) => (
   <Grid item xs={12} container>
-    <Grid item md={6}>
+    <Grid item md={6} sx={{display: "flex"}}>
       {buildCompanyElement(alliedCompany, ALLIED_SIDE, previousAlliedExists, createCallback)}
     </Grid>
-    <Grid item md={6}>
+    <Grid item md={6} sx={{display: "flex"}}>
       {buildCompanyElement(axisCompany, AXIS_SIDE, previousAxisExists, createCallback)}
     </Grid>
   </Grid>
