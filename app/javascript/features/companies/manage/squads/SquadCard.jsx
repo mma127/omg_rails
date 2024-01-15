@@ -209,8 +209,8 @@ export const SquadCard = (
     e.stopPropagation()
   }
 
-  const transportSquadDelete = (deleteSquad) => {
-    onDestroyClick(deleteSquad, squadUpgrades, uuid)
+  const transportSquadDelete = (deleteSquad, squadUpgrades) => {
+    onDestroyClick(deleteSquad, squadUpgrades, deleteSquad.transportUuid)
   }
 
   const onUnitClick = (availableUnitId) => {
