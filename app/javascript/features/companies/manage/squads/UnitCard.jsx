@@ -7,9 +7,9 @@ import { unitImageMapping } from "../../../../constants/units/all_factions";
 
 const useStyles = makeStyles(() => ({
   unitCard: {
-    width: '45px',
-    minWidth: '45px',
-    height: '45px',
+    width: props => `${props.height}px`,
+    minWidth: props => `${props.height}px`,
+    height: props => `${props.height}px`,
     display: 'inline-flex',
     '&.disabled': {
       cursor: 'initial',
@@ -26,19 +26,21 @@ const useStyles = makeStyles(() => ({
  * @param disabled: Flag to show the disabled state for the unit card
  * @param dragHandleClassName
  */
-export const UnitCard = ({ unitId, availableUnitId, onUnitClick, disabled, dragHandleClassName }) => {
-  const classes = useStyles()
+export const UnitCard = ({ unitId, availableUnitId, onUnitClick, disabled, dragHandleClassName, height=45 }) => {
+  const classes = useStyles({height: height})
   const unit = useSelector(state => selectUnitById(state, unitId))
   const image = unitImageMapping[unit.name]
 
   const handleClick = () => {
-    onUnitClick(availableUnitId)
+    if (onUnitClick) {
+      onUnitClick(availableUnitId)
+    }
   }
 
   /** TODO onUnitClick needs to be squad aware */
   return (
     <Card className={`${classes.unitCard} ${disabled ? 'disabled' : ''} ${dragHandleClassName}`} onClick={handleClick}>
-      <CardMedia component="img" height="45" image={image} alt={unit.name} />
+      <CardMedia component="img" height={`${height}px`} image={image} alt={unit.name} />
     </Card>
   )
 }

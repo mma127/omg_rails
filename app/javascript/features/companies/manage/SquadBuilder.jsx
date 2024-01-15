@@ -43,6 +43,7 @@ import { CompanyResources } from "./CompanyResources";
 import { createSquadUpgrade } from "./squad_upgrades/squadUpgrade";
 import { addNewSquadUpgrade, removeSquadUpgrade, } from "./squad_upgrades/squadUpgradesSlice";
 import { SaveCompanyButton } from "./SaveCompanyButton";
+import { AvailableCounts } from "./available_units/AvailableCounts";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -264,6 +265,9 @@ export const SquadBuilder = ({}) => {
                        severity={snackbarSeverity}
                        content={snackbarContent}/>
         <Grid container spacing={2} ref={constraintsRef}>
+          <Grid item container>
+            <AvailableCounts />
+          </Grid>
           <Grid item container spacing={2} className={classes.availableUnitsContainer}>
             <Grid item container md={6}>
               <Grid item xs={12}>
