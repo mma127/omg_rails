@@ -3,7 +3,7 @@ import { Alert, Box, Grid, Typography } from "@mui/material";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCompanyById, selectCompanyById, resetNeedsRefresh } from "../../companiesSlice";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { fetchCompanySquads, resetSquadState } from "../units/squadsSlice";
 import { fetchCompanyAvailability, resetAvailableUnitState } from "../available_units/availableUnitsSlice";
@@ -12,7 +12,7 @@ import {
   selectDoctrineUnlockRowsByDoctrineId,
 } from "../../../doctrines/doctrinesSlice";
 import { DoctrineUnlock } from "./DoctrineUnlock";
-import { selectCompanyUnlockIds, selectCompanyUnlocksByDoctrineUnlockId } from "./companyUnlocksSlice";
+import { selectCompanyUnlockIds, selectCompanyUnlocksByDoctrineUnlockId, clearNotifySnackbar } from "./companyUnlocksSlice";
 
 const buildUnlock = (doctrineUnlock, companyUnlocksByDoctrineUnlockId, companyId) => {
   const companyUnlock = _.get(companyUnlocksByDoctrineUnlockId, doctrineUnlock.id, null)
@@ -68,10 +68,15 @@ export const CompanyUnlocks = () => {
   const errorMessage = isSaving ? "" : error
   const notifySnackbar = useSelector(state => state.companyUnlocks.notifySnackbar)
   const [openSnackbar, setOpenSnackbar] = useState(false)
+  let location = useLocation()
 
   useEffect(() => {
     setOpenSnackbar(notifySnackbar)
   }, [notifySnackbar])
+
+  useEffect(() => {
+    dispatch(clearNotifySnackbar())
+  }, [location]);
 
   const handleCloseSnackbar = () => setOpenSnackbar(false)
 
