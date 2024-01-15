@@ -52,46 +52,47 @@ class BattleService
   def join_battle(battle_id, company_id)
     # Validate battle exists
     battle = validate_battle(battle_id)
-    # Validate battle is joinable
-    validate_battle_joinable(battle)
 
-    # Validate company exists and is of the same ruleset as the battle
-    company = validate_company(company_id, battle.ruleset)
-    # Validate player owns company
-    validate_player_company(company)
+    battle.with_lock do
+      # Validate battle is joinable
+      validate_battle_joinable(battle)
 
-    # Validate Battle has open slot on side of the company's faction
-    validate_battle_has_open_spot(battle, company)
+      # Validate company exists and is of the same ruleset as the battle
+      company = validate_company(company_id, battle.ruleset)
+      # Validate player owns company
+      validate_player_company(company)
 
-    # Validate company has all valid platoons
-    validate_company_platoons(company)
+      # Validate Battle has open slot on side of the company's faction
+      validate_battle_has_open_spot(battle, company)
 
-    # Validate player's company can ready
-    validate_player_company_resources(company)
+      # Validate company has all valid platoons
+      validate_company_platoons(company)
 
-    # Add company to battle
-    ActiveRecord::Base.transaction do
-      BattlePlayer.create!(battle: battle, player: @player, company: company, side: company.side)
+      # Validate player's company can ready
+      validate_player_company_resources(company)
 
-      # If this causes the battle to be full, make that change
-      if battle.reload.players_full?
-        battle.full!
-        type = PLAYER_JOINED_FULL
-        Ratings::BalanceService.new(battle.id).find_most_balanced_teams
-        BattleNotificationService.new(battle.id).notify_battle_full # TODO This could be async
-      else
-        type = PLAYER_JOINED
+      # Add company to battle
+      ActiveRecord::Base.transaction do
+        BattlePlayer.create!(battle: battle, player: @player, company: company, side: company.side)
+
+        # If this causes the battle to be full, make that change
+        if battle.reload.players_full?
+          battle.full!
+          type = PLAYER_JOINED_FULL
+          Ratings::BalanceService.new(battle.id).find_most_balanced_teams
+          BattleNotificationService.new(battle.id).notify_battle_full # TODO This could be async
+        else
+          type = PLAYER_JOINED
+        end
+
+        # Broadcast battle update
+        message_hash = { type: type, battle: battle.reload }
+        battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+        broadcast_cable(battle_message)
       end
-
-         
-
-      # Broadcast battle update
-      message_hash = { type: type, battle: battle.reload }
-      battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
-      broadcast_cable(battle_message)
-    end
-    if battle.full?
-      update_battle_elo(battle)
+      if battle.full?
+        update_battle_elo(battle)
+      end
     end
   end
 
@@ -99,86 +100,92 @@ class BattleService
     # Validate battle exists
     battle = validate_battle(battle_id)
 
-    # Validate battle is readyable
-    validate_battle_readyable(battle)
+    battle.with_lock do
+      # Validate battle is readyable
+      validate_battle_readyable(battle)
 
-    # Validate the player is in the battle
-    validate_player_in_battle(battle)
+      # Validate the player is in the battle
+      validate_player_in_battle(battle)
 
-    battle_player = BattlePlayer.includes(:company).find_by(battle: battle, player: @player)
-    company = battle_player.company
-    # Validate company has all valid platoons
-    validate_company_platoons(company)
-    # Validate player's company can ready
-    validate_player_company_resources(company)
+      battle_player = BattlePlayer.includes(:company).find_by(battle: battle, player: @player)
+      company = battle_player.company
+      # Validate company has all valid platoons
+      validate_company_platoons(company)
+      # Validate player's company can ready
+      validate_player_company_resources(company)
 
-    battle_player.update!(ready: true)
+      battle_player.update!(ready: true)
 
-    # If the battle has all players ready, move to generating state
-    if battle.reload.players_ready?
-      battle.ready!
-      type = PLAYERS_ALL_READY
-      BattlefileGenerationJob.perform_async(battle_id)
-    else
-      type = PLAYER_READY
+      # If the battle has all players ready, move to generating state
+      if battle.reload.players_ready?
+        battle.ready!
+        type = PLAYERS_ALL_READY
+        BattlefileGenerationJob.perform_async(battle_id)
+      else
+        type = PLAYER_READY
+      end
+
+      # Broadcast battle update
+      message_hash = { type: type, battle: battle }
+      battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+      broadcast_cable(battle_message)
     end
-
-    # Broadcast battle update
-    message_hash = { type: type, battle: battle }
-    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
-    broadcast_cable(battle_message)
   end
 
   def unready_player(battle_id)
     # Validate battle exists
     battle = validate_battle(battle_id)
 
-    # Validate battle is readyable
-    validate_battle_readyable(battle)
+    battle.with_lock do
+      # Validate battle is readyable
+      validate_battle_readyable(battle)
 
-    # Validate the player is in the battle
-    validate_player_in_battle(battle)
+      # Validate the player is in the battle
+      validate_player_in_battle(battle)
 
-    unless battle.reload.players_ready?
-      BattlePlayer.find_by(battle: battle, player: @player).update!(ready: false)
+      unless battle.reload.players_ready?
+        BattlePlayer.find_by(battle: battle, player: @player).update!(ready: false)
+      end
+
+      battle.reload
+      # Broadcast battle update
+      message_hash = { type: PLAYER_UNREADY, battle: battle }
+      battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+      broadcast_cable(battle_message)
     end
-
-    battle.reload
-    # Broadcast battle update
-    message_hash = { type: PLAYER_UNREADY, battle: battle }
-    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
-    broadcast_cable(battle_message)
   end
 
   def leave_battle(battle_id)
     # Validate battle exists
     battle = validate_battle(battle_id)
 
-    # Validate battle is leavable
-    validate_battle_leavable(battle)
+    battle.with_lock do
+      # Validate battle is leavable
+      validate_battle_leavable(battle)
 
-    # Validate the player is in the battle
-    validate_player_in_battle(battle)
+      # Validate the player is in the battle
+      validate_player_in_battle(battle)
 
-    # Attempt to remove player from battle
-    BattlePlayer.find_by(battle: battle, player: @player).destroy
+      # Attempt to remove player from battle
+      BattlePlayer.find_by(battle: battle, player: @player).destroy
 
-    if battle.full?
-      battle.not_full!
-      battle.save!
+      if battle.full?
+        battle.not_full!
+        battle.save!
+      end
+
+      if battle.reload.battle_players.count == 0
+        # Deleted the last player, delete the battle
+        battle.destroy
+        message_hash = { type: REMOVE_BATTLE, battle: battle }
+      else
+        message_hash = { type: PLAYER_LEFT, battle: battle.reload }
+      end
+
+      # Broadcast battle update
+      battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+      broadcast_cable(battle_message)
     end
-    
-    if battle.reload.battle_players.count == 0
-      # Deleted the last player, delete the battle
-      battle.destroy
-      message_hash = { type: REMOVE_BATTLE, battle: battle }
-    else
-      message_hash = { type: PLAYER_LEFT, battle: battle.reload }
-    end
-
-    # Broadcast battle update
-    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
-    broadcast_cable(battle_message)
   end
 
   def finalize_battle(battle)
@@ -194,53 +201,55 @@ class BattleService
     # Validate battle exists
     battle = validate_battle(battle_id)
 
-    # Validate battle is abandonable
-    validate_battle_abandonable(battle)
+    battle.with_lock do
+      # Validate battle is abandonable
+      validate_battle_abandonable(battle)
 
-    # Validate the player is in the battle
-    validate_player_in_battle(battle)
+      # Validate the player is in the battle
+      validate_player_in_battle(battle)
 
-    # Set player abandon flag to true
-    BattlePlayer.find_by(battle: battle, player: @player).update!(abandoned: true)
+      # Set player abandon flag to true
+      BattlePlayer.find_by(battle: battle, player: @player).update!(abandoned: true)
 
-    # Are all players abandoned?
-    if battle.reload.players_abandoned?
-      battle.abandoned! # Should this just destroy the battle? What's the value in keeping it
-      type = PLAYERS_ALL_ABANDONED
-    else
-      type = PLAYER_ABANDONED
+      # Are all players abandoned?
+      if battle.reload.players_abandoned?
+        battle.abandoned! # Should this just destroy the battle? What's the value in keeping it
+        type = PLAYERS_ALL_ABANDONED
+      else
+        type = PLAYER_ABANDONED
+      end
+
+      # Broadcast battle update
+      message_hash = { type: type, battle: battle.reload }
+      battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+      broadcast_cable(battle_message)
     end
-
-    # Broadcast battle update
-    message_hash = { type: type, battle: battle.reload }
-    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
-    broadcast_cable(battle_message)
   end
 
   def update_battle_elo(battle)
-    axisElo = 0
-    alliedElo = 0
-    for player in battle.battle_players
+    axis_elo = 0
+    allied_elo = 0
+    battle.battle_players.each do |player|
       if player.side == "axis"
-        axisElo += player.player_elo
+        axis_elo += player.player_elo
       else
-        alliedElo += player.player_elo
+        allied_elo += player.player_elo
       end
     end
-    axisElo = axisElo / battle.size
-    alliedElo = alliedElo / battle.size
 
-    battle.elo_diff = axisElo - alliedElo
+    axis_elo = axis_elo / battle.size
+    allied_elo = allied_elo / battle.size
 
+    battle.elo_diff = axis_elo - allied_elo
 
     ActiveRecord::Base.transaction do
       battle.save!
     end
+
     message_hash = { type: ELO_UPDATED, battle: battle }
     # Broadcast battle update
     battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
     broadcast_cable(battle_message)
-  
   end
 
   private
@@ -258,6 +267,7 @@ class BattleService
   def validate_battle_abandonable(battle)
     raise BattleValidationError.new "Cannot abandon battle in #{battle.state} state" unless battle.abandonable?
   end
+
   def validate_battle_leavable(battle)
     raise BattleValidationError.new "Cannot leave battle in #{battle.state} state" unless battle.leavable?
   end
