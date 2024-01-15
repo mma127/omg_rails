@@ -176,6 +176,7 @@ export const SquadBuilder = ({}) => {
       man += su.man
       mun += su.mun
       fuel += su.fuel
+      dispatch(removeSquadUpgrade({ squadUpgrade: su }))
     })
 
     dispatch(removeCost({ id: companyId, pop: pop, man: man, mun: mun, fuel: fuel }))
@@ -266,7 +267,7 @@ export const SquadBuilder = ({}) => {
                        content={snackbarContent}/>
         <Grid container spacing={2} ref={constraintsRef}>
           <Grid item container>
-            <AvailableCounts />
+            <AvailableCounts/>
           </Grid>
           <Grid item container spacing={2} className={classes.availableUnitsContainer}>
             <Grid item container md={6}>
