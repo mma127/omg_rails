@@ -43,7 +43,8 @@ const companyUnlocksSlice = createSlice({
   name: "companyUnlocks",
   initialState,
   reducers: {
-    resetCompanyUnlockState: () => initialState
+    resetCompanyUnlockState: () => initialState,
+    clearNotifySnackbar: (state) => state.notifySnackbar = false
   },
   extraReducers(builder) {
     builder
@@ -88,7 +89,7 @@ const companyUnlocksSlice = createSlice({
 
 export default companyUnlocksSlice.reducer
 
-export const { resetCompanyUnlockState } = companyUnlocksSlice.actions
+export const { resetCompanyUnlockState, clearNotifySnackbar } = companyUnlocksSlice.actions
 
 export const {
   selectAll: selectAllCompanyUnlocks,
@@ -101,7 +102,7 @@ export const selectIsCompanyUnlocksChanged = state => {
 }
 
 export const selectCompanyUnlocksByDoctrineUnlockId = state => {
-  return Object.values(state.companyUnlocks.entities).reduce((o, cu) => ({...o, [cu.doctrineUnlockId]: cu}), {})
+  return Object.values(state.companyUnlocks.entities).reduce((o, cu) => ({ ...o, [cu.doctrineUnlockId]: cu }), {})
 }
 
 export const selectActiveCompanyId = state => state.companyUnlocks.activeCompanyId

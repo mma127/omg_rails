@@ -32,7 +32,7 @@ const initialState = squadsAdapter.getInitialState({
   selectedSquadIndex: null,
   selectedSquadUuid: null,
   selectedSquadTransportUuid: null,
-  isCompact: false
+  isCompact: true
 })
 
 export const fetchCompanySquads = createAsyncThunk("squads/fetchCompanySquads", async ({ companyId }, { rejectWithValue }) => {
