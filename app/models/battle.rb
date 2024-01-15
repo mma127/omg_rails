@@ -84,7 +84,11 @@ class Battle < ApplicationRecord
     battle_players.size == total_size
   end
 
-  def players_ready?
+  def any_players_ready?
+    battle_players.any? { |bp| bp.ready }
+  end
+
+  def all_players_ready?
     battle_players.all? { |bp| bp.ready }
   end
 

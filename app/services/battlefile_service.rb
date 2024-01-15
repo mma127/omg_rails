@@ -468,7 +468,7 @@ end
   end
 
   def validate_battle_players_ready
-    raise BattlefileGenerationValidationError.new "Battle #{@battle.id} is not in generating status" unless @battle.players_ready?
+    raise BattlefileGenerationValidationError.new "Battle #{@battle.id} is not in generating status" unless @battle.all_players_ready?
   end
 
   def validate_battlefile_zip_attached
