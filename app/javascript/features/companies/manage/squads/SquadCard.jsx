@@ -5,18 +5,19 @@ import { makeStyles } from "@mui/styles";
 import { DragDropContainer } from "react-drag-drop-container";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { formatResourceCost } from "../../../../utils/company";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUnitById } from "../units/unitsSlice";
 import {
   selectSelectedSquadUuid,
   selectSquadInTabIndexTransportUuid,
-  selectSquadInTabIndexUuid
+  selectSquadInTabIndexUuid, setSelectedSquadAccess
 } from "../units/squadsSlice";
 import { TransportSlots } from "./TransportSlots";
 import { TransportDropTarget } from "./TransportDropTarget";
 import { SquadUpgrades } from "../squad_upgrades/SquadUpgrades";
 import { selectSquadUpgradesForSquad } from "../squad_upgrades/squadUpgradesSlice";
 import { SquadVetIcon } from "./SquadVetIcon";
+import { setSelectedAvailableUnitId } from "../available_units/availableUnitsSlice";
 
 
 const getVetLevel = (exp, unitVet) => {
@@ -120,6 +121,8 @@ export const SquadCard = (
   }
 ) => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
   let squad
   if (_.isNil(transportUuid)) {
     squad = useSelector(state => selectSquadInTabIndexUuid(state, tab, index, uuid))
@@ -217,6 +220,12 @@ export const SquadCard = (
     onSquadClick(availableUnitId, squad.tab, squad.index, squad.uuid, transportUuid)
   }
 
+  const onSquadUpgradeClick = (squadUpgrade) => {
+    dispatch(setSelectedSquadAccess({ tab: squad.tab, index: squad.index, uuid: squad.uuid, transportUuid: squad.transportUuid }))
+    dispatch(setSelectedAvailableUnitId(squad.availableUnitId))
+    onSquadUpgradeDestroyClick(squadUpgrade)
+  }
+
   // Vet
   const [level, nextLevel] = getVetLevel(parseFloat(squad.vet), unit.vet)
   let nextLevelContent = ""
@@ -296,7 +305,7 @@ export const SquadCard = (
             <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
                       onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
             <SquadVetIcon level={level}/>
-            <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeDestroyClick}
+            <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeClick}
                            enabled={enabled}/>
             {transportContent}
             <Box className={classes.slotsDeleteWrapper}>

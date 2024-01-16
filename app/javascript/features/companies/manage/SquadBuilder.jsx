@@ -26,6 +26,7 @@ import {
   removeTransportedSquad,
   resetSquadState,
   setSelectedSquadAccess,
+  clearSelectedSquad,
   upsertSquads
 } from "./units/squadsSlice";
 import { AlertSnackbar } from "../AlertSnackbar";
@@ -113,14 +114,14 @@ export const SquadBuilder = ({}) => {
 
   const onTabChange = (newTab) => {
     setCurrentTab(newTab)
-    dispatch(setSelectedSquadAccess({ tab: null, index: null, uuid: null, transportUuid: null }))
+    dispatch(clearSelectedSquad())
     dispatch(setSelectedAvailableUnitId(null))
   }
 
   const onUnitSelect = (availableUnitId) => {
     /** Called when a unit is selected. Populates the unit stats box with relevant data
      */
-    dispatch(setSelectedSquadAccess({ tab: null, index: null, uuid: null, transportUuid: null }))
+    dispatch(clearSelectedSquad())
     dispatch(setSelectedAvailableUnitId(availableUnitId))
   }
 
