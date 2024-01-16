@@ -18,9 +18,6 @@ Redux
 BattlePlayer
 1. Pass `side` back for the BattlePlayer to create, to avoid relying on `company.faction.side` which may not be correct (ie, mixed teams)
 
-URGENT
-1. Guards for full game somehow causing a ready/generating state even if a player leaves at the same time
-
 UI
 1. Discord invite icon
 2. Leaderboards for company stats
@@ -33,3 +30,13 @@ Enhancements
 1. Copy paste squad/upgrade combo
 2. Holding area for squad cards outside of tabs
 3. User preferences model (ie, saving compact status)
+
+PRELAUNCH
+1. Chat
+2. Compact mode improvements
+3. Holding Area
+4. Leaderboard
+5. Copy Squad w/upgrades
+6. Overlapping tooltips fix
+7. Align BattleCardPlayers when names have different lengths
+8. Hide self ELO unless admin
