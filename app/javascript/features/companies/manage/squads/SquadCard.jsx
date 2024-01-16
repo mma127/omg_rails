@@ -8,6 +8,7 @@ import { formatResourceCost } from "../../../../utils/company";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUnitById } from "../units/unitsSlice";
 import {
+  clearSelectedSquad,
   selectSelectedSquadUuid,
   selectSquadInTabIndexTransportUuid,
   selectSquadInTabIndexUuid, setSelectedSquadAccess
@@ -216,13 +217,18 @@ export const SquadCard = (
     onDestroyClick(deleteSquad, squadUpgrades, deleteSquad.transportUuid)
   }
 
+  const selectSquad = (availableUnitId, tab, index, uuid, transportUuid) => {
+    dispatch(setSelectedSquadAccess({ tab, index, uuid, transportUuid }))
+    dispatch(setSelectedAvailableUnitId(availableUnitId))
+  }
+
   const onUnitClick = (availableUnitId) => {
-    onSquadClick(availableUnitId, squad.tab, squad.index, squad.uuid, transportUuid)
+    // Don't need onSquadClick for anything at the SquadBuilder level
+    selectSquad(squad.availableUnitId, squad.tab, squad.index, squad.uuid, squad.transportUuid)
   }
 
   const onSquadUpgradeClick = (squadUpgrade) => {
-    dispatch(setSelectedSquadAccess({ tab: squad.tab, index: squad.index, uuid: squad.uuid, transportUuid: squad.transportUuid }))
-    dispatch(setSelectedAvailableUnitId(squad.availableUnitId))
+    selectSquad(squad.availableUnitId, squad.tab, squad.index, squad.uuid, squad.transportUuid)
     onSquadUpgradeDestroyClick(squadUpgrade)
   }
 
