@@ -308,6 +308,12 @@ const squadsSlice = createSlice({
       state.selectedSquadUuid = action.payload.uuid
       state.selectedSquadTransportUuid = action.payload.transportUuid
     },
+    clearSelectedSquad: (state) => {
+      state.selectedSquadTab = null
+      state.selectedSquadIndex = null
+      state.selectedSquadUuid = null
+      state.selectedSquadTransportUuid = null
+    },
     setIsCompanyManagerCompact: (state, action) => {
       state.isCompact = action.payload
     }
@@ -459,6 +465,7 @@ export const {
   clearNotifySnackbar,
   showSnackbar,
   setSelectedSquadAccess,
+  clearSelectedSquad,
   setIsCompanyManagerCompact
 } = squadsSlice.actions
 
