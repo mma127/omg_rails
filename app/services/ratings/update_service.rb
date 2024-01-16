@@ -6,6 +6,9 @@ module Ratings
   class UpdateService
     class RatingsUpdateValidationError < StandardError; end
 
+    WEEKLY_DECAY = 0.05
+    SIGMA = 25.0 / 3.0
+
     def initialize(battle_id)
       @battle = Battle.includes(battle_players: { player: :player_rating }).find(battle_id)
     end
