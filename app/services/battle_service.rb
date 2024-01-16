@@ -117,7 +117,7 @@ class BattleService
       battle_player.update!(ready: true)
 
       # If the battle has all players ready, move to generating state
-      if battle.reload.players_ready?
+      if battle.reload.all_players_ready?
         battle.ready!
         type = PLAYERS_ALL_READY
         BattlefileGenerationJob.perform_async(battle_id)
@@ -143,7 +143,7 @@ class BattleService
       # Validate the player is in the battle
       validate_player_in_battle(battle)
 
-      unless battle.reload.players_ready?
+      unless battle.reload.all_players_ready?
         BattlePlayer.find_by(battle: battle, player: @player).update!(ready: false)
       end
 
@@ -179,6 +179,7 @@ class BattleService
         battle.destroy
         message_hash = { type: REMOVE_BATTLE, battle: battle }
       else
+        unready_all_players(battle)
         message_hash = { type: PLAYER_LEFT, battle: battle.reload }
       end
 
@@ -356,5 +357,11 @@ class BattleService
   def get_company_squads_by_platoon(company)
     categories_hash = company.squads.group_by { |s| s[:tab_category] }
     categories_hash.transform_values { |category_squads| category_squads.group_by { |s| s[:category_position] } }
+  end
+
+  def unready_all_players(battle)
+    return unless battle.reload.any_players_ready?
+
+    BattlePlayer.where(battle: battle, ready: true).update_all(ready: false)
   end
 end
