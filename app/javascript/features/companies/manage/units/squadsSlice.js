@@ -32,7 +32,8 @@ const initialState = squadsAdapter.getInitialState({
   selectedSquadIndex: null,
   selectedSquadUuid: null,
   selectedSquadTransportUuid: null,
-  isCompact: true
+  isCompact: true,
+  highlightedUuidChain: []
 })
 
 export const fetchCompanySquads = createAsyncThunk("squads/fetchCompanySquads", async ({ companyId }, { rejectWithValue }) => {
@@ -316,6 +317,12 @@ const squadsSlice = createSlice({
     },
     setIsCompanyManagerCompact: (state, action) => {
       state.isCompact = action.payload
+    },
+    setHighlightedUuid: (state, action) => {
+      state.highlightedUuidChain.push(action.payload.uuid)
+    },
+    clearHighlightedUuid: (state) => {
+      state.highlightedUuidChain.pop()
     }
   },
   extraReducers(builder) {
@@ -466,7 +473,9 @@ export const {
   showSnackbar,
   setSelectedSquadAccess,
   clearSelectedSquad,
-  setIsCompanyManagerCompact
+  setIsCompanyManagerCompact,
+  setHighlightedUuid,
+  clearHighlightedUuid
 } = squadsSlice.actions
 
 export const {
@@ -508,3 +517,12 @@ export const selectSelectedSquad = state => {
 
 export const selectSelectedSquadUuid = state => state.squads.selectedSquadUuid
 export const selectIsCompanyManagerCompact = state => state.squads.isCompact
+
+export const selectHighlightedUuid = state => {
+  const slice = state.squads.highlightedUuidChain.slice(-1)
+  if (slice.length === 1) {
+    return slice[0]
+  } else {
+    return null
+  }
+}
