@@ -2,22 +2,23 @@
 #
 # Table name: players
 #
-#  id                                :bigint           not null, primary key
-#  avatar(Player avatar url)         :text
-#  current_sign_in_at                :datetime
-#  current_sign_in_ip                :string
-#  last_sign_in_at                   :datetime
-#  last_sign_in_ip                   :string
-#  name(Player screen name)          :string
-#  provider(Omniauth provider)       :string
-#  remember_created_at               :datetime
-#  role(Player role for permissions) :string           not null
-#  sign_in_count                     :integer          default(0), not null
-#  uid(Omniauth uid)                 :string
-#  vps(WAR VPs earned)               :integer          default(0), not null
-#  created_at                        :datetime         not null
-#  updated_at                        :datetime         not null
-#  discord_id(Discord id)            :string
+#  id                                                 :bigint           not null, primary key
+#  avatar(Player avatar url)                          :text
+#  current_sign_in_at                                 :datetime
+#  current_sign_in_ip                                 :string
+#  last_sign_in_at                                    :datetime
+#  last_sign_in_ip                                    :string
+#  name(Player screen name)                           :string
+#  provider(Omniauth provider)                        :string
+#  remember_created_at                                :datetime
+#  role(Player role for permissions)                  :string           not null
+#  sign_in_count                                      :integer          default(0), not null
+#  total_vps_earned(Total WAR VPs earned, not capped) :integer          default(0), not null
+#  uid(Omniauth uid)                                  :string
+#  vps(WAR VPs earned up to ruleset max)              :integer          default(0), not null
+#  created_at                                         :datetime         not null
+#  updated_at                                         :datetime         not null
+#  discord_id(Discord id)                             :string
 #
 # Indexes
 #

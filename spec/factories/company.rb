@@ -6,6 +6,7 @@ FactoryBot.define do
     association :ruleset
     name { "Company name" }
     vps_earned { 0 }
+    vps_current { 0 }
     pop { 0 }
     man { 7000 }
     mun { 1600 }

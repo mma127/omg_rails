@@ -7,7 +7,8 @@ class BattleReportService < ApplicationService
   NOT_FINAL = 0.freeze
 
   def initialize(battle_id)
-    @battle = Battle.includes(players: :companies, companies: [:squads, :available_units, company_resource_bonuses: :resource_bonus]).find_by!(id: battle_id)
+    @battle = Battle.includes(:ruleset, players: :companies, companies: [:squads, :available_units, company_resource_bonuses: :resource_bonus]).find_by!(id: battle_id)
+    @ruleset = @battle.ruleset
   end
 
   def self.enqueue_report(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,
@@ -27,63 +28,62 @@ class BattleReportService < ApplicationService
     @battle.with_lock do
       if @battle.reporting? || @battle.final?
         info_logger("Battle #{battle_id} is already in '#{@battle.state}' state, skipping battle report processing")
-        return
-      end
-      validate_battle_ingame
-
-      # Look for dropped players
-      handle_dropped_players(dropped_players)
-
-      # if is_final is 0, not final. Do not put battle into reporting state
-      if is_final == NOT_FINAL
-        info_logger("Non-final battle #{battle_id}, exiting")
-        return
-      end
-
-      # Transition battle to reporting
-      info_logger("Transitioning battle #{battle_id} state to reporting")
-      @battle.reporting!
-
-      # If final and under time threshold, finalize without changing companies
-      if time_elapsed < MINIMUM_ELAPSED
-        info_logger("Time elapsed #{time_elapsed} is less than reporting minimum #{MINIMUM_ELAPSED}. Marking abandoned")
-        @battle.abandoned!
       else
-        ## Update squads
-        # Update surviving squads with vet
-        # Add resupply availability
-        # Auto rebuild
-        # Remove dead squads
-        starting_squads_by_id = @battle.squads.index_by(&:id)
-        starting_squads_by_id = update_surviving_squads(starting_squads_by_id, surviving_squads)
-        add_rubberband_vet(starting_squads_by_id)
+        validate_battle_ingame
 
-        @battle.companies.each do |c|
-          add_company_availability(c)
+        # Look for dropped players
+        handle_dropped_players(dropped_players)
+
+        # if is_final is 0, not final. Do not put battle into reporting state
+        if is_final == NOT_FINAL
+          info_logger("Non-final battle #{battle_id}, no action required")
+        else
+          # Transition battle to reporting
+          info_logger("Transitioning battle #{battle_id} state to reporting")
+          @battle.reporting!
+
+          # If final and under time threshold, finalize without changing companies
+          if time_elapsed < MINIMUM_ELAPSED
+            info_logger("Time elapsed #{time_elapsed} is less than reporting minimum #{MINIMUM_ELAPSED}. Marking abandoned")
+            @battle.abandoned!
+          else
+            ## Update squads
+            # Update surviving squads with vet
+            # Add resupply availability
+            # Auto rebuild
+            # Remove dead squads
+            starting_squads_by_id = @battle.squads.index_by(&:id)
+            starting_squads_by_id = update_surviving_squads(starting_squads_by_id, surviving_squads)
+            add_rubberband_vet(starting_squads_by_id)
+
+            @battle.companies.each do |c|
+              add_company_availability(c)
+            end
+
+            autorebuild_dead_squads(dead_squads)
+
+            ## Update company resources after rebuild
+            recalculate_company_resources
+
+            ## Update company and player VPs
+            add_company_vps
+            add_player_vps
+
+            winner = map_winner(race_winner)
+
+            # Mark battle as final with winner
+            finalize_battle(winner)
+
+            # Update player ratings
+            maybe_update_player_ratings(winner)
+
+            # Update company stats
+            process_battle_stats(battle_stats)
+          end
+
+          info_logger("Finished processing battle report for battle #{battle_id}")
         end
-
-        autorebuild_dead_squads(dead_squads)
-
-        ## Update company resources after rebuild
-        recalculate_company_resources
-
-        ## Update company and player VPs
-        add_company_vps
-        add_player_vps
-
-        winner = map_winner(race_winner)
-
-        # Mark battle as final with winner
-        finalize_battle(winner)
-
-        # Update player ratings
-        maybe_update_player_ratings(winner)
-
-        # Update company stats
-        process_battle_stats(battle_stats)
       end
-
-      info_logger("Finished processing battle report for battle #{battle_id}")
     rescue StandardError => e
       Rails.logger.error("Failed to process battle report for battle #{battle_id}, error: #{e.message}")
       raise
@@ -220,15 +220,16 @@ class BattleReportService < ApplicationService
     companies = Company.where(player_id: player_ids, ruleset_id: ruleset_id)
     companies_to_update = []
     companies.each do |c|
-      if c.vps_earned >= Company::MAX_VP
-        info_logger("Company #{c.id} has #{c.vps_earned} VPs and cannot exceed #{Company::MAX_VP}")
+      if c.vps_earned >= @ruleset.max_vps
+        info_logger("Company #{c.id} has #{c.vps_earned} VPs and cannot exceed #{@ruleset.max_vps}")
       else
         info_logger("Adding 1 VP to Company #{c.id}")
+        c.vps_current += 1
         c.vps_earned += 1
         companies_to_update << c
       end
     end
-    Company.import!(companies_to_update, on_duplicate_key_update: { conflict_target: [:id], columns: [:vps_earned] })
+    Company.import!(companies_to_update, on_duplicate_key_update: { conflict_target: [:id], columns: [:vps_earned, :vps_current] })
   end
 
   # Player VPs are used to repopulate
@@ -236,12 +237,13 @@ class BattleReportService < ApplicationService
     info_logger("Adding player VPs as necessary")
     players = @battle.players.to_a
     players.each do |p|
-      if p.vps < Company::MAX_VP
+      if p.vps < @ruleset.max_vps
         info_logger("Adding 1 VP to Player #{p.id}")
         p.vps += 1
       end
+      p.total_vps_earned += 1
     end
-    Player.import!(players, on_duplicate_key_update: { conflict_target: [:id], columns: [:vps] })
+    Player.import!(players, on_duplicate_key_update: { conflict_target: [:id], columns: [:vps, :total_vps_earned] })
   end
 
   # Skip updating ratings if battle is only 1v1

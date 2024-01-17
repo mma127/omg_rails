@@ -32,8 +32,6 @@
 #  fk_rails_...  (ruleset_id => rulesets.id)
 #
 class Company < ApplicationRecord
-  MAX_VP = 25.freeze # TODO move this to ruleset
-
   belongs_to :player
   belongs_to :doctrine
   belongs_to :faction

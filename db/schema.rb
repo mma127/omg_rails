@@ -376,7 +376,8 @@ ActiveRecord::Schema.define(version: 2024_01_10_051309) do
     t.string "provider", comment: "Omniauth provider"
     t.string "uid", comment: "Omniauth uid"
     t.string "discord_id", comment: "Discord id"
-    t.integer "vps", default: 0, null: false, comment: "WAR VPs earned"
+    t.integer "vps", default: 0, null: false, comment: "WAR VPs earned up to ruleset max"
+    t.integer "total_vps_earned", default: 0, null: false, comment: "Total WAR VPs earned, not capped"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "remember_created_at"

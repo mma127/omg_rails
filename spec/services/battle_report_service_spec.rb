@@ -4,6 +4,7 @@ RSpec.describe BattleReportService do
   let!(:player1) { create :player }
   let!(:player2) { create :player }
   let(:ruleset) { create :ruleset }
+  let(:max_vps) { ruleset.max_vps }
   let(:size) { 1 }
   let!(:battle) { create :battle, ruleset: ruleset, state: "ingame", size: size }
   let(:unit1) { create :unit }
@@ -459,59 +460,71 @@ RSpec.describe BattleReportService do
     let!(:company3) { create :company, player: player1, ruleset: ruleset }
     let!(:company4) { create :company, player: player2, ruleset: ruleset }
 
-    context "when all companies have less than Company::MAX_VP VPs" do
+    context "when all companies have less than max_vps VPs" do
       it "updates all company vps_earned" do
         instance.send(:add_company_vps)
         expect(company1.reload.vps_earned).to eq 1
+        expect(company1.vps_current).to eq 1
         expect(company2.reload.vps_earned).to eq 1
+        expect(company2.vps_current).to eq 1
         expect(company3.reload.vps_earned).to eq 1
+        expect(company3.vps_current).to eq 1
         expect(company4.reload.vps_earned).to eq 1
+        expect(company4.vps_current).to eq 1
       end
     end
 
-    context "when some companies have Company::MAX_VP VPs" do
+    context "when some companies have max_vps VPs" do
       before do
-        company2.update!(vps_earned: Company::MAX_VP)
-        company3.update!(vps_earned: Company::MAX_VP)
+        company2.update!(vps_earned: max_vps)
+        company3.update!(vps_earned: max_vps)
       end
 
-      it "updates only company with vps_earned less than Company::MAX_VP VPs" do
+      it "updates only company with vps_earned less than max_vps VPs" do
         expect(company1.vps_earned).to eq 0
-        expect(company2.vps_earned).to eq Company::MAX_VP
-        expect(company3.vps_earned).to eq Company::MAX_VP
+        expect(company2.vps_earned).to eq max_vps
+        expect(company3.vps_earned).to eq max_vps
         expect(company4.vps_earned).to eq 0
         instance.send(:add_company_vps)
         expect(company1.reload.vps_earned).to eq 1
-        expect(company2.reload.vps_earned).to eq Company::MAX_VP
-        expect(company3.reload.vps_earned).to eq Company::MAX_VP
+        expect(company1.vps_current).to eq 1
+        expect(company2.reload.vps_earned).to eq max_vps
+        expect(company2.vps_current).to eq 0
+        expect(company3.reload.vps_earned).to eq max_vps
+        expect(company3.vps_current).to eq 0
         expect(company4.reload.vps_earned).to eq 1
+        expect(company4.vps_current).to eq 1
       end
     end
   end
 
   describe "#add_player_vps" do
-    context "when the players have less than Company::MAX_VP VPs" do
+    context "when the players have less than max_vps VPs" do
       it "adds a VP to the player record" do
         instance.send(:add_player_vps)
         expect(player1.reload.vps).to eq 1
+        expect(player1.total_vps_earned).to eq 1
         expect(player2.reload.vps).to eq 1
+        expect(player2.total_vps_earned).to eq 1
       end
     end
 
-    context "when a player has Company::MAX_VP VPs" do
+    context "when a player has max_vps VPs" do
       before do
-        player1.update!(vps: Company::MAX_VP)
+        player1.update!(vps: max_vps, total_vps_earned: max_vps)
       end
 
-      it "updates the player with less than Company::MAX_VP" do
+      it "updates the player with less than max_vps" do
         instance.send(:add_player_vps)
         expect(player2.reload.vps).to eq 1
+        expect(player2.total_vps_earned).to eq 1
       end
 
-      it "does not change the player with Company::MAX_VP VPs" do
-        expect(player1.reload.vps).to eq Company::MAX_VP
+      it "updates the total_vps_earned but not vps for the player with max_vps VPs" do
+        expect(player1.reload.vps).to eq max_vps
         instance.send(:add_player_vps)
-        expect(player1.reload.vps).to eq Company::MAX_VP
+        expect(player1.reload.vps).to eq max_vps
+        expect(player1.total_vps_earned).to eq (max_vps + 1)
       end
     end
   end
