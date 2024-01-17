@@ -295,6 +295,12 @@ const squadsSlice = createSlice({
       state.selectedSquadIndex = newIndex
       state.selectedSquadUuid = uuid
       state.isChanged = true
+
+
+      // in Firefox, an onMouseLeave event does not fire when dragging cards across drop targets, meaning we have an
+      // extra uuid of the same value left in the stack, causing a stuck tooltip. Pop it manually as we shouldn't have
+      // two of the same uuid in the stack sequentially
+      state.highlightedUuidChain = []
     },
     resetSquadState: () => initialState,
     clearNotifySnackbar(state) {
