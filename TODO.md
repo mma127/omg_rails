@@ -37,6 +37,5 @@ PRELAUNCH
 3. Holding Area
 4. Leaderboard
 5. Copy Squad w/upgrades
-6. Overlapping tooltips fix
-7. Align BattleCardPlayers when names have different lengths
-8. Hide self ELO unless admin
+6. Align BattleCardPlayers when names have different lengths
+7. Hide self ELO unless admin
