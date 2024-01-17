@@ -3,6 +3,8 @@
   "private": true,
   "dependencies": {
     "@babel/preset-react": "^7.16.0",
+    "@babel/plugin-transform-private-methods": "^7.23.3",
+    "@babel/plugin-transform-private-property-in-object": "^7.23.3",
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
     "@hookform/resolvers": "^2.8.4",
