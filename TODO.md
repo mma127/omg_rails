@@ -39,4 +39,3 @@ PRELAUNCH
 5. Copy Squad w/upgrades
 6. Overlapping tooltips fix
 7. Align BattleCardPlayers when names have different lengths
-8. Hide self ELO unless admin

@@ -168,8 +168,8 @@ export const BattleCardPlayer = ({
             {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame}/> : ""}
           </Box>
 
-          <Typography variant={"h6"} color="darkgrey" theme={eloTheme}
-                      className={classes.PlayerElo}>{playerElo}</Typography>
+          {isAdmin ? <Typography variant={"h6"} color="darkgrey" theme={eloTheme}
+                                 className={classes.PlayerElo}>{playerElo}</Typography> : null}
 
         </Stack>
       </>
