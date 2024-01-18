@@ -170,6 +170,7 @@ ActiveRecord::Schema.define(version: 2024_01_18_021747) do
     t.string "name", null: false, comment: "chat room name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_chats_on_name", unique: true
   end
 
   create_table "companies", force: :cascade do |t|
