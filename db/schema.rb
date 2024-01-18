@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_10_051309) do
+ActiveRecord::Schema.define(version: 2024_01_18_021747) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -154,6 +154,23 @@ ActiveRecord::Schema.define(version: 2024_01_10_051309) do
     t.string "unlock_name", comment: "Name of the unlock associated with this callin modifier"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "chat_messages", comment: "messages for a chat room", force: :cascade do |t|
+    t.bigint "chat_id"
+    t.bigint "sender_id", null: false
+    t.text "content", comment: "chat message content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["chat_id"], name: "index_chat_messages_on_chat_id"
+    t.index ["sender_id"], name: "index_chat_messages_on_sender_id"
+  end
+
+  create_table "chats", comment: "chat rooms", force: :cascade do |t|
+    t.string "name", null: false, comment: "chat room name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_chats_on_name", unique: true
   end
 
   create_table "companies", force: :cascade do |t|
@@ -690,6 +707,8 @@ ActiveRecord::Schema.define(version: 2024_01_10_051309) do
   add_foreign_key "callin_modifier_allowed_units", "units"
   add_foreign_key "callin_modifier_required_units", "callin_modifiers"
   add_foreign_key "callin_modifier_required_units", "units"
+  add_foreign_key "chat_messages", "chats"
+  add_foreign_key "chat_messages", "players", column: "sender_id"
   add_foreign_key "companies", "doctrines"
   add_foreign_key "companies", "factions"
   add_foreign_key "companies", "players"
