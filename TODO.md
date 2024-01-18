@@ -38,4 +38,3 @@ PRELAUNCH
 4. Leaderboard
 5. Copy Squad w/upgrades
 6. Align BattleCardPlayers when names have different lengths
-7. Hide self ELO unless admin
