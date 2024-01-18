@@ -37,5 +37,4 @@ PRELAUNCH
 3. Holding Area
 4. Leaderboard
 5. Copy Squad w/upgrades
-6. Overlapping tooltips fix
-7. Align BattleCardPlayers when names have different lengths
+6. Align BattleCardPlayers when names have different lengths

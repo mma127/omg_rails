@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { UnitCard } from "./UnitCard";
 import { Box, Card, Tooltip, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -8,10 +8,11 @@ import { formatResourceCost } from "../../../../utils/company";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUnitById } from "../units/unitsSlice";
 import {
-  clearSelectedSquad,
+  clearHighlightedUuid,
+  clearSelectedSquad, selectHighlightedUuid,
   selectSelectedSquadUuid,
   selectSquadInTabIndexTransportUuid,
-  selectSquadInTabIndexUuid, setSelectedSquadAccess
+  selectSquadInTabIndexUuid, setHighlightedUuid, setSelectedSquadAccess
 } from "../units/squadsSlice";
 import { TransportSlots } from "./TransportSlots";
 import { TransportDropTarget } from "./TransportDropTarget";
@@ -19,6 +20,7 @@ import { SquadUpgrades } from "../squad_upgrades/SquadUpgrades";
 import { selectSquadUpgradesForSquad } from "../squad_upgrades/squadUpgradesSlice";
 import { SquadVetIcon } from "./SquadVetIcon";
 import { setSelectedAvailableUnitId } from "../available_units/availableUnitsSlice";
+import { findDOMNode } from "react-dom";
 
 
 const getVetLevel = (exp, unitVet) => {
@@ -133,6 +135,22 @@ export const SquadCard = (
   const unit = useSelector(state => selectUnitById(state, squad.unitId))
   const squadUpgrades = useSelector(state => selectSquadUpgradesForSquad(state, tab, index, uuid))
   const selectedSquadUuid = useSelector(selectSelectedSquadUuid)
+
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false)
+  const elementRef = useRef()
+
+  const highlightedUuid = useSelector(selectHighlightedUuid)
+  const isHighlighted = squad.uuid === highlightedUuid
+  useEffect(() => {
+    // Need this check as react-drag-drop-container creates a ghost element copy of the child of the dragdropcontainer
+    const hasGhost = !!elementRef.current.closest(".ddcontainerghost")
+
+    if (isHighlighted && !hasGhost) {
+      setIsTooltipOpen(true)
+    } else if (isTooltipOpen) {
+      setIsTooltipOpen(false)
+    }
+  }, [isHighlighted]);
 
   const isSelected = selectedSquadUuid === uuid
 
@@ -276,6 +294,13 @@ export const SquadCard = (
                                             maxModelSlots={unit.transportModelSlots}/>
   }
 
+  const handleTooltipOpen = () => {
+    dispatch(setHighlightedUuid({uuid: squad.uuid}))
+  }
+  const handleTooltipClose = () => {
+    dispatch(clearHighlightedUuid())
+  }
+
   // Use a specific drag handle class so the entire card doesn't drag. This allows nesting SquadCards of transported units
   let dragHandleClassName = `unit-card-drag-handle-${uuid}`
   return (
@@ -289,10 +314,47 @@ export const SquadCard = (
                            unit
                          }
                        }
+      // Need a custom drag element to avoid duplicating the controlled tooltip of the non-ghost (custom drag element) card
+                       customDragElement={
+                         <Card className={`${classes.squadCard} 'selected'`}>
+                           <Tooltip
+                             key={uuid}
+                             title={
+                               <>
+                                 <Typography variant="subtitle2" className={classes.tooltipHeader}>{unit.displayName}</Typography>
+                                 <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
+                                 <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
+                                 <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
+                                 {vetBonuses.map(vb => <Box key={vb.level} className={classes.squadCardItems}><SquadVetIcon level={vb.level}/> {vb.desc}</Box>)}
+                               </>
+                             }
+                             // TransitionComponent={Zoom}
+                             followCursor={true}
+                             placement="bottom-start"
+                             arrow
+                           >
+                             <Box sx={{ p: 1 }} className={classes.squadCardItems}>
+                               <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
+                                         onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
+                               <SquadVetIcon level={level}/>
+                               <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeDestroyClick}
+                                              enabled={enabled}/>
+                               {transportContent}
+                               <Box className={classes.slotsDeleteWrapper}>
+                                 {deleteContent}
+                                 {transportSlotsContent}
+                               </Box>
+                             </Box>
+                           </Tooltip>
+                         </Card>
+                       }
     >
       <Card className={`${classes.squadCard} ${isSelected ? 'selected' : null}`}>
         <Tooltip
           key={uuid}
+          open={isTooltipOpen}
+          onMouseLeave={handleTooltipClose}
+          onMouseEnter={handleTooltipOpen}
           title={
             <>
               <Typography variant="subtitle2" className={classes.tooltipHeader}>{unit.displayName}</Typography>
@@ -307,7 +369,7 @@ export const SquadCard = (
           placement="bottom-start"
           arrow
         >
-          <Box sx={{ p: 1 }} className={classes.squadCardItems}>
+          <Box sx={{ p: 1 }} className={classes.squadCardItems} ref={elementRef}>
             <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
                       onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
             <SquadVetIcon level={level}/>
