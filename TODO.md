@@ -38,3 +38,4 @@ PRELAUNCH
 4. Leaderboard
 5. Copy Squad w/upgrades
 6. Align BattleCardPlayers when names have different lengths
+7. Double check players cannot join/create multiple battles, even with different companies/tabs
