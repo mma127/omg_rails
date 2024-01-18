@@ -1,0 +1,1 @@
+Chat.create!(name: Chat::LOBBY)

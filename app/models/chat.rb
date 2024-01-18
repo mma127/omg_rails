@@ -9,4 +9,6 @@
 #
 class Chat < ApplicationRecord
   has_many :chat_messages, inverse_of: :chat
+
+  LOBBY = "Lobby".freeze
 end
