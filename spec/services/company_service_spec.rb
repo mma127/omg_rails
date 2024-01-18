@@ -86,6 +86,32 @@ RSpec.describe CompanyService do
               CompanyService::CompanyCreationValidationError,
               "Player #{player.id} has too many #{faction.side} companies, cannot create another one.")
     end
+
+    context "when the player has less than max vps - starting_vps" do
+      let(:max_vps) { 20 }
+      let!(:player) { create :player, vps: 2 }
+      let!(:ruleset) { create :ruleset, max_vps: max_vps }
+
+      it "creates the company with player vps + starting_vps" do
+        company = subject
+
+        expect(company.vps_current).to eq player.vps + ruleset.starting_vps
+        expect(company.vps_earned).to eq player.vps + ruleset.starting_vps
+      end
+    end
+
+    context "when the player has max vps" do
+      let(:max_vps) { 10 }
+      let!(:player) { create :player, vps: max_vps }
+      let!(:ruleset) { create :ruleset, max_vps: max_vps }
+
+      it "creates the company with ruleset max vps" do
+        company = subject
+
+        expect(company.vps_current).to eq max_vps
+        expect(company.vps_earned).to eq max_vps
+      end
+    end
   end
 
   describe "#update_company_squads" do

@@ -25,7 +25,7 @@ class CompanyService
     ruleset = Ruleset.find_by(name: WAR_RULESET)
 
     # Starting vps
-    vps = @player.vps + ruleset.starting_vps
+    vps = [@player.vps + ruleset.starting_vps, ruleset.max_vps].min
 
     ActiveRecord::Base.transaction do
       # Create Company entity

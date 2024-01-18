@@ -9,14 +9,14 @@ Upgrades
 3. Enable upgrade by unit and minimum vet
 4. Should Falls have only 1 of fg42, schreck, at rifles, g43? Can fg42 and g43 be unitwide? seems to be priority issues where fg42 over schreck
 
-Company
-1. Move `MAX_VP` to Ruleset
-
 Redux
 1. Fix missing rejectWithValue. See fetchCompanyBonuses for example
 
 BattlePlayer
 1. Pass `side` back for the BattlePlayer to create, to avoid relying on `company.faction.side` which may not be correct (ie, mixed teams)
+
+Player
+1. Create a separate RulesetPlayer record to encapsulate ruleset specific data like vps current/earned in that ruleset
 
 UI
 1. Discord invite icon
