@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { makeStyles, useTheme } from "@mui/styles";
 import { Box, Container, Tab, Tabs } from "@mui/material";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { WarStats } from "./WarStats";
 import { Leaderboard } from "./Leaderboard";
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
@@ -38,14 +38,28 @@ const useStyles = makeStyles(theme => ({
 
 const LEADERBOARD = "leaderboard"
 const WAR_STATS = "war_stats"
-const DEFAULT_TAB = LEADERBOARD
+
+const getCurrentUrlTab = (pathname) => {
+  const lastPathElement = pathname.split("/").pop()
+  switch (lastPathElement) {
+    case WAR_STATS:
+      return WAR_STATS
+    default:
+      return LEADERBOARD
+  }
+}
 
 export const Leaderboards = () => {
   const classes = useStyles()
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('md'));
 
-  const [currentTab, setCurrentTab] = useState(DEFAULT_TAB)
+  const location = useLocation()
+  const { pathname } = location
+
+  const tab = getCurrentUrlTab(pathname)
+
+  const [currentTab, setCurrentTab] = useState(tab)
   const onTabChange = (event, newTab) => {
     setCurrentTab(newTab)
   }
@@ -63,7 +77,7 @@ export const Leaderboards = () => {
                  className={classes.tab}
                  component={Link}/>
             <Tab key={`leaderboards-tab-${WAR_STATS}`}
-                 icon={matches ? <TimelineIcon /> : null}
+                 icon={matches ? <TimelineIcon/> : null}
                  label={matches ? null : "War Stats"}
                  value={WAR_STATS}
                  to={WAR_STATS}
@@ -71,9 +85,9 @@ export const Leaderboards = () => {
                  component={Link}/>
           </Tabs>
           <Routes>
-            <Route path={LEADERBOARD} element={<Leaderboard />}/>
-            <Route path={WAR_STATS} element={<WarStats />}/>
-            <Route index element={<Leaderboard />}/>
+            <Route path={LEADERBOARD} element={<Leaderboard/>}/>
+            <Route path={WAR_STATS} element={<WarStats/>}/>
+            <Route index element={<Leaderboard/>}/>
           </Routes>
         </Box>
       </Box>
