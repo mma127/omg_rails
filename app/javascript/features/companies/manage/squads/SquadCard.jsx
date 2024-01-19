@@ -8,20 +8,21 @@ import { formatResourceCost } from "../../../../utils/company";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUnitById } from "../units/unitsSlice";
 import {
-  clearHighlightedUuid,
-  clearSelectedSquad, selectHighlightedUuid,
+  clearHighlightedUuid, copySquad,
+  selectHighlightedUuid,
   selectSelectedSquadUuid,
   selectSquadInTabIndexTransportUuid,
-  selectSquadInTabIndexUuid, setHighlightedUuid, setSelectedSquadAccess
+  selectSquadInTabIndexUuid,
+  setHighlightedUuid,
+  setSelectedSquadAccess
 } from "../units/squadsSlice";
 import { TransportSlots } from "./TransportSlots";
 import { TransportDropTarget } from "./TransportDropTarget";
 import { SquadUpgrades } from "../squad_upgrades/SquadUpgrades";
 import { selectSquadUpgradesForSquad } from "../squad_upgrades/squadUpgradesSlice";
 import { SquadVetIcon } from "./SquadVetIcon";
-import { setSelectedAvailableUnitId } from "../available_units/availableUnitsSlice";
-import { findDOMNode } from "react-dom";
-
+import { selectAvailableUnitById, setSelectedAvailableUnitId } from "../available_units/availableUnitsSlice";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const getVetLevel = (exp, unitVet) => {
   if (exp < unitVet.vet1Exp) {
@@ -75,10 +76,20 @@ const useStyles = makeStyles(() => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: '2px' // The delete icon has spacing built into it, so we don't need this as wide on the right
+    // paddingRight: '2px' // The delete icon has spacing built into it, so we don't need this as wide on the right
   },
-  deleteIcon: {
+  actionIcons: {
+    marginRight: '-6px',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  icon: {
     cursor: 'pointer'
+  },
+  copyIcon: {
+    fontSize: "1rem",
+    marginTop: "0.25rem"
   },
   tooltipHeader: {
     fontWeight: 'bold'
@@ -120,6 +131,7 @@ export const SquadCard = (
     enabled,
     onTransportedSquadCreate,
     onSquadMove,
+    onSquadCopy,
     onSquadUpgradeDestroyClick,
   }
 ) => {
@@ -135,6 +147,7 @@ export const SquadCard = (
   const unit = useSelector(state => selectUnitById(state, squad.unitId))
   const squadUpgrades = useSelector(state => selectSquadUpgradesForSquad(state, tab, index, uuid))
   const selectedSquadUuid = useSelector(selectSelectedSquadUuid)
+  const availableUnit = useSelector(state => selectAvailableUnitById(state, squad.availableUnitId))
 
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
   const elementRef = useRef()
@@ -250,6 +263,13 @@ export const SquadCard = (
     onSquadUpgradeDestroyClick(squadUpgrade)
   }
 
+  const onCopyClick = () => {
+    selectSquad(squad.availableUnitId, squad.tab, squad.index, squad.uuid, squad.transportUuid)
+    if (availableUnit.available > 0) {
+      onSquadCopy({ availableUnit, unit, squad, squadUpgrades })
+    }
+  }
+
   // Vet
   const [level, nextLevel] = getVetLevel(parseFloat(squad.vet), unit.vet)
   let nextLevelContent = ""
@@ -258,12 +278,16 @@ export const SquadCard = (
   }
   const vetBonuses = buildVetBonuses(level, unit.vet)
 
-  let deleteContent = ""
+
+  let actionsContent
   if (enabled) {
-    deleteContent = <DeleteOutlineIcon
-      onClick={() => onDestroyClick(squad, squadUpgrades, null)}
-      className={classes.deleteIcon}
-      color="error"/>
+    actionsContent = <Box className={classes.actionIcons}>
+      <DeleteOutlineIcon
+        onClick={() => onDestroyClick(squad, squadUpgrades, null)}
+        className={classes.icon}
+        color="error"/>
+      <ContentCopyIcon onClick={onCopyClick} className={`${classes.icon} ${classes.copyIcon}`}/>
+    </Box>
   }
 
   let transportContent
@@ -295,7 +319,7 @@ export const SquadCard = (
   }
 
   const handleTooltipOpen = () => {
-    dispatch(setHighlightedUuid({uuid: squad.uuid}))
+    dispatch(setHighlightedUuid({ uuid: squad.uuid }))
   }
   const handleTooltipClose = () => {
     dispatch(clearHighlightedUuid())
@@ -321,11 +345,14 @@ export const SquadCard = (
                              key={uuid}
                              title={
                                <>
-                                 <Typography variant="subtitle2" className={classes.tooltipHeader}>{unit.displayName}</Typography>
+                                 <Typography variant="subtitle2"
+                                             className={classes.tooltipHeader}>{unit.displayName}</Typography>
                                  <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
                                  <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
                                  <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
-                                 {vetBonuses.map(vb => <Box key={vb.level} className={classes.squadCardItems}><SquadVetIcon level={vb.level}/> {vb.desc}</Box>)}
+                                 {vetBonuses.map(vb => <Box key={vb.level}
+                                                            className={classes.squadCardItems}><SquadVetIcon
+                                   level={vb.level}/> {vb.desc}</Box>)}
                                </>
                              }
                              // TransitionComponent={Zoom}
@@ -337,11 +364,12 @@ export const SquadCard = (
                                <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
                                          onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
                                <SquadVetIcon level={level}/>
-                               <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeDestroyClick}
+                               <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid}
+                                              onUpgradeClick={onSquadUpgradeDestroyClick}
                                               enabled={enabled}/>
                                {transportContent}
                                <Box className={classes.slotsDeleteWrapper}>
-                                 {deleteContent}
+                                 {actionsContent}
                                  {transportSlotsContent}
                                </Box>
                              </Box>
@@ -361,7 +389,8 @@ export const SquadCard = (
               <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
               <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
               <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
-              {vetBonuses.map(vb => <Box key={vb.level} className={classes.squadCardItems}><SquadVetIcon level={vb.level}/> {vb.desc}</Box>)}
+              {vetBonuses.map(vb => <Box key={vb.level} className={classes.squadCardItems}><SquadVetIcon
+                level={vb.level}/> {vb.desc}</Box>)}
             </>
           }
           // TransitionComponent={Zoom}
@@ -377,7 +406,7 @@ export const SquadCard = (
                            enabled={enabled}/>
             {transportContent}
             <Box className={classes.slotsDeleteWrapper}>
-              {deleteContent}
+              {actionsContent}
               {transportSlotsContent}
             </Box>
           </Box>

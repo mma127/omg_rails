@@ -54,6 +54,7 @@ export const CompanyGridDropTarget = ({
                                         onSquadClick,
                                         onSquadDestroy,
                                         onSquadMove,
+                                        onSquadCopy,
                                         onSquadUpgradeDestroyClick,
                                         enabled
                                       }) => {
@@ -148,6 +149,7 @@ export const CompanyGridDropTarget = ({
                                  onDestroyClick={onDestroyClick}
                                  onTransportedSquadCreate={onTransportedSquadCreate}
                                  onSquadMove={onSquadMove}
+                                 onSquadCopy={onSquadCopy}
                                  onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
       />)
     }

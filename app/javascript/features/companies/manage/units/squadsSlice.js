@@ -302,6 +302,18 @@ const squadsSlice = createSlice({
       // two of the same uuid in the stack sequentially
       state.highlightedUuidChain = []
     },
+    /**
+     * Copy a squad in the same index and tab.
+     */
+    copySquad(state, action) {
+      const { squad, squadUpgrades, transportUuid } = action.payload
+
+      const platoon = state[squad.tab][squad.index]
+      if (!Object.keys(platoon).includes(squad.uuid)) {
+        platoon[squad.uuid] = squad
+      }
+      state.isChanged = true
+    },
     resetSquadState: () => initialState,
     clearNotifySnackbar(state) {
       state.notifySnackbar = false
@@ -474,6 +486,7 @@ export const {
   removeSquad,
   removeTransportedSquad,
   moveSquad,
+  copySquad,
   resetSquadState,
   clearNotifySnackbar,
   showSnackbar,

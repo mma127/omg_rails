@@ -2,12 +2,10 @@ import React from 'react'
 import { useSelector } from "react-redux";
 import { DragDropContainer } from "react-drag-drop-container";
 import { makeStyles } from "@mui/styles";
-import { Box, Tooltip, Typography } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 
 import { UnitCard } from "../squads/UnitCard";
-import { formatResourceCost } from "../../../../utils/company";
 import { selectAvailableUnitById } from "./availableUnitsSlice";
-import { unitImageMapping } from "../../../../constants/units/all_factions";
 import { selectUnitById } from "../units/unitsSlice";
 import { AvailableUnitTooltipContent } from "./AvailableUnitTooltipContent";
 

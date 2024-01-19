@@ -1,5 +1,12 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { fetchCompanySquads, moveSquad, removeSquad, removeTransportedSquad, upsertSquads } from "../units/squadsSlice";
+import {
+  copySquad,
+  fetchCompanySquads,
+  moveSquad,
+  removeSquad,
+  removeTransportedSquad,
+  upsertSquads
+} from "../units/squadsSlice";
 import { CATEGORIES } from "../../../../constants/company";
 import { loadSquadUpgrade } from "./squadUpgrade";
 import { removeNewCompanyOffmap } from "../company_offmaps/companyOffmapsSlice";
@@ -119,6 +126,13 @@ const squadUpgradesSlice = createSlice({
             }
           })
         }
+      })
+      .addCase(copySquad, (state, action) => {
+        const { squad, squadUpgrades, transportUuid } = action.payload
+        squadUpgrades.forEach(su => {
+          _.setWith(state.currentSquadUpgrades, `[${su.tab}][${su.index}][${su.squadUuid}][${su.uuid}]`, su, Object)
+        })
+        state.isChanged = true
       })
   }
 })
