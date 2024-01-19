@@ -308,6 +308,8 @@ export const SquadCard = (
                                             index={index} tab={tab}
                                             transportUuid={uuid}
                                             onSquadClick={onSquadClick}
+                                            onSquadMove={onSquadMove}
+                                            onSquadCopy={onSquadCopy}
                                             transportSquadDelete={transportSquadDelete}
                                             onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                             enabled={enabled}/>

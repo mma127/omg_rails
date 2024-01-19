@@ -200,6 +200,10 @@ const squadsSlice = createSlice({
             }
           }
         }
+      } else {
+        if (!Object.keys(platoon).includes(uuid)) {
+          platoon[uuid] = newSquad
+        }
       }
       state.isChanged = true
     },
@@ -304,14 +308,43 @@ const squadsSlice = createSlice({
     },
     /**
      * Copy a squad in the same index and tab.
+     * Combine this with add squad reducers as they are very similar/dupes
      */
     copySquad(state, action) {
-      const { squad, squadUpgrades, transportUuid } = action.payload
+      const { squad, transportUuid } = action.payload
+      const { uuid, index, tab, totalModelCount, pop } = squad
 
-      const platoon = state[squad.tab][squad.index]
-      if (!Object.keys(platoon).includes(squad.uuid)) {
-        platoon[squad.uuid] = squad
+      const platoon = state[tab][index]
+      if (_.has(platoon, transportUuid)) {
+        const transport = platoon[transportUuid]
+        let transportedSquads = transport.transportedSquads
+        if (!_.isPlainObject(transport.transportedSquads)) {
+          transportedSquads = {}
+        }
+
+        if (!_.has(transportedSquads, uuid)) {
+          const usedSquadSlots = (transport.usedSquadSlots || 0)
+          const usedModelSlots = (transport.usedModelSlots || 0)
+          // If the transporting squad has both squad and model slots left, add the squad to the transport
+          if (usedSquadSlots + 1 <= transport.transportSquadSlots && usedModelSlots + totalModelCount <= transport.transportModelSlots) {
+            transportedSquads[uuid] = squad
+            transport.transportedSquads = transportedSquads
+            transport.usedSquadSlots = usedSquadSlots + 1
+            transport.usedModelSlots = usedModelSlots + totalModelCount
+            transport.popWithTransported = parseFloat(transport.popWithTransported) + parseFloat(pop)
+          } else {
+            // Otherwise, add the squad to the platoon
+            if (!Object.keys(platoon).includes(uuid)) {
+              platoon[uuid] = squad
+            }
+          }
+        }
+      } else {
+        if (!Object.keys(platoon).includes(uuid)) {
+          platoon[uuid] = squad
+        }
       }
+
       state.isChanged = true
     },
     resetSquadState: () => initialState,
