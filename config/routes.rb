@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   # end
 
   root "main#index"
-  get '*path' => redirect('/'), constraints: lambda { |req|
+  get '*path', to: "main#index", constraints: lambda { |req|
     req.path.exclude? 'rails/active_storage'
   }
 end

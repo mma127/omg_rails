@@ -10,7 +10,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import {
   fetchCompanyById,
-  selectCompanyActiveBattleId,
+  selectCompanyActiveBattleId, selectCompanyById,
   selectCompanyDoctrineId, selectCompanyName
 } from "../companiesSlice";
 
@@ -102,6 +102,14 @@ export const CompanyManager = () => {
 
   let params = useParams()
   const companyId = params.companyId
+  const company = useSelector(state => selectCompanyById(state, companyId))
+  useEffect(() => {
+    if (!company) {
+      console.log("dispatching company fetch from CompanyManager for null company")
+      dispatch(fetchCompanyById({ companyId }))
+    }
+  },[])
+
   const activeBattleId = useSelector(state => selectCompanyActiveBattleId(state, companyId))
   const doctrineId = useSelector(state => selectCompanyDoctrineId(state, companyId))
   const companyName = useSelector(state => selectCompanyName(state, companyId))
@@ -112,6 +120,10 @@ export const CompanyManager = () => {
     console.log("dispatching company fetch from CompanyManager")
     dispatch(fetchCompanyById({ companyId }))
   }, [companyId, isCompanyBonusesChanged])
+
+  if (!company || !doctrine) {
+    return null
+  }
 
   const editEnabled = !activeBattleId
   let companyLockedContent = ""

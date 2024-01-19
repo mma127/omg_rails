@@ -44,7 +44,9 @@ const companyUnlocksSlice = createSlice({
   initialState,
   reducers: {
     resetCompanyUnlockState: () => initialState,
-    clearNotifySnackbar: (state) => state.notifySnackbar = false
+    clearNotifySnackbar: (state) => {
+      state.notifySnackbar = false
+    }
   },
   extraReducers(builder) {
     builder

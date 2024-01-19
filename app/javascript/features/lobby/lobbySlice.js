@@ -10,7 +10,8 @@ const initialState = battlesAdapter.getInitialState({
   updatingBattleStatus: "idle",
   updatingBattleError: null,
   isPending: false,
-  errorMessage: null
+  errorMessage: null,
+  chatMessages: []
 })
 
 /**
@@ -19,7 +20,7 @@ const initialState = battlesAdapter.getInitialState({
  */
 export const fetchActiveBattles = createAsyncThunk(
   "lobby/fetchActiveBattles",
-  async (_, {__, rejectWithValue}) => {
+  async (_, { __, rejectWithValue }) => {
     try {
       const response = await axios.get("/battles")
       return response.data
@@ -31,7 +32,7 @@ export const fetchActiveBattles = createAsyncThunk(
 
 export const createBattle = createAsyncThunk(
   "lobby/createBattle",
-  async ({ name, size, rulesetId, initialCompanyId }, {_, rejectWithValue}) => {
+  async ({ name, size, rulesetId, initialCompanyId }, { _, rejectWithValue }) => {
     try {
       const response = await axios.post("/battles/player/create_match", { name, size, rulesetId, initialCompanyId })
       return response.data
@@ -43,7 +44,7 @@ export const createBattle = createAsyncThunk(
 
 export const joinBattle = createAsyncThunk(
   "lobby/joinBattle",
-  async ({ battleId, companyId }, {_, rejectWithValue}) => {
+  async ({ battleId, companyId }, { _, rejectWithValue }) => {
     try {
       const response = await axios.post("/battles/player/join_match", { battleId, companyId })
       return response.data
@@ -55,7 +56,7 @@ export const joinBattle = createAsyncThunk(
 
 export const leaveBattle = createAsyncThunk(
   "lobby/leaveBattle",
-  async ({ battleId, playerId }, {_, rejectWithValue}) => {
+  async ({ battleId, playerId }, { _, rejectWithValue }) => {
     try {
       const response = await axios.post("/battles/player/leave_match", { battleId, playerId })
       return response.data
@@ -67,7 +68,7 @@ export const leaveBattle = createAsyncThunk(
 
 export const readyPlayer = createAsyncThunk(
   "lobby/readyPlayer",
-  async ({ battleId, playerId }, {_, rejectWithValue}) => {
+  async ({ battleId, playerId }, { _, rejectWithValue }) => {
     try {
       const response = await axios.post("/battles/player/ready", { battleId, playerId })
       return response.data
@@ -79,7 +80,7 @@ export const readyPlayer = createAsyncThunk(
 
 export const unreadyPlayer = createAsyncThunk(
   "lobby/unreadyPlayer",
-  async ({ battleId, playerId }, {_, rejectWithValue}) => {
+  async ({ battleId, playerId }, { _, rejectWithValue }) => {
     try {
       const response = await axios.post("/battles/player/unready", { battleId, playerId })
       return response.data
@@ -91,7 +92,7 @@ export const unreadyPlayer = createAsyncThunk(
 
 export const abandonBattle = createAsyncThunk(
   "lobby/abandonBattle",
-  async ({ battleId, playerId }, {_, rejectWithValue}) => {
+  async ({ battleId, playerId }, { _, rejectWithValue }) => {
     try {
       const response = await axios.post("/battles/player/abandon", { battleId, playerId })
       return response.data
@@ -103,9 +104,33 @@ export const abandonBattle = createAsyncThunk(
 
 export const downloadBattlefile = createAsyncThunk(
   "lobby/downloadBattlefile",
-  async ({ battleId }, {_, rejectWithValue}) => {
+  async ({ battleId }, { _, rejectWithValue }) => {
     try {
       const response = await axios.post(`/battles/${battleId}/battlefiles/zip`)
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
+export const fetchChatMessages = createAsyncThunk(
+  "lobby/fetchChatMessages",
+  async ({ chatName }, { __, rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/chat/${chatName}`)
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
+export const sendChatMessage = createAsyncThunk(
+  "lobby/sendChatMessage",
+  async ({ chatName, senderId, content }, { __, rejectWithValue }) => {
+    try {
+      const response = await axios.post(`/chat/${chatName}`, { senderId, content })
       return response.data
     } catch (err) {
       return rejectWithValue(err.response.data)
@@ -126,8 +151,12 @@ const lobbySlice = createSlice({
       battlesAdapter.setOne(state, battle)
     },
     removeBattle(state, action) {
-      const {battle} = action.payload
+      const { battle } = action.payload
       battlesAdapter.removeOne(state, battle.id)
+    },
+    addChatMessage(state, action) {
+      const { message } = action.payload
+      state.chatMessages.push(message)
     }
   },
   extraReducers(builder) {
@@ -222,12 +251,32 @@ const lobbySlice = createSlice({
         state.errorMessage = action.payload.error
         state.isPending = false
       })
+
+      .addCase(fetchChatMessages.pending, (state, action) => {
+        state.errorMessage = null
+      })
+      .addCase(fetchChatMessages.fulfilled, (state, action) => {
+        state.chatMessages = action.payload || []
+      })
+      .addCase(fetchChatMessages.rejected, (state, action) => {
+        state.errorMessage = action.payload.error
+      })
+
+      .addCase(sendChatMessage.pending, (state, action) => {
+        state.errorMessage = null
+      })
+      .addCase(sendChatMessage.fulfilled, (state, action) => {
+        state.errorMessage = null
+      })
+      .addCase(sendChatMessage.rejected, (state, action) => {
+        state.errorMessage = action.payload.error
+      })
   }
 })
 
 export default lobbySlice.reducer
 
-export const { addNewBattle, updateBattle, removeBattle } = lobbySlice.actions
+export const { addNewBattle, updateBattle, removeBattle, addChatMessage } = lobbySlice.actions
 
 export const {
   selectAll: selectAllActiveBattles,
@@ -235,3 +284,4 @@ export const {
 } = battlesAdapter.getSelectors(state => state.lobby)
 
 export const selectIsPending = state => state.lobby.isPending
+export const lobbyChatMessages = state => state.lobby.chatMessages

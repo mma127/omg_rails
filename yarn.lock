@@ -2974,6 +2974,11 @@
   "resolved" "https://registry.npmjs.org/cyclist/-/cyclist-1.0.2.tgz"
   "version" "1.0.2"
 
+"date-fns@^3.2.0":
+  "integrity" "sha512-E4KWKavANzeuusPi0jUjpuI22SURAznGkx7eZV+4i6x2A+IZxAMcajgkvuDAU1bg40+xuhW1zRdVIIM/4khuIg=="
+  "resolved" "https://registry.npmjs.org/date-fns/-/date-fns-3.2.0.tgz"
+  "version" "3.2.0"
+
 "debug@^2.2.0":
   "integrity" "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA=="
   "resolved" "https://registry.npmjs.org/debug/-/debug-2.6.9.tgz"

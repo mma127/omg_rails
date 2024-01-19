@@ -34,6 +34,7 @@ module OMG
     mount Units
     mount Battles
     mount Restrictions
+    mount Chat
 
     route :any, '*path' do
       error! "Not implemented", 404
