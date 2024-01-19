@@ -32,10 +32,9 @@ Enhancements
 3. User preferences model (ie, saving compact status)
 
 PRELAUNCH
-1. Chat
-2. Compact mode improvements
-3. Holding Area
-4. Leaderboard
-5. Copy Squad w/upgrades
-6. Align BattleCardPlayers when names have different lengths
-7. Double check players cannot join/create multiple battles, even with different companies/tabs
+1. Compact mode improvements
+2. Holding Area
+3. Leaderboard
+4. Copy Squad w/upgrades
+5. Align BattleCardPlayers when names have different lengths
+6. Double check players cannot join/create multiple battles, even with different companies/tabs

@@ -22,4 +22,19 @@
 class ChatMessage < ApplicationRecord
   belongs_to :chat
   belongs_to :sender, class_name: "Player"
+
+  def sender_name
+    sender.name
+  end
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :sender_name, as: :senderName
+    expose :content
+    expose :created_at, as: :createdAt
+  end
 end

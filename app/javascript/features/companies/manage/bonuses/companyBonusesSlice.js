@@ -25,9 +25,8 @@ const initialState = companyBonusesAdapter.getInitialState({
 
 export const fetchCompanyBonuses = createAsyncThunk(
   "companyBonuses/fetchCompanyBonuses",
-  async (_, {getState, rejectWithValue}) => {
+  async ({companyId}, {getState, rejectWithValue}) => {
     try {
-      const companyId = selectActiveCompanyId(getState())
       const response = await axios.get(`/companies/${companyId}/bonuses`)
       return response.data
     } catch (err) {

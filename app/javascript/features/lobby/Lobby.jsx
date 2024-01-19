@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Alert } from "@mui/material";
 
 import { ActionCableConsumer } from '@thrash-industries/react-actioncable-provider';
-import { addNewBattle, updateBattle, removeBattle, fetchActiveBattles } from "./lobbySlice";
+import { addNewBattle, updateBattle, removeBattle, fetchActiveBattles, addChatMessage } from "./lobbySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId, setCurrentBattle } from "../player/playerSlice";
 import { isPlayerInBattle } from "../../utils/battle";
@@ -35,17 +35,17 @@ export const Lobby = () => {
   const player = useSelector(selectPlayer)
   const currentBattleId = useSelector(selectPlayerCurrentBattleId)
 
-  // Use stateRef to pass the current value of player to the handleReceivedCable callback. Otherwise the callback
+  // Use stateRef to pass the current value of player to the handleReceivedBattlesCable callback. Otherwise the callback
   // method is created with the original null value for player and never updated
   stateRef.current = player
 
   const error = useSelector(state => state.lobby.errorMessage)
   const notifySnackbar = error?.length > 0
-  const [ openSnackbar, setOpenSnackbar ] = useState(false)
+  const [openSnackbar, setOpenSnackbar] = useState(false)
 
   useEffect(() => {
     setOpenSnackbar(notifySnackbar)
-  }, [ notifySnackbar ])
+  }, [notifySnackbar])
 
   const handleCloseSnackbar = () => setOpenSnackbar(false)
 
@@ -53,7 +53,7 @@ export const Lobby = () => {
   let snackbarContent
   let errorAlert
   if (error?.length > 0) {
-    errorAlert = <Alert severity="error" sx={{marginTop: "1rem"}}>{ error }</Alert>
+    errorAlert = <Alert severity="error" sx={{ marginTop: "1rem" }}>{error}</Alert>
     snackbarSeverity = "error"
     snackbarContent = "Lobby operation failed"
   }
@@ -62,8 +62,8 @@ export const Lobby = () => {
     console.log(`Connected to cable`)
   }
 
-  const handleReceivedCable = (message) => {
-    console.log(`Received cable:`)
+  const handleReceivedBattlesCable = (message) => {
+    console.log(`Received battles cable:`)
     console.log(message)
     const currentPlayer = stateRef.current
     switch (message.type) {
@@ -139,18 +139,27 @@ export const Lobby = () => {
     }
   }
 
+  const handleReceivedChatCable = (message) => {
+    console.log(`Received chat cable:`)
+    console.log(message)
+    dispatch(addChatMessage({ message }))
+  }
+
   return (
     <Container>
       <ActionCableConsumer channel="BattlesChannel"
                            onConnected={handleConnectedCable}
-                           onReceived={handleReceivedCable} />
-      <AlertSnackbar isOpen={ openSnackbar }
-                     setIsOpen={ setOpenSnackbar }
-                     handleClose={ handleCloseSnackbar }
-                     severity={ snackbarSeverity }
-                     content={ snackbarContent }/>
-      { errorAlert }
-      <LobbyContent rulesetId={rulesetId} />
+                           onReceived={handleReceivedBattlesCable}/>
+      <ActionCableConsumer channel="LobbyChatChannel"
+                           onConnected={handleConnectedCable}
+                           onReceived={handleReceivedChatCable}/>
+      <AlertSnackbar isOpen={openSnackbar}
+                     setIsOpen={setOpenSnackbar}
+                     handleClose={handleCloseSnackbar}
+                     severity={snackbarSeverity}
+                     content={snackbarContent}/>
+      {errorAlert}
+      <LobbyContent rulesetId={rulesetId}/>
     </Container>
   )
 }

@@ -4,12 +4,15 @@ import { fetchCompanyBonuses } from "./companyBonusesSlice";
 import { Alert, Box } from "@mui/material";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { ResourceBonuses } from "./ResourceBonuses";
+import { useParams } from "react-router-dom";
 
 export const CompanyBonuses = () => {
   const dispatch = useDispatch()
+  let params = useParams()
+  const companyId = params.companyId
 
   useEffect(() => {
-    dispatch(fetchCompanyBonuses())
+    dispatch(fetchCompanyBonuses({companyId}))
   }, []);
 
   const isSaving = useSelector(state => state.companyBonuses.isSaving)
