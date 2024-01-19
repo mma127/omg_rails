@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Alert, AlertTitle, Box, Container, Grid, Tab, Tabs, Typography } from "@mui/material";
-import { Link, Route, Routes, useParams } from "react-router-dom";
+import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { makeStyles, useTheme } from "@mui/styles";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -85,14 +85,30 @@ const useStyles = makeStyles(theme => ({
 const SQUADS = "squads"
 const UNLOCKS = "unlocks"
 const BONUSES = "bonuses"
-const DEFAULT_TAB = SQUADS
+const getCurrentUrlTab = (pathname) => {
+  const lastPathElement = pathname.split("/").pop()
+  switch (lastPathElement) {
+    case UNLOCKS:
+      return UNLOCKS
+    case BONUSES:
+      return BONUSES
+    default:
+      return SQUADS
+  }
+}
+
 
 export const CompanyManager = () => {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('md'));
 
   const dispatch = useDispatch()
-  const [currentTab, setCurrentTab] = useState(DEFAULT_TAB)
+
+  const location = useLocation()
+  const { pathname } = location
+  const tab = getCurrentUrlTab(pathname)
+
+  const [currentTab, setCurrentTab] = useState(tab)
   const onTabChange = (event, newTab) => {
     console.log(`Manager changed to new tab ${newTab}`)
     setCurrentTab(newTab)

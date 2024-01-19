@@ -5,8 +5,17 @@ import { Alert, Box } from "@mui/material";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { ResourceBonuses } from "./ResourceBonuses";
 import { useParams } from "react-router-dom";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles(theme => ({
+  wrapper: {
+    padding: 1,
+    flexGrow: 1
+  }
+}))
 
 export const CompanyBonuses = () => {
+  const classes = useStyles()
   const dispatch = useDispatch()
   let params = useParams()
   const companyId = params.companyId
@@ -41,7 +50,7 @@ export const CompanyBonuses = () => {
   }
 
   return (
-    <Box sx={ { padding: 1 } }>
+    <Box className={classes.wrapper}>
       <AlertSnackbar isOpen={ openSnackbar }
                      setIsOpen={ setOpenSnackbar }
                      handleClose={ handleCloseSnackbar }
