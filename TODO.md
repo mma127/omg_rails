@@ -35,6 +35,5 @@ PRELAUNCH
 1. Compact mode improvements
 2. Holding Area
 3. Leaderboard
-4. Copy Squad w/upgrades
-5. Align BattleCardPlayers when names have different lengths
-6. Double check players cannot join/create multiple battles, even with different companies/tabs
+4. Align BattleCardPlayers when names have different lengths
+5. Double check players cannot join/create multiple battles, even with different companies/tabs

@@ -2,13 +2,22 @@ import { createAsyncThunk, createEntityAdapter, createSlice, nanoid } from "@red
 import axios from "axios"
 import _ from "lodash"
 import { ANTI_ARMOUR, ARMOUR, ASSAULT, CATEGORIES, CORE, INFANTRY, SUPPORT } from "../../../../constants/company";
-import { loadSquad } from "./squad";
+import { createSquad, loadSquad, shallowCopySquad } from "./squad";
 import {
   addNewCompanyOffmap,
   removeExistingCompanyOffmap,
   removeNewCompanyOffmap, selectMergedCompanyOffmaps
 } from "../company_offmaps/companyOffmapsSlice";
-import { addNewSquadUpgrade, removeSquadUpgrade, selectFlatSquadUpgrades } from "../squad_upgrades/squadUpgradesSlice";
+import {
+  addNewSquadUpgrade,
+  removeSquadUpgrade,
+  selectFlatSquadUpgrades,
+  selectSquadUpgradesForSquad
+} from "../squad_upgrades/squadUpgradesSlice";
+import { selectAvailableUnitById, setSelectedAvailableUnitId } from "../available_units/availableUnitsSlice";
+import { selectUnitById } from "./unitsSlice";
+import { copySquadUpgrade } from "../squad_upgrades/squadUpgrade";
+import { addCost } from "../../companiesSlice";
 
 const squadsAdapter = createEntityAdapter()
 
@@ -61,6 +70,81 @@ export const upsertSquads = createAsyncThunk(
     }
   }
 )
+
+// Thunk to deep copy a squad
+// https://redux.js.org/usage/writing-logic-thunks#writing-thunks
+export const deepCopySquad = ({squad, squadUpgrades}) => (dispatch, getState) => {
+  const { tab, index, companyId } = squad
+
+  // Copy the original squad, without transported squads
+  const newSquad = copySingleSquad({squad, squadUpgrades, transportUuid: squad.transportUuid, getState, dispatch})
+
+  dispatch(setSelectedSquadAccess({ tab, index, uuid: newSquad.uuid, transportUuid: newSquad.transportUuid }))
+  dispatch(setSelectedAvailableUnitId(newSquad.availableUnitId))
+
+  // If the original squad had no transported squads, done
+  if (!squad.transportedSquads) {
+    return
+  }
+
+  // Handle transported
+  const state = getState()
+  const newTransportUuid = newSquad.uuid
+
+  // Sequentially copy each transported squad (in case availability runs out mid way)
+  Object.values(squad.transportedSquads).forEach(ts => {
+    const tsu = selectSquadUpgradesForSquad(state, tab, index, ts.uuid)
+    copySingleSquad({squad: ts, squadUpgrades: tsu, transportUuid: newTransportUuid, getState, dispatch })
+  })
+}
+
+const copySingleSquad = ({squad, squadUpgrades, transportUuid, getState, dispatch}) => {
+  const { tab, index, companyId } = squad
+  const state = getState()
+  const targetTransportUuid = transportUuid || squad.transportUuid
+
+  // Check availability to create a copy of this squad
+  const availableUnit = selectAvailableUnitById(state, squad.availableUnitId)
+  if (availableUnit.available <= 0) {
+    return
+  }
+  const unit = selectUnitById(state, squad.unitId)
+
+  // Have availability, create a copy of the squad with upgrades
+  const newSquad = createSquad(availableUnit, unit, index, tab, companyId, targetTransportUuid)
+  let pop = newSquad.pop,
+    man = newSquad.man,
+    mun = newSquad.mun,
+    fuel = newSquad.fuel
+  const newSquadUpgrades = squadUpgrades.map(su => {
+    const newSquadUpgrade = copySquadUpgrade(su, newSquad)
+    pop += newSquadUpgrade.pop
+    man += newSquadUpgrade.man
+    mun += newSquadUpgrade.mun
+    fuel += newSquadUpgrade.fuel
+    return newSquadUpgrade
+  })
+
+  dispatch(copySquad({ squad: newSquad, squadUpgrades: newSquadUpgrades, transportUuid: targetTransportUuid }))
+
+  dispatch(addCost({
+    id: squad.companyId,
+    pop: pop,
+    man: man,
+    mun: mun,
+    fuel: fuel
+  }))
+
+  if (newSquad.transportUuid) {
+    // While we are targeting creating the squad in the targetTransportUuid, it's possible that the transport cannot hold it.
+    // In that case, we look at the platoon level
+    const squadInTransport = selectSquadInTabIndexTransportUuid(getState(), tab, index, newSquad.transportUuid, newSquad.uuid)
+    if (squadInTransport) {
+      return squadInTransport
+    }
+  }
+  return selectSquadInTabIndexUuid(getState(), tab, index, newSquad.uuid)
+}
 
 const flattenPlatoonSquads = (topLevelSquads) => {
   const squads = []
@@ -200,6 +284,10 @@ const squadsSlice = createSlice({
             }
           }
         }
+      } else {
+        if (!Object.keys(platoon).includes(uuid)) {
+          platoon[uuid] = newSquad
+        }
       }
       state.isChanged = true
     },
@@ -219,6 +307,11 @@ const squadsSlice = createSlice({
         delete platoon[uuid]
       }
       state.isChanged = true
+
+      // in Firefox, an onMouseLeave event does not fire when dragging cards across drop targets, meaning we have an
+      // extra uuid of the same value left in the stack, causing a stuck tooltip. Pop it manually as we shouldn't have
+      // two of the same uuid in the stack sequentially
+      state.highlightedUuidChain = []
     },
     removeTransportedSquad(state, action) {
       const { squad, transportUuid } = action.payload
@@ -230,9 +323,22 @@ const squadsSlice = createSlice({
           transport.usedSquadSlots -= 1
           transport.usedModelSlots -= squad.totalModelCount
           delete transport.transportedSquads[squad.uuid]
+          delete transport.transportedSquadUuids[transport.transportedSquadUuids.indexOf(squad.uuid)]
+
+          if (squad.uuid === state.selectedSquadUuid) {
+            state.selectedSquadTab = null
+            state.selectedSquadIndex = null
+            state.selectedSquadUuid = null
+            state.selectedSquadTransportUuid = null
+          }
         }
       }
       state.isChanged = true
+
+      // in Firefox, an onMouseLeave event does not fire when dragging cards across drop targets, meaning we have an
+      // extra uuid of the same value left in the stack, causing a stuck tooltip. Pop it manually as we shouldn't have
+      // two of the same uuid in the stack sequentially
+      state.highlightedUuidChain = []
     },
     /** Moving a squad from the old index and tab to a new index and tab, with optional target transportUuid if the
      * squad is moving into a transport in the target platoon.
@@ -301,6 +407,47 @@ const squadsSlice = createSlice({
       // extra uuid of the same value left in the stack, causing a stuck tooltip. Pop it manually as we shouldn't have
       // two of the same uuid in the stack sequentially
       state.highlightedUuidChain = []
+    },
+    /**
+     * Copy a squad in the same index and tab.
+     * Combine this with add squad reducers as they are very similar/dupes
+     */
+    copySquad(state, action) {
+      const { squad, transportUuid } = action.payload
+      const { uuid, index, tab, totalModelCount, pop } = squad
+
+      const platoon = state[tab][index]
+      if (_.has(platoon, transportUuid)) {
+        const transport = platoon[transportUuid]
+        let transportedSquads = transport.transportedSquads
+        if (!_.isPlainObject(transport.transportedSquads)) {
+          transportedSquads = {}
+        }
+
+        if (!_.has(transportedSquads, uuid)) {
+          const usedSquadSlots = (transport.usedSquadSlots || 0)
+          const usedModelSlots = (transport.usedModelSlots || 0)
+          // If the transporting squad has both squad and model slots left, add the squad to the transport
+          if (usedSquadSlots + 1 <= transport.transportSquadSlots && usedModelSlots + totalModelCount <= transport.transportModelSlots) {
+            transportedSquads[uuid] = squad
+            transport.transportedSquads = transportedSquads
+            transport.usedSquadSlots = usedSquadSlots + 1
+            transport.usedModelSlots = usedModelSlots + totalModelCount
+            transport.popWithTransported = parseFloat(transport.popWithTransported) + parseFloat(pop)
+          } else {
+            // Otherwise, add the squad to the platoon
+            if (!Object.keys(platoon).includes(uuid)) {
+              platoon[uuid] = squad
+            }
+          }
+        }
+      } else {
+        if (!Object.keys(platoon).includes(uuid)) {
+          platoon[uuid] = squad
+        }
+      }
+
+      state.isChanged = true
     },
     resetSquadState: () => initialState,
     clearNotifySnackbar(state) {
@@ -474,6 +621,7 @@ export const {
   removeSquad,
   removeTransportedSquad,
   moveSquad,
+  copySquad,
   resetSquadState,
   clearNotifySnackbar,
   showSnackbar,

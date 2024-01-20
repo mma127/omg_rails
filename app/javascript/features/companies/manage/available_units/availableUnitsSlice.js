@@ -6,7 +6,7 @@ import {
   removeSquad,
   upsertSquads,
   addTransportedSquad,
-  removeTransportedSquad, fetchCompanySquads
+  removeTransportedSquad, fetchCompanySquads, copySquad
 } from "../units/squadsSlice";
 import {
   EMPLACEMENT, GLIDER,
@@ -80,6 +80,14 @@ const availableUnitsSlice = createSlice({
       })
       .addCase(addTransportedSquad, (state, action) => {
         const { newSquad: { availableUnitId }, _ } = action.payload
+        const availableUnitEntity = state.entities[availableUnitId]
+        const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
+        availableUnitEntity.available -= 1
+        availableUnitTable.available -= 1
+        console.log(`${availableUnitEntity.unitName} availability reduced by 1 to ${availableUnitEntity.available}`)
+      })
+      .addCase(copySquad, (state, action) => {
+        const { squad: { availableUnitId } } = action.payload
         const availableUnitEntity = state.entities[availableUnitId]
         const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
         availableUnitEntity.available -= 1

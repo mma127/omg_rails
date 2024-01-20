@@ -25,6 +25,31 @@ export const createSquadUpgrade = (availableUpgrade, upgrade, squad) => {
   }
 }
 
+export const copySquadUpgrade = (oldSquadUpgrade, targetSquad) => {
+  return {
+    uuid: nanoid(), // for squad upgrades newly created in the UI, this is the only identifier we have
+    id: null,
+    upgradeId: oldSquadUpgrade.upgradeId,
+    availableUpgradeId: oldSquadUpgrade.availableUpgradeId,
+    upgradeName: oldSquadUpgrade.upgradeName,
+    upgradeDisplayName: oldSquadUpgrade.upgradeDisplayName,
+    upgradeType: oldSquadUpgrade.upgradeType,
+    pop: oldSquadUpgrade.pop,
+    man: oldSquadUpgrade.man,
+    mun: oldSquadUpgrade.mun,
+    fuel: oldSquadUpgrade.fuel,
+    max: oldSquadUpgrade.max,
+    squadId: targetSquad.id,
+    squadUuid: targetSquad.uuid,
+    index: targetSquad.index,
+    tab: targetSquad.tab,
+    upgradeSlots: oldSquadUpgrade.upgradeSlots,
+    unitwideUpgradeSlots: oldSquadUpgrade.unitwideUpgradeSlots,
+    modelCount: oldSquadUpgrade.modelCount,
+    addModelCount: oldSquadUpgrade.addModelCount
+  }
+}
+
 export const loadSquadUpgrade = (squadUpgrade, upgrade, availableUpgrade, squad) => {
   return {
     uuid: nanoid(),

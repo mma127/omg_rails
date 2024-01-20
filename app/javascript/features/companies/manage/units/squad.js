@@ -17,11 +17,13 @@ export const createSquad = (availableUnit,
                             unit,
                             index,
                             tab,
+                            companyId,
                             transportUuid = null
 ) => {
   return {
     uuid: nanoid(),
     id: null,
+    companyId: companyId,
     unitId: unit.id,
     availableUnitId: availableUnit.id,
     unitName: unit.name,
@@ -48,12 +50,43 @@ export const createSquad = (availableUnit,
   }
 }
 
+export const shallowCopySquad = (squad) => {
+  return {
+    uuid: nanoid(),
+    id: null,
+    unitId: squad.unitId,
+    availableUnitId: squad.availableUnitId,
+    unitName: squad.unitName,
+    unitDisplayName: squad.unitDisplayName,
+    unitType: squad.unitType,
+    pop: squad.pop, // Squad pop = unit pop + upgrades pop
+    popWithTransported: squad.pop, // Combination of transport's pop and passenger pops
+    man: squad.man,
+    mun: squad.mun,
+    fuel: squad.fuel,
+    image: squad.image,
+    index: squad.index,
+    tab: squad.tab,
+    vet: 0,
+    totalModelCount: squad.totalModelCount, // How many models this squad contains, inclusive of upgrades
+    usedSquadSlots: 0,
+    usedModelSlots: 0,
+    transportSquadSlots: squad.transportSquadSlots, // How many squads this squad could transport
+    transportModelSlots: squad.transportModelSlots, // How many models this squad could transport
+    transportUuid: squad.transportUuid, // The transport this squad was created in
+    transportedSquadUuids: null,
+    transportedSquads: null, // List of squads this squad is transporting
+    upgrades: []
+  }
+}
+
 // Load an existing squad
 export const loadSquad = (squad) => {
   return {
     uuid: squad.uuid,
     id: squad.id,
     unitId: squad.unitId,
+    companyId: squad.companyId,
     availableUnitId: squad.availableUnitId,
     unitName: squad.unitName,
     unitDisplayName: squad.unitDisplayName,

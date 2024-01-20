@@ -25,6 +25,8 @@ export const TransportDropTarget = ({
                                       tab,
                                       transportUuid,
                                       onSquadClick,
+                                      onSquadMove,
+                                      onSquadCopy,
                                       transportSquadDelete,
                                       onSquadUpgradeDestroyClick,
                                       enabled
@@ -42,6 +44,8 @@ export const TransportDropTarget = ({
                                                       transportUuid={transportUuid}
                                                       onSquadClick={onSquadClick}
                                                       onDestroyClick={transportSquadDelete}
+                                                      onSquadMove={onSquadMove}
+                                                      onSquadCopy={onSquadCopy}
                                                       onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                                       enabled={enabled} />)}
             </Box>

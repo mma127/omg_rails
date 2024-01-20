@@ -27,7 +27,7 @@ import {
   resetSquadState,
   setSelectedSquadAccess,
   clearSelectedSquad,
-  upsertSquads
+  upsertSquads, copySquad
 } from "./units/squadsSlice";
 import { AlertSnackbar } from "../AlertSnackbar";
 import { selectIsCompanyUnlocksChanged } from "./unlocks/companyUnlocksSlice";
@@ -41,7 +41,7 @@ import {
 } from "./company_offmaps/companyOffmapsSlice";
 import { PurchasedOffmaps } from "./company_offmaps/PurchasedOffmaps";
 import { CompanyResources } from "./CompanyResources";
-import { createSquadUpgrade } from "./squad_upgrades/squadUpgrade";
+import { copySquadUpgrade, createSquadUpgrade } from "./squad_upgrades/squadUpgrade";
 import { addNewSquadUpgrade, removeSquadUpgrade, } from "./squad_upgrades/squadUpgradesSlice";
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import { AvailableCounts } from "./available_units/AvailableCounts";
@@ -135,8 +135,8 @@ export const SquadBuilder = ({}) => {
 
   /** For a new non-transported squad, use the availableUnit and unit to construct a new squad object
    * Update the company's resources with the new squad's base cost and add the squad to state */
-  const onNonTransportSquadCreate = (availableUnit, unit, index, tab) => {
-    const newSquad = createSquad(availableUnit, unit, index, tab)
+  const onNonTransportSquadCreate = (availableUnit, unit, index, tab, ) => {
+    const newSquad = createSquad(availableUnit, unit, index, tab, companyId)
     dispatch(addCost({
       id: companyId,
       pop: newSquad.pop,
@@ -152,7 +152,7 @@ export const SquadBuilder = ({}) => {
    * Additionally include the transport's UUID to denote the transport relationship
    * Update the company's resources with the new squad's base cost and add the squad to state */
   const onTransportedSquadCreate = (availableUnit, unit, index, tab, transportUuid) => {
-    const newSquad = createSquad(availableUnit, unit, index, tab, transportUuid)
+    const newSquad = createSquad(availableUnit, unit, index, tab, companyId, transportUuid)
     dispatch(addCost({
       id: companyId,
       pop: newSquad.pop,
@@ -162,6 +162,62 @@ export const SquadBuilder = ({}) => {
     }))
     dispatch(addTransportedSquad({ newSquad, transportUuid }))
     onSquadSelect(availableUnit.id, tab, index, newSquad.uuid, transportUuid)
+  }
+
+  const onSquadCopy = ({availableUnit, unit, squad, squadUpgrades, transportedUnitAvailableByAvailableUnitId}) => {
+    const newSquad = createSquad(availableUnit, unit, squad.index, squad.tab, companyId, squad.transportUuid)
+
+    let pop = newSquad.pop,
+      man = newSquad.man,
+      mun = newSquad.mun,
+      fuel = newSquad.fuel
+
+    const newSquadUpgrades = squadUpgrades.map(su => {
+      const newSquadUpgrade = copySquadUpgrade(su, newSquad)
+      pop += newSquadUpgrade.pop
+      man += newSquadUpgrade.man
+      mun += newSquadUpgrade.mun
+      fuel += newSquadUpgrade.fuel
+      return newSquadUpgrade
+    })
+
+    // Handle transported squads, if any
+    if (squad.transportedSquads) {
+      const newTransportedSquads = squad.transportedSquads.reduce((acc, current) => {
+        if (transportedUnitAvailableByAvailableUnitId[current.availableUnitId] > 0) {
+          // have availability
+          const newTransportedSquad = copySquad(current)
+          pop += newTransportedSquad.pop
+          man += newTransportedSquad.man
+          mun += newTransportedSquad.mun
+          fuel += newTransportedSquad.fuel
+
+          const newSquadUpgrades = squadUpgrades.map(su => {
+            const newSquadUpgrade = copySquadUpgrade(su, newSquad)
+            pop += newSquadUpgrade.pop
+            man += newSquadUpgrade.man
+            mun += newSquadUpgrade.mun
+            fuel += newSquadUpgrade.fuel
+            return newSquadUpgrade
+          })
+
+          acc.push(newTransportedSquad)
+        }
+        return acc
+      },[])
+    }
+
+    dispatch(copySquad({ squad: newSquad, squadUpgrades: newSquadUpgrades, transportUuid: squad.transportUuid }))
+
+    dispatch(addCost({
+      id: companyId,
+      pop: pop,
+      man: man,
+      mun: mun,
+      fuel: fuel
+    }))
+
+    onSquadSelect(availableUnit.id, newSquad.tab, newSquad.index, newSquad.uuid, newSquad.transportUuid)
   }
 
   const onSquadDestroy = (squad, squadUpgrades, transportUuid = null) => {
@@ -306,6 +362,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadCopy={onSquadCopy}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
@@ -316,6 +373,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadCopy={onSquadCopy}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
@@ -326,6 +384,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadCopy={onSquadCopy}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
@@ -336,6 +395,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadCopy={onSquadCopy}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
@@ -348,6 +408,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadCopy={onSquadCopy}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
@@ -358,6 +419,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadCopy={onSquadCopy}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
@@ -368,6 +430,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadCopy={onSquadCopy}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
@@ -378,6 +441,7 @@ export const SquadBuilder = ({}) => {
                                      onSquadClick={onSquadSelect}
                                      onSquadDestroy={onSquadDestroy}
                                      onSquadMove={onSquadMove}
+                                     onSquadCopy={onSquadCopy}
                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
                                      enabled={editEnabled}/>
             </Grid>
