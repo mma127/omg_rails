@@ -48,7 +48,7 @@ import { AvailableCounts } from "./available_units/AvailableCounts";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
-    minHeight: '280px'
+    minHeight: '250px'
   },
   detailTitle: {
     fontWeight: 'bold'
@@ -135,7 +135,7 @@ export const SquadBuilder = ({}) => {
 
   /** For a new non-transported squad, use the availableUnit and unit to construct a new squad object
    * Update the company's resources with the new squad's base cost and add the squad to state */
-  const onNonTransportSquadCreate = (availableUnit, unit, index, tab, ) => {
+  const onNonTransportSquadCreate = (availableUnit, unit, index, tab,) => {
     const newSquad = createSquad(availableUnit, unit, index, tab, companyId)
     dispatch(addCost({
       id: companyId,
@@ -164,7 +164,7 @@ export const SquadBuilder = ({}) => {
     onSquadSelect(availableUnit.id, tab, index, newSquad.uuid, transportUuid)
   }
 
-  const onSquadCopy = ({availableUnit, unit, squad, squadUpgrades, transportedUnitAvailableByAvailableUnitId}) => {
+  const onSquadCopy = ({ availableUnit, unit, squad, squadUpgrades, transportedUnitAvailableByAvailableUnitId }) => {
     const newSquad = createSquad(availableUnit, unit, squad.index, squad.tab, companyId, squad.transportUuid)
 
     let pop = newSquad.pop,
@@ -204,7 +204,7 @@ export const SquadBuilder = ({}) => {
           acc.push(newTransportedSquad)
         }
         return acc
-      },[])
+      }, [])
     }
 
     dispatch(copySquad({ squad: newSquad, squadUpgrades: newSquadUpgrades, transportUuid: squad.transportUuid }))
@@ -326,32 +326,30 @@ export const SquadBuilder = ({}) => {
           <Grid item container>
             <AvailableCounts/>
           </Grid>
-          <Grid item container spacing={2} className={classes.availableUnitsContainer}>
-            <Grid item container md={6}>
-              <Grid item xs={12}>
-                {availableUnitsContent}
-              </Grid>
-              <Grid item>
-                {availableOffmapsContent}
-              </Grid>
-            </Grid>
-            <Grid item container md={6} xs={12}>
-              <Grid item xs={12}>
-                <AvailableUnitDetails onAvailableUpgradeClick={onAvailableUpgradeClick}/>
-                <SaveCompanyButton saveSquads={saveSquads}/>
-              </Grid>
-            </Grid>
-          </Grid>
           <Grid item container spacing={2}>
             <CompanyResources companyId={companyId}/>
-            <Grid item md={2}/>
+            <Grid item md={2}></Grid>
+            <SaveCompanyButton saveSquads={saveSquads}/>
+          </Grid>
+          <Grid item container spacing={2}>
+            <Grid item md={6}>
+              {availableOffmapsContent}
+            </Grid>
             <Grid item md={6}>
               <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                           pr={1}>Purchased Offmaps</Typography>
               <PurchasedOffmaps onDeleteClick={onOffmapDestroyClick} enabled={editEnabled}/>
             </Grid>
           </Grid>
-          <Grid item container spacing={2}>
+          <Grid item container spacing={2} className={classes.availableUnitsContainer}>
+            <Grid item container md={6} sx={{flexDirection: "column"}}>
+                {availableUnitsContent}
+            </Grid>
+            <Grid item container md={6} xs={12}>
+              <AvailableUnitDetails onAvailableUpgradeClick={onAvailableUpgradeClick}/>
+            </Grid>
+          </Grid>
+          <Grid item container spacing={2} sx={{ alignItems: "baseline" }}>
             <SquadsGridTabs selectedTab={currentTab} changeCallback={onTabChange}/>
           </Grid>
           <Grid item container spacing={2}>
