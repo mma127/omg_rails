@@ -336,14 +336,13 @@ export const SquadBuilder = ({}) => {
               {availableOffmapsContent}
             </Grid>
             <Grid item md={6}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
-                          pr={1}>Purchased Offmaps</Typography>
+              <Typography variant="subtitle2" color="text.secondary" gutterBottom>Purchased Offmaps</Typography>
               <PurchasedOffmaps onDeleteClick={onOffmapDestroyClick} enabled={editEnabled}/>
             </Grid>
           </Grid>
           <Grid item container spacing={2} className={classes.availableUnitsContainer}>
-            <Grid item container md={6} sx={{flexDirection: "column"}}>
-                {availableUnitsContent}
+            <Grid item container md={6} sx={{ flexDirection: "column" }}>
+              {availableUnitsContent}
             </Grid>
             <Grid item container md={6} xs={12}>
               <AvailableUnitDetails onAvailableUpgradeClick={onAvailableUpgradeClick}/>
