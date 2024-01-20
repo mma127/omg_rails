@@ -7,8 +7,8 @@ const useStyles = makeStyles(theme => ({
   saveWrapper: {
     display: 'flex',
     alignItems: "center",
-    marginTop: "8px",
-    minHeight: "3rem"
+    minHeight: "3rem",
+    marginLeft: "1rem"
   },
   saveButton: {
     height: 'fit-content',

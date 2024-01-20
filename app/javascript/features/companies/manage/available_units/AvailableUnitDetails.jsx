@@ -15,6 +15,7 @@ import { ResourceQuantity } from "../../../resources/ResourceQuantity";
 const useStyles = makeStyles(theme => ({
   statsBox: {
     minHeight: '10rem',
+    flexGrow: 1
   },
   detailTitle: {
     fontWeight: 'bold'
@@ -45,13 +46,13 @@ export const AvailableUnitDetails = ({ onAvailableUpgradeClick }) => {
 
   let content
   if (selectedUnitDetails && availableUnit) {
-    const cost = <ResourcesCost man={availableUnit.man} mun={availableUnit.mun} fuel={availableUnit.fuel} />
-    const pop = <ResourceQuantity resource={POP} quantity={parseFloat(availableUnit.pop)} />
+    const cost = <ResourcesCost man={availableUnit.man} mun={availableUnit.mun} fuel={availableUnit.fuel}/>
+    const pop = <ResourceQuantity resource={POP} quantity={parseFloat(availableUnit.pop)}/>
 
     let squadContent
     if (selectedSquad) {
       squadContent = ( //TODO do we need anything of the squad here?
-        <Grid item container spacing={2}>
+        <Grid item container spacing={1}>
           <Grid item>
             Selected squad {selectedSquad?.uuid}
           </Grid>
@@ -61,19 +62,20 @@ export const AvailableUnitDetails = ({ onAvailableUpgradeClick }) => {
 
     if (isCompact) {
       content = (
-        <Box p={2}>
-          <Grid container spacing={2} pb={1}>
-            <Grid item container spacing={2}>
+        <Box p={1} pl={2}>
+          <Grid container spacing={1} pb={0.5}>
+            <Grid item container spacing={1}>
               <Grid item xs={10}>
                 <Typography variant="h5" gutterBottom className={classes.detailTitle}>
                   {selectedUnitDetails.displayName}
                 </Typography>
               </Grid>
               <Grid item xs={2}>
-                <img src={unitImageMapping[selectedUnitDetails.name]} alt={selectedUnitDetails.name} className={classes.detailHeroIcon}/>
+                <img src={unitImageMapping[selectedUnitDetails.name]} alt={selectedUnitDetails.name}
+                     className={classes.detailHeroIcon}/>
               </Grid>
             </Grid>
-            <Grid item container spacing={2}>
+            <Grid item container spacing={1}>
               <Grid item xs={3}>
                 <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                             pr={1}>Cost</Typography>
@@ -96,19 +98,20 @@ export const AvailableUnitDetails = ({ onAvailableUpgradeClick }) => {
       )
     } else {
       content = (
-        <Box p={2}>
-          <Grid container spacing={2}>
-            <Grid item container spacing={2}>
+        <Box p={1} pl={2}>
+          <Grid container spacing={1}>
+            <Grid item container spacing={1}>
               <Grid item xs={10}>
                 <Typography variant="h5" gutterBottom className={classes.detailTitle}>
                   {selectedUnitDetails.displayName}
                 </Typography>
               </Grid>
               <Grid item xs={2}>
-                <img src={unitImageMapping[selectedUnitDetails.name]} alt={selectedUnitDetails.name}/>
+                <img src={unitImageMapping[selectedUnitDetails.name]} alt={selectedUnitDetails.name}
+                     className={classes.detailHeroIcon}/>
               </Grid>
             </Grid>
-            <Grid item container spacing={2}>
+            <Grid item container spacing={1}>
               <Grid item xs={3}>
                 <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                             pr={1}>Cost</Typography>
@@ -125,7 +128,7 @@ export const AvailableUnitDetails = ({ onAvailableUpgradeClick }) => {
                 <Typography>{availableUnit.available}</Typography>
               </Grid>
             </Grid>
-            <Grid item container spacing={2}>
+            <Grid item container spacing={1}>
               <Grid item xs={3}>
                 <Typography variant="subtitle2" color="text.secondary" gutterBottom className={classes.detailTitle}
                             pr={1}>Resupply</Typography>
