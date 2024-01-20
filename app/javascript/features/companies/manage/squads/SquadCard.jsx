@@ -8,7 +8,7 @@ import { formatResourceCost } from "../../../../utils/company";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUnitById } from "../units/unitsSlice";
 import {
-  clearHighlightedUuid, copySquad,
+  clearHighlightedUuid, copySquad, deepCopySquad,
   selectHighlightedUuid,
   selectSelectedSquadUuid,
   selectSquadInTabIndexTransportUuid,
@@ -21,7 +21,11 @@ import { TransportDropTarget } from "./TransportDropTarget";
 import { SquadUpgrades } from "../squad_upgrades/SquadUpgrades";
 import { selectSquadUpgradesForSquad } from "../squad_upgrades/squadUpgradesSlice";
 import { SquadVetIcon } from "./SquadVetIcon";
-import { selectAvailableUnitById, setSelectedAvailableUnitId } from "../available_units/availableUnitsSlice";
+import {
+  selectAvailableByAvailableUnitId,
+  selectAvailableUnitById,
+  setSelectedAvailableUnitId
+} from "../available_units/availableUnitsSlice";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const getVetLevel = (exp, unitVet) => {
@@ -147,7 +151,6 @@ export const SquadCard = (
   const unit = useSelector(state => selectUnitById(state, squad.unitId))
   const squadUpgrades = useSelector(state => selectSquadUpgradesForSquad(state, tab, index, uuid))
   const selectedSquadUuid = useSelector(selectSelectedSquadUuid)
-  const availableUnit = useSelector(state => selectAvailableUnitById(state, squad.availableUnitId))
 
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
   const elementRef = useRef()
@@ -265,9 +268,7 @@ export const SquadCard = (
 
   const onCopyClick = () => {
     selectSquad(squad.availableUnitId, squad.tab, squad.index, squad.uuid, squad.transportUuid)
-    if (availableUnit.available > 0) {
-      onSquadCopy({ availableUnit, unit, squad, squadUpgrades })
-    }
+    dispatch(deepCopySquad({squad, squadUpgrades}))
   }
 
   // Vet
