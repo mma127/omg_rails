@@ -35,6 +35,10 @@ const buildUnlockRow = (i, unlockRow, companyUnlocksByDoctrineUnlockId, companyI
 }
 
 const useStyles = makeStyles(theme => ({
+  wrapper: {
+    padding: 1,
+    flexGrow: 1
+  },
   availableUnitsContainer: {
     minHeight: '280px'
   },
@@ -103,7 +107,7 @@ export const CompanyUnlocks = () => {
     )
   }
   return (
-    <Box sx={{ padding: 1 }}>
+    <Box className={classes.wrapper}>
       <AlertSnackbar isOpen={openSnackbar}
                      setIsOpen={setOpenSnackbar}
                      handleClose={handleCloseSnackbar}
