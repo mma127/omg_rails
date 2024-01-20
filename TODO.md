@@ -37,3 +37,4 @@ PRELAUNCH
 3. Leaderboard
 4. Align BattleCardPlayers when names have different lengths
 5. Double check players cannot join/create multiple battles, even with different companies/tabs
+6. Ruleset across all models. Add rule_type and is_active to ruleset. This allows using ruleset for historical data
