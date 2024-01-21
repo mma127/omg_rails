@@ -7,7 +7,8 @@ class Platoon
     infantry: 3,
     armour: 4,
     anti_armour: 5,
-    support: 6
+    support: 6,
+    holding: 0
   }.with_indifferent_access
 
   def initialize(tab_category, category_position)

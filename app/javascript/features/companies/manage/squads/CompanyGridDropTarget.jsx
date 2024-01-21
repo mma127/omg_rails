@@ -12,11 +12,11 @@ import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
 
 const useStyles = makeStyles(() => ({
   placementBox: {
-    minHeight: '13.5rem',
+    minHeight: props => props.height,
     minWidth: '4rem',
     flexGrow: 1,
     "&.compact": {
-      minHeight: '10rem'
+      minHeight: props => props.compactHeight
     }
   },
   popCMBox: {
@@ -56,9 +56,11 @@ export const CompanyGridDropTarget = ({
                                         onSquadMove,
                                         onSquadCopy,
                                         onSquadUpgradeDestroyClick,
-                                        enabled
+                                        enabled,
+                                        height = '13.5rem',
+                                        compactHeight = '10rem'
                                       }) => {
-  const classes = useStyles()
+  const classes = useStyles({ height: height, compactHeight: compactHeight })
 
   console.log(`Rendering tab ${currentTab} and index ${gridIndex}`)
   const squads = useSelector(state => selectSquadsInTabIndex(state, currentTab, gridIndex))
@@ -120,7 +122,7 @@ export const CompanyGridDropTarget = ({
 
   const insertSquadUnitIds = (unitIds, squad) => {
     unitIds.push(squad.unitId)
-    if(squad.hasOwnProperty("transportedSquads")) {
+    if (squad.hasOwnProperty("transportedSquads")) {
       getTransportedUnitIds(unitIds, squad)
     }
   }
@@ -157,7 +159,7 @@ export const CompanyGridDropTarget = ({
 
   let callinModifierContent
   if (!_.isNil(callinModifiers) && callinModifiers.length > 0) {
-    callinModifierContent = <CallinModifierIcon callinModifiers={callinModifiers} unitIds={unitIds} />
+    callinModifierContent = <CallinModifierIcon callinModifiers={callinModifiers} unitIds={unitIds}/>
   }
 
   return (
@@ -166,13 +168,14 @@ export const CompanyGridDropTarget = ({
                      setIsOpen={setOpenSnackbar}
                      handleClose={handleCloseSnackbar}
                      severity={snackbarSeverity}
-                     content={snackbarContent} />
+                     content={snackbarContent}/>
       <DropTarget targetKey="unit" onHit={onUnitHit} className={classes.gridDropTarget}>
         <DropTarget targetKey="squad" onHit={onSquadMoveHit} className={classes.gridDropTarget}>
           <Paper key={gridIndex} className={`${classes.placementBox} ${isCompact ? 'compact' : null}`}>
             <Box sx={{ position: 'relative', p: 1 }}>
               {squadCards}
-              <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }} className={classes.popCMBox}>
+              <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }}
+                   className={classes.popCMBox}>
                 {gridPop}
                 {callinModifierContent}
               </Box>

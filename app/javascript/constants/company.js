@@ -7,7 +7,9 @@ export const ARMOUR = 'armour'
 export const ANTI_ARMOUR = 'anti_armour'
 export const SUPPORT = 'support'
 
-export const CATEGORIES = [CORE, ASSAULT, INFANTRY, ARMOUR, ANTI_ARMOUR, SUPPORT]
+export const HOLDING = 'holding'
+
+export const CATEGORIES = [CORE, ASSAULT, INFANTRY, ARMOUR, ANTI_ARMOUR, SUPPORT, HOLDING]
 export const DISPLAY_CATEGORIES = {
   [CORE]: "Core",
   [ASSAULT]: "Assault",
