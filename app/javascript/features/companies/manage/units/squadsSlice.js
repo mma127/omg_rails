@@ -1,8 +1,17 @@
 import { createAsyncThunk, createEntityAdapter, createSlice, nanoid } from "@reduxjs/toolkit";
 import axios from "axios"
 import _ from "lodash"
-import { ANTI_ARMOUR, ARMOUR, ASSAULT, CATEGORIES, CORE, INFANTRY, SUPPORT } from "../../../../constants/company";
-import { createSquad, loadSquad, shallowCopySquad } from "./squad";
+import {
+  ANTI_ARMOUR,
+  ARMOUR,
+  ASSAULT,
+  CATEGORIES,
+  CORE,
+  HOLDING,
+  INFANTRY,
+  SUPPORT
+} from "../../../../constants/company";
+import { createSquad, loadSquad } from "./squad";
 import {
   addNewCompanyOffmap,
   removeExistingCompanyOffmap,
@@ -37,6 +46,7 @@ const initialState = squadsAdapter.getInitialState({
   [ARMOUR]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
   [ANTI_ARMOUR]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
   [SUPPORT]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
+  [HOLDING]: { 0: {} },
   selectedSquadTab: null,
   selectedSquadIndex: null,
   selectedSquadUuid: null,
@@ -73,11 +83,11 @@ export const upsertSquads = createAsyncThunk(
 
 // Thunk to deep copy a squad
 // https://redux.js.org/usage/writing-logic-thunks#writing-thunks
-export const deepCopySquad = ({squad, squadUpgrades}) => (dispatch, getState) => {
-  const { tab, index, companyId } = squad
+export const deepCopySquad = ({ squad, squadUpgrades }) => (dispatch, getState) => {
+  const { tab, index } = squad
 
   // Copy the original squad, without transported squads
-  const newSquad = copySingleSquad({squad, squadUpgrades, transportUuid: squad.transportUuid, getState, dispatch})
+  const newSquad = copySingleSquad({ squad, squadUpgrades, transportUuid: squad.transportUuid, getState, dispatch })
 
   dispatch(setSelectedSquadAccess({ tab, index, uuid: newSquad.uuid, transportUuid: newSquad.transportUuid }))
   dispatch(setSelectedAvailableUnitId(newSquad.availableUnitId))
@@ -94,11 +104,11 @@ export const deepCopySquad = ({squad, squadUpgrades}) => (dispatch, getState) =>
   // Sequentially copy each transported squad (in case availability runs out mid way)
   Object.values(squad.transportedSquads).forEach(ts => {
     const tsu = selectSquadUpgradesForSquad(state, tab, index, ts.uuid)
-    copySingleSquad({squad: ts, squadUpgrades: tsu, transportUuid: newTransportUuid, getState, dispatch })
+    copySingleSquad({ squad: ts, squadUpgrades: tsu, transportUuid: newTransportUuid, getState, dispatch })
   })
 }
 
-const copySingleSquad = ({squad, squadUpgrades, transportUuid, getState, dispatch}) => {
+const copySingleSquad = ({ squad, squadUpgrades, transportUuid, getState, dispatch }) => {
   const { tab, index, companyId } = squad
   const state = getState()
   const targetTransportUuid = transportUuid || squad.transportUuid
@@ -204,7 +214,8 @@ const buildNewSquadTabs = (squads) => {
     [INFANTRY]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
     [ARMOUR]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
     [ANTI_ARMOUR]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
-    [SUPPORT]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} }
+    [SUPPORT]: { 0: {}, 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {} },
+    [HOLDING]: { 0: {} }
   }
   const transportedSquads = []
   squads.forEach(squad => {
@@ -643,6 +654,7 @@ export const selectInfantrySquads = state => state.squads[INFANTRY]
 export const selectArmourSquads = state => state.squads[ARMOUR]
 export const selectAntiArmourSquads = state => state.squads[ANTI_ARMOUR]
 export const selectSupportSquads = state => state.squads[SUPPORT]
+export const selectHoldingSquads = state => state.squads[HOLDING]
 
 export const selectSquadsInTabIndex = (state, tab, index) => state.squads[tab][index]
 

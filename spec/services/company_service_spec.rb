@@ -2309,7 +2309,9 @@ RSpec.describe CompanyService do
     end
     it "builds a hash where every value is an array of 8 zeros" do
       result = instance.send(:build_empty_tab_index_pop)
-      expect(result.values.select { |e| e != Array.new(8, 0) }.size).to eq 0
+      selected_values = result.values.select { |e| e != Array.new(8, 0) }
+      expect(selected_values.size).to eq 1
+      expect(selected_values.first.size == 1)
     end
   end
 

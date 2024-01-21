@@ -7,7 +7,7 @@ import { makeStyles } from "@mui/styles";
 import { CompanyGridDropTarget } from "./squads/CompanyGridDropTarget";
 import { SquadsGridTabs } from "./squads/SquadsGridTabs";
 
-import { CORE } from "../../../constants/company";
+import { CORE, HOLDING } from "../../../constants/company";
 import { addCost, removeCost, selectCompanyActiveBattleId } from "../companiesSlice";
 import {
   resetAvailableUnitState,
@@ -37,7 +37,7 @@ import { createCompanyOffmap } from "./company_offmaps/companyOffmap";
 import {
   addNewCompanyOffmap,
   removeExistingCompanyOffmap,
-  removeNewCompanyOffmap,
+  removeNewCompanyOffmap, selectAllCompanyOffmaps, selectNewCompanyOffmaps,
 } from "./company_offmaps/companyOffmapsSlice";
 import { PurchasedOffmaps } from "./company_offmaps/PurchasedOffmaps";
 import { CompanyResources } from "./CompanyResources";
@@ -45,6 +45,7 @@ import { copySquadUpgrade, createSquadUpgrade } from "./squad_upgrades/squadUpgr
 import { addNewSquadUpgrade, removeSquadUpgrade, } from "./squad_upgrades/squadUpgradesSlice";
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import { AvailableCounts } from "./available_units/AvailableCounts";
+import { selectAllAvailableOffmaps } from "./available_offmaps/availableOffmapsSlice";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -305,6 +306,32 @@ export const SquadBuilder = ({}) => {
     availableOffmapsContent = <AvailableOffmaps onSelect={onOffmapSelect} enabled={editEnabled}/>
   }
 
+  const existingCompanyOffmaps = useSelector(selectAllCompanyOffmaps)
+  const newCompanyOffmaps = useSelector(selectNewCompanyOffmaps)
+  const availableOffmaps = useSelector(selectAllAvailableOffmaps)
+
+  let showAvailableOffmaps = availableOffmaps.length > 0,
+    showPurchasedOffmaps = true
+  if (existingCompanyOffmaps.length === 0 && Object.keys(newCompanyOffmaps).length === 0) {
+    showPurchasedOffmaps = false
+  }
+  let offmapsContent
+  if (!showAvailableOffmaps && !showPurchasedOffmaps) {
+    offmapsContent = null
+  } else {
+    offmapsContent = (
+      <Grid item container spacing={2}>
+        <Grid item md={6}>
+          {availableOffmapsContent}
+        </Grid>
+        {showPurchasedOffmaps ? <Grid item md={6}>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>Purchased Offmaps</Typography>
+          <PurchasedOffmaps onDeleteClick={onOffmapDestroyClick} enabled={editEnabled}/>
+        </Grid> : null}
+      </Grid>
+    )
+  }
+
   let snackbarSeverity = "success"
   let snackbarContent = "Saved successfully"
   if (notifySnackbar) {
@@ -331,18 +358,21 @@ export const SquadBuilder = ({}) => {
             <Grid item md={2}></Grid>
             <SaveCompanyButton saveSquads={saveSquads}/>
           </Grid>
-          <Grid item container spacing={2}>
-            <Grid item md={6}>
-              {availableOffmapsContent}
-            </Grid>
-            <Grid item md={6}>
-              <Typography variant="subtitle2" color="text.secondary" gutterBottom>Purchased Offmaps</Typography>
-              <PurchasedOffmaps onDeleteClick={onOffmapDestroyClick} enabled={editEnabled}/>
-            </Grid>
-          </Grid>
+          {offmapsContent}
           <Grid item container spacing={2} className={classes.availableUnitsContainer}>
             <Grid item container md={6} sx={{ flexDirection: "column" }}>
               {availableUnitsContent}
+              <Typography variant="subtitle2" color="text.secondary" gutterBottom>Unassigned Squads</Typography>
+              <CompanyGridDropTarget gridIndex={0} currentTab={HOLDING}
+                                     onNonTransportSquadCreate={onNonTransportSquadCreate}
+                                     onTransportedSquadCreate={onTransportedSquadCreate}
+                                     onSquadClick={onSquadSelect}
+                                     onSquadDestroy={onSquadDestroy}
+                                     onSquadMove={onSquadMove}
+                                     onSquadCopy={onSquadCopy}
+                                     onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
+                                     enabled={editEnabled}
+                                     height={"4rem"} compactHeight={"4rem"}/>
             </Grid>
             <Grid item container md={6} xs={12}>
               <AvailableUnitDetails onAvailableUpgradeClick={onAvailableUpgradeClick}/>

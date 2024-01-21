@@ -500,6 +500,7 @@ class CompanyService
       tab_categories[:armour], Array.new(8, 0),
       tab_categories[:anti_armour], Array.new(8, 0),
       tab_categories[:support], Array.new(8, 0),
+      tab_categories[:holding], Array.new(1, 0)
     ].with_indifferent_access
   end
 
@@ -584,6 +585,7 @@ class CompanyService
   # and MAX_POP_PER_PLATOON
   def validate_platoon_pop(platoon_pop_by_tab_and_index)
     platoon_pop_by_tab_and_index.each do |tab, indices|
+      next if tab == Squad.tab_categories[:holding]
       indices.each_with_index do |pop, index|
         unless pop == 0 || (MIN_POP_PER_PLATOON <= pop && pop <= MAX_POP_PER_PLATOON)
           # Raise validation error if a platoon (squads within a tab and index) has either less pop than the minimum or

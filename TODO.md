@@ -32,9 +32,7 @@ Enhancements
 3. User preferences model (ie, saving compact status)
 
 PRELAUNCH
-1. Compact mode improvements
-2. Holding Area
-3. Leaderboard
-4. Align BattleCardPlayers when names have different lengths
-5. Double check players cannot join/create multiple battles, even with different companies/tabs
-6. Ruleset across all models. Add rule_type and is_active to ruleset. This allows using ruleset for historical data
+1. Leaderboard
+2. Align BattleCardPlayers when names have different lengths
+3. Double check players cannot join/create multiple battles, even with different companies/tabs
+4. Ruleset across all models. Add rule_type and is_active to ruleset. This allows using ruleset for historical data

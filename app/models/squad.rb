@@ -50,7 +50,8 @@ class Squad < ApplicationRecord
     infantry: 'infantry',
     armour: 'armour',
     anti_armour: 'anti_armour',
-    support: 'support'
+    support: 'support',
+    holding: "holding"
   }
 
   validates_presence_of :company
