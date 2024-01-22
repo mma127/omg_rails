@@ -6,7 +6,7 @@ module OMG
       def load_company(id, current_player)
         Company.includes(:ruleset,
                          { squads: [:embarked_transport, :squads_in_transport, available_unit: { unit: :transport_allowed_units }],
-                           available_units: { unit: :transport_allowed_units },
+                           available_units: { unit: [:transport_allowed_units, :unit_vet] },
                            available_offmaps: :offmap,
                            company_offmaps: :offmap,
                            company_callin_modifiers: :callin_modifier,
