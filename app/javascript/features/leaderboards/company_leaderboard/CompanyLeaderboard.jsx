@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { TopCompaniesList } from "./TopCompaniesList";
 import {
