@@ -55,6 +55,7 @@
 #  wins_3v3              :integer
 #  wins_4v4              :integer
 #  company_id            :bigint
+#  player_id             :bigint
 #
 class CompanyLeaderboardStats < ApplicationRecord
   belongs_to :company
@@ -135,6 +136,7 @@ class CompanyLeaderboardStats < ApplicationRecord
     expose :company_id, as: :companyId
     expose :company_name, as: :companyName
     expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
     expose :faction_name, as: :factionName
     expose :faction_display_name, as: :factionDisplayName
     expose :doctrine_name, as: :doctrineName
@@ -146,6 +148,7 @@ class CompanyLeaderboardStats < ApplicationRecord
     expose :company_id, as: :companyId
     expose :company_name, as: :companyName
     expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
     expose :faction_name, as: :factionName
     expose :faction_display_name, as: :factionDisplayName
     expose :doctrine_name, as: :doctrineName
@@ -162,6 +165,7 @@ class CompanyLeaderboardStats < ApplicationRecord
     expose :company_id, as: :companyId
     expose :company_name, as: :companyName
     expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
     expose :faction_name, as: :factionName
     expose :faction_display_name, as: :factionDisplayName
     expose :doctrine_name, as: :doctrineName
@@ -178,6 +182,7 @@ class CompanyLeaderboardStats < ApplicationRecord
     expose :company_id, as: :companyId
     expose :company_name, as: :companyName
     expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
     expose :faction_name, as: :factionName
     expose :faction_display_name, as: :factionDisplayName
     expose :doctrine_name, as: :doctrineName
@@ -194,6 +199,7 @@ class CompanyLeaderboardStats < ApplicationRecord
     expose :company_id, as: :companyId
     expose :company_name, as: :companyName
     expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
     expose :faction_name, as: :factionName
     expose :faction_display_name, as: :factionDisplayName
     expose :doctrine_name, as: :doctrineName
@@ -210,6 +216,7 @@ class CompanyLeaderboardStats < ApplicationRecord
     expose :company_id, as: :companyId
     expose :company_name, as: :companyName
     expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
     expose :faction_name, as: :factionName
     expose :faction_display_name, as: :factionDisplayName
     expose :doctrine_name, as: :doctrineName
@@ -226,6 +233,7 @@ class CompanyLeaderboardStats < ApplicationRecord
     expose :company_id, as: :companyId
     expose :company_name, as: :companyName
     expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
     expose :faction_name, as: :factionName
     expose :faction_display_name, as: :factionDisplayName
     expose :doctrine_name, as: :doctrineName
@@ -242,6 +250,7 @@ class CompanyLeaderboardStats < ApplicationRecord
     expose :company_id, as: :companyId
     expose :company_name, as: :companyName
     expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
     expose :faction_name, as: :factionName
     expose :faction_display_name, as: :factionDisplayName
     expose :doctrine_name, as: :doctrineName
@@ -258,6 +267,7 @@ class CompanyLeaderboardStats < ApplicationRecord
     expose :company_id, as: :companyId
     expose :company_name, as: :companyName
     expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
     expose :faction_name, as: :factionName
     expose :faction_display_name, as: :factionDisplayName
     expose :doctrine_name, as: :doctrineName

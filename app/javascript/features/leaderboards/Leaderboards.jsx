@@ -3,7 +3,7 @@ import { makeStyles, useTheme } from "@mui/styles";
 import { Box, Container, Tab, Tabs } from "@mui/material";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { WarStats } from "./WarStats";
-import { Leaderboard } from "./Leaderboard";
+import { CompanyLeaderboard } from "./company_leaderboard/CompanyLeaderboard";
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -85,9 +85,9 @@ export const Leaderboards = () => {
                  component={Link}/>
           </Tabs>
           <Routes>
-            <Route path={LEADERBOARD} element={<Leaderboard/>}/>
+            <Route path={LEADERBOARD} element={<CompanyLeaderboard/>}/>
             <Route path={WAR_STATS} element={<WarStats/>}/>
-            <Route index element={<Leaderboard/>}/>
+            <Route index element={<CompanyLeaderboard/>}/>
           </Routes>
         </Box>
       </Box>
