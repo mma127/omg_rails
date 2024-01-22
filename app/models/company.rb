@@ -52,8 +52,8 @@ class Company < ApplicationRecord
   has_many :callin_modifiers, -> { distinct }, through: :company_callin_modifiers
   has_many :upgrades, -> { distinct }, through: :available_upgrades
   has_many :company_resource_bonuses, dependent: :destroy
-  has_many :battle_players
-  has_one :company_stats
+  has_many :battle_players, dependent: :nullify # TODO should this link to a permanent record of the company like a historical company containing only doctrine/faction data?
+  has_one :company_stats, dependent: :destroy
 
   validates_presence_of :faction
   validates_presence_of :doctrine

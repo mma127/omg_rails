@@ -42,6 +42,9 @@ gem 'grape'
 gem 'grape-entity'
 gem 'grape_logging'
 
+# DB views
+gem 'scenic'
+
 # HTTP requests
 gem "http"
 

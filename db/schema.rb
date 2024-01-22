@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_18_021747) do
+ActiveRecord::Schema.define(version: 2024_01_22_011211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -761,4 +761,73 @@ ActiveRecord::Schema.define(version: 2024_01_18_021747) do
   add_foreign_key "upgrade_swaps", "unlocks"
   add_foreign_key "upgrade_swaps", "upgrades", column: "new_upgrade_id"
   add_foreign_key "upgrade_swaps", "upgrades", column: "old_upgrade_id"
+
+  create_view "company_exps", sql_definition: <<-SQL
+      SELECT c.id AS company_id,
+      COALESCE(sum(s.vet), (0)::numeric) AS total_exp
+     FROM (companies c
+       LEFT JOIN squads s ON ((c.id = s.company_id)))
+    GROUP BY c.id;
+  SQL
+  create_view "company_leaderboard_stats", sql_definition: <<-SQL
+      SELECT cs.company_id,
+      c.name AS company_name,
+      p.name AS player_name,
+      f.name AS faction_name,
+      f.display_name AS faction_display_name,
+      d.name AS doctrine_name,
+      d.display_name AS doctrine_display_name,
+      ce.total_exp,
+      cs.infantry_kills_1v1,
+      cs.infantry_kills_2v2,
+      cs.infantry_kills_3v3,
+      cs.infantry_kills_4v4,
+      (((cs.infantry_kills_1v1 + cs.infantry_kills_2v2) + cs.infantry_kills_3v3) + cs.infantry_kills_4v4) AS total_infantry_kills,
+      cs.vehicle_kills_1v1,
+      cs.vehicle_kills_2v2,
+      cs.vehicle_kills_3v3,
+      cs.vehicle_kills_4v4,
+      (((cs.vehicle_kills_1v1 + cs.vehicle_kills_2v2) + cs.vehicle_kills_3v3) + cs.vehicle_kills_4v4) AS total_vehicle_kills,
+      cs.infantry_losses_1v1,
+      cs.infantry_losses_2v2,
+      cs.infantry_losses_3v3,
+      cs.infantry_losses_4v4,
+      (((cs.infantry_losses_1v1 + cs.infantry_losses_2v2) + cs.infantry_losses_3v3) + cs.infantry_losses_4v4) AS total_infantry_losses,
+      cs.vehicle_losses_1v1,
+      cs.vehicle_losses_2v2,
+      cs.vehicle_losses_3v3,
+      cs.vehicle_losses_4v4,
+      (((cs.vehicle_losses_1v1 + cs.vehicle_losses_2v2) + cs.vehicle_losses_3v3) + cs.vehicle_losses_4v4) AS total_vehicle_losses,
+      (cs.infantry_kills_1v1 + cs.vehicle_kills_1v1) AS unit_kills_1v1,
+      (cs.infantry_kills_2v2 + cs.vehicle_kills_2v2) AS unit_kills_2v2,
+      (cs.infantry_kills_3v3 + cs.vehicle_kills_3v3) AS unit_kills_3v3,
+      (cs.infantry_kills_4v4 + cs.vehicle_kills_4v4) AS unit_kills_4v4,
+      (((((((cs.infantry_kills_1v1 + cs.infantry_kills_2v2) + cs.infantry_kills_3v3) + cs.infantry_kills_4v4) + cs.vehicle_kills_1v1) + cs.vehicle_kills_2v2) + cs.vehicle_kills_3v3) + cs.vehicle_kills_4v4) AS total_unit_kills,
+      (cs.infantry_losses_1v1 + cs.vehicle_losses_1v1) AS unit_losses_1v1,
+      (cs.infantry_losses_2v2 + cs.vehicle_losses_2v2) AS unit_losses_2v2,
+      (cs.infantry_losses_3v3 + cs.vehicle_losses_3v3) AS unit_losses_3v3,
+      (cs.infantry_losses_4v4 + cs.vehicle_losses_4v4) AS unit_losses_4v4,
+      (((((((cs.infantry_losses_1v1 + cs.infantry_losses_2v2) + cs.infantry_losses_3v3) + cs.infantry_losses_4v4) + cs.vehicle_losses_1v1) + cs.vehicle_losses_2v2) + cs.vehicle_losses_3v3) + cs.vehicle_losses_4v4) AS total_unit_losses,
+      cs.wins_1v1,
+      cs.wins_2v2,
+      cs.wins_3v3,
+      cs.wins_4v4,
+      (((cs.wins_1v1 + cs.wins_2v2) + cs.wins_3v3) + cs.wins_4v4) AS total_wins,
+      cs.losses_1v1,
+      cs.losses_2v2,
+      cs.losses_3v3,
+      cs.losses_4v4,
+      (((cs.losses_1v1 + cs.losses_2v2) + cs.losses_3v3) + cs.losses_4v4) AS total_losses,
+      cs.streak_1v1,
+      cs.streak_2v2,
+      cs.streak_3v3,
+      cs.streak_4v4,
+      (((cs.streak_1v1 + cs.streak_2v2) + cs.streak_3v3) + cs.streak_4v4) AS total_streak
+     FROM (((((company_stats cs
+       JOIN companies c ON ((cs.company_id = c.id)))
+       JOIN company_exps ce ON ((ce.company_id = cs.company_id)))
+       JOIN players p ON ((c.player_id = p.id)))
+       JOIN factions f ON ((f.id = c.faction_id)))
+       JOIN doctrines d ON ((d.id = c.doctrine_id)));
+  SQL
 end

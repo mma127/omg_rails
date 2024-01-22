@@ -10,8 +10,15 @@ RSpec.describe BattleReportStats::UpdateService do
 
   let!(:company1) { create :company, player: player1, ruleset: ruleset }
   let!(:company2) { create :company, player: player2, ruleset: ruleset }
-  let!(:company_stats1) { create :company_stats, company: company1 }
+  let(:prev_inf_killed_2v2) { 100 }
+  let(:prev_veh_lost_2v2) { 7 }
+  let!(:company_stats1) { create :company_stats, company: company1,
+                                 infantry_kills_2v2: prev_inf_killed_2v2, vehicle_losses_2v2: prev_veh_lost_2v2 }
   let!(:company_stats2) { create :company_stats, company: company2 }
+
+  let!(:squad1) { create :squad, company: company1, vet: 100 }
+  let!(:squad2) { create :squad, company: company1, vet: 0 }
+  let!(:squad3) { create :squad, company: company1, vet: 42.12385 }
 
   let(:inf_lost1) { 24 }
   let(:veh_lost1) { 3 }
@@ -46,18 +53,32 @@ RSpec.describe BattleReportStats::UpdateService do
         it "updates infantry and vehicle kill loss" do
           subject
 
+          cls = CompanyLeaderboardStats.find_by(company_id: company1.id)
           expect(company_stats1.reload.infantry_kills_1v1).to eq inf_killed1
+          expect(cls.total_infantry_kills).to eq inf_killed1 + prev_inf_killed_2v2
           expect(company_stats1.vehicle_kills_1v1).to eq veh_killed1
+          expect(cls.total_vehicle_kills).to eq veh_killed1
           expect(company_stats1.infantry_losses_1v1).to eq inf_lost1
+          expect(cls.total_infantry_losses).to eq inf_lost1
           expect(company_stats1.vehicle_losses_1v1).to eq veh_lost1
+          expect(cls.total_vehicle_losses).to eq veh_lost1 + prev_veh_lost_2v2
+
+          expect(cls.total_unit_kills).to eq inf_killed1 + prev_inf_killed_2v2 + veh_killed1
+          expect(cls.total_unit_losses).to eq inf_lost1 + veh_lost1 + prev_veh_lost_2v2
         end
 
         it "updates wins and streak" do
           subject
 
           expect(company_stats1.reload.wins_1v1).to eq 1
-          expect(company_stats1.reload.streak_1v1).to eq 1
-          expect(company_stats1.reload.losses_1v1).to eq 0
+          expect(company_stats1.streak_1v1).to eq 1
+          expect(company_stats1.losses_1v1).to eq 0
+        end
+
+        it "updates company total exp" do
+          subject
+
+          expect(CompanyLeaderboardStats.find_by(company_id: company1.id).total_exp).to eq 142.12385
         end
 
         context "when there are existing stats" do
@@ -80,8 +101,8 @@ RSpec.describe BattleReportStats::UpdateService do
             subject
 
             expect(company_stats1.reload.wins_1v1).to eq 5
-            expect(company_stats1.reload.streak_1v1).to eq 4
-            expect(company_stats1.reload.losses_1v1).to eq 2
+            expect(company_stats1.streak_1v1).to eq 4
+            expect(company_stats1.losses_1v1).to eq 2
           end
         end
       end
@@ -107,8 +128,14 @@ RSpec.describe BattleReportStats::UpdateService do
           subject
 
           expect(company_stats2.reload.wins_1v1).to eq 0
-          expect(company_stats2.reload.streak_1v1).to eq 0
-          expect(company_stats2.reload.losses_1v1).to eq 1
+          expect(company_stats2.streak_1v1).to eq 0
+          expect(company_stats2.losses_1v1).to eq 1
+        end
+
+        it "updates company total exp when there are no squads" do
+          subject
+
+          expect(CompanyLeaderboardStats.find_by(company_id: company2.id).total_exp).to eq 0
         end
       end
     end
@@ -136,8 +163,8 @@ RSpec.describe BattleReportStats::UpdateService do
           subject
 
           expect(company_stats1.reload.wins_1v1).to eq 0
-          expect(company_stats1.reload.streak_1v1).to eq 0
-          expect(company_stats1.reload.losses_1v1).to eq 0
+          expect(company_stats1.streak_1v1).to eq 0
+          expect(company_stats1.losses_1v1).to eq 0
         end
       end
 
@@ -162,8 +189,8 @@ RSpec.describe BattleReportStats::UpdateService do
           subject
 
           expect(company_stats2.reload.wins_1v1).to eq 0
-          expect(company_stats2.reload.streak_1v1).to eq 0
-          expect(company_stats2.reload.losses_1v1).to eq 0
+          expect(company_stats2.streak_1v1).to eq 0
+          expect(company_stats2.losses_1v1).to eq 0
         end
       end
     end

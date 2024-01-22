@@ -14,6 +14,7 @@ Redux
 
 BattlePlayer
 1. Pass `side` back for the BattlePlayer to create, to avoid relying on `company.faction.side` which may not be correct (ie, mixed teams)
+2. When a Company is deleted, probably don't want all battle players for the company deleted too (for historical stat calculation against faction/doctrines of companies). Could store a light version of just that company metadata in a model (ie, HistoricalCompany) that is not deleted. Link BP to that
 
 Player
 1. Create a separate RulesetPlayer record to encapsulate ruleset specific data like vps current/earned in that ruleset
