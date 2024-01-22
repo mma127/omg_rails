@@ -773,6 +773,7 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
       SELECT cs.company_id,
       c.name AS company_name,
       p.name AS player_name,
+      p.id AS player_id,
       f.name AS faction_name,
       f.display_name AS faction_display_name,
       d.name AS doctrine_name,

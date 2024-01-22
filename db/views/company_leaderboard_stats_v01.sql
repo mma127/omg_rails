@@ -1,6 +1,7 @@
 SELECT cs.company_id,
        c.name                                                                                    as company_name,
        p.name                                                                                    as player_name,
+       p.id                                                                                      as player_id,
        f.name                                                                                    as faction_name,
        f.display_name                                                                            as faction_display_name,
        d.name                                                                                    as doctrine_name,
