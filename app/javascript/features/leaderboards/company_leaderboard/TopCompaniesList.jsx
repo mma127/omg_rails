@@ -39,8 +39,14 @@ const useStyles = makeStyles((theme) => ({
   card: {
     flexGrow: "1"
   },
+  cardContent: {
+    padding: '1rem'
+  },
   playerOwned: {
-    backgroundColor: theme.palette.success.dark
+    backgroundColor: "#536e54"
+  },
+  rowText: {
+    lineHeight: 1.2
   },
   companyName: {
     overflowWrap: "anywhere"
@@ -122,10 +128,10 @@ const CompanyRow = ({ index, companyStats, statType, isPlayerCompany }) => {
     <Tooltip
       title={statTooltip(companyStats, statType)}>
       <TableRow className={isPlayerCompany ? classes.playerOwned : null}>
-        <TableCell><Typography color={color}>{index}</Typography></TableCell>
-        <TableCell><Typography color={color}
-                               className={classes.companyName}>{entity}</Typography></TableCell>
-        <TableCell><Typography color={color}>{companyStats[statName]}</Typography></TableCell>
+        <TableCell><Typography color={color} className={classes.rowText}>{index}</Typography></TableCell>
+        <TableCell><Typography color={color} sx={{lineHeight: 1.2}}
+                               className={`${classes.companyName} ${classes.rowText}`}>{entity}</Typography></TableCell>
+        <TableCell><Typography color={color} className={classes.rowText}>{companyStats[statName]}</Typography></TableCell>
       </TableRow>
     </Tooltip>
   )
@@ -138,7 +144,7 @@ export const TopCompaniesList = ({ statType, player }) => {
 
   return (
     <Card className={classes.card}>
-      <CardContent>
+      <Box className={classes.cardContent}>
         <Box className={classes.headerRow}>
           <Typography variant="h5">{TYPE_TO_TITLE[statType]}</Typography>
         </Box>
@@ -157,7 +163,7 @@ export const TopCompaniesList = ({ statType, player }) => {
             </TableBody>
           </Table>
         </TableContainer>
-      </CardContent>
+      </Box>
     </Card>
   )
 }
