@@ -30,7 +30,7 @@ import {
 } from "../../../constants/leaderboard";
 import { getVetLevel } from "../../companies/manage/units/unit_vet";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   headerRow: {
     display: "flex",
     justifyContent: "space-between",
@@ -40,7 +40,7 @@ const useStyles = makeStyles(() => ({
     flexGrow: "1"
   },
   playerOwned: {
-    backgroundColor: "success.light"
+    backgroundColor: theme.palette.success.dark
   },
   companyName: {
     overflowWrap: "anywhere"
