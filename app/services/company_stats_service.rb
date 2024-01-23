@@ -19,6 +19,9 @@ class CompanyStatsService < ApplicationService
       top_unit_losers: get_top_losers,
       top_inf_losers: get_top_inf_losers,
       top_veh_losers: get_top_veh_losers,
+      top_avg_kills: get_top_avg_kills,
+      top_avg_losses: get_top_avg_losses,
+      top_exp_squads: get_top_exp_squads,
     }
   end
 
@@ -58,5 +61,17 @@ class CompanyStatsService < ApplicationService
 
   def get_top_veh_losers
     CompanyLeaderboardStats.order(total_vehicle_losses: :desc).limit(@limit)
+  end
+
+  def get_top_avg_kills
+    CompanyLeaderboardStats.order(combined_avg_kills: :desc).limit(@limit)
+  end
+
+  def get_top_avg_losses
+    CompanyLeaderboardStats.order(combined_avg_losses: :desc).limit(@limit)
+  end
+
+  def get_top_exp_squads
+    Squad.joins(company: [:player, :faction, :doctrine], available_unit: { unit: :unit_vet }).order(vet: :desc).limit(@limit)
   end
 end

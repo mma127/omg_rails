@@ -2,6 +2,16 @@
 #
 # Table name: company_leaderboard_stats
 #
+#  avg_kills_1v1         :float
+#  avg_kills_2v2         :float
+#  avg_kills_3v3         :float
+#  avg_kills_4v4         :float
+#  avg_losses_1v1        :float
+#  avg_losses_2v2        :float
+#  avg_losses_3v3        :float
+#  avg_losses_4v4        :float
+#  combined_avg_kills    :float
+#  combined_avg_losses   :float
 #  company_name          :string
 #  doctrine_display_name :string
 #  doctrine_name         :string
@@ -278,5 +288,39 @@ class CompanyLeaderboardStats < ApplicationRecord
     expose :vehicle_losses_3v3, as: :vehicleLosses3v3
     expose :vehicle_losses_4v4, as: :vehicleLosses4v4
     expose :total_vehicle_losses, as: :totalVehicleLosses
+  end
+  
+  class TopAvgKillsEntity < Grape::Entity
+    expose :company_id, as: :companyId
+    expose :company_name, as: :companyName
+    expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
+    expose :faction_name, as: :factionName
+    expose :faction_display_name, as: :factionDisplayName
+    expose :doctrine_name, as: :doctrineName
+    expose :doctrine_display_name, as: :doctrineDisplayName
+
+    expose :avg_kills_1v1, as: :avgKills1v1
+    expose :avg_kills_2v2, as: :avgKills2v2
+    expose :avg_kills_3v3, as: :avgKills3v3
+    expose :avg_kills_4v4, as: :avgKills4v4
+    expose :combined_avg_kills, as: :combinedAvgKills
+  end
+  
+  class TopAvgLossesEntity < Grape::Entity
+    expose :company_id, as: :companyId
+    expose :company_name, as: :companyName
+    expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
+    expose :faction_name, as: :factionName
+    expose :faction_display_name, as: :factionDisplayName
+    expose :doctrine_name, as: :doctrineName
+    expose :doctrine_display_name, as: :doctrineDisplayName
+
+    expose :avg_losses_1v1, as: :avgLosses1v1
+    expose :avg_losses_2v2, as: :avgLosses2v2
+    expose :avg_losses_3v3, as: :avgLosses3v3
+    expose :avg_losses_4v4, as: :avgLosses4v4
+    expose :combined_avg_losses, as: :combinedAvgLosses
   end
 end

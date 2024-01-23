@@ -809,6 +809,46 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
       (cs.infantry_losses_3v3 + cs.vehicle_losses_3v3) AS unit_losses_3v3,
       (cs.infantry_losses_4v4 + cs.vehicle_losses_4v4) AS unit_losses_4v4,
       (((((((cs.infantry_losses_1v1 + cs.infantry_losses_2v2) + cs.infantry_losses_3v3) + cs.infantry_losses_4v4) + cs.vehicle_losses_1v1) + cs.vehicle_losses_2v2) + cs.vehicle_losses_3v3) + cs.vehicle_losses_4v4) AS total_unit_losses,
+          CASE
+              WHEN ((cs.wins_1v1 + cs.losses_1v1) = 0) THEN (0)::double precision
+              ELSE (((cs.infantry_kills_1v1 + cs.vehicle_kills_1v1))::double precision / ((cs.wins_1v1 + cs.losses_1v1))::double precision)
+          END AS avg_kills_1v1,
+          CASE
+              WHEN ((cs.wins_2v2 + cs.losses_2v2) = 0) THEN (0)::double precision
+              ELSE (((cs.infantry_kills_2v2 + cs.vehicle_kills_2v2))::double precision / ((cs.wins_2v2 + cs.losses_2v2))::double precision)
+          END AS avg_kills_2v2,
+          CASE
+              WHEN ((cs.wins_3v3 + cs.losses_3v3) = 0) THEN (0)::double precision
+              ELSE (((cs.infantry_kills_3v3 + cs.vehicle_kills_3v3))::double precision / ((cs.wins_3v3 + cs.losses_3v3))::double precision)
+          END AS avg_kills_3v3,
+          CASE
+              WHEN ((cs.wins_4v4 + cs.losses_4v4) = 0) THEN (0)::double precision
+              ELSE (((cs.infantry_kills_4v4 + cs.vehicle_kills_4v4))::double precision / ((cs.wins_4v4 + cs.losses_4v4))::double precision)
+          END AS avg_kills_4v4,
+          CASE
+              WHEN ((((((((cs.wins_1v1 + cs.wins_2v2) + cs.wins_3v3) + cs.wins_4v4) + cs.losses_1v1) + cs.losses_2v2) + cs.losses_3v3) + cs.losses_4v4) = 0) THEN (0)::double precision
+              ELSE (((((((((cs.infantry_kills_1v1 + cs.infantry_kills_2v2) + cs.infantry_kills_3v3) + cs.infantry_kills_4v4) + cs.vehicle_kills_1v1) + cs.vehicle_kills_2v2) + cs.vehicle_kills_3v3) + cs.vehicle_kills_4v4))::double precision / ((((((((cs.wins_1v1 + cs.wins_2v2) + cs.wins_3v3) + cs.wins_4v4) + cs.losses_1v1) + cs.losses_2v2) + cs.losses_3v3) + cs.losses_4v4))::double precision)
+          END AS combined_avg_kills,
+          CASE
+              WHEN ((cs.wins_1v1 + cs.losses_1v1) = 0) THEN (0)::double precision
+              ELSE (((cs.infantry_losses_1v1 + cs.vehicle_losses_1v1))::double precision / ((cs.wins_1v1 + cs.losses_1v1))::double precision)
+          END AS avg_losses_1v1,
+          CASE
+              WHEN ((cs.wins_2v2 + cs.losses_2v2) = 0) THEN (0)::double precision
+              ELSE (((cs.infantry_losses_2v2 + cs.vehicle_losses_2v2))::double precision / ((cs.wins_2v2 + cs.losses_2v2))::double precision)
+          END AS avg_losses_2v2,
+          CASE
+              WHEN ((cs.wins_3v3 + cs.losses_3v3) = 0) THEN (0)::double precision
+              ELSE (((cs.infantry_losses_3v3 + cs.vehicle_losses_3v3))::double precision / ((cs.wins_3v3 + cs.losses_3v3))::double precision)
+          END AS avg_losses_3v3,
+          CASE
+              WHEN ((cs.wins_4v4 + cs.losses_4v4) = 0) THEN (0)::double precision
+              ELSE (((cs.infantry_losses_4v4 + cs.vehicle_losses_4v4))::double precision / ((cs.wins_4v4 + cs.losses_4v4))::double precision)
+          END AS avg_losses_4v4,
+          CASE
+              WHEN ((((((((cs.wins_1v1 + cs.wins_2v2) + cs.wins_3v3) + cs.wins_4v4) + cs.losses_1v1) + cs.losses_2v2) + cs.losses_3v3) + cs.losses_4v4) = 0) THEN (0)::double precision
+              ELSE (((((((((cs.infantry_losses_1v1 + cs.infantry_losses_2v2) + cs.infantry_losses_3v3) + cs.infantry_losses_4v4) + cs.vehicle_losses_1v1) + cs.vehicle_losses_2v2) + cs.vehicle_losses_3v3) + cs.vehicle_losses_4v4))::double precision / ((((((((cs.wins_1v1 + cs.wins_2v2) + cs.wins_3v3) + cs.wins_4v4) + cs.losses_1v1) + cs.losses_2v2) + cs.losses_3v3) + cs.losses_4v4))::double precision)
+          END AS combined_avg_losses,
       cs.wins_1v1,
       cs.wins_2v2,
       cs.wins_3v3,

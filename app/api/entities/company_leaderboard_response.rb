@@ -9,6 +9,9 @@ module Entities
     expose :top_unit_losers, using: CompanyLeaderboardStats::TopUnitLosersEntity, as: :topUnitLosers
     expose :top_inf_losers, using: CompanyLeaderboardStats::TopInfLosersEntity, as: :topInfLosers
     expose :top_veh_losers, using: CompanyLeaderboardStats::TopVehLosersEntity, as: :topVehLosers
+    expose :top_avg_kills, using: CompanyLeaderboardStats::TopAvgKillsEntity, as: :topAvgKills
+    expose :top_avg_losses, using: CompanyLeaderboardStats::TopAvgLossesEntity, as: :topAvgLosses
+    expose :top_exp_squads, using: Squad::TopExpSquadEntity, as: :topExpSquads
   end
 end
 

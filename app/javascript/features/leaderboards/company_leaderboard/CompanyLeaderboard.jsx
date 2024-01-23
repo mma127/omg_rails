@@ -4,7 +4,8 @@ import { Box, Grid, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { TopCompaniesList } from "./TopCompaniesList";
 import {
-  TOP_EXP_COMPANIES,
+  TOP_AVG_KILLS, TOP_AVG_LOSSES,
+  TOP_EXP_COMPANIES, TOP_EXP_SQUADS,
   TOP_INF_KILLERS, TOP_INF_LOSERS,
   TOP_UNIT_KILLERS, TOP_UNIT_LOSERS, TOP_VEH_KILLERS, TOP_VEH_LOSERS,
   TOP_WIN_STREAK,
@@ -72,6 +73,17 @@ export const CompanyLeaderboard = ({}) => {
           </Grid>
           <Grid item container sm={4}>
             <TopCompaniesList statType={TOP_VEH_LOSERS} player={player}/>
+          </Grid>
+        </Grid>
+        <Grid item container spacing={2}>
+          <Grid item container sm={4}>
+            <TopCompaniesList statType={TOP_AVG_KILLS} player={player}/>
+          </Grid>
+          <Grid item container sm={4}>
+            <TopCompaniesList statType={TOP_AVG_LOSSES} player={player}/>
+          </Grid>
+          <Grid item container sm={4}>
+            <TopCompaniesList statType={TOP_EXP_SQUADS} player={player}/>
           </Grid>
         </Grid>
       </Grid>

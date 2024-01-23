@@ -51,15 +51,10 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const SquadVetIcon = ({ level }) => {
+export const SquadVetIcon = ({ level, side }) => {
   const classes = useStyles()
-  const company = useSelector(selectCurrentCompany)
 
-  if (!company) {
-    return null
-  }
-
-  const img = getImgForVet(company.side, level)
+  const img = getImgForVet(side, level)
 
   let result = null
   if (img) {
