@@ -14,18 +14,21 @@ import {
   Typography
 } from "@mui/material";
 import {
-  TOP_EXP_COMPANIES,
+  TOP_AVG_KILLS,
+  TOP_AVG_LOSSES,
+  TOP_EXP_COMPANIES, TOP_EXP_SQUADS,
   TOP_INF_KILLERS,
   TOP_INF_LOSERS,
   TOP_UNIT_KILLERS,
   TOP_UNIT_LOSERS,
   TOP_VEH_KILLERS, TOP_VEH_LOSERS,
   TOP_WIN_STREAK,
-  TOP_WINS,
+  TOP_WINS, TYPE_TO_ENTITY_TITLE,
   TYPE_TO_STAT,
   TYPE_TO_STAT_TITLE,
   TYPE_TO_TITLE
 } from "../../../constants/leaderboard";
+import { getVetLevel } from "../../companies/manage/units/unit_vet";
 
 const useStyles = makeStyles(() => ({
   headerRow: {
@@ -76,6 +79,16 @@ const gameSizeBreakdown = (companyStats, statType) => {
     case TOP_VEH_LOSERS:
       return gameSizeBreakdownContent(companyStats.vehicleLosses1v1, companyStats.vehicleLosses2v2, companyStats.vehicleLosses3v3, companyStats.vehicleLosses4v4)
 
+    case TOP_AVG_KILLS:
+      return gameSizeBreakdownContent(companyStats.avgKills1v1, companyStats.avgKills2v2, companyStats.avgKills3v3, companyStats.avgKills4v4)
+    case TOP_AVG_LOSSES:
+      return gameSizeBreakdownContent(companyStats.avgLosses1v1, companyStats.avgLosses2v2, companyStats.avgLosses3v3, companyStats.avgLosses4v4)
+    case TOP_EXP_SQUADS:
+      return <>
+        <Box><Typography variant="body"><b>Unit: </b>{companyStats.unitDisplayName}</Typography></Box>
+        <Box><Typography variant="body"><b>Vet: </b>{getVetLevel(parseFloat(companyStats.vet), companyStats.vet)[0]}</Typography></Box>
+      </>
+
     default:
       console.log(`Unknown statType ${statType}`)
       break
@@ -98,6 +111,12 @@ const CompanyRow = ({ index, companyStats, statType, isPlayerCompany }) => {
   const color = index === 1 ? "secondary.main" : "text.secondary"
   const statName = TYPE_TO_STAT[statType]
 
+  let entity
+  if (statType === TOP_EXP_SQUADS) {
+    entity = companyStats.unitDisplayName
+  } else {
+    entity = companyStats.companyName
+  }
 
   return (
     <Tooltip
@@ -105,7 +124,7 @@ const CompanyRow = ({ index, companyStats, statType, isPlayerCompany }) => {
       <TableRow className={isPlayerCompany ? classes.playerOwned : null}>
         <TableCell><Typography color={color}>{index}</Typography></TableCell>
         <TableCell><Typography color={color}
-                               className={classes.companyName}>{companyStats.companyName}</Typography></TableCell>
+                               className={classes.companyName}>{entity}</Typography></TableCell>
         <TableCell><Typography color={color}>{companyStats[statName]}</Typography></TableCell>
       </TableRow>
     </Tooltip>
@@ -128,7 +147,7 @@ export const TopCompaniesList = ({ statType, player }) => {
             <TableHead>
               <TableRow>
                 <TableCell><Typography color="text.secondary">#</Typography></TableCell>
-                <TableCell><Typography color="text.secondary">Company</Typography></TableCell>
+                <TableCell><Typography color="text.secondary">{TYPE_TO_ENTITY_TITLE[statType]}</Typography></TableCell>
                 <TableCell><Typography color="text.secondary">{TYPE_TO_STAT_TITLE[statType]}</Typography></TableCell>
               </TableRow>
             </TableHead>

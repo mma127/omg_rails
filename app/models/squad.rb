@@ -150,4 +150,65 @@ class Squad < ApplicationRecord
     expose :transport_uuid, as: :transportUuid
     expose :transported_squad_uuids, as: :transportedSquadUuids
   end
+
+  def company_name
+    company.name
+  end
+
+  def player_name
+    company.player.name
+  end
+
+  def player_id
+    company.player_id
+  end
+
+  def faction_name
+    company.faction_name
+  end
+
+  def faction_id
+    company.faction_id
+  end
+
+  def faction_display_name
+    company.faction.display_name
+  end
+
+  def doctrine_name
+    company.doctrine_name
+  end
+
+  def doctrine_id
+    company.doctrine_id
+  end
+
+  def doctrine_display_name
+    company.doctrine_display_name
+  end
+
+  def side
+    company.side
+  end
+
+  def unit_vet
+    unit.unit_vet
+  end
+
+  class TopExpSquadEntity < Grape::Entity
+    expose :company_id, as: :companyId
+    expose :company_name, as: :companyName
+    expose :player_name, as: :playerName
+    expose :player_id, as: :playerId
+    expose :faction_name, as: :factionName
+    expose :faction_display_name, as: :factionDisplayName
+    expose :doctrine_name, as: :doctrineName
+    expose :doctrine_display_name, as: :doctrineDisplayName
+    expose :side
+
+    expose :vet, as: :exp
+    expose :unit_name, as: :unitName
+    expose :unit_display_name, as: :unitDisplayName
+    expose :unit_vet, as: :vet, using: UnitVet::Entity
+  end
 end

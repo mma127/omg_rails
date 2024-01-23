@@ -1,7 +1,8 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
 import {
-  TOP_EXP_COMPANIES,
+  TOP_AVG_KILLS, TOP_AVG_LOSSES,
+  TOP_EXP_COMPANIES, TOP_EXP_SQUADS,
   TOP_INF_KILLERS, TOP_INF_LOSERS,
   TOP_UNIT_KILLERS, TOP_UNIT_LOSERS, TOP_VEH_KILLERS, TOP_VEH_LOSERS,
   TOP_WIN_STREAK,
@@ -21,6 +22,10 @@ const initialState = companyLeaderboardAdapter.getInitialState({
   [TOP_UNIT_LOSERS]: [],
   [TOP_INF_LOSERS]: [],
   [TOP_VEH_LOSERS]: [],
+  [TOP_AVG_KILLS]: [],
+  [TOP_AVG_LOSSES]: [],
+  [TOP_EXP_SQUADS]: [],
+
   errorMessage: null
 })
 
@@ -55,6 +60,9 @@ const companyLeaderboardSlice = createSlice({
         state[TOP_UNIT_LOSERS] = action.payload[TOP_UNIT_LOSERS];
         state[TOP_INF_LOSERS] = action.payload[TOP_INF_LOSERS];
         state[TOP_VEH_LOSERS] = action.payload[TOP_VEH_LOSERS];
+        state[TOP_AVG_KILLS] = action.payload[TOP_AVG_KILLS];
+        state[TOP_AVG_LOSSES] = action.payload[TOP_AVG_LOSSES];
+        state[TOP_EXP_SQUADS] = action.payload[TOP_EXP_SQUADS];
       })
       .addCase(fetchCompanyLeaderboard.rejected, (state, action) => {
         state.errorMessage = action.payload.error
@@ -68,13 +76,3 @@ export default companyLeaderboardSlice.reducer
 export const {  } = companyLeaderboardSlice.actions
 
 export const selectCompanyLeaderboardStat = (state, type) => state.companyLeaderboard[type]
-
-// export const selectCompanyLeaderboardTopExpCompanies = state => state.companyLeaderboard[TOP_EXP_COMPANIES]
-// export const selectCompanyLeaderboardTopWins = state => state.companyLeaderboard[TOP_WINS]
-// export const selectCompanyLeaderboardTopWinStreak = state => state.companyLeaderboard[TOP_WIN_STREAK]
-// export const selectCompanyLeaderboardTopUnitKillers = state => state.companyLeaderboard[TOP_UNIT_KILLERS]
-// export const selectCompanyLeaderboardTopInfKillers = state => state.companyLeaderboard[TOP_INF_KILLERS]
-// export const selectCompanyLeaderboardTopVehKillers = state => state.companyLeaderboard[TOP_VEH_KILLERS]
-// export const selectCompanyLeaderboardTopUnitLosers = state => state.companyLeaderboard[TOP_UNIT_LOSERS]
-// export const selectCompanyLeaderboardTopInfLosers = state => state.companyLeaderboard[TOP_INF_LOSERS]
-// export const selectCompanyLeaderboardTopVehLosers = state => state.companyLeaderboard[TOP_VEH_LOSERS]

@@ -27,45 +27,8 @@ import {
   setSelectedAvailableUnitId
 } from "../available_units/availableUnitsSlice";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
-const getVetLevel = (exp, unitVet) => {
-  if (exp < unitVet.vet1Exp) {
-    return [0, unitVet.vet1Exp]
-  } else if (exp < unitVet.vet2Exp) {
-    return [1, unitVet.vet2Exp]
-  } else if (exp < unitVet.vet3Exp) {
-    return [2, unitVet.vet3Exp]
-  } else if (exp < unitVet.vet4Exp) {
-    return [3, unitVet.vet4Exp]
-  } else if (exp < unitVet.vet5Exp) {
-    return [4, unitVet.vet5Exp]
-  } else {
-    return [5, null]
-  }
-}
-
-const buildVetBonuses = (level, unitVet) => {
-  let bonuses = []
-  if (level === 0) {
-    return bonuses
-  }
-  if (level >= 1) {
-    bonuses.push({ level: 1, desc: unitVet.vet1Desc })
-  }
-  if (level >= 2) {
-    bonuses.push({ level: 2, desc: unitVet.vet2Desc })
-  }
-  if (level >= 3) {
-    bonuses.push({ level: 3, desc: unitVet.vet3Desc })
-  }
-  if (level >= 4) {
-    bonuses.push({ level: 4, desc: unitVet.vet4Desc })
-  }
-  if (level === 5) {
-    bonuses.push({ level: 5, desc: unitVet.vet5Desc })
-  }
-  return bonuses
-}
+import { selectCurrentCompany } from "../../companiesSlice";
+import { buildVetBonuses, getVetLevel } from "../units/unit_vet";
 
 const useStyles = makeStyles(() => ({
   squadCard: {
@@ -151,6 +114,7 @@ export const SquadCard = (
   const unit = useSelector(state => selectUnitById(state, squad.unitId))
   const squadUpgrades = useSelector(state => selectSquadUpgradesForSquad(state, tab, index, uuid))
   const selectedSquadUuid = useSelector(selectSelectedSquadUuid)
+  const company = useSelector(selectCurrentCompany)
 
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
   const elementRef = useRef()
@@ -355,7 +319,7 @@ export const SquadCard = (
                                  <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
                                  {vetBonuses.map(vb => <Box key={vb.level}
                                                             className={classes.squadCardItems}><SquadVetIcon
-                                   level={vb.level}/> {vb.desc}</Box>)}
+                                   level={vb.level} side={company.side}/> {vb.desc}</Box>)}
                                </>
                              }
                              // TransitionComponent={Zoom}
@@ -366,7 +330,7 @@ export const SquadCard = (
                              <Box sx={{ p: 1 }} className={classes.squadCardItems}>
                                <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
                                          onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
-                               <SquadVetIcon level={level}/>
+                               <SquadVetIcon level={level} side={company.side}/>
                                <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid}
                                               onUpgradeClick={onSquadUpgradeDestroyClick}
                                               enabled={enabled}/>
