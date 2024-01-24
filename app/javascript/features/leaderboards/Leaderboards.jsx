@@ -7,6 +7,7 @@ import { CompanyLeaderboard } from "./company_leaderboard/CompanyLeaderboard";
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { PageContainer } from "../../components/PageContainer";
 
 const useStyles = makeStyles(theme => ({
   topWrapper: {
@@ -65,7 +66,7 @@ export const Leaderboards = () => {
   }
 
   return (
-    <Container maxWidth="xl" disableGutters>
+    <PageContainer maxWidth="xl" disableGutters>
       <Box p={3} pt={5} className={classes.topWrapper}>
         <Box className={classes.wrapper}>
           <Tabs value={currentTab} onChange={onTabChange} orientation="vertical" className={classes.tabs}>
@@ -91,6 +92,6 @@ export const Leaderboards = () => {
           </Routes>
         </Box>
       </Box>
-    </Container>
+    </PageContainer>
   )
 }

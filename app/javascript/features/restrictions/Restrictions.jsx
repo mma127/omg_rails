@@ -12,6 +12,7 @@ import { FactionSelector } from "./FactionSelector";
 import { DoctrineSelector } from "./DoctrineSelector";
 import { clearRestrictionUnits } from "./restriction_units/restrictionUnitsSlice";
 import { DisabledSelector } from "./DisabledSelector";
+import { PageContainer } from "../../components/PageContainer";
 
 
 const useStyles = makeStyles(theme => ({
@@ -98,7 +99,7 @@ export const Restrictions = () => {
   }
 
   return (
-    <Container maxWidth="xl" disableGutters>
+    <PageContainer maxWidth="xl" disableGutters>
       <Box p={3} pt={5} className={classes.topWrapper}>
         <Box className={classes.selectors} pb={2}>
           <FactionSelector currentFactionName={currentFactionName} handleFactionSelect={handleFactionSelect}/>
@@ -126,6 +127,6 @@ export const Restrictions = () => {
           </Routes>
         </Box>
       </Box>
-    </Container>
+    </PageContainer>
   )
 }

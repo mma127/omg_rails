@@ -21,6 +21,7 @@ import { selectDoctrineById } from "../../doctrines/doctrinesSlice";
 import { CompanyBonuses } from "./bonuses/CompanyBonuses";
 import { selectIsCompanyBonusesChanged } from "./bonuses/companyBonusesSlice";
 import { CompactSelector } from "./CompactSelector";
+import { PageContainer } from "../../../components/PageContainer";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -154,7 +155,7 @@ export const CompanyManager = () => {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
+    <PageContainer maxWidth="xl" sx={{ paddingTop: '1rem' }}>
       {companyLockedContent}
       <Box className={classes.headerRow}>
         <Box className={`${classes.titleItem} ${classes.companyDocImage}`}>
@@ -201,6 +202,6 @@ export const CompanyManager = () => {
           <Route index element={<SquadBuilder/>}/>
         </Routes>
       </Box>
-    </Container>
+    </PageContainer>
   )
 }
