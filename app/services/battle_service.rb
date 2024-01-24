@@ -22,7 +22,7 @@ class BattleService
 
   def create_battle(name, size, ruleset_id, initial_company_id)
     # Validate the player is not already in a non-final battle
-    validate_player_can_create_battle
+    validate_player_can_create_or_join_battle
 
     # Validate the given company id matches a company belonging to the player and ruleset
     ruleset = validate_ruleset(ruleset_id)
@@ -52,6 +52,9 @@ class BattleService
   def join_battle(battle_id, company_id)
     # Validate battle exists
     battle = validate_battle(battle_id)
+
+    # Validate the player is not already in a non-final battle
+    validate_player_can_create_or_join_battle
 
     battle.with_lock do
       # Validate battle is joinable
@@ -325,9 +328,9 @@ class BattleService
   end
 
   # Validate the player is not already in a non-final battle
-  def validate_player_can_create_battle
+  def validate_player_can_create_or_join_battle
     unless BattlePlayer.in_active_battle.where(player: @player).count == 0
-      raise BattleValidationError.new "Player #{@player.id} cannot create a new game while in an existing game"
+      raise BattleValidationError.new "Player #{@player.name} cannot create or join a battle while in an existing battle."
     end
   end
 
