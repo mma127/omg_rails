@@ -21,6 +21,7 @@ import {
   BATTLE_FINALIZED, PLAYER_ABANDONED, PLAYERS_ALL_ABANDONED
 } from "../../constants/battles/events";
 import { AlertSnackbar } from "../companies/AlertSnackbar";
+import { PageContainer } from "../../components/PageContainer";
 
 const rulesetId = 1
 
@@ -146,7 +147,7 @@ export const Lobby = () => {
   }
 
   return (
-    <Container>
+    <PageContainer>
       <ActionCableConsumer channel="BattlesChannel"
                            onConnected={handleConnectedCable}
                            onReceived={handleReceivedBattlesCable}/>
@@ -160,6 +161,6 @@ export const Lobby = () => {
                      content={snackbarContent}/>
       {errorAlert}
       <LobbyContent rulesetId={rulesetId}/>
-    </Container>
+    </PageContainer>
   )
 }

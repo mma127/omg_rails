@@ -8,6 +8,7 @@ import { fetchCompanies, selectAllCompanies } from "./companiesSlice";
 import { DisplayCompanies } from "./display/DisplayCompanies";
 import { Fingerprint } from "@mui/icons-material";
 import store from "../../app/store";
+import { PageContainer } from "../../components/PageContainer";
 
 export const Companies = () => {
   // Companies page container
@@ -40,10 +41,10 @@ export const Companies = () => {
   }
 
   return (
-    <Container maxWidth="xl" disableGutters>
+    <PageContainer maxWidth="xl" disableGutters>
       <Box p={3} pt={5} display="flex" justifyContent="center" alignItems="center">
         {content}
       </Box>
-    </Container>
+    </PageContainer>
   )
 }
