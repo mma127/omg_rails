@@ -42,7 +42,7 @@ RSpec.describe BattleService do
       it "fails to create a battle" do
         expect { subject.create_battle(name, 1, ruleset.id, company.id) }
           .to raise_error(BattleService::BattleValidationError,
-                          "Player #{player.id} cannot create a new game while in an existing game")
+                          "Player #{player.name} cannot create or join a battle while in an existing battle.")
       end
     end
   end

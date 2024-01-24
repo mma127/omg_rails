@@ -33,5 +33,4 @@ Enhancements
 3. User preferences model (ie, saving compact status)
 
 PRELAUNCH
-1. Double check players cannot join/create multiple battles, even with different companies/tabs
-2. Ruleset across all models. Add rule_type and is_active to ruleset. This allows using ruleset for historical data
+1. Ruleset across all models. Add rule_type and is_active to ruleset. This allows using ruleset for historical data
