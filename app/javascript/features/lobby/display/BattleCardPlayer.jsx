@@ -14,7 +14,7 @@ import {
   selectIsPending
 } from "../lobbySlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
-import { doctrineImgMapping } from "../../../constants/doctrines";
+import { ALLIED_SIDE, doctrineImgMapping } from "../../../constants/doctrines";
 import { JoinBattlePopover } from "./JoinBattlePopover";
 import { ABANDONABLE_STATES, FULL, GENERATING, INGAME, OPEN } from "../../../constants/battles/states";
 
@@ -22,16 +22,18 @@ const useStyles = makeStyles(theme => ({
   wrapperRow: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     height: '60px',
     paddingTop: '5px',
     paddingBottom: '5px',
+    width: "100%"
   },
   balanceTeam: {
     marginRight: '10px',
   },
   playerRow: {
     display: 'flex',
-    alignItems: 'left',
+    flexGrow: 1,
     height: '60px',
     paddingTop: '5px',
     paddingBottom: '5px'
@@ -128,6 +130,18 @@ export const BattleCardPlayer = ({
     },
   });
 
+  let doctrineIcon
+  if (companyDoctrine) {
+    doctrineIcon = (
+      <Box sx={{ display: "flex", justifyContent: 'center' }} pl={1} pr={1}>
+        <img src={doctrineImgMapping[companyDoctrine]} alt={companyDoctrine}
+             className={classes.optionImage}/>
+      </Box>
+    )
+  } else {
+    doctrineIcon = <Box ml={1} mr={1} className={classes.optionImage}/>
+  }
+
   let content
   if (playerId && isCurrentPlayer) {
     // Filled spot by logged in player
@@ -153,25 +167,22 @@ export const BattleCardPlayer = ({
 
     content = (
       <>
-
-        <Box sx={{ display: "flex", justifyContent: 'center' }} pr={1}>
-          <img src={doctrineImgMapping[companyDoctrine]} alt={companyDoctrine}
-               className={classes.optionImage}/>
-        </Box>
+        {side === ALLIED_SIDE ? null : doctrineIcon}
         <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
 
 
           <Box className={classes.wrapperRow}>
             <TeamBalanceIcon team={teamBalance} isFull={isFull}/>
-            <Typography variant={"h5"} color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
+            <Typography variant="h5" color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
             {readyContent}
             {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame}/> : ""}
           </Box>
 
-          {isAdmin ? <Typography variant={"h6"} color="darkgrey" theme={eloTheme}
+          {isAdmin ? <Typography variant="h6" color="darkgrey" theme={eloTheme}
                                  className={classes.PlayerElo}>{playerElo}</Typography> : null}
 
         </Stack>
+        {side === ALLIED_SIDE ? doctrineIcon : null}
       </>
     )
   } else if (playerId) {
@@ -185,29 +196,26 @@ export const BattleCardPlayer = ({
     }
     content = (
       <>
-        <Box sx={{ display: "flex", justifyContent: 'center' }} pr={1}>
-          <img src={doctrineImgMapping[companyDoctrine]} alt={companyDoctrine}
-               className={classes.optionImage}/>
-        </Box>
+        {side === ALLIED_SIDE ? null : doctrineIcon}
         <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
 
           <Box className={classes.wrapperRow}>
             <TeamBalanceIcon team={teamBalance} isFull={isFull}/>
-            <Typography variant={"h5"} className={classes.playerName}> {playerName}</Typography>
+            <Typography variant="h5" className={classes.playerName}> {playerName}</Typography>
             {readyContent}
           </Box>
-          {isAdmin ? <Typography variant={"h6"} color="darkgrey" theme={eloTheme}
+          {isAdmin ? <Typography variant="h6" color="darkgrey" theme={eloTheme}
                                  className={classes.PlayerElo}>{playerElo}</Typography> : null}
         </Stack>
-
+        {side === ALLIED_SIDE ? doctrineIcon : null}
       </>
     )
   } else if (isAuthed && !currentBattleId) {
     // Empty spot, Player is logged in but not in a battle
     content = (
       <>
-        <Box mr={1} className={classes.optionImage}/> {/*Used for spacing*/}
-        <Typography variant={"h6"} color="primary" className={classes.joinText} onClick={handleClick}>Join
+        {side === ALLIED_SIDE ? null : doctrineIcon} {/*Used for spacing*/}
+        <Typography variant="h6" color="primary" className={classes.joinText} onClick={handleClick}>Join
           Battle</Typography>
         <Popover id={id}
                  open={open}
@@ -216,14 +224,16 @@ export const BattleCardPlayer = ({
                  anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
           <JoinBattlePopover battleId={battleId} side={side} handleClose={handleClose}/>
         </Popover>
+        {side === ALLIED_SIDE ? doctrineIcon : null} {/*Used for spacing*/}
       </>
     )
   } else {
     // Empty spot, Player is either logged in but already in a battle, or is not logged in. Either way, show read only
     content = (
       <>
-        <Box mr={1} className={classes.optionImage}/> {/* Used for spacing*/}
-        <Typography variant={"h6"} color="text.secondary">Available</Typography>
+        {side === ALLIED_SIDE ? null : doctrineIcon} {/*Used for spacing*/}
+        <Typography variant="h6" color="text.secondary">Available</Typography>
+        {side === ALLIED_SIDE ? doctrineIcon : null} {/*Used for spacing*/}
       </>)
   }
 
