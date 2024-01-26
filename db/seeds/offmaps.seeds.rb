@@ -9,7 +9,7 @@ after :restrictions do
     str.humanize.titleize
   end
 
-  ruleset = Ruleset.find_by(name: "war")
+  ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
   CSV.foreach('db/seeds/offmaps.csv', headers: true) do |row|
     name = snake_case(row["internal_name"])
     display_name = title_case(name)

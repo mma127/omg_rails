@@ -4,7 +4,7 @@ after :restrictions do
   # For example, a Riflemen unit in the Infantry doctrine can have different pricing and resupply than the
   # generic American faction Riflemen unit
 
-  war_ruleset = Ruleset.find_by_name("war")
+  war_ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
 
   #################################################################################
   ################################### Americans ###################################

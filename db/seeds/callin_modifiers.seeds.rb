@@ -1,5 +1,5 @@
 after :restrictions do
-  ruleset = Ruleset.find_by!(name: "war")
+  ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
 
   # Organized Platoons
   blitz = Doctrine.find_by!(name: "blitz")

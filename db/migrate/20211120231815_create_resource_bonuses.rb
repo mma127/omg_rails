@@ -1,6 +1,7 @@
 class CreateResourceBonuses < ActiveRecord::Migration[6.1]
   def change
     create_table :resource_bonuses do |t|
+      t.references :ruleset, index: true, foreign_key: true, null: false
       t.string :name, null: false, comment: "Resource bonus name"
       t.string :resource, null: false, comment: "Resource type"
       t.integer :man, default: 0, null: false, comment: "Man change"

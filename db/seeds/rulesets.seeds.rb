@@ -1,4 +1,6 @@
-Ruleset.create!(name: "war",
+Ruleset.create!(name: "War 1",
+                ruleset_type: Ruleset.ruleset_types[:war],
+                is_active: true,
                 description: "OMG standard WAR format",
                 starting_man: 9000,
                 starting_mun: 1900,

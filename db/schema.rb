@@ -269,6 +269,7 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
   create_table "doctrine_unlocks", comment: "Associates doctrines to unlocks", force: :cascade do |t|
     t.bigint "doctrine_id"
     t.bigint "unlock_id"
+    t.bigint "ruleset_id", null: false
     t.string "internal_description", comment: "Doctrine and Unlock names"
     t.integer "vp_cost", default: 0, null: false, comment: "VP cost of this doctrine unlock"
     t.integer "tree", comment: "Which tree of the doctrine this unlock will appear at"
@@ -280,6 +281,7 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
     t.index ["doctrine_id", "tree", "branch", "row"], name: "index_doctrine_unlocks_on_doctrine_tree", unique: true
     t.index ["doctrine_id", "unlock_id"], name: "index_doctrine_unlocks_on_doctrine_id_and_unlock_id", unique: true
     t.index ["doctrine_id"], name: "index_doctrine_unlocks_on_doctrine_id"
+    t.index ["ruleset_id"], name: "index_doctrine_unlocks_on_ruleset_id"
     t.index ["unlock_id"], name: "index_doctrine_unlocks_on_unlock_id"
   end
 
@@ -408,6 +410,7 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
   end
 
   create_table "resource_bonuses", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
     t.string "name", null: false, comment: "Resource bonus name"
     t.string "resource", null: false, comment: "Resource type"
     t.integer "man", default: 0, null: false, comment: "Man change"
@@ -416,6 +419,7 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["resource"], name: "index_resource_bonuses_on_resource", unique: true
+    t.index ["ruleset_id"], name: "index_resource_bonuses_on_ruleset_id"
   end
 
   create_table "restriction_callin_modifiers", comment: "Association of Restriction to CallinModifier", force: :cascade do |t|
@@ -527,6 +531,8 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
 
   create_table "rulesets", force: :cascade do |t|
     t.string "name", null: false, comment: "Ruleset name"
+    t.string "ruleset_type", null: false, comment: "Type of ruleset this is"
+    t.boolean "is_active", null: false, comment: "Is this ruleset active for its ruleset type?"
     t.string "description", comment: "Description"
     t.integer "starting_man", null: false, comment: "Company starting manpower"
     t.integer "starting_mun", null: false, comment: "Company starting muntions"
@@ -536,6 +542,7 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
     t.integer "max_resource_bonuses", null: false, comment: "Company maximum number of resource bonuses"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["ruleset_type", "is_active"], name: "index_rulesets_on_ruleset_type_and_is_active"
   end
 
   create_table "squad_upgrades", comment: "Upgrades purchased for squad", force: :cascade do |t|
@@ -722,9 +729,11 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
   add_foreign_key "company_unlocks", "companies"
   add_foreign_key "company_unlocks", "doctrine_unlocks"
   add_foreign_key "doctrine_unlocks", "doctrines"
+  add_foreign_key "doctrine_unlocks", "rulesets"
   add_foreign_key "doctrine_unlocks", "unlocks"
   add_foreign_key "doctrines", "factions"
   add_foreign_key "player_ratings", "players"
+  add_foreign_key "resource_bonuses", "rulesets"
   add_foreign_key "restriction_callin_modifiers", "callin_modifiers"
   add_foreign_key "restriction_callin_modifiers", "restrictions"
   add_foreign_key "restriction_callin_modifiers", "rulesets"

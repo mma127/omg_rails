@@ -10,12 +10,19 @@
 #  resource(Resource type)   :string           not null
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#  ruleset_id                :bigint           not null
 #
 # Indexes
 #
-#  index_resource_bonuses_on_resource  (resource) UNIQUE
+#  index_resource_bonuses_on_resource    (resource) UNIQUE
+#  index_resource_bonuses_on_ruleset_id  (ruleset_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (ruleset_id => rulesets.id)
 #
 class ResourceBonus < ApplicationRecord
+  belongs_to :ruleset
   has_many :company_resource_bonuses
 
   enum resource: {

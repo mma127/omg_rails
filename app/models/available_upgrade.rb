@@ -33,7 +33,7 @@
 #
 class AvailableUpgrade < ApplicationRecord
   belongs_to :company
-  belongs_to :upgrade
+  belongs_to :upgrade, inverse_of: :available_upgrades
   belongs_to :unit
 
   has_many :squad_upgrades, dependent: :destroy

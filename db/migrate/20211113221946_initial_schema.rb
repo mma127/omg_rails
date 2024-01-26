@@ -43,6 +43,8 @@ class InitialSchema < ActiveRecord::Migration[6.1]
 
     create_table :rulesets do |t|
       t.string :name, null: false, comment: "Ruleset name"
+      t.string :ruleset_type, null: false, comment: "Type of ruleset this is"
+      t.boolean :is_active, null: false, comment: "Is this ruleset active for its ruleset type?"
       t.string :description, comment: "Description"
       t.integer :starting_man, null: false, comment: "Company starting manpower"
       t.integer :starting_mun, null: false, comment: "Company starting muntions"
@@ -53,5 +55,7 @@ class InitialSchema < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+
+    add_index :rulesets, [:ruleset_type, :is_active]
   end
 end
