@@ -29,9 +29,7 @@ Enhancements
 2. Holding area for squad cards outside of tabs
 3. User preferences model (ie, saving compact status)
 
-PRELAUNCH
-Unused Models
-* Game
-* UnitGame
-* UnitModification
-* 
+TODO
+1. War Stats page
+2. Company Snapshot
+3. War reset admin page
