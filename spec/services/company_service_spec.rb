@@ -6,6 +6,7 @@ RSpec.describe CompanyService do
 
   let(:name) { "My new company" }
   let!(:ruleset) { create :ruleset }
+  let!(:company2) { create :company, ruleset: ruleset }
   let(:faction) { create :faction }
   let(:doctrine) { create :doctrine, faction: faction }
   let!(:restriction_faction) { create :restriction, faction: faction, doctrine: nil, unlock: nil }
@@ -380,7 +381,7 @@ RSpec.describe CompanyService do
 
       it "raises a validation error if an Unit id is given that doesn't match any AvailableUnit in the Company" do
         new_unit = create :unit
-        new_available_unit = create :available_unit, unit: new_unit
+        new_available_unit = create :available_unit, unit: new_unit, company: company2
         invalid_squad_param = { squad_id: nil,
                                 unit_id: new_unit.id,
                                 available_unit_id: new_available_unit.id,
@@ -399,7 +400,7 @@ RSpec.describe CompanyService do
 
       it "raises a validation error if an AvailableOffmap id is given that doesn't match any AvailableOffmap in the Company" do
         new_offmap = create :offmap
-        new_available_offmap = create :available_offmap, offmap: new_offmap # company will not be the same
+        new_available_offmap = create :available_offmap, offmap: new_offmap, company: company2 # company will not be the same
         invalid_offmap_param = { company_offmap_id: nil, available_offmap_id: new_available_offmap.id }
         offmaps_param << invalid_offmap_param
         expect {
@@ -412,7 +413,7 @@ RSpec.describe CompanyService do
 
       it "raises a validation error if an AvailableUpgrade id is given that doesn't match any AvailableUpgrade in the Company" do
         new_upgrade = create :upgrade
-        new_available_upgrade = create :available_upgrade, upgrade: new_upgrade # company will not be the same
+        new_available_upgrade = create :available_upgrade, upgrade: new_upgrade, company: company2 # company will not be the same
         invalid_upgrade_param = { squad_upgrade_id: nil, available_upgrade_id: new_available_upgrade.id }
         squad_upgrades_param << invalid_upgrade_param
         expect {
@@ -1318,7 +1319,7 @@ RSpec.describe CompanyService do
 
         it "raises a validation error if an AvailableUnit id is given that doesn't match any AvailableUnit in the Company" do
           new_unit = create :unit
-          new_available_unit = create :available_unit, unit: new_unit
+          new_available_unit = create :available_unit, unit: new_unit, company: company2
           invalid_squad_param = { squad_id: nil,
                                   unit_id: new_unit.id,
                                   available_unit_id: new_available_unit.id,
@@ -1337,7 +1338,7 @@ RSpec.describe CompanyService do
 
         it "raises a validation error if an AvailableOffmap id is given that doesn't match any AvailableOffmap in the Company" do
           new_offmap = create :offmap
-          new_available_offmap = create :available_offmap, offmap: new_offmap # company will not be the same
+          new_available_offmap = create :available_offmap, offmap: new_offmap, company: company2 # company will not be the same
           invalid_offmap_param = { company_offmap_id: nil, available_offmap_id: new_available_offmap.id }
           @offmaps_param << invalid_offmap_param
           expect {
@@ -1421,7 +1422,7 @@ RSpec.describe CompanyService do
 
         context "when the company is in a battle" do
           before do
-            battle = create :battle
+            battle = create :battle, ruleset: ruleset
             create :battle_player, battle: battle, player: player, company: company
           end
 
@@ -2148,7 +2149,7 @@ RSpec.describe CompanyService do
 
     context "when the company is in a battle" do
       before do
-        battle = create :battle
+        battle = create :battle, ruleset: ruleset
         create :battle_player, battle: battle, player: player, company: @company
       end
 
@@ -2363,9 +2364,9 @@ RSpec.describe CompanyService do
     end
 
     context "when there are resource bonuses" do
-      let(:company) { create :company }
-      let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15 }
-      let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10 }
+      let(:company) { create :company, ruleset: ruleset }
+      let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15, ruleset: ruleset }
+      let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10, ruleset: ruleset }
       before do
         create :company_resource_bonus, company: company, resource_bonus: man_rb
         create :company_resource_bonus, company: company, resource_bonus: man_rb
@@ -2399,9 +2400,9 @@ RSpec.describe CompanyService do
     end
 
     context "when there are resource bonuses" do
-      let(:company) { create :company }
-      let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15 }
-      let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10 }
+      let(:company) { create :company, ruleset: ruleset }
+      let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15, ruleset: ruleset }
+      let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10, ruleset: ruleset }
       before do
         create :company_resource_bonus, company: company, resource_bonus: man_rb
         create :company_resource_bonus, company: company, resource_bonus: man_rb

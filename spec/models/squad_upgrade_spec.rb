@@ -22,7 +22,11 @@
 require "rails_helper"
 
 RSpec.describe SquadUpgrade, type: :model do
-  let!(:squad_upgrade) { create :squad_upgrade }
+  let!(:company) { create :company }
+  let!(:available_unit) { create :available_unit, company: company }
+  let(:squad) { create :squad, company: company, available_unit: available_unit }
+  let(:available_upgrade) { create :available_upgrade, company: company}
+  let!(:squad_upgrade) { create :squad_upgrade, squad: squad, available_upgrade: available_upgrade }
 
   describe 'associations' do
     it { should belong_to(:squad) }

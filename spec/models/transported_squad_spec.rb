@@ -23,7 +23,11 @@
 require "rails_helper"
 
 RSpec.describe TransportedSquad, type: :model do
-  let!(:transported_squad) { create :transported_squad }
+  let!(:company) { create :company }
+  let!(:available_unit) { create :available_unit, company: company }
+  let(:squad1) { create :squad, company: company, available_unit: available_unit }
+  let(:squad2) { create :squad, company: company, available_unit: available_unit }
+  let!(:transported_squad) { create :transported_squad, transport_squad: squad1, embarked_squad: squad2 }
 
   describe 'associations' do
     it { should belong_to(:transport_squad) }
@@ -35,11 +39,11 @@ RSpec.describe TransportedSquad, type: :model do
   end
 
   describe "imports" do
-    let!(:transport1) { create :squad }
-    let!(:transport2) { create :squad }
-    let!(:passenger1) { create :squad }
-    let!(:passenger2) { create :squad }
-    let!(:passenger3) { create :squad }
+    let!(:transport1) { create :squad, company: company, available_unit: available_unit }
+    let!(:transport2) { create :squad, company: company, available_unit: available_unit }
+    let!(:passenger1) { create :squad, company: company, available_unit: available_unit }
+    let!(:passenger2) { create :squad, company: company, available_unit: available_unit }
+    let!(:passenger3) { create :squad, company: company, available_unit: available_unit }
     let!(:transported_squad1) { create :transported_squad, transport_squad: transport1, embarked_squad: passenger1 }
 
     it "makes no changes when importing a TransportedSquad with the same transport_squad and embarked_squad as an existing record" do
