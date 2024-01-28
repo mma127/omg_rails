@@ -27,8 +27,6 @@ RSpec.describe Ratings::BalanceService do
   let(:elo8) { 1500 }
   let!(:player8_rating) { create :player_rating, player: player8, elo: elo8 }
 
-  let(:company) { create :company, ruleset: ruleset }
-
   let(:size) { 1 }
   let!(:battle) { create :battle, size: size, ruleset: ruleset }
 

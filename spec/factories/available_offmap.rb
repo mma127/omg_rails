@@ -1,6 +1,10 @@
 FactoryBot.define do
   factory :available_offmap do
-    association :company
+    transient do
+      ruleset { create :ruleset }
+    end
+
+    company { association :company, ruleset: ruleset }
     association :offmap
 
     available { 4 }

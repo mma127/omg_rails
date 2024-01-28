@@ -21,9 +21,7 @@
 require "rails_helper"
 
 RSpec.describe CompanyUnlock, type: :model do
-  let!(:company) { create :company }
-  let!(:doctrine_unlock) { create :doctrine_unlock, ruleset: company.ruleset }
-  let!(:company_unlock) { create :company_unlock, company: company, doctrine_unlock: doctrine_unlock }
+  let!(:company_unlock) { create :company_unlock }
 
   describe 'associations' do
     it { should belong_to(:company) }

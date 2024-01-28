@@ -1,5 +1,9 @@
 FactoryBot.define do
   factory :available_unit do
+    transient do
+      ruleset { create :ruleset }
+    end
+
     available { 4 }
     resupply { 2 }
     resupply_max { 3 }
@@ -11,7 +15,7 @@ FactoryBot.define do
     callin_modifier { 1 }
     type { "BaseAvailableUnit" }
 
-    association :company
+    company { association :company, ruleset: ruleset }
     association :unit
   end
 end
