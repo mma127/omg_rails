@@ -311,12 +311,6 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
     t.index ["name"], name: "index_factions_on_name", unique: true
   end
 
-  create_table "games", comment: "Metadata for CoH games, including alpha", force: :cascade do |t|
-    t.string "name", comment: "Game name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "historical_battle_players", comment: "Historical record of battle results by player", force: :cascade do |t|
     t.bigint "player_id"
     t.string "player_name", null: false, comment: "Denormalized player name in case player record is deleted"
@@ -594,15 +588,6 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
     t.index ["transport_squad_id"], name: "index_transported_squads_on_transport_squad_id"
   end
 
-  create_table "unit_games", force: :cascade do |t|
-    t.bigint "unit_id"
-    t.bigint "game_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["game_id"], name: "index_unit_games_on_game_id"
-    t.index ["unit_id"], name: "index_unit_games_on_unit_id"
-  end
-
   create_table "unit_swaps", comment: "Association of old and new units to swap for an unlock", force: :cascade do |t|
     t.bigint "unlock_id", null: false
     t.bigint "old_unit_id", null: false
@@ -760,8 +745,6 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
   add_foreign_key "transport_allowed_units", "units", column: "transport_id"
   add_foreign_key "transported_squads", "squads", column: "embarked_squad_id"
   add_foreign_key "transported_squads", "squads", column: "transport_squad_id"
-  add_foreign_key "unit_games", "games"
-  add_foreign_key "unit_games", "units"
   add_foreign_key "unit_swaps", "units", column: "new_unit_id"
   add_foreign_key "unit_swaps", "units", column: "old_unit_id"
   add_foreign_key "unit_swaps", "unlocks"

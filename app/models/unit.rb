@@ -26,8 +26,6 @@
 class Unit < ApplicationRecord
   has_many :restriction_units
   has_one :unit_vet, inverse_of: :unit
-  has_many :unit_games
-  has_many :games, through: :unit_games
   has_many :transport_allowed_units, foreign_key: "transport_id"
 
   validates_presence_of :name
