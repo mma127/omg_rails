@@ -36,8 +36,8 @@ RSpec.describe BattleService do
 
     context "when the player is already in a battle" do
       before do
-        create :battle
-        create :battle_player, player: player, company: company
+        battle = create :battle, ruleset: ruleset
+        create :battle_player, battle: battle, player: player, company: company
       end
       it "fails to create a battle" do
         expect { subject.create_battle(name, 1, ruleset.id, company.id) }

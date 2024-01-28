@@ -193,7 +193,7 @@ RSpec.describe AvailableUnitService do
 
   describe "#recreate_disabled_from_doctrine_unlock" do
     let(:units_disabled) { [unit1, unit2, unit3] } # These were previously disabled but unit2 has a disable_unit on the doctrine
-    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine }
+    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, ruleset: ruleset }
     let(:du_restriction) { doctrine_unlock.restriction }
 
     before do
@@ -215,7 +215,7 @@ RSpec.describe AvailableUnitService do
     context "when the available_units are also affected by a doctrine_unlock enabling one" do
       before do
         # Create doctrine unlock that enables unit2
-        doctrine_unlock2 = create :doctrine_unlock, doctrine: doctrine, branch: 2
+        doctrine_unlock2 = create :doctrine_unlock, doctrine: doctrine, branch: 2, ruleset: ruleset
         restriction_du2 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2
         create :enabled_unit, unit: unit2, restriction: restriction_du2, ruleset: ruleset
         company_unlock2 = create :company_unlock, company: company, doctrine_unlock: doctrine_unlock2
@@ -235,8 +235,8 @@ RSpec.describe AvailableUnitService do
     context "when the available_units are also affected by a doctrine_unlock enabling one and a doctrine_unlock disabling one" do
       before do
         # Create doctrine unlock that enables unit2
-        doctrine_unlock2 = create :doctrine_unlock
-        doctrine_unlock3 = create :doctrine_unlock
+        doctrine_unlock2 = create :doctrine_unlock, ruleset: ruleset
+        doctrine_unlock3 = create :doctrine_unlock, ruleset: ruleset
         restriction_du2 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2
         restriction_du3 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock3
         create :enabled_unit, unit: unit2, restriction: restriction_du2, ruleset: ruleset
@@ -287,7 +287,7 @@ RSpec.describe AvailableUnitService do
     let(:replace_resupply) { 5 }
     let!(:unlock1) { create :unlock }
     let!(:unlock2) { create :unlock }
-    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1 }
+    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, ruleset: ruleset }
     let!(:du_restriction) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock }
     let!(:doc_restriction) { create :restriction, :with_doctrine, doctrine: doctrine }
     let!(:doc_enabled_unit) { create :enabled_unit, restriction: doc_restriction, unit: unit1, ruleset: ruleset,
@@ -320,9 +320,9 @@ RSpec.describe AvailableUnitService do
     let(:replace_resupply) { 5 }
     let!(:unlock1) { create :unlock }
     let!(:unlock2) { create :unlock }
-    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1 }
+    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, ruleset: ruleset }
     let!(:du_restriction) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock }
-    let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, tree: 1, branch: 1, row: 2 }
+    let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, tree: 1, branch: 1, row: 2, ruleset: ruleset }
     let!(:du_restriction2) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2 }
     let!(:doc_restriction) { create :restriction, :with_doctrine, doctrine: doctrine }
     let!(:doc_enabled_unit) { create :enabled_unit, restriction: doc_restriction, unit: unit1, ruleset: ruleset,

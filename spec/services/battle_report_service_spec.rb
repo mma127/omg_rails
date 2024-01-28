@@ -431,9 +431,9 @@ RSpec.describe BattleReportService do
     end
 
     context "when there are resource bonuses" do
-      let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15 }
-      let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10 }
-      let(:fuel_rb) { create :resource_bonus, resource: "fuel", man: -60, mun: -20, fuel: 50 }
+      let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15, ruleset: ruleset }
+      let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10, ruleset: ruleset }
+      let(:fuel_rb) { create :resource_bonus, resource: "fuel", man: -60, mun: -20, fuel: 50, ruleset: ruleset }
       before do
         create :company_resource_bonus, company: company1, resource_bonus: man_rb
         create :company_resource_bonus, company: company1, resource_bonus: man_rb

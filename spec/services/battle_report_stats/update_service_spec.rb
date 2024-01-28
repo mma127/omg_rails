@@ -16,9 +16,11 @@ RSpec.describe BattleReportStats::UpdateService do
                                  infantry_kills_2v2: prev_inf_killed_2v2, vehicle_losses_2v2: prev_veh_lost_2v2 }
   let!(:company_stats2) { create :company_stats, company: company2 }
 
-  let!(:squad1) { create :squad, company: company1, vet: 100 }
-  let!(:squad2) { create :squad, company: company1, vet: 0 }
-  let!(:squad3) { create :squad, company: company1, vet: 42.12385 }
+  let!(:available_unit) { create :available_unit, company: company1 }
+
+  let!(:squad1) { create :squad, company: company1, available_unit: available_unit, vet: 100 }
+  let!(:squad2) { create :squad, company: company1, available_unit: available_unit, vet: 0 }
+  let!(:squad3) { create :squad, company: company1, available_unit: available_unit, vet: 42.12385 }
 
   let(:inf_lost1) { 24 }
   let(:veh_lost1) { 3 }

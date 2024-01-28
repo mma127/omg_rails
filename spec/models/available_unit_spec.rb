@@ -32,7 +32,8 @@
 require "rails_helper"
 
 RSpec.describe AvailableUnit, type: :model do
-  let!(:available_unit) { create :available_unit}
+  let!(:available_unit) { create :available_unit }
+  let(:company) { available_unit.company }
 
   describe 'associations' do
     it { should belong_to(:company) }
@@ -65,17 +66,17 @@ RSpec.describe AvailableUnit, type: :model do
 
   it "gets the correct unit name" do
     unit = create :unit, name: "riflemen"
-    au = create :available_unit, unit: unit
+    au = create :available_unit, unit: unit, company: company
     expect(au.unit_name).to eq("riflemen")
   end
   it "gets the correct unit display name" do
     unit = create :unit, display_name: "Riflemen"
-    au = create :available_unit, unit: unit
+    au = create :available_unit, unit: unit, company: company
     expect(au.unit_display_name).to eq("Riflemen")
   end
   it "gets the correct unit type" do
     unit = create :infantry
-    au = create :available_unit, unit: unit
+    au = create :available_unit, unit: unit, company: company
     expect(au.unit_type).to eq("Infantry")
   end
 end

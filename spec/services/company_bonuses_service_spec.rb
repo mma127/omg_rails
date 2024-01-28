@@ -4,10 +4,10 @@ RSpec.describe CompanyBonusesService do
   let!(:player) { create :player }
   let(:max_resource_bonuses) { 5 }
   let!(:ruleset) { create :ruleset, max_resource_bonuses: max_resource_bonuses }
-  let!(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15 }
-  let!(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10 }
-  let!(:fuel_rb) { create :resource_bonus, resource: "fuel", man: -60, mun: -20, fuel: 50 }
-  let!(:company) { create :company, player: player }
+  let!(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15, ruleset: ruleset }
+  let!(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10, ruleset: ruleset }
+  let!(:fuel_rb) { create :resource_bonus, resource: "fuel", man: -60, mun: -20, fuel: 50, ruleset: ruleset }
+  let!(:company) { create :company, player: player, ruleset: ruleset }
   let(:company_id) { company.id }
 
   subject(:instance) { described_class.new(company_id, player) }
@@ -70,7 +70,7 @@ RSpec.describe CompanyBonusesService do
 
     context "when the company is in a battle" do
       before do
-        battle = create :battle
+        battle = create :battle, ruleset: ruleset
         create :battle_player, battle: battle, player: player, company: company
       end
 
@@ -115,7 +115,7 @@ RSpec.describe CompanyBonusesService do
 
     context "when the company is in a battle" do
       before do
-        battle = create :battle
+        battle = create :battle, ruleset: ruleset
         create :battle_player, battle: battle, player: player, company: company
       end
 
