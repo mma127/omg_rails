@@ -69,6 +69,7 @@
 #
 class CompanyLeaderboardStats < ApplicationRecord
   belongs_to :company
+  belongs_to :player
 
   def readonly?
     false

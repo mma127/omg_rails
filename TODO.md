@@ -1,7 +1,5 @@
 SquadBuilder
-1. Fix company grid highlighting for transport squads when dragging
-2. Fix double tooltips appearing when hovering over transported squad card
-3. Only open the transport drop target when dragging units/squads
+1. Only open the transport drop target when dragging units/squads
 
 Upgrades
 1. Squad `pop` and `popWithTransported` isn't consistent. CompanyGridDropTarget is calculating platoon pop with `popWithTransported` but that isn't updated for squad upgrade pop
@@ -14,7 +12,6 @@ Redux
 
 BattlePlayer
 1. Pass `side` back for the BattlePlayer to create, to avoid relying on `company.faction.side` which may not be correct (ie, mixed teams)
-2. When a Company is deleted, probably don't want all battle players for the company deleted too (for historical stat calculation against faction/doctrines of companies). Could store a light version of just that company metadata in a model (ie, HistoricalCompany) that is not deleted. Link BP to that
 
 Player
 1. Create a separate RulesetPlayer record to encapsulate ruleset specific data like vps current/earned in that ruleset
@@ -33,4 +30,8 @@ Enhancements
 3. User preferences model (ie, saving compact status)
 
 PRELAUNCH
-1. Ruleset across all models. Add rule_type and is_active to ruleset. This allows using ruleset for historical data
+Unused Models
+* Game
+* UnitGame
+* UnitModification
+* 

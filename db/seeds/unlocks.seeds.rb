@@ -38,6 +38,8 @@ after :units do
     TANKHUNTERS: Doctrine.find_by_name("tank_hunters")
   }.with_indifferent_access
 
+  war_ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
+
   CSV.foreach('db/seeds/doctrineabilities.csv', headers: true) do |row|
     name = row["internal_name"]
     doc = get_doc_str_from_const(row["const"])
@@ -50,6 +52,6 @@ after :units do
     puts "name: #{name}, constname: #{row["const"]}, doctrine: #{doctrine.display_name}"
     is_disabled = row["vp"].to_i > 25
     unlock = Unlock.create!(name: snakecase(name), const_name: row["const"], display_name: name, description: row["description"])
-    DoctrineUnlock.create!(doctrine: doctrine, unlock: unlock, vp_cost: row["vp"], tree: row["tree"], branch: row["branch"], row: row["tier"], disabled: is_disabled)
+    DoctrineUnlock.create!(doctrine: doctrine, unlock: unlock, ruleset: war_ruleset, vp_cost: row["vp"], tree: row["tree"], branch: row["branch"], row: row["tier"], disabled: is_disabled)
   end
 end

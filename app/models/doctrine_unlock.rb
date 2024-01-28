@@ -12,6 +12,7 @@
 #  created_at                                                            :datetime         not null
 #  updated_at                                                            :datetime         not null
 #  doctrine_id                                                           :bigint
+#  ruleset_id                                                            :bigint           not null
 #  unlock_id                                                             :bigint
 #
 # Indexes
@@ -19,16 +20,19 @@
 #  index_doctrine_unlocks_on_doctrine_id                (doctrine_id)
 #  index_doctrine_unlocks_on_doctrine_id_and_unlock_id  (doctrine_id,unlock_id) UNIQUE
 #  index_doctrine_unlocks_on_doctrine_tree              (doctrine_id,tree,branch,row) UNIQUE
+#  index_doctrine_unlocks_on_ruleset_id                 (ruleset_id)
 #  index_doctrine_unlocks_on_unlock_id                  (unlock_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (doctrine_id => doctrines.id)
+#  fk_rails_...  (ruleset_id => rulesets.id)
 #  fk_rails_...  (unlock_id => unlocks.id)
 #
 class DoctrineUnlock < ApplicationRecord
   belongs_to :doctrine
   belongs_to :unlock
+  belongs_to :ruleset
   has_one :restriction
 
   has_many :restriction_units, through: :restriction

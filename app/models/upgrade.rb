@@ -23,6 +23,8 @@
 class Upgrade < ApplicationRecord
   CONST_PREFIX = "OMGUPG"
 
+  has_many :available_upgrades, inverse_of: :upgrade
+
   validates :model_count, presence: false
 
   # Used for battle file

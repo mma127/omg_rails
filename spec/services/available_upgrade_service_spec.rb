@@ -160,7 +160,7 @@ RSpec.describe AvailableUpgradeService do
   describe "#recreate_disabled_from_doctrine_unlock" do
     let!(:ruleset) { create :ruleset }
     let!(:company) { create :company, faction: faction, doctrine: doctrine1, ruleset: ruleset }
-    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine1 }
+    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine1, ruleset: ruleset }
     let(:du_restriction) { doctrine_unlock.restriction }
     let!(:enabled_upgrade) { create :enabled_upgrade, upgrade: upgrade4, man: 100, mun: 100, fuel: 100, pop: 0, uses: 0, restriction: restriction_doctrine1, ruleset: ruleset }
     let!(:disabled_upgrade) { create :disabled_upgrade, upgrade: upgrade4, restriction: du_restriction, ruleset: ruleset }
@@ -193,7 +193,7 @@ RSpec.describe AvailableUpgradeService do
       # The current logic will overwrite the MODIFY_FIELD values with those of the most recent enabled_upgrade
       before do
         # Create doctrine unlock that enables the other enabled upgrade
-        doctrine_unlock2 = create :doctrine_unlock, doctrine: doctrine1, branch: 2
+        doctrine_unlock2 = create :doctrine_unlock, doctrine: doctrine1, branch: 2, ruleset: ruleset
         restriction_du2 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2
         doctrine_unlock2.update!(restriction: restriction_du2)
         enabled_upgrade = create :enabled_upgrade, upgrade: upgrade4, man: 200, mun: 200, fuel: 200, pop: 0, uses: 0, restriction: restriction_du2, ruleset: ruleset
@@ -217,7 +217,7 @@ RSpec.describe AvailableUpgradeService do
 
       context "when there is also a doctrine_unlock that disables the upgrade/unit" do
         before do
-          doctrine_unlock3 = create :doctrine_unlock, doctrine: doctrine1, branch: 3
+          doctrine_unlock3 = create :doctrine_unlock, doctrine: doctrine1, branch: 3, ruleset: ruleset
           restriction_du3 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock3
           doctrine_unlock3.update!(restriction: restriction_du3)
           disabled_upgrade = create :disabled_upgrade, upgrade: upgrade4, restriction: restriction_du3, ruleset: ruleset
@@ -252,7 +252,7 @@ RSpec.describe AvailableUpgradeService do
 
     context "when the available upgrades is affected by a doctrine unlock disabling the upgrade/unit" do
       before do
-        doctrine_unlock3 = create :doctrine_unlock, doctrine: doctrine1, branch: 3
+        doctrine_unlock3 = create :doctrine_unlock, doctrine: doctrine1, branch: 3, ruleset: ruleset
         restriction_du3 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock3
         doctrine_unlock3.update!(restriction: restriction_du3)
         disabled_upgrade = create :disabled_upgrade, upgrade: upgrade4, restriction: restriction_du3, ruleset: ruleset
@@ -326,7 +326,7 @@ RSpec.describe AvailableUpgradeService do
     let(:replace_uses) { 5 }
     let!(:unlock1) { create :unlock }
     let!(:unlock2) { create :unlock }
-    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1 }
+    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, ruleset: ruleset }
     let!(:du_restriction) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock }
     let!(:doc_available_upgrade1) { create :base_available_upgrade, company: company, upgrade: upgrade1, unit: unit1,
                                            man: 0, mun: 35, fuel: 0, pop: 0, uses: 2 }
@@ -373,9 +373,9 @@ RSpec.describe AvailableUpgradeService do
     let(:replace_uses) { 5 }
     let!(:unlock1) { create :unlock }
     let!(:unlock2) { create :unlock }
-    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1 }
+    let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, ruleset: ruleset }
     let!(:du_restriction) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock }
-    let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, tree: 1, branch: 1, row: 2 }
+    let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, tree: 1, branch: 1, row: 2, ruleset: ruleset }
     let!(:du_restriction2) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2 }
     let!(:doc_available_upgrade1) { create :base_available_upgrade, company: company, upgrade: upgrade1, unit: unit1,
                                            man: add_man, mun: replace_mun + add_mun, fuel: 0, pop: add_pop, uses: replace_uses }

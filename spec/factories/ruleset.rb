@@ -1,6 +1,8 @@
 FactoryBot.define do
   factory :ruleset do
     name { 'war' }
+    ruleset_type { Ruleset.ruleset_types[:war] }
+    is_active { true }
     description { 'Starting ruleset' }
     starting_man { 7000 }
     starting_mun { 1600 }

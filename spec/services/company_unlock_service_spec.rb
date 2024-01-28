@@ -14,9 +14,9 @@ RSpec.describe CompanyUnlockService do
   let!(:unlock1) { create :unlock }
   let!(:unlock2) { create :unlock }
   let(:vp_cost) { 3 }
-  let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, vp_cost: vp_cost }
+  let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, vp_cost: vp_cost, ruleset: ruleset }
   let!(:du_restriction) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock }
-  let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, vp_cost: vp_cost, tree: 1, branch: 1, row: 2 }
+  let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, vp_cost: vp_cost, tree: 1, branch: 1, row: 2, ruleset: ruleset }
   let!(:du_restriction2) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2 }
   let!(:unit1) { create :unit }
   let!(:unit2) { create :unit }
@@ -462,7 +462,7 @@ RSpec.describe CompanyUnlockService do
 
     context "when the company is in a battle" do
       before do
-        battle = create :battle
+        battle = create :battle, ruleset: ruleset
         create :battle_player, battle: battle, player: company.player, company: company
       end
 
@@ -984,7 +984,7 @@ RSpec.describe CompanyUnlockService do
     end
 
     context "when the company doesn't own the given company_unlock_id" do
-      let!(:company2) { create :company }
+      let!(:company2) { create :company, ruleset: ruleset }
       let!(:company_unlock) { create :company_unlock, company: company2, doctrine_unlock: doctrine_unlock }
 
       it "raises an error" do
@@ -994,7 +994,7 @@ RSpec.describe CompanyUnlockService do
 
     context "when the company is in a battle" do
       before do
-        battle = create :battle
+        battle = create :battle, ruleset: ruleset
         create :battle_player, battle: battle, player: company.player, company: company
       end
 

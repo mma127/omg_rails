@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Ratings::BalanceService do
+  let!(:ruleset) { create :ruleset }
   let!(:player1) { create :player }
   let(:elo1) { 1500 }
   let!(:player1_rating) { create :player_rating, player: player1, elo: elo1 }
@@ -27,14 +28,14 @@ RSpec.describe Ratings::BalanceService do
   let!(:player8_rating) { create :player_rating, player: player8, elo: elo8 }
 
   let(:size) { 1 }
-  let!(:battle) { create :battle, size: size }
+  let!(:battle) { create :battle, size: size, ruleset: ruleset }
 
   describe "#get_elo_difference" do
     subject { described_class.new(battle.id).get_elo_difference }
     context "with 1v1 battle" do
       before do
-        create :battle_player, battle: battle, player: player1
-        create :battle_player, :axis, battle: battle, player: player2
+        create :battle_player, battle: battle, player: player1, ruleset: ruleset
+        create :battle_player, :axis, battle: battle, player: player2, ruleset: ruleset
       end
 
       context "when elos are matched" do
@@ -60,14 +61,14 @@ RSpec.describe Ratings::BalanceService do
 
     context "with 4v4 battle" do
       before do
-        create :battle_player, battle: battle, player: player1
-        create :battle_player, battle: battle, player: player2
-        create :battle_player, battle: battle, player: player3
-        create :battle_player, battle: battle, player: player4
-        create :battle_player, :axis, battle: battle, player: player5
-        create :battle_player, :axis, battle: battle, player: player6
-        create :battle_player, :axis, battle: battle, player: player7
-        create :battle_player, :axis, battle: battle, player: player8
+        create :battle_player, battle: battle, player: player1, ruleset: ruleset
+        create :battle_player, battle: battle, player: player2, ruleset: ruleset
+        create :battle_player, battle: battle, player: player3, ruleset: ruleset
+        create :battle_player, battle: battle, player: player4, ruleset: ruleset
+        create :battle_player, :axis, battle: battle, player: player5, ruleset: ruleset
+        create :battle_player, :axis, battle: battle, player: player6, ruleset: ruleset
+        create :battle_player, :axis, battle: battle, player: player7, ruleset: ruleset
+        create :battle_player, :axis, battle: battle, player: player8, ruleset: ruleset
       end
 
       context "when elos are matched" do
@@ -99,10 +100,10 @@ RSpec.describe Ratings::BalanceService do
 
     context "with 2v2" do
       let(:size) { 2 }
-      let!(:bp1) { create :battle_player, battle: battle, player: player1 }
-      let!(:bp2) { create :battle_player, battle: battle, player: player2 }
-      let!(:bp3) { create :battle_player, :axis, battle: battle, player: player3 }
-      let!(:bp4) { create :battle_player, :axis, battle: battle, player: player4 }
+      let!(:bp1) { create :battle_player, battle: battle, player: player1, ruleset: ruleset }
+      let!(:bp2) { create :battle_player, battle: battle, player: player2, ruleset: ruleset }
+      let!(:bp3) { create :battle_player, :axis, battle: battle, player: player3, ruleset: ruleset }
+      let!(:bp4) { create :battle_player, :axis, battle: battle, player: player4, ruleset: ruleset }
 
       context "when there is zero elo diff" do
         let(:elo1) { 1800 }
@@ -157,14 +158,14 @@ RSpec.describe Ratings::BalanceService do
 
     context "with 4v4" do
       let(:size) { 4 }
-      let!(:bp1) { create :battle_player, battle: battle, player: player1 }
-      let!(:bp2) { create :battle_player, battle: battle, player: player2 }
-      let!(:bp3) { create :battle_player, battle: battle, player: player3 }
-      let!(:bp4) { create :battle_player, battle: battle, player: player4 }
-      let!(:bp5) { create :battle_player, :axis, battle: battle, player: player5 }
-      let!(:bp6) { create :battle_player, :axis, battle: battle, player: player6 }
-      let!(:bp7) { create :battle_player, :axis, battle: battle, player: player7 }
-      let!(:bp8) { create :battle_player, :axis, battle: battle, player: player8 }
+      let!(:bp1) { create :battle_player, battle: battle, player: player1, ruleset: ruleset }
+      let!(:bp2) { create :battle_player, battle: battle, player: player2, ruleset: ruleset }
+      let!(:bp3) { create :battle_player, battle: battle, player: player3, ruleset: ruleset }
+      let!(:bp4) { create :battle_player, battle: battle, player: player4, ruleset: ruleset }
+      let!(:bp5) { create :battle_player, :axis, battle: battle, player: player5, ruleset: ruleset }
+      let!(:bp6) { create :battle_player, :axis, battle: battle, player: player6, ruleset: ruleset }
+      let!(:bp7) { create :battle_player, :axis, battle: battle, player: player7, ruleset: ruleset }
+      let!(:bp8) { create :battle_player, :axis, battle: battle, player: player8, ruleset: ruleset }
 
       context "when there is zero elo diff" do
         let(:elo1) { 1800 }
@@ -235,10 +236,10 @@ RSpec.describe Ratings::BalanceService do
   end
 
   describe "#clear_battle_balance_data" do
-    let!(:battle) { create :battle, elo_diff: 100 }
-    let!(:bp1) { create :battle_player, battle: battle, player: player1, team_balance: 1 }
-    let!(:bp2) { create :battle_player, battle: battle, player: player2, team_balance: 2 }
-    let!(:bp3) { create :battle_player, :axis, battle: battle, player: player3, team_balance: 1 }
+    let!(:battle) { create :battle, elo_diff: 100, ruleset: ruleset }
+    let!(:bp1) { create :battle_player, battle: battle, player: player1, team_balance: 1, ruleset: ruleset }
+    let!(:bp2) { create :battle_player, battle: battle, player: player2, team_balance: 2, ruleset: ruleset }
+    let!(:bp3) { create :battle_player, :axis, battle: battle, player: player3, team_balance: 1, ruleset: ruleset }
 
     subject { described_class.new(battle.id).clear_battle_balance_data }
 

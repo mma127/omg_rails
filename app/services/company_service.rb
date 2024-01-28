@@ -10,8 +10,6 @@ class CompanyService
   MIN_POP_PER_PLATOON = 7.freeze
   MAX_POP_PER_PLATOON = 25.freeze
 
-  WAR_RULESET = "war".freeze
-
   def initialize(player)
     @player = player
   end
@@ -22,7 +20,7 @@ class CompanyService
     end
 
     # Get ruleset
-    ruleset = Ruleset.find_by(name: WAR_RULESET)
+    ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
 
     # Starting vps
     vps = [@player.vps + ruleset.starting_vps, ruleset.max_vps].min

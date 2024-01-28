@@ -37,8 +37,8 @@ RSpec.describe Squad, type: :model do
     it { should have_many(:available_upgrades) }
 
     context "when transporting squads" do
-      let!(:passenger1) { create :squad }
-      let!(:passenger2) { create :squad }
+      let!(:passenger1) { create :squad, ruleset: squad.company.ruleset }
+      let!(:passenger2) { create :squad, ruleset: squad.company.ruleset }
       let!(:transported_squad1) { create :transported_squad, transport_squad: squad, embarked_squad: passenger1}
       let!(:transported_squad2) { create :transported_squad, transport_squad: squad, embarked_squad: passenger2}
 

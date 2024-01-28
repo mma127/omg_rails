@@ -2,6 +2,7 @@ require "rails_helper"
 require "support/time_helpers"
 
 RSpec.describe Ratings::UpdateService do
+  let!(:ruleset) { create :ruleset }
   let!(:player1) { create :player, name: "Player 1" }
   let(:elo1) { 1500 }
   let(:mu1) { 25 }
@@ -15,7 +16,7 @@ RSpec.describe Ratings::UpdateService do
 
   let(:date_now) { DateTime.now.to_date }
   let(:size) { 1 }
-  let!(:battle) { create :battle, size: size }
+  let!(:battle) { create :battle, size: size, ruleset: ruleset }
 
   describe "#update_player_ratings" do
     let(:winner) { Battle.winners[:allied] }
@@ -32,8 +33,8 @@ RSpec.describe Ratings::UpdateService do
 
     context "with 1v1 battle" do
       before do
-        create :battle_player, battle: battle, player: player1
-        create :battle_player, :axis, battle: battle, player: player2
+        create :battle_player, battle: battle, player: player1, ruleset: ruleset
+        create :battle_player, :axis, battle: battle, player: player2, ruleset: ruleset
       end
 
       context "with equal starting rating" do
@@ -231,14 +232,14 @@ RSpec.describe Ratings::UpdateService do
       let!(:player8_rating) { create :player_rating, player: player8 }
 
       before do
-        create :battle_player, battle: battle, player: player1
-        create :battle_player, battle: battle, player: player2
-        create :battle_player, battle: battle, player: player3
-        create :battle_player, battle: battle, player: player4
-        create :battle_player, :axis, battle: battle, player: player5
-        create :battle_player, :axis, battle: battle, player: player6
-        create :battle_player, :axis, battle: battle, player: player7
-        create :battle_player, :axis, battle: battle, player: player8
+        create :battle_player, battle: battle, player: player1, ruleset: ruleset
+        create :battle_player, battle: battle, player: player2, ruleset: ruleset
+        create :battle_player, battle: battle, player: player3, ruleset: ruleset
+        create :battle_player, battle: battle, player: player4, ruleset: ruleset
+        create :battle_player, :axis, battle: battle, player: player5, ruleset: ruleset
+        create :battle_player, :axis, battle: battle, player: player6, ruleset: ruleset
+        create :battle_player, :axis, battle: battle, player: player7, ruleset: ruleset
+        create :battle_player, :axis, battle: battle, player: player8, ruleset: ruleset
       end
 
       it "updates player ratings", :aggregate_failures do

@@ -1,3 +1,30 @@
+# Overview
+Models in the OMG Rails app fall in one of five categories:
+
+### KEY Permanent, not ruleset specific
+These models are important keystone models that are essential and are not expected to change. Records in 
+these models should exist for the duration of the app's existence.
+
+### Permanent, not ruleset specific, associated with KEY models
+These models provide additional functionality on top of KEY models that is also not expected to change. Feature changes for a patch
+should result in new records, not modifications of existing records (except in case of a fix).
+
+### Temporary per ruleset, user and stats facing
+These models expect to be cleared of data during a war reset and aren't required for company snapshots, but records should still only exist for the duration of
+the ruleset. 
+
+### Temporary per ruleset, must be recreated per patch/ruleset version
+These models are necessary to construct companies, and could be modified by feature changes in a patch. To provide a historical record for
+previous ruleset versions these models expect to be copied for the new active ruleset.
+
+### Temporary per ruleset, associated with ruleset-based models, necessary for company snapshots
+These models are also expected to be cleared of data during a war reset, but they are necessary for company snapshots.
+
+
+## Entity Relation Diagram
+<img src="OMG Rails Data Model.png">
+
+# Specific Model Notes
 
 ## Company Unlocks
 
@@ -8,7 +35,7 @@ version of the unit (as opposed to free or other special cases), to swap to.
 Since now it's possible to have multiple `AvailableUnits` for a `Company` and `Unit`, company squad updates need to pass 
 `available_unit_id` as the identifier of what was purchased as `unit_id` will not be sufficiently specific.
 
-### Unit Modifications
+## Unit Modifications
 There are certain subclasses of `RestrictionUnit` that when unlocked by a company unlock purchase, will be applied against the `BaseAvailableUnit` of the associated unit.
 
 The fields affected are enumerated in `RestrictionUnit::MODIFY_FIELDS`.

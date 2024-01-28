@@ -8,8 +8,8 @@ RSpec.describe BattleNotificationService do
   let!(:battle) { create :battle, ruleset: ruleset, state: "ingame", size: 1 }
 
   before do
-    create :battle_player, battle: battle, player: player1
-    create :battle_player, battle: battle, player: player2
+    create :battle_player, battle: battle, player: player1, ruleset: ruleset
+    create :battle_player, battle: battle, player: player2, ruleset: ruleset
   end
 
   describe "#notify_battle_full" do

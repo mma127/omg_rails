@@ -1,5 +1,5 @@
 after :upgrades do
-  war_ruleset = Ruleset.find_by_name("war")
+  war_ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
 
   @faction_restrictions_by_name = {}
   @doctrine_restrictions_by_name = {}
