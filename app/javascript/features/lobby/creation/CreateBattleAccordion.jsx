@@ -6,7 +6,7 @@ import { ActionCableConsumer, ActionCableProvider } from '@thrash-industries/rea
 import { CreateBattleForm } from "./CreateBattleForm";
 import { fetchActiveBattles } from "../lobbySlice";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCompanies } from "../../companies/companiesSlice";
+import { fetchActiveCompanies } from "../../companies/companiesSlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 
 const rulesetId = 1
