@@ -12,7 +12,7 @@ RSpec.describe BattleService do
   let(:doctrine2) { create :doctrine, faction: faction2 }
   let(:size) { 1 }
   let(:unit1) { create :unit }
-  let(:company) { create :company, player: player, ruleset: ruleset, faction: faction1, doctrine: doctrine1 }
+  let(:company) { create :active_company, player: player, ruleset: ruleset, faction: faction1, doctrine: doctrine1 }
 
   before do
     available_unit = create :available_unit, company: company, unit: unit1, pop: 10

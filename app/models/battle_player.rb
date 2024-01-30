@@ -44,7 +44,6 @@ class BattlePlayer < ApplicationRecord
     company.doctrine.name
   end
 
-  # TODO Are we sure we want to surface this?
   def player_elo
     player.player_rating.elo
   end

@@ -7,7 +7,7 @@ RSpec.describe CompanyBonusesService do
   let!(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15, ruleset: ruleset }
   let!(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10, ruleset: ruleset }
   let!(:fuel_rb) { create :resource_bonus, resource: "fuel", man: -60, mun: -20, fuel: 50, ruleset: ruleset }
-  let!(:company) { create :company, player: player, ruleset: ruleset }
+  let!(:company) { create :active_company, player: player, ruleset: ruleset }
   let(:company_id) { company.id }
 
   subject(:instance) { described_class.new(company_id, player) }

@@ -12,7 +12,7 @@ class CompanyBonusesService
   end
 
   def purchase_resource_bonus(resource)
-    company = Company.includes(:ruleset, company_resource_bonuses: :resource_bonus).find_by(id: @company_id, player: @player)
+    company = ActiveCompany.includes(:ruleset, company_resource_bonuses: :resource_bonus).find_by(id: @company_id, player: @player)
 
     # Validate company belongs to player
     validate_can_update_company(company)
@@ -33,7 +33,7 @@ class CompanyBonusesService
   end
 
   def refund_resource_bonus(resource)
-    company = Company.includes(:ruleset, company_resource_bonuses: :resource_bonus).find_by(id: @company_id, player: @player)
+    company = ActiveCompany.includes(:ruleset, company_resource_bonuses: :resource_bonus).find_by(id: @company_id, player: @player)
 
     # Validate company belongs to player
     validate_can_update_company(company)

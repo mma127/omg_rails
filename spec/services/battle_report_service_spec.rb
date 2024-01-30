@@ -10,8 +10,8 @@ RSpec.describe BattleReportService do
   let(:unit1) { create :unit }
   let(:unit2) { create :unit }
 
-  let!(:company1) { create :company, player: player1, ruleset: ruleset }
-  let!(:company2) { create :company, player: player2, ruleset: ruleset }
+  let!(:company1) { create :active_company, player: player1, ruleset: ruleset }
+  let!(:company2) { create :active_company, player: player2, ruleset: ruleset }
   let!(:available_unit1) { create :available_unit, unit: unit1, company: company1, available: 10, resupply: 5, resupply_max: 10 }
   let!(:available_unit2) { create :available_unit, unit: unit2, company: company2, available: 80, resupply: 10, resupply_max: 99 }
   let!(:squad11) { create :squad, available_unit: available_unit1, company: company1 }
@@ -457,8 +457,8 @@ RSpec.describe BattleReportService do
   end
 
   describe "#add_company_vps" do
-    let!(:company3) { create :company, player: player1, ruleset: ruleset }
-    let!(:company4) { create :company, player: player2, ruleset: ruleset }
+    let!(:company3) { create :active_company, player: player1, ruleset: ruleset }
+    let!(:company4) { create :active_company, player: player2, ruleset: ruleset }
 
     context "when all companies have less than max_vps VPs" do
       it "updates all company vps_earned" do

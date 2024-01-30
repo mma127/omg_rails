@@ -116,7 +116,7 @@ module OMG
         post 'squads' do
           begin
             declared_params = declared(params)
-            company = Company.includes(:ruleset, :available_units,
+            company = ActiveCompany.includes(:ruleset, :available_units,
                                        { squads: { squad_upgrades: :upgrade },
                                          available_upgrades: :upgrade,
                                          available_offmaps: :offmap,

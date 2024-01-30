@@ -217,7 +217,7 @@ class BattleReportService < ApplicationService
     player_ids = @battle.players.pluck(:id)
     ruleset_id = @battle.ruleset_id
     info_logger("Start adding VPs to Companies for players #{player_ids} in ruleset #{ruleset_id}")
-    companies = Company.where(player_id: player_ids, ruleset_id: ruleset_id)
+    companies = ActiveCompany.where(player_id: player_ids, ruleset_id: ruleset_id)
     companies_to_update = []
     companies.each do |c|
       if c.vps_earned >= @ruleset.max_vps
@@ -229,7 +229,7 @@ class BattleReportService < ApplicationService
         companies_to_update << c
       end
     end
-    Company.import!(companies_to_update, on_duplicate_key_update: { conflict_target: [:id], columns: [:vps_earned, :vps_current] })
+    ActiveCompany.import!(companies_to_update, on_duplicate_key_update: { conflict_target: [:id], columns: [:vps_earned, :vps_current] })
   end
 
   # Player VPs are used to repopulate
