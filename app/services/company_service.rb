@@ -27,7 +27,7 @@ class CompanyService
 
     ActiveRecord::Base.transaction do
       # Create Company entity
-      new_company = Company.create!(name: name,
+      new_company = ActiveCompany.create!(name: name,
                                     player: @player,
                                     doctrine: doctrine,
                                     faction: doctrine.faction,

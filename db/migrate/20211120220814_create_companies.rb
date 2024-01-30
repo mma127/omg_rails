@@ -2,6 +2,7 @@ class CreateCompanies < ActiveRecord::Migration[6.1]
   def change
     create_table :companies do |t|
       t.string :name, comment: "Company name"
+      t.string :type, comment: "Company type"
       t.references :player, index: true, foreign_key: true, null: false
       t.references :doctrine, index: true, foreign_key: true, null: false
       t.references :faction, index: true, foreign_key: true, null: false

@@ -175,6 +175,7 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
 
   create_table "companies", force: :cascade do |t|
     t.string "name", comment: "Company name"
+    t.string "type", comment: "Company type"
     t.bigint "player_id", null: false
     t.bigint "doctrine_id", null: false
     t.bigint "faction_id", null: false

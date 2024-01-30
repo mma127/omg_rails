@@ -316,7 +316,7 @@ class BattleService
 
   # Validate the given company id matches a company belonging to the player and ruleset
   def validate_company(company_id, ruleset)
-    company = Company.find(company_id)
+    company = ActiveCompany.find(company_id)
     raise BattleValidationError.new "Invalid Company id #{company_id}" unless company.present?
     raise BattleValidationError.new "Company #{company_id} has mismatched ruleset, expected #{ruleset.id} got #{company.ruleset.id}" unless company.ruleset == ruleset
     company
