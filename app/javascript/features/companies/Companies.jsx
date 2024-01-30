@@ -4,7 +4,7 @@ import { Box, Container, Typography } from "@mui/material";
 
 import { CreateCompaniesForm } from "./creation/CreateCompaniesForm";
 import { selectIsAuthed } from "../player/playerSlice";
-import { fetchCompanies, selectAllCompanies } from "./companiesSlice";
+import { fetchActiveCompanies, selectAllCompanies } from "./companiesSlice";
 import { DisplayCompanies } from "./display/DisplayCompanies";
 import { Fingerprint } from "@mui/icons-material";
 import store from "../../app/store";
@@ -17,7 +17,7 @@ export const Companies = () => {
   //    Enter company builder
   const dispatch = useDispatch()
   useEffect( () => {
-    dispatch(fetchCompanies())
+    dispatch(fetchActiveCompanies())
   },[])
 
   const isAuthed = useSelector(selectIsAuthed)

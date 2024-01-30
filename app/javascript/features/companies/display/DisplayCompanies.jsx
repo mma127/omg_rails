@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { createCompany, fetchCompanies, selectAllCompanies } from "../companiesSlice";
+import { createCompany, fetchActiveCompanies, selectAllCompanies } from "../companiesSlice";
 import { Grid } from "@mui/material";
 import { CompanySummary } from "./CompanySummary";
 import { ErrorTypography } from "../../../components/ErrorTypography";

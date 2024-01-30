@@ -16,13 +16,13 @@ const initialState = companiesAdapter.getInitialState({
 })
 
 /**
- * Fetch all companies for the player. High level data only for company selection
+ * Fetch all active companies for the player. High level data only for company selection
  */
-export const fetchCompanies = createAsyncThunk(
-  "companies/fetchCompanies",
+export const fetchActiveCompanies = createAsyncThunk(
+  "companies/fetchActiveCompanies",
   async () => {
     try {
-      const response = await axios.get("/companies")
+      const response = await axios.get("/companies/active")
       return response.data
     } catch (err) {
       return rejectWithValue(err.response.data)
@@ -96,10 +96,10 @@ const companiesSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-      .addCase(fetchCompanies.fulfilled, (state, action) => {
+      .addCase(fetchActiveCompanies.fulfilled, (state, action) => {
         companiesAdapter.setAll(state, action.payload)
       })
-      .addCase(fetchCompanies.rejected, (state, action) => {
+      .addCase(fetchActiveCompanies.rejected, (state, action) => {
         if (!_.isNil(action.payload)) {
           state.loadingCompaniesError = action.payload.error
         }

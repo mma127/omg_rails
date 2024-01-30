@@ -8,6 +8,7 @@
 #  mun(Munitions available to this company) :integer          default(0)
 #  name(Company name)                       :string
 #  pop(Population cost of this company)     :integer          default(0)
+#  type(Company type)                       :string
 #  vps_current(VPs available to spend)      :integer          default(0), not null
 #  vps_earned(VPs earned by this company)   :integer          default(0), not null
 #  created_at                               :datetime         not null
@@ -102,6 +103,7 @@ class Company < ApplicationRecord
     expose :doctrine_name, as: :doctrineName
     expose :doctrine_display_name, as: :doctrineDisplayName
     expose :active_battle_id, as: :activeBattleId
+    expose :type
 
     expose :available_units, as: :availableUnits, using: AvailableUnit::Entity, if: { type: :full }
     expose :squads, using: Squad::Entity, if: { type: :full }

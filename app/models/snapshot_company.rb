@@ -33,5 +33,6 @@
 #  fk_rails_...  (ruleset_id => rulesets.id)
 #
 class SnapshotCompany < Company
+  LIMIT = 5.freeze
 
 end

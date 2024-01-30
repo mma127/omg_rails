@@ -8,6 +8,7 @@
 #  mun(Munitions available to this company) :integer          default(0)
 #  name(Company name)                       :string
 #  pop(Population cost of this company)     :integer          default(0)
+#  type(Company type)                       :string
 #  vps_current(VPs available to spend)      :integer          default(0), not null
 #  vps_earned(VPs earned by this company)   :integer          default(0), not null
 #  created_at                               :datetime         not null

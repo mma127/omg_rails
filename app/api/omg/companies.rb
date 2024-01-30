@@ -8,9 +8,9 @@ module OMG
     end
 
     resource :companies do
-      desc 'get all companies for the player'
-      get do
-        present Company.includes(:company_stats).where(player: current_player), type: :with_stats
+      desc 'get all active companies for the player'
+      get 'active' do
+        present ActiveCompany.includes(:company_stats).where(player: current_player), type: :with_stats
       end
 
       desc 'create new company for the player'
