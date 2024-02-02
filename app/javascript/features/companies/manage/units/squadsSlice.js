@@ -656,7 +656,11 @@ export const selectAntiArmourSquads = state => state.squads[ANTI_ARMOUR]
 export const selectSupportSquads = state => state.squads[SUPPORT]
 export const selectHoldingSquads = state => state.squads[HOLDING]
 
-export const selectSquadsInTabIndex = (state, tab, index) => state.squads[tab][index]
+export const selectSquadsLoadingStatus = state => state.squads.squadsStatus
+export const selectSquadsInTabIndex = (state, tab, index) => {
+  const squads = state.squads[tab][index]
+  return squads
+}
 
 export const selectSquadInTabIndexUuid = (state, tab, index, uuid) => state.squads?.[tab]?.[index]?.[uuid]
 export const selectSquadInTabIndexTransportUuid = (state, tab, index, transportUuid, uuid) => {
@@ -673,7 +677,10 @@ export const selectSelectedSquad = state => {
     transportUuid = state.squads.selectedSquadTransportUuid;
   if (!_.isNil(tab) && !_.isNil(index) && !_.isNil(uuid)) {
     if (!_.isNil(transportUuid)) {
-      return state.squads[tab][index][transportUuid].transportedSquads[uuid]
+      const transport = state.squads[tab][index][transportUuid]
+      if (!_.isNil(transport) && _.has(transport.transportedSquads, uuid)) {
+        return state.squads[tab][index][transportUuid].transportedSquads[uuid]
+      }
     } else {
       return state.squads[tab][index][uuid]
     }

@@ -71,7 +71,7 @@ const companyBonusesSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchCompanyById.fulfilled, (state, action) => {
-        state.activeCompanyId = action.payload.id
+        state.activeCompanyId = action.payload.company.id
         state.isChanged = false
       })
       .addCase(fetchCompanySquads.fulfilled, (state, action) => {

@@ -61,6 +61,9 @@ const availableUnitsSlice = createSlice({
     resetAvailableUnitState: () => initialState,
     setSelectedAvailableUnitId: (state, action) => {
       state.selectedAvailableUnitId = action.payload
+    },
+    clearSelectedAvailableUnitId: state => {
+      state.selectedAvailableUnitId = null
     }
   },
   extraReducers(builder) {
@@ -120,7 +123,7 @@ const availableUnitsSlice = createSlice({
 
 export default availableUnitsSlice.reducer
 
-export const { resetAvailableUnitState, setSelectedAvailableUnitId } = availableUnitsSlice.actions
+export const { resetAvailableUnitState, setSelectedAvailableUnitId, clearSelectedAvailableUnitId } = availableUnitsSlice.actions
 
 export const {
   selectAll: selectAllAvailableUnits,

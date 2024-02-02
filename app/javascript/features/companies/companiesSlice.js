@@ -35,10 +35,10 @@ export const fetchActiveCompanies = createAsyncThunk(
  */
 export const fetchCompanyById = createAsyncThunk(
   "companies/fetchCompanyById",
-  async ({ companyId }, { rejectWithValue }) => {
+  async ({ companyId, current }, { rejectWithValue }) => {
     try {
       const response = await axios.get(`/companies/${companyId}`)
-      return response.data
+      return { company: response.data, current: current }
     } catch (err) {
       return rejectWithValue(err.response.data)
     }
@@ -112,7 +112,10 @@ const companiesSlice = createSlice({
       .addCase(fetchCompanyById.fulfilled, (state, action) => {
         state.loadingCompanyStatus = "fulfilled"
         state.needsRefresh = false
-        companiesAdapter.upsertOne(state, action.payload)
+        companiesAdapter.upsertOne(state, action.payload.company)
+        if (action.payload.current) {
+          state.currentCompany = action.payload.company
+        }
       })
       .addCase(fetchCompanyById.rejected, (state, action) => {
         state.loadingCompanyStatus = "rejected"

@@ -10,6 +10,7 @@ import { SquadsGridTabs } from "./squads/SquadsGridTabs";
 import { CORE, HOLDING } from "../../../constants/company";
 import { addCost, removeCost, selectCompanyActiveBattleId } from "../companiesSlice";
 import {
+  clearSelectedAvailableUnitId,
   resetAvailableUnitState,
   selectAvailableUnitsStatus,
   setSelectedAvailableUnitId
@@ -238,6 +239,8 @@ export const SquadBuilder = ({}) => {
     })
 
     dispatch(removeCost({ id: companyId, pop: pop, man: man, mun: mun, fuel: fuel }))
+    dispatch(clearSelectedSquad())
+    dispatch(clearSelectedAvailableUnitId())
     if (_.isNull(transportUuid)) {
       dispatch(removeSquad(squad))
     } else {
