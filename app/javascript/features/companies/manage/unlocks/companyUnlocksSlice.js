@@ -51,8 +51,8 @@ const companyUnlocksSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchCompanyById.fulfilled, (state, action) => {
-        companyUnlocksAdapter.setAll(state, action.payload.unlocks)
-        state.activeCompanyId = action.payload.id
+        companyUnlocksAdapter.setAll(state, action.payload.company.unlocks)
+        state.activeCompanyId = action.payload.company.id
       })
       .addCase(purchaseUnlock.pending, (state, action) => {
         state.errorMessage = null

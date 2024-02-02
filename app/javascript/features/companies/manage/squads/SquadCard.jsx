@@ -123,7 +123,7 @@ export const SquadCard = (
   const isHighlighted = squad.uuid === highlightedUuid
   useEffect(() => {
     // Need this check as react-drag-drop-container creates a ghost element copy of the child of the dragdropcontainer
-    const hasGhost = !!elementRef.current.closest(".ddcontainerghost")
+    const hasGhost = !!elementRef.current && !!elementRef.current.closest(".ddcontainerghost")
 
     if (isHighlighted && !hasGhost) {
       setIsTooltipOpen(true)
@@ -135,7 +135,7 @@ export const SquadCard = (
   const isSelected = selectedSquadUuid === uuid
 
   // Must have unit loaded to continue
-  if (!unit || !squad) {
+  if (!unit || !squad || !company) {
     return null
   }
 
