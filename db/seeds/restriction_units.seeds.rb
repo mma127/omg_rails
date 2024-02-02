@@ -225,7 +225,7 @@ after :restrictions do
                       man: 400, mun: 50, fuel: 0, pop: 3, resupply: 3, resupply_max: 6, company_max: 6, priority: 1)
   vickers_hmg = SupportTeam.find_by_name("vickers_hmg")
   EnabledUnit.create!(restriction: british_restriction, unit: vickers_hmg, ruleset: war_ruleset,
-                      man: 270, mun: 30, fuel: 0, pop: 3, resupply: 3, resupply_max: 6, company_max: 8, priority: 1)
+                      man: 270, mun: 40, fuel: 0, pop: 3, resupply: 3, resupply_max: 6, company_max: 8, priority: 1)
   _17pdr = SupportTeam.find_by_name("17pdr")
   EnabledUnit.create!(restriction: british_restriction, unit: _17pdr, ruleset: war_ruleset,
                       man: 450, mun: 160, fuel: 0, pop: 5, resupply: 4, resupply_max: 8, company_max: 8, priority: 1)
