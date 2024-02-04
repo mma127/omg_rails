@@ -5,7 +5,12 @@ import { makeStyles } from "@mui/styles";
 import '../../../../../assets/stylesheets/CompanyGridDropTarget.css'
 import { SquadCard } from "./SquadCard";
 import { useSelector } from "react-redux";
-import { selectCallinModifiers, selectIsCompanyManagerCompact, selectSquadsInTabIndex } from "../units/squadsSlice";
+import {
+  selectCallinModifiers,
+  selectIsCompanyManagerCompact,
+  selectSquadsInTabIndex,
+  selectSquadsLoadingStatus
+} from "../units/squadsSlice";
 import { GLIDER } from "../../../../constants/units/types";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
@@ -63,6 +68,7 @@ export const CompanyGridDropTarget = ({
   const classes = useStyles({ height: height, compactHeight: compactHeight })
 
   console.log(`Rendering tab ${currentTab} and index ${gridIndex}`)
+  const squadsStatus = useSelector(selectSquadsLoadingStatus)
   const squads = useSelector(state => selectSquadsInTabIndex(state, currentTab, gridIndex))
 
   const [openSnackbar, setOpenSnackbar] = useState(false)

@@ -123,7 +123,7 @@ export const CompanyManager = () => {
   useEffect(() => {
     if (!company) {
       console.log("dispatching company fetch from CompanyManager for null company")
-      dispatch(fetchCompanyById({ companyId }))
+      dispatch(fetchCompanyById({ companyId, current: true }))
     }
   },[])
 
@@ -135,7 +135,7 @@ export const CompanyManager = () => {
 
   useEffect(() => {
     console.log("dispatching company fetch from CompanyManager")
-    dispatch(fetchCompanyById({ companyId }))
+    dispatch(fetchCompanyById({ companyId, current: true }))
   }, [companyId, isCompanyBonusesChanged])
 
   if (!company || !doctrine) {
