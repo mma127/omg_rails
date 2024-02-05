@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: "0.5rem"
   },
   messagesGrid: {
-    height: "300px",
+    height: "220px",
     maxHeight: "100%",
     overflowY: "auto",
     display: "flex",

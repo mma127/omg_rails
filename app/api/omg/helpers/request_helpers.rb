@@ -14,6 +14,7 @@ module OMG
 
       def authenticate!
         error!("401 Unauthorized", 401) unless current_player
+        current_player.try :touch # Update player updated_at for online list
       end
     end
   end
