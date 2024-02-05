@@ -69,6 +69,8 @@ class Player < ApplicationRecord
   has_many :historical_player_ratings, inverse_of: :player
   has_many :historical_battle_players, inverse_of: :player
 
+  scope :online, -> { where("updated_at > ? ", 10.minutes.ago) }
+
   def entity
     Entity.new(self)
   end

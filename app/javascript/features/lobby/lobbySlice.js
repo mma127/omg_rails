@@ -11,7 +11,8 @@ const initialState = battlesAdapter.getInitialState({
   updatingBattleError: null,
   isPending: false,
   errorMessage: null,
-  chatMessages: []
+  chatMessages: [],
+  activeUsers: []
 })
 
 /**
@@ -157,6 +158,10 @@ const lobbySlice = createSlice({
     addChatMessage(state, action) {
       const { message } = action.payload
       state.chatMessages.push(message)
+    },
+    updateActiveUsers(state, action) {
+      const { activeUsers } = action.payload
+      state.activeUsers = activeUsers
     }
   },
   extraReducers(builder) {
@@ -276,7 +281,7 @@ const lobbySlice = createSlice({
 
 export default lobbySlice.reducer
 
-export const { addNewBattle, updateBattle, removeBattle, addChatMessage } = lobbySlice.actions
+export const { addNewBattle, updateBattle, removeBattle, addChatMessage, updateActiveUsers } = lobbySlice.actions
 
 export const {
   selectAll: selectAllActiveBattles,
@@ -285,3 +290,4 @@ export const {
 
 export const selectIsPending = state => state.lobby.isPending
 export const lobbyChatMessages = state => state.lobby.chatMessages
+export const selectActiveUsers = state => state.lobby.activeUsers

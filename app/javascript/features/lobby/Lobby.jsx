@@ -2,7 +2,14 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Alert } from "@mui/material";
 
 import { ActionCableConsumer } from '@thrash-industries/react-actioncable-provider';
-import { addNewBattle, updateBattle, removeBattle, fetchActiveBattles, addChatMessage } from "./lobbySlice";
+import {
+  addNewBattle,
+  updateBattle,
+  removeBattle,
+  fetchActiveBattles,
+  addChatMessage,
+  updateActiveUsers
+} from "./lobbySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId, setCurrentBattle } from "../player/playerSlice";
 import { isPlayerInBattle } from "../../utils/battle";
@@ -60,12 +67,9 @@ export const Lobby = () => {
   }
 
   const handleConnectedCable = (message) => {
-    console.log(`Connected to cable`)
   }
 
   const handleReceivedBattlesCable = (message) => {
-    console.log(`Received battles cable:`)
-    console.log(message)
     const currentPlayer = stateRef.current
     switch (message.type) {
       case CREATED_BATTLE: {
@@ -141,9 +145,11 @@ export const Lobby = () => {
   }
 
   const handleReceivedChatCable = (message) => {
-    console.log(`Received chat cable:`)
-    console.log(message)
     dispatch(addChatMessage({ message }))
+  }
+
+  const handleReceivedActiveUsersCable = message => {
+    dispatch(updateActiveUsers({activeUsers: message}))
   }
 
   return (
@@ -154,6 +160,9 @@ export const Lobby = () => {
       <ActionCableConsumer channel="LobbyChatChannel"
                            onConnected={handleConnectedCable}
                            onReceived={handleReceivedChatCable}/>
+      <ActionCableConsumer channel="ActiveUsersChannel"
+                           onConnected={handleConnectedCable}
+                           onReceived={handleReceivedActiveUsersCable}/>
       <AlertSnackbar isOpen={openSnackbar}
                      setIsOpen={setOpenSnackbar}
                      handleClose={handleCloseSnackbar}
