@@ -286,5 +286,26 @@ RSpec.describe Snapshot::Creator do
         expect(crb2.level).to eq 2
       end
     end
+
+    context "when the player does not own the source company" do
+      let!(:player2) { create :player }
+      it "raises an error" do
+        expect { described_class.new(player2, active_company.id).create }.to raise_error Snapshot::Creator::SnapshotCreatorValidationError,
+                                                                                         "Player #{player2.name} does not own source company #{active_company.id}"
+      end
+    end
+
+    context "when the player has the limit of snapshot companies" do
+      before do
+        5.times do
+          create :snapshot_company, player: player, ruleset: ruleset
+        end
+      end
+      it "raises an error" do
+        expect { subject }.to raise_error(
+          Snapshot::Creator::SnapshotCreatorValidationError,
+          "Player #{player.name} has the limit of #{SnapshotCompany::LIMIT} Snapshot Companies and cannot create another one.")
+      end
+    end
   end
 end

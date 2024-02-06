@@ -66,8 +66,12 @@ module Snapshot
     private
 
     def validate_can_create_snapshot
+      unless source_company.player_id == @player.id
+        raise SnapshotCreatorValidationError.new("Player #{@player.name} does not own source company #{@source_company_id}")
+      end
+
       unless SnapshotCompany.where(player: @player).count < SnapshotCompany::LIMIT
-        raise SnapshotCreatorValidationError.new("Player #{player.name} has the limit of #{SnapshotCompany::LIMIT} Snapshot Companies and cannot create another one.")
+        raise SnapshotCreatorValidationError.new("Player #{@player.name} has the limit of #{SnapshotCompany::LIMIT} Snapshot Companies and cannot create another one.")
       end
     end
 
