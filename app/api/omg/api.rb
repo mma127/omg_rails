@@ -24,6 +24,7 @@ module OMG
 
     rescue_from :all do |e|
       Rails.logger.error("Error during Grape endpoint: #{e.message}\nBacktrace: #{e.backtrace.first(10).join("\n")}")
+      Sentry.capture_exception(e)
       error! e.message
     end
 
