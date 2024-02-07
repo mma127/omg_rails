@@ -103,7 +103,7 @@ class Squad < ApplicationRecord
   end
 
   def used_model_slots
-    squads_in_transport.pluck(:total_model_count).sum
+    squads_in_transport.pluck(:total_model_count).sum { |count| count || 1 } # default to model count 1 if for some reason the total model count is nil
   end
 
   def transport_squad_slots
