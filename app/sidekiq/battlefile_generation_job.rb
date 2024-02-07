@@ -8,7 +8,7 @@ class BattlefileGenerationJob
       Rails.logger.info("Could not find Battle matching id #{battle_id}")
       return
     end
-    unless battle.players_ready?
+    unless battle.all_players_ready?
       Rails.logger.info("Cannot generate battlefile for battle #{battle_id} with players not ready")
       return
     end
