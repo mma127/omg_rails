@@ -8,5 +8,9 @@ class BattleReportJob
     service = BattleReportService.new(battle_id)
     service.process_report(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,
                            dead_squads, surviving_squads, dropped_players, battle_stats)
+  rescue StandardError => e
+    Rails.logger.error(e)
+    Sentry.capture_exception(e)
+    raise e
   end
 end
