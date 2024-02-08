@@ -161,12 +161,12 @@ export const SquadCard = (
     }
 
     // Check if the transport has sufficient squad and model slots to fit the dropped squad
-    const squadSlotsDiff = (unit.transportSquadSlots - squad.usedSquadSlots) - dragUnit.transportSquadSlots
+    const squadSlotsDiff = (unit.transportSquadSlots - squad.usedSquadSlots) - 1
     if (squadSlotsDiff < 0) {
       console.log(`Cannot transport ${dragUnit.name}, insufficient squad slots ${squadSlotsDiff}`)
       return
     }
-    const modelSlotsDiff = (unit.transportModelSlots - squad.usedModelSlots) - dragUnit.transportModelSlots
+    const modelSlotsDiff = (unit.transportModelSlots - squad.usedModelSlots) - dragUnit.modelCount
     if (modelSlotsDiff < 0) {
       console.log(`Cannot transport ${dragUnit.name}, insufficient model slots ${modelSlotsDiff}`)
       return
@@ -189,19 +189,19 @@ export const SquadCard = (
       dragUnit = dragData.unit
 
     // Check if the dropped squad is allowed to be transported
-    const dropUnitId = dragUnit.id // TODO does this work for moving existing squads
+    const dropUnitId = dragUnit.id
     if (!_.includes(unit.transportableUnitIds, dropUnitId)) {
       console.log(`${unit.name} cannot transport squad with unit ${dragUnit.name}`)
       return
     }
 
     // Check if the transport has sufficient squad and model slots to fit the dropped squad
-    const squadSlotsDiff = (unit.transportSquadSlots - squad.usedSquadSlots) - dragUnit.transportSquadSlots
+    const squadSlotsDiff = (unit.transportSquadSlots - squad.usedSquadSlots) - 1
     if (squadSlotsDiff < 0) {
       console.log(`Cannot transport ${dragUnit.name}, insufficient squad slots ${squadSlotsDiff}`)
       return
     }
-    const modelSlotsDiff = (unit.transportModelSlots - squad.usedModelSlots) - dragUnit.transportModelSlots
+    const modelSlotsDiff = (unit.transportModelSlots - squad.usedModelSlots) - dragUnit.modelCount
     if (modelSlotsDiff < 0) {
       console.log(`Cannot transport ${dragUnit.name}, insufficient model slots ${modelSlotsDiff}`)
       return
