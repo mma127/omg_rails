@@ -27,6 +27,7 @@ import { selectAvailableUnitById, setSelectedAvailableUnitId } from "../availabl
 import { selectUnitById } from "./unitsSlice";
 import { copySquadUpgrade } from "../squad_upgrades/squadUpgrade";
 import { addCost } from "../../companiesSlice";
+import { GLIDER } from "../../../../constants/units/types";
 
 const squadsAdapter = createEntityAdapter()
 
@@ -84,6 +85,10 @@ export const upsertSquads = createAsyncThunk(
 // Thunk to deep copy a squad
 // https://redux.js.org/usage/writing-logic-thunks#writing-thunks
 export const deepCopySquad = ({ squad, squadUpgrades }) => (dispatch, getState) => {
+  if (squad.unitType === GLIDER) { // Only one glider per platoon
+    return
+  }
+
   const { tab, index } = squad
 
   // Copy the original squad, without transported squads

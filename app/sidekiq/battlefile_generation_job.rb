@@ -23,5 +23,9 @@ class BattlefileGenerationJob
     message_hash = { type: BattleService::BATTLEFILE_GENERATED, battle: battle }
     battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
     ActionCable.server.broadcast BattlesChannel::CHANNEL, battle_message
+  rescue StandardError => e
+    Rails.logger.error(e)
+    Sentry.capture_exception(e)
+    raise e
   end
 end

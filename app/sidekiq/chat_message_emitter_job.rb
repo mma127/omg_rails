@@ -1,4 +1,4 @@
-class  ChatMessageEmitterJob
+class ChatMessageEmitterJob
   include Sidekiq::Job
 
   def perform(chat_name, sender_id, content)
@@ -6,5 +6,9 @@ class  ChatMessageEmitterJob
     chat_message = ChatMessage.create!(chat: chat, sender_id: sender_id, content: content)
     # Broadcast to chat
     ChatService.broadcast_cable(ChatMessage::Entity.represent chat_message)
+  rescue StandardError => e
+    Rails.logger.error(e)
+    Sentry.capture_exception(e)
+    raise e
   end
 end

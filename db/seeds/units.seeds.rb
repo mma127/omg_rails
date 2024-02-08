@@ -206,7 +206,7 @@ after :doctrines do
                    unitwide_upgrade_slots: 1, upgrade_slots: 2, model_count: 5)
 
   SupportTeam.create!(name: "saboteurs", const_name: "AXIS.SABOTEURS", display_name: "Saboteurs",
-                      upgrade_slots: 2, model_count: 2)
+                      upgrade_slots: 2, model_count: 2, is_infiltrate: true)
   SupportTeam.create!(name: "officer_terror", const_name: "AXIS.OFFICER_TERROR", display_name: "Terror Officer",
                       upgrade_slots: 1, model_count: 1)
   SupportTeam.create!(name: "mortar_terror", const_name: "AXIS.TERROR_MORTAR", display_name: "Terror Mortar",

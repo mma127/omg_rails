@@ -23,6 +23,7 @@ UI
 4. Mobile MVP
 5. Confirmation before deleting company
 6. Confirmation before deleting squad
+7. Companies display to use error snackbar instead of errorTypography
 
 Enhancements
 1. Copy paste squad/upgrade combo
