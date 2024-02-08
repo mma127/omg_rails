@@ -42,7 +42,7 @@ export const Companies = () => {
 
   return (
     <PageContainer maxWidth="xl" disableGutters>
-      <Box p={3} pt={5} display="flex" justifyContent="center" alignItems="center">
+      <Box p={3} pt={5} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
         {content}
       </Box>
     </PageContainer>
