@@ -40,11 +40,11 @@ veteran_sergeant,PE.VET_SGT,Veteran Sergeant,Gain increased suppression resistan
 veteran_sergeant,PE.VET_SGT,Veteran Sergeant,Gain increased suppression resistance,passive,panzer_elite,,,50,0,0,0,0,0,0,1,,,tank_busters
 overdrive,PE.OVERDRIVE,Overdrive,"Grants the Overdrive ability, increasing maximum speed, acceleration and deceleration",ability,panzer_elite,,,15,0,0,0,0,0,0,1,,,armored_car
 fire_support,PE.SCOUT_HMG,Fire Support,"Allows the Scout Car to lock down a sector, becoming stationary but gaining maximum health and increased suppression",unit_replacement,panzer_elite,,,60,0,30,1,0,1,0,1,1,0,scout_car
-at_ht_mines,PE.MUN_HT_MINES,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,panzer_elite,,,0,35,0,0,2,0,0,1,,,light_at_halftrack
+at_ht_mines,PE.MUN_HT_MINE,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,panzer_elite,,,0,35,0,0,2,0,0,1,,,light_at_halftrack
 flame_round,PE.INCENDIARY_MORTAR_ROUNDS,Incendiary Mortar Rounds,Fire a single incendiary round,consumable,panzer_elite,,,0,40,0,0,2,0,0,1,,,mortar_halftrack
 pe_goliath,PE.GOLIATH,Goliath,Deploy a remote controlled explosive Goliath,consumable,panzer_elite,,,0,90,0,0,1,0,0,1,,,vampire_halftrack
 spotting_scope,PE.HETZER_SPOTTING,Spotting Scope,Grants increased sight range and weapon range,passive,,tank_hunters,,0,50,50,0,0,0,0,1,,,hetzer
-hotchkiss_stuka,PE.HOTCHKISS_STUKA,Hotchkiss Stuka Upgrade,Equip the tank with four rocket launchers,passive,panzer_elite,,,0,75,0,1,0,0,0,1,,,hotchkiss
+hotchkiss_stuka,PE.HOTCHKISS_STUKA,Hotchkiss Stuka Upgrade,Equip the tank with four rocket launchers,unit_replacement,panzer_elite,,,0,75,0,1,0,0,0,1,1,0,hotchkiss
 hotchkiss_upgun,PE.HOTCHUPGUN,Hotchkiss Upgun,Grants increased penetration against armor,passive,panzer_elite,,,0,0,70,0,0,0,0,1,,,hotchkiss
 p4_ist_mg42,PE.P4_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,panzer_elite,,,0,40,0,0,0,0,0,1,,,p4_ist
 p4_ist_skirts,AXIS.STUG_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,panzer_elite,,,0,0,60,0,0,0,0,1,,,p4_ist
@@ -89,7 +89,7 @@ falls_panzerschreck,AXIS.ST_SCHRECK,Panzerschreck,A single Panzerschreck,single_
 falls_at_rifles,CMW.BOYSAT,Anti Tank Rifles,Anti tank rifles,single_weapon,,luftwaffe,anti_tank_requisition,0,50,0,0,0,1,0,1,,,falls
 falls_at_rifles,CMW.BOYSAT,Anti Tank Rifles,Anti tank rifles,single_weapon,,luftwaffe,anti_tank_requisition,0,50,0,0,0,1,0,1,,,crete_vets
 se_mp40s,PE.SE_ASSAULT,MP40s,Equip the squad with MP40s,squad_weapon,,scorched_earth,,0,75,0,0,0,0,1,1,,,ostfront_veterans
-flame_hotchkiss_stuka,PE.FLAME_HOTCH_STUKA,Hotchkiss Stuka Upgrade,Equip the tank with four rocket launchers,passive,,scorched_earth,,0,75,0,2,0,0,0,1,,,flammen_hotchkiss
+flame_hotchkiss_stuka,PE.FLAME_HOTCH_STUKA,Hotchkiss Stuka Upgrade,Equip the tank with four rocket launchers,unit_replacement,,scorched_earth,,0,75,0,2,0,0,0,1,1,0,flammen_hotchkiss
 stup_mg42,PE.STUP_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,scorched_earth,,0,40,0,0,0,0,0,1,,,stup
 stup_skirts,PE.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,scorched_earth,,0,0,70,0,0,0,0,1,,,stup
 molotov,PE.MOLOTOVS,Molotov Cocktails,"A longer range sticky bomb style projectile that sets tanks on fire doing minor damage over time, -40% speed reduction, -75% sight.",consumable,,scorched_earth,molotov_cocktails,0,25,0,0,3,0,0,1,,,ostfront_veterans
