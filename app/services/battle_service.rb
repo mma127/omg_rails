@@ -103,6 +103,7 @@ class BattleService
     # Validate battle exists
     battle = validate_battle(battle_id)
 
+    type = nil
     battle.with_lock do
       # Validate battle is readyable
       validate_battle_readyable(battle)
@@ -123,7 +124,6 @@ class BattleService
       if battle.reload.all_players_ready?
         battle.ready!
         type = PLAYERS_ALL_READY
-        BattlefileGenerationJob.perform_async(battle_id)
       else
         type = PLAYER_READY
       end
@@ -132,6 +132,10 @@ class BattleService
       message_hash = { type: type, battle: battle }
       battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
       broadcast_cable(battle_message)
+    end
+
+    if type == PLAYERS_ALL_READY
+      BattlefileGenerationJob.perform_async(battle_id)
     end
   end
 
