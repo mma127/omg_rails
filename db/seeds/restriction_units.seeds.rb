@@ -499,7 +499,7 @@ after :restrictions do
   
   puma_blitz = LightVehicle.find_by(name: "puma_blitz")
   EnabledUnit.create!(restriction: blitz_restriction, unit: puma_blitz, ruleset: war_ruleset,
-                      man: 280, mun: 0, fuel: 70, pop: 7, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
+                      man: 250, mun: 0, fuel: 70, pop: 7, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
                       upgrade_slots: 2)
 
   ostwind_blitz = Tank.find_by_name("ostwind_blitz")
@@ -510,15 +510,15 @@ after :restrictions do
                       man: 270, mun: 0, fuel: 180, pop: 7, resupply: 3, resupply_max: 6, company_max: 10, priority: 1)
   stug_blitz = Tank.find_by_name("stug_blitz")
   EnabledUnit.create!(restriction: blitz_restriction, unit: stug_blitz, ruleset: war_ruleset,
-                      man: 280, mun: 0, fuel: 170, pop: 8, resupply: 3, resupply_max: 6, company_max: 10, priority: 1,
+                      man: 280, mun: 0, fuel: 150, pop: 8, resupply: 3, resupply_max: 6, company_max: 10, priority: 1,
                       upgrade_slots: 1)
   p4_blitz = Tank.find_by_name("p4_blitz")
   EnabledUnit.create!(restriction: blitz_restriction, unit: p4_blitz, ruleset: war_ruleset,
-                      man: 350, mun: 0, fuel: 300, pop: 12, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
+                      man: 350, mun: 0, fuel: 250, pop: 12, resupply: 4, resupply_max: 8, company_max: 8, priority: 1,
                       upgrade_slots: 2)
   panther_blitz = Tank.find_by_name("panther_blitz")
   EnabledUnit.create!(restriction: blitz_restriction, unit: panther_blitz, ruleset: war_ruleset,
-                      man: 600, mun: 0, fuel: 520, pop: 15, resupply: 1, resupply_max: 3, company_max: 3, priority: 1)
+                      man: 600, mun: 0, fuel: 500, pop: 15, resupply: 1, resupply_max: 3, company_max: 3, priority: 1)
   
   stuh = Tank.find_by_name("stuh")
   EnabledUnit.create!(restriction: blitz_restriction, unit: stuh, ruleset: war_ruleset,
