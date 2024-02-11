@@ -1,3 +1,5 @@
+require 'securerandom'
+
 class CompanyService
   class CompanyCreationValidationError < StandardError; end
 
@@ -28,6 +30,7 @@ class CompanyService
     ActiveRecord::Base.transaction do
       # Create Company entity
       new_company = ActiveCompany.create!(name: name,
+                                          uuid: SecureRandom.uuid,
                                     player: @player,
                                     doctrine: doctrine,
                                     faction: doctrine.faction,

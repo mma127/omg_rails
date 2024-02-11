@@ -3,12 +3,13 @@
 # Table name: companies
 #
 #  id                                       :bigint           not null, primary key
-#  fuel(Fuel available to this company)     :integer          default(0)
-#  man(Manpower available to this company)  :integer          default(0)
-#  mun(Munitions available to this company) :integer          default(0)
+#  fuel(Fuel available to this company)     :integer          default(0), not null
+#  man(Manpower available to this company)  :integer          default(0), not null
+#  mun(Munitions available to this company) :integer          default(0), not null
 #  name(Company name)                       :string
-#  pop(Population cost of this company)     :integer          default(0)
-#  type(Company type)                       :string
+#  pop(Population cost of this company)     :integer          default(0), not null
+#  type(Company type)                       :string           not null
+#  uuid(Uuid)                               :string           not null
 #  vps_current(VPs available to spend)      :integer          default(0), not null
 #  vps_earned(VPs earned by this company)   :integer          default(0), not null
 #  created_at                               :datetime         not null
@@ -24,6 +25,7 @@
 #  index_companies_on_faction_id   (faction_id)
 #  index_companies_on_player_id    (player_id)
 #  index_companies_on_ruleset_id   (ruleset_id)
+#  index_companies_on_uuid         (uuid) UNIQUE
 #
 # Foreign Keys
 #
@@ -35,7 +37,7 @@
 require "rails_helper"
 
 RSpec.describe Company, type: :model do
-  let!(:company) { create :company }
+  let!(:company) { create :active_company }
 
   describe 'associations' do
     it { should belong_to(:player) }
@@ -67,14 +69,14 @@ RSpec.describe Company, type: :model do
 
   describe "#resources_valid?" do
     context "when valid" do
-      let(:company) { create :company, man: 100, mun: 100, fuel: 0 }
+      let(:company) { create :active_company, man: 100, mun: 100, fuel: 0 }
       it "is true" do
         expect(company.resources_valid?).to be true
       end
     end
 
     context "when invalid" do
-      let(:company) { create :company, man: 10, mun: 50, fuel: -100 }
+      let(:company) { create :active_company, man: 10, mun: 50, fuel: -100 }
       it "is false" do
         expect(company.resources_valid?).to be false
       end

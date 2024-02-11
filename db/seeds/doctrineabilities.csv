@@ -44,7 +44,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 13,Setting up the Field,OMGDOCUPG.ALLY.INFANTRY.TR2.B1.T1,2,1,1,Riflemen and Ambush Riflemen can build Barbed Wire and Sandbags.,3
 135,Mk. 3 Potato Grenade,OMGDOCUPG.ALLY.INFANTRY.TR2.B1.T2,2,1,2,Potato Grenade ability is now given to squads who purchase grenades. Throws a fake grenade at target.,1
 209,Tier 3 alpha,OMGDOCUPG.ALLY.INFANTRY.TR2.B1.T3,2,1,3,"",1000
-14,HVAP Shells,OMGDOCUPG.ALLY.INFANTRY.TR2.B2.T1,2,2,1,57mm Anti-tank Guns AP Rounds replaced with Advanced Anti-tank Gun AP Rounds.  Providing an additional +25% damage and 5 second ability duration. (REMOVE AT GUNS FROM COMPANY BEFORE PURCHASING),2
+14,HVAP Shells,OMGDOCUPG.ALLY.INFANTRY.TR2.B2.T1,2,2,1,57mm Anti-tank Guns AP Rounds replaced with Advanced Anti-tank Gun AP Rounds.  Providing an additional +25% damage and 5 second ability duration.,2
 136,Smoke Will Block Out the Sky,OMGDOCUPG.ALLY.INFANTRY.TR2.B2.T2,2,2,2,"Smoke Barrage is available for purchase. 13 Smoke Shells are dropped in the designated area over time. Recharging cooldown, 90 mu.",2
 210,Tier 3 alpha,OMGDOCUPG.ALLY.INFANTRY.TR2.B2.T3,2,2,3,"",1000
 16,Got a Light?,OMGDOCUPG.ALLY.INFANTRY.TR3.B1.T1,3,1,1,60mm Mortars now have M83 Flare Rounds. Lights up an area for 15 seconds.,2

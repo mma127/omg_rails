@@ -8,6 +8,7 @@ module Entities
     expose :squad_upgrades, using: SquadUpgrade::Entity, as: :squadUpgrades
     expose :available_upgrades, using: AvailableUpgrade::Entity, as: :availableUpgrades
     expose :upgrades, using: Upgrade::Entity, as: :upgrades
+    expose :company_resource_bonuses, with: Entities::CompanyResourceBonuses, as: :companyResourceBonuses
   end
 end
 

@@ -32,6 +32,7 @@ module OMG
     mount Doctrines
     mount Factions
     mount Companies
+    mount SnapshotCompanies
     mount Units
     mount Battles
     mount Restrictions

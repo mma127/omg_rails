@@ -8,22 +8,22 @@ RSpec.describe HistoricalBattlePlayerService do
 
   let!(:player1) { create :player }
   let!(:pr1) { create :player_rating, player: player1, elo: 1800, mu: 29, sigma: 4, wins: 5, losses: 0 }
-  let!(:company1) { create :company, player: player1, ruleset: ruleset }
+  let!(:company1) { create :active_company, player: player1, ruleset: ruleset }
   let!(:bp1) { create :battle_player, battle: battle, player: player1, company: company1, side: BattlePlayer.sides[:allied] }
 
   let!(:player2) { create :player }
   let!(:pr2) { create :player_rating, player: player2, elo: 1304, mu: 19, sigma: 1, wins: 10, losses: 34 }
-  let!(:company2) { create :company, player: player2, ruleset: ruleset }
+  let!(:company2) { create :active_company, player: player2, ruleset: ruleset }
   let!(:bp2) { create :battle_player, battle: battle, player: player2, company: company2, side: BattlePlayer.sides[:allied] }
 
   let!(:player3) { create :player }
   let!(:pr3) { create :player_rating, player: player3, elo: 1560, mu: 24, sigma: 2.3, wins: 7, losses: 8 }
-  let!(:company3) { create :company, player: player3, ruleset: ruleset }
+  let!(:company3) { create :active_company, player: player3, ruleset: ruleset }
   let!(:bp3) { create :battle_player, battle: battle, player: player3, company: company3, side: BattlePlayer.sides[:axis] }
 
   let!(:player4) { create :player }
   let!(:pr4) { create :player_rating, player: player4, elo: 1619, mu: 26, sigma: 1, wins: 2, losses: 2 }
-  let!(:company4) { create :company, player: player4, ruleset: ruleset }
+  let!(:company4) { create :active_company, player: player4, ruleset: ruleset }
   let!(:bp4) { create :battle_player, battle: battle, player: player4, company: company4, side: BattlePlayer.sides[:axis] }
 
   let(:expected_date) { DateTime.parse("2023-12-12").to_date }

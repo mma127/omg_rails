@@ -5,6 +5,7 @@ FactoryBot.define do
     association :player
     association :ruleset
     name { "Company name" }
+    sequence :uuid do |n| "active uuid #{n}" end
     vps_earned { 0 }
     vps_current { 0 }
     pop { 0 }

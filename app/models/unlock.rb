@@ -20,6 +20,7 @@ class Unlock < ApplicationRecord
   has_many :doctrines, through: :doctrine_unlocks
   has_one :restriction
 
+  has_many :unit_swaps, inverse_of: :unlock
   has_many :restriction_units, through: :restriction
   has_many :restriction_upgrades, through: :restriction
   has_many :restriction_offmaps, through: :restriction

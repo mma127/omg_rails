@@ -35,12 +35,23 @@ class Restriction < ApplicationRecord
   belongs_to :unlock, optional: true
 
   has_many :restriction_units
+  has_many :enabled_units
+  has_many :disabled_units
+  has_many :modified_add_units
+  has_many :modified_replace_units
   has_many :units, through: :restriction_units
   has_many :restriction_upgrades
+  has_many :enabled_upgrades
+  has_many :disabled_upgrades
+  has_many :modified_add_upgrades
+  has_many :modified_replace_upgrades
   has_many :upgrades, through: :restriction_upgrades
   has_many :restriction_offmaps
+  has_many :enabled_offmaps
+  has_many :disabled_offmaps
   has_many :offmaps, through: :restriction_offmaps
   has_many :restriction_callin_modifiers
+  has_many :enabled_callin_modifiers
   has_many :callin_modifiers, through: :restriction_callin_modifiers
 
   validates_presence_of :name

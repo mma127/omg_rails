@@ -8,8 +8,8 @@ RSpec.describe BattleReportStats::ReportParseService do
   let(:size) { 1 }
   let!(:battle) { create :battle, ruleset: ruleset, state: state, size: size, winner: "allied" }
 
-  let!(:company1) { create :company, player: player1, ruleset: ruleset }
-  let!(:company2) { create :company, player: player2, ruleset: ruleset }
+  let!(:company1) { create :active_company, player: player1, ruleset: ruleset }
+  let!(:company2) { create :active_company, player: player2, ruleset: ruleset }
   let!(:company_stats1) { create :company_stats, company: company1 }
   let!(:company_stats2) { create :company_stats, company: company2 }
 

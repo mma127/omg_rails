@@ -3,6 +3,7 @@ require "rails_helper"
 RSpec.describe Snapshot::Creator do
   let!(:ruleset) { create :ruleset }
   let!(:player) { create :player }
+  let(:name) { "New company" }
   let(:unit1) { create :unit }
   let(:unit2) { create :unit }
   let(:unit3) { create :unit }
@@ -24,7 +25,7 @@ RSpec.describe Snapshot::Creator do
   let!(:available_upgrade4) { create :available_upgrade, upgrade: upgrade3, unit: unit2, company: active_company, man: 0, mun: 0, fuel: 75 }
 
   let(:new_company) { SnapshotCompany.last }
-  subject { described_class.new(player, active_company.id).create }
+  subject { described_class.new(player, name, active_company.id).create }
 
   before do
     create :company_stats, company: active_company, wins_1v1: 10, losses_1v1: 5
@@ -37,6 +38,7 @@ RSpec.describe Snapshot::Creator do
       expect { subject }.to change { Company.count }.by(1)
                                                     .and change { SnapshotCompany.count }.by(1)
                                                                                          .and change { ActiveCompany.count }.by(0)
+      expect(SnapshotCompany.last.name).to eq name
     end
 
     it "clones the company stats" do
@@ -290,7 +292,7 @@ RSpec.describe Snapshot::Creator do
     context "when the player does not own the source company" do
       let!(:player2) { create :player }
       it "raises an error" do
-        expect { described_class.new(player2, active_company.id).create }.to raise_error Snapshot::Creator::SnapshotCreatorValidationError,
+        expect { described_class.new(player2, name, active_company.id).create }.to raise_error Snapshot::Creator::SnapshotCreatorValidationError,
                                                                                          "Player #{player2.name} does not own source company #{active_company.id}"
       end
     end

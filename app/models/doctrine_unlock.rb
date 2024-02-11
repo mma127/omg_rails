@@ -41,30 +41,32 @@ class DoctrineUnlock < ApplicationRecord
 
   before_save :generate_internal_description
 
+  def unlock_restriction
+    unlock.restriction
+  end
+
   def restrictions
     [restriction, unlock.restriction]
   end
 
   def enabled_units
-    EnabledUnit.includes(:unit).where(restriction: restrictions)
+    restriction.enabled_units + unlock_restriction.enabled_units
   end
 
   def disabled_units
-    DisabledUnit.includes(:unit).where(restriction: restrictions)
+    restriction.disabled_units + unlock_restriction.disabled_units
   end
 
   def unit_swaps
-    UnitSwap.includes(:old_unit, :new_unit).where(unlock: unlock)
+    unlock.unit_swaps
   end
 
   def enabled_offmaps
-    EnabledOffmap.includes(:offmap).where(restriction: restrictions)
+    restriction.enabled_offmaps + unlock_restriction.enabled_offmaps
   end
 
   def enabled_callin_modifiers
-    EnabledCallinModifier
-      .includes(callin_modifier: [:callin_modifier_required_units, :callin_modifier_allowed_units])
-      .where(restriction: restrictions)
+    restriction.enabled_callin_modifiers + unlock_restriction.enabled_callin_modifiers
   end
 
   def entity

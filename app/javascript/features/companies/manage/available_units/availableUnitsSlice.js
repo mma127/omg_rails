@@ -1,15 +1,17 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { fetchCompanyById } from "../../companiesSlice";
 import {
   addNonTransportedSquad,
-  resetSquadState,
-  removeSquad,
-  upsertSquads,
   addTransportedSquad,
-  removeTransportedSquad, fetchCompanySquads, copySquad
+  copySquad,
+  fetchCompanySquads,
+  fetchSnapshotCompanySquads,
+  removeSquad,
+  removeTransportedSquad,
+  upsertSquads
 } from "../units/squadsSlice";
 import {
-  EMPLACEMENT, GLIDER,
+  EMPLACEMENT,
+  GLIDER,
   INFANTRY,
   LIGHT_VEHICLE,
   SUPPORT_TEAM,
@@ -45,7 +47,7 @@ const setStateForUnitTypes = (availableUnits, state) => {
   })
 }
 
-export const fetchCompanyAvailability = createAsyncThunk("availableUnits/fetchCompanyAvailability", async ({ companyId }, {rejectWithValue}) => {
+export const fetchCompanyAvailability = createAsyncThunk("availableUnits/fetchCompanyAvailability", async ({ companyId }, { rejectWithValue }) => {
   try {
     const response = await axios.get(`/companies/${companyId}/availability`)
     return response.data
@@ -73,6 +75,12 @@ const availableUnitsSlice = createSlice({
         setStateForUnitTypes(action.payload.availableUnits, state)
         state.availableUnitsStatus = "idle"
       })
+      .addCase(fetchSnapshotCompanySquads.fulfilled, (state, action) => {
+        availableUnitsAdapter.setAll(state, action.payload.availableUnits)
+        setStateForUnitTypes(action.payload.availableUnits, state)
+        state.availableUnitsStatus = "idle"
+      })
+
       .addCase(addNonTransportedSquad, (state, action) => {
         const { availableUnitId } = action.payload
         const availableUnitEntity = state.entities[availableUnitId]
@@ -123,7 +131,11 @@ const availableUnitsSlice = createSlice({
 
 export default availableUnitsSlice.reducer
 
-export const { resetAvailableUnitState, setSelectedAvailableUnitId, clearSelectedAvailableUnitId } = availableUnitsSlice.actions
+export const {
+  resetAvailableUnitState,
+  setSelectedAvailableUnitId,
+  clearSelectedAvailableUnitId
+} = availableUnitsSlice.actions
 
 export const {
   selectAll: selectAllAvailableUnits,

@@ -1,19 +1,15 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Redirect,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, } from 'react-router-dom'
 
 import { Navbar } from "./Navbar";
-import { Container, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { Lobby } from "../features/lobby/Lobby";
 import { Companies } from "../features/companies/Companies";
 import { CompanyManager } from "../features/companies/manage/CompanyManager";
-import { ActionCableConsumer, ActionCableProvider } from "@thrash-industries/react-actioncable-provider";
+import { ActionCableProvider } from "@thrash-industries/react-actioncable-provider";
 import { Restrictions } from "../features/restrictions/Restrictions";
 import { Leaderboards } from "../features/leaderboards/Leaderboards";
+import { SnapshotCompanyView } from "../features/companies/snapshot/SnapshotCompanyView";
 
 const theme = createTheme({
   palette: {
@@ -63,6 +59,7 @@ export const App = () => (
                 <Route index element={<Lobby />} />
                 <Route path="companies" element={<Companies />} />
                 <Route path="companies/:companyId/*" element={<CompanyManager />} />
+                <Route path="companies/snapshots/:uuid/*" element={<SnapshotCompanyView />} />
                 <Route path="restrictions/*" element={<Restrictions />} />
                 <Route path="leaderboards/*" element={<Leaderboards />} />
               </Route>

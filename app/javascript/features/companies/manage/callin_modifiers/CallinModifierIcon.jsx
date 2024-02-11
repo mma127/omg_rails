@@ -34,7 +34,7 @@ const validateAllowed = (allowedUnitIds, unitIds) => {
   }
 }
 
-export const CallinModifierIcon = ({callinModifiers, unitIds}) => {
+export const CallinModifierIcon = ({ callinModifiers, unitIds }) => {
   const classes = useStyles()
 
   if (callinModifiers.length === 0 || unitIds.length === 0) {
@@ -51,7 +51,7 @@ export const CallinModifierIcon = ({callinModifiers, unitIds}) => {
     }
 
     // At this point, this callin modifier is active
-    tooltips.push(<CallinModifierTooltipContent callinModifier={cm} key={cm.id} />)
+    tooltips.push(<CallinModifierTooltipContent callinModifier={cm} key={cm.id}/>)
   }
 
   if (tooltips.length === 0) {
@@ -67,7 +67,7 @@ export const CallinModifierIcon = ({callinModifiers, unitIds}) => {
         arrow
       >
         <Box>
-          <SpeedIcon />
+          <SpeedIcon sx={{ width: "0.9em" }}/>
         </Box>
       </CallinModifierTooltip>
     )

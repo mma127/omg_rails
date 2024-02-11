@@ -47,6 +47,7 @@ import { addNewSquadUpgrade, removeSquadUpgrade, } from "./squad_upgrades/squadU
 import { SaveCompanyButton } from "./SaveCompanyButton";
 import { AvailableCounts } from "./available_units/AvailableCounts";
 import { selectAllAvailableOffmaps } from "./available_offmaps/availableOffmapsSlice";
+import { clearNotifySnackbarSnapshot, resetSnapshotState } from "../snapshotCompaniesSlice";
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -75,12 +76,15 @@ export const SquadBuilder = ({}) => {
   const [currentTab, setCurrentTab] = useState(defaultTab)
 
   const notifySnackbar = useSelector(state => state.squads.notifySnackbar)
-  const snackbarMessage = useSelector(state => state.squads.snackbarMessage)
+  const notifySnackbarSnapshot = useSelector(state => state.snapshotCompanies.notifySnackbar)
   const [openSnackbar, setOpenSnackbar] = useState(false)
 
   useEffect(() => {
     setOpenSnackbar(notifySnackbar)
   }, [notifySnackbar])
+  useEffect(() => {
+    setOpenSnackbar(notifySnackbarSnapshot)
+  }, [notifySnackbarSnapshot])
 
   const classes = useStyles()
 
@@ -93,6 +97,11 @@ export const SquadBuilder = ({}) => {
   const isSaving = squadsStatus === 'pending'
   const errorMessage = isSaving ? "" : squadsError
 
+  const snapshotStatus = useSelector(state => state.snapshotCompanies.creatingStatus)
+  const snapshotError = useSelector(state => state.snapshotCompanies.creatingError)
+  const isSnapshotSaving = snapshotStatus === 'pending'
+  const snapshotErrorMessage = isSnapshotSaving ? "" : snapshotError
+
   const isCompanyUnlocksChange = useSelector(selectIsCompanyUnlocksChanged)
 
   useEffect(() => {
@@ -103,6 +112,7 @@ export const SquadBuilder = ({}) => {
       console.log("dispatching resetSquadState resetAvailableUnitState")
       dispatch(resetSquadState())
       dispatch(resetAvailableUnitState())
+      dispatch(resetSnapshotState())
     }
   }, [companyId, isCompanyUnlocksChange])
 
@@ -112,6 +122,7 @@ export const SquadBuilder = ({}) => {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false)
     dispatch(clearNotifySnackbar())
+    dispatch(clearNotifySnackbarSnapshot())
   }
 
   const onTabChange = (newTab) => {
@@ -253,6 +264,8 @@ export const SquadBuilder = ({}) => {
   }
 
   const saveSquads = () => {
+    dispatch(clearNotifySnackbar())
+    dispatch(clearNotifySnackbarSnapshot())
     dispatch(upsertSquads({ companyId }))
   }
 
@@ -336,11 +349,22 @@ export const SquadBuilder = ({}) => {
   }
 
   let snackbarSeverity = "success"
-  let snackbarContent = "Saved successfully"
+  let snackbarContent
   if (notifySnackbar) {
     if (errorMessage?.length > 0) {
       snackbarSeverity = "error"
       snackbarContent = "Failed to save company"
+    } else {
+      snackbarContent = "Saved successfully"
+    }
+  }
+
+  if (notifySnackbarSnapshot) {
+    if (snapshotErrorMessage?.length > 0) {
+      snackbarSeverity = "error"
+      snackbarContent = "Failed to create snapshot"
+    } else {
+      snackbarContent = "Snapshot created"
     }
   }
 
