@@ -1,40 +1,43 @@
 import React from 'react'
+import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { selectDoctrineById } from "../../doctrines/doctrinesSlice";
+import { deleteSnapshotCompanyById, setCurrentCompany } from "../snapshotCompaniesSlice";
 import { Box, Button, Card, CardActionArea, CardActions, CardContent, Grid, Typography } from "@mui/material";
 import { doctrineImgMapping } from "../../../constants/doctrines";
-import { makeStyles } from "@mui/styles";
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { deleteCompanyById, setCurrentCompany } from "../companiesSlice";
-import { useNavigate } from "react-router-dom";
-import { StatsDisplay } from "./StatsDisplay";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   optionImage: {
-    height: '120px',
-    width: '240px'
+    height: '80px',
+    width: '160px'
+  },
+  cardContent: {
+    paddingTop: 0,
+    paddingBottom: 0
   },
   deleteIcon: {
     cursor: 'pointer'
   }
 }))
 
-export const CompanySummary = ({ company }) => {
+export const SnapshotCompanySummary = ({company}) => {
   const dispatch = useDispatch()
   const classes = useStyles()
-  let navigate = useNavigate()
+  const navigate = useNavigate()
 
   const doctrine = useSelector(state => selectDoctrineById(state, company.doctrineId))
 
   const deleteCompany = () => {
-    dispatch(deleteCompanyById({ companyId: company.id }))
+    dispatch(deleteSnapshotCompanyById({companyId: company.id}))
   }
 
-  const managementLink = `/companies/${company.id}`
+  const viewLink = `/companies/snapshots/${company.uuid}`
 
-  const manageCompany = () => {
+  const viewCompany = () => {
     dispatch(setCurrentCompany(company))
-    navigate(managementLink)
+    navigate(viewLink)
   }
 
   if (!doctrine) {
@@ -42,22 +45,21 @@ export const CompanySummary = ({ company }) => {
   }
 
   return (
-    <Box ml={5} mr={5} mt={1} mb={1} sx={{ maxWidth: '600px', flexGrow: 1, display: "flex" }} justifyContent="center">
-      <Card elevation={3} sx={{display: "flex", flexDirection: "column"}}>
-        <CardActionArea onClick={manageCompany} sx={{flexGrow: 1}}>
+    <Box>
+      <Card>
+        <CardActionArea onClick={viewCompany} sx={{flexGrow: 1}}>
           <Box sx={{ display: "flex", justifyContent: 'center' }} pt={1} pb={1}>
             <img src={doctrineImgMapping[doctrine.name]} alt={doctrine.displayName}
                  className={classes.optionImage}/>
           </Box>
-          <CardContent>
+          <CardContent className={classes.cardContent}>
             <Typography variant="h6">{company.name}</Typography>
-            <StatsDisplay stats={company.companyStats}/>
           </CardContent>
         </CardActionArea>
         <CardActions>
           <Grid container>
             <Grid item xs={11}>
-              <Button variant="contained" onClick={manageCompany} color="secondary">Manage Company</Button>
+              <Button variant="contained" onClick={viewCompany} color="secondary">View</Button>
             </Grid>
             <Grid item xs={1}>
               <DeleteOutlineIcon onClick={deleteCompany} className={classes.deleteIcon} color="error"/>

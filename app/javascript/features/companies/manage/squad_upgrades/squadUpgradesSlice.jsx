@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import {
   copySquad,
-  fetchCompanySquads,
+  fetchCompanySquads, fetchSnapshotCompanySquads,
   moveSquad,
   removeSquad,
   removeTransportedSquad,
@@ -65,6 +65,11 @@ const squadUpgradesSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchCompanySquads.fulfilled, (state, action) => {
+        squadUpgradesAdapter.setAll(state, action.payload.squadUpgrades)
+        state.currentSquadUpgrades = populateSquadUpgradesTree(action.payload.squadUpgrades, action.payload.upgrades, action.payload.availableUpgrades, action.payload.squads)
+        state.isChanged = false
+      })
+      .addCase(fetchSnapshotCompanySquads.fulfilled, (state, action) => {
         squadUpgradesAdapter.setAll(state, action.payload.squadUpgrades)
         state.currentSquadUpgrades = populateSquadUpgradesTree(action.payload.squadUpgrades, action.payload.upgrades, action.payload.availableUpgrades, action.payload.squads)
         state.isChanged = false

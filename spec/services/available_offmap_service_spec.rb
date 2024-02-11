@@ -6,7 +6,7 @@ RSpec.describe AvailableOffmapService do
   let(:faction) { create :faction }
   let(:faction2) { create :faction }
   let(:doctrine) { create :doctrine, faction: faction }
-  let!(:company) { create :company, faction: faction, doctrine: doctrine, ruleset: ruleset }
+  let!(:company) { create :active_company, faction: faction, doctrine: doctrine, ruleset: ruleset }
   let!(:restriction_faction) { create :restriction, faction: faction, doctrine: nil, unlock: nil, description: "for faction #{faction.id}" }
   let!(:restriction_faction2) { create :restriction, faction: faction2, doctrine: nil, unlock: nil, description: "for faction #{faction2.id}" }
   let!(:restriction_doctrine) { create :restriction, faction: nil, doctrine: doctrine, unlock: nil, name: "doctrine level", description: "for doctrine #{doctrine.id}" }

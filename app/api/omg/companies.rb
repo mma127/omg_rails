@@ -10,7 +10,7 @@ module OMG
     resource :companies do
       desc 'get all active companies for the player'
       get 'active' do
-        present ActiveCompany.includes(:company_stats).where(player: current_player), type: :with_stats
+        present ActiveCompany.includes(:faction, :doctrine, :battle_players, :company_stats).where(player: current_player), type: :with_stats
       end
 
       desc 'create new company for the player'
@@ -38,11 +38,11 @@ module OMG
           requires :id, type: Integer, desc: "Company ID"
         end
         get do
-          company = Company.includes(:available_units, :squads, :battle_players, :company_unlocks).find_by(id: params[:id], player: current_player)
+          company = ActiveCompany.includes(:available_units, :squads, :battle_players, :company_unlocks).find_by(id: params[:id], player: current_player)
           if company.blank?
             error! "Could not find company #{params[:id]} for the current player", 404
           end
-          present company
+          present company, type: :with_active_battle
         end
 
         # might not need this, combine with retrieve squads
@@ -51,7 +51,7 @@ module OMG
           requires :id, type: Integer, desc: "Company ID"
         end
         get 'availability' do
-          company = Company.includes(available_units: :unit, available_offmaps: :offmap).find_by(id: params[:id], player: current_player)
+          company = ActiveCompany.includes(available_units: :unit, available_offmaps: :offmap).find_by(id: params[:id], player: current_player)
           if company.blank?
             error! "Could not find company #{params[:id]} for the current player", 404
           end
@@ -145,7 +145,7 @@ module OMG
           requires :id, type: Integer, desc: "Company ID"
         end
         delete do
-          company = Company.find_by(id: params[:id], player: current_player)
+          company = ActiveCompany.find_by(id: params[:id], player: current_player)
           if company.blank?
             error! "Could not find company #{params[:id]} for the current player", 404
           end

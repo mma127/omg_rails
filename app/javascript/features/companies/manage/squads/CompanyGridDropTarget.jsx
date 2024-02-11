@@ -14,6 +14,7 @@ import {
 import { GLIDER } from "../../../../constants/units/types";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
+import _ from "lodash";
 
 const useStyles = makeStyles(() => ({
   placementBox: {
@@ -178,7 +179,7 @@ export const CompanyGridDropTarget = ({
       <DropTarget targetKey="unit" onHit={onUnitHit} className={classes.gridDropTarget}>
         <DropTarget targetKey="squad" onHit={onSquadMoveHit} className={classes.gridDropTarget}>
           <Paper key={gridIndex} className={`${classes.placementBox} ${isCompact ? 'compact' : null}`}>
-            <Box sx={{ position: 'relative', p: 1 }}>
+            <Box sx={{ position: 'relative', p: 1, pr: 3 }}>
               {squadCards}
               <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }}
                    className={classes.popCMBox}>

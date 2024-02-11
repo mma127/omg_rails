@@ -1,15 +1,11 @@
 import React from 'react'
-import { useDispatch, useSelector } from "react-redux";
-import {
-  removeExistingCompanyOffmap,
-  removeNewCompanyOffmap,
-  selectAllCompanyOffmaps,
-  selectNewCompanyOffmaps
-} from "./companyOffmapsSlice";
+import { useSelector } from "react-redux";
+import { selectAllCompanyOffmaps, selectNewCompanyOffmaps } from "./companyOffmapsSlice";
 import { Box } from "@mui/material";
 import { PurchasedOffmapClickable } from "./PurchasedOffmapClickable";
 import { makeStyles } from "@mui/styles";
 import { nanoid } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 const useStyles = makeStyles(() => ({
   wrapper: {

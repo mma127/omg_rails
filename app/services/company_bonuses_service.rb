@@ -6,9 +6,14 @@ class CompanyBonusesService
     @player = player
   end
 
+  def self.get_snapshot_company_resource_bonuses(company_uuid)
+    company = SnapshotCompany.includes(:ruleset, :company_resource_bonuses).find_by(uuid: company_uuid)
+    self.build_company_resource_bonuses_response(company)
+  end
+
   def get_company_resource_bonuses
     company = Company.includes(:ruleset, :company_resource_bonuses).find_by(id: @company_id, player: @player)
-    build_company_resource_bonuses_response(company)
+    CompanyBonusesService.build_company_resource_bonuses_response(company)
   end
 
   def purchase_resource_bonus(resource)
@@ -29,7 +34,7 @@ class CompanyBonusesService
     # Update Company resources
     company_service = CompanyService.new(@player)
     company_service.recalculate_and_update_resources(company.reload, force_update = true) # Force the resources to update even if negative amounts
-    build_company_resource_bonuses_response(company)
+    CompanyBonusesService.build_company_resource_bonuses_response(company)
   end
 
   def refund_resource_bonus(resource)
@@ -51,12 +56,12 @@ class CompanyBonusesService
     # Update Company resources
     company_service = CompanyService.new(@player)
     company_service.recalculate_and_update_resources(company.reload, force_update = true) # Force the resources to update even if negative amounts
-    build_company_resource_bonuses_response(company)
+    CompanyBonusesService.build_company_resource_bonuses_response(company)
   end
 
   private
 
-  def build_company_resource_bonuses_response(company)
+  def self.build_company_resource_bonuses_response(company)
     company_bonuses = company.company_resource_bonuses
     ruleset = company.ruleset
     resource_bonuses = ResourceBonus.all
@@ -78,7 +83,7 @@ class CompanyBonusesService
     }
   end
 
-  def get_co_bonus_count_for_bonus(resource_bonus, company_bonuses)
+  def self.get_co_bonus_count_for_bonus(resource_bonus, company_bonuses)
     company_bonuses.select { |cb| cb.resource_bonus == resource_bonus }.count
   end
 

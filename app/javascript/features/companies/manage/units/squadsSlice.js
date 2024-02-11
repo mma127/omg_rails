@@ -1,4 +1,4 @@
-import { createAsyncThunk, createEntityAdapter, createSlice, nanoid } from "@reduxjs/toolkit";
+import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
 import _ from "lodash"
 import {
@@ -15,7 +15,8 @@ import { createSquad, loadSquad } from "./squad";
 import {
   addNewCompanyOffmap,
   removeExistingCompanyOffmap,
-  removeNewCompanyOffmap, selectMergedCompanyOffmaps
+  removeNewCompanyOffmap,
+  selectMergedCompanyOffmaps
 } from "../company_offmaps/companyOffmapsSlice";
 import {
   addNewSquadUpgrade,
@@ -59,6 +60,15 @@ const initialState = squadsAdapter.getInitialState({
 export const fetchCompanySquads = createAsyncThunk("squads/fetchCompanySquads", async ({ companyId }, { rejectWithValue }) => {
   try {
     const response = await axios.get(`/companies/${companyId}/squads`)
+    return response.data
+  } catch (err) {
+    return rejectWithValue(err.response.data)
+  }
+})
+
+export const fetchSnapshotCompanySquads = createAsyncThunk("squads/fetchSnapshotCompanySquads", async ({ uuid }, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`/snapshot_companies/${uuid}/squads`)
     return response.data
   } catch (err) {
     return rejectWithValue(err.response.data)
@@ -468,6 +478,8 @@ const squadsSlice = createSlice({
     resetSquadState: () => initialState,
     clearNotifySnackbar(state) {
       state.notifySnackbar = false
+      state.squadsStatus = "idle"
+      state.squadsError = null
     },
     showSnackbar: (state, action) => {
       state.notifySnackbar = true
@@ -511,6 +523,25 @@ const squadsSlice = createSlice({
         state.squadsStatus = "idle"
       })
       .addCase(fetchCompanySquads.rejected, (state, action) => {
+        state.squadsStatus = "idle"
+        state.squadsError = action.payload.error
+      })
+
+      .addCase(fetchSnapshotCompanySquads.pending, (state, action) => {
+        state.squadsStatus = "pending"
+        state.squadsError = null
+      })
+      .addCase(fetchSnapshotCompanySquads.fulfilled, (state, action) => {
+        squadsAdapter.setAll(state, action.payload.squads)
+        const newTabs = buildNewSquadTabs(action.payload.squads)
+        for (const tabName of CATEGORIES) {
+          state[tabName] = newTabs[tabName]
+        }
+
+        state.callinModifiers = action.payload.callinModifiers
+        state.squadsStatus = "idle"
+      })
+      .addCase(fetchSnapshotCompanySquads.rejected, (state, action) => {
         state.squadsStatus = "idle"
         state.squadsError = action.payload.error
       })
@@ -663,8 +694,11 @@ export const selectHoldingSquads = state => state.squads[HOLDING]
 
 export const selectSquadsLoadingStatus = state => state.squads.squadsStatus
 export const selectSquadsInTabIndex = (state, tab, index) => {
-  const squads = state.squads[tab][index]
-  return squads
+  return state.squads[tab][index]
+}
+export const selectSquadsInTab = (state, tab) => {
+  const indices = Object.values(state.squads[tab])
+  return indices.map(i => Object.values(i)).flat()
 }
 
 export const selectSquadInTabIndexUuid = (state, tab, index, uuid) => state.squads?.[tab]?.[index]?.[uuid]

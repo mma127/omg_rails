@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { createCompany, fetchActiveCompanies, selectAllCompanies } from "../companiesSlice";
-import { Grid } from "@mui/material";
+import { createCompany, selectAllCompanies } from "../companiesSlice";
+import { Divider, Grid } from "@mui/material";
 import { CompanySummary } from "./CompanySummary";
 import { ErrorTypography } from "../../../components/ErrorTypography";
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
 import { CompanyForm } from "../creation/CompanyForm";
 import { selectAllDoctrines } from "../../doctrines/doctrinesSlice";
 import { EmptyCompanySpot } from "./EmptyCompanySpot";
+import { SnapshotCompanies } from "./SnapshotCompanies";
+import { AlertSnackbar } from "../AlertSnackbar";
+import { clearNotifySnackbar } from "../manage/units/squadsSlice";
+import { clearNotifySnackbarSnapshot } from "../snapshotCompaniesSlice";
 
 /**
  * Expect there will be up to 4 companies, 2 allied + 2 axis
@@ -45,7 +49,20 @@ export const DisplayCompanies = () => {
   const companies = useSelector(selectAllCompanies)
   const doctrines = useSelector(selectAllDoctrines)
 
-  const deletingError = useSelector(state => state.companies.deletingError)
+  const snapshotDeletingError = useSelector(state => state.companies.deletingError)
+
+  const [openSnackbar, setOpenSnackbar] = useState(false)
+
+  const notifySnackbarSnapshot = useSelector(state => state.snapshotCompanies.notifySnackbar)
+  useEffect(() => {
+    setOpenSnackbar(notifySnackbarSnapshot)
+  }, [notifySnackbarSnapshot])
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false)
+    dispatch(clearNotifySnackbar())
+    dispatch(clearNotifySnackbarSnapshot())
+  }
 
   const alliedCompanies = companies.filter(c => c.side === ALLIED_SIDE)
   const axisCompanies = companies.filter(c => c.side === AXIS_SIDE)
@@ -106,13 +123,31 @@ export const DisplayCompanies = () => {
     )
   }
 
+  let snackbarSeverity = "success"
+  let snackbarContent
+  if (notifySnackbarSnapshot) {
+    if (snapshotDeletingError?.length > 0) {
+      snackbarSeverity = "error"
+      snackbarContent = "Error deleting snapshot"
+    } else {
+      snackbarContent = "Snapshot deleted"
+    }
+  }
+
   return (
     <>
-      <ErrorTypography>{deletingError}</ErrorTypography>
+      <AlertSnackbar isOpen={openSnackbar}
+                     setIsOpen={setOpenSnackbar}
+                     handleClose={handleCloseSnackbar}
+                     severity={snackbarSeverity}
+                     content={snackbarContent}/>
+      <ErrorTypography>{snapshotDeletingError}</ErrorTypography>
       <ErrorTypography>{companyError}</ErrorTypography>
       <Grid container spacing={2}>
         {content}
       </Grid>
+      <Divider variant="middle" flexItem sx={{paddingTop: "1rem"}}/>
+      <SnapshotCompanies />
     </>
   )
 }

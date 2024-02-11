@@ -4,8 +4,9 @@ module Snapshot
   class Creator < ApplicationService
     class SnapshotCreatorValidationError < StandardError; end
 
-    def initialize(player, source_company_id)
+    def initialize(player, name, source_company_id)
       @player = player
+      @name = name
       @source_company_id = source_company_id
     end
 
@@ -61,6 +62,8 @@ module Snapshot
         CompanyOffmap.import! new_company_offmaps
         CompanyResourceBonus.import! new_company_resource_bonuses
       end
+
+      @new_company
     end
 
     private
@@ -86,6 +89,8 @@ module Snapshot
 
     def build_new_company
       new_company = source_company.dup
+      new_company.name = @name
+      new_company.uuid = SecureRandom.uuid
       new_company.type = SnapshotCompany.class_name
       new_company
     end

@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { fetchCompanySquads, upsertSquads } from "../units/squadsSlice";
+import { fetchCompanySquads, fetchSnapshotCompanySquads, upsertSquads } from "../units/squadsSlice";
 
 const availableUpgradesAdapter = createEntityAdapter()
 const initialState = availableUpgradesAdapter.getInitialState({})
@@ -11,6 +11,9 @@ const availableUpgradesSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchCompanySquads.fulfilled, (state, action) => {
+        availableUpgradesAdapter.setAll(state, action.payload.availableUpgrades)
+      })
+      .addCase(fetchSnapshotCompanySquads.fulfilled, (state, action) => {
         availableUpgradesAdapter.setAll(state, action.payload.availableUpgrades)
       })
   }

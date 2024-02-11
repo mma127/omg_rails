@@ -984,7 +984,7 @@ RSpec.describe CompanyUnlockService do
     end
 
     context "when the company doesn't own the given company_unlock_id" do
-      let!(:company2) { create :company, ruleset: ruleset }
+      let!(:company2) { create :active_company, ruleset: ruleset }
       let!(:company_unlock) { create :company_unlock, company: company2, doctrine_unlock: doctrine_unlock }
 
       it "raises an error" do

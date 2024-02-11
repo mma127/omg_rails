@@ -16,6 +16,13 @@ BattlePlayer
 Player
 1. Create a separate RulesetPlayer record to encapsulate ruleset specific data like vps current/earned in that ruleset
 
+Unlocks
+1. Tooltip for enabled units
+2. EnabledUpgrades
+
+Performance
+1. doctrine_unlock.rb associations for Grape entities are sequential
+
 UI
 1. Discord invite icon
 2. Leaderboards for company stats
@@ -32,5 +39,5 @@ Enhancements
 
 TODO
 1. War Stats page
-2. Company Snapshot
+2. Company Snapshot descriptions & tab notes
 3. War reset admin page

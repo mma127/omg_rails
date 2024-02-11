@@ -1,8 +1,6 @@
 import React from 'react'
 import { makeStyles } from "@mui/styles";
-import { Box, Grid, Typography } from "@mui/material";
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import HistoryToggleOffIcon from '@mui/icons-material/HistoryToggleOff';
+import { Box, Typography } from "@mui/material";
 import { formatResourceCost } from "../../../../utils/company";
 import { nanoid } from "@reduxjs/toolkit";
 
@@ -30,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export const AvailableOffmapTooltipContent = ({ availableOffmap, skipBuffs = false }) => {
   const classes = useStyles()
   const offmap = availableOffmap.offmap
-  const cost = formatResourceCost({ mun: availableOffmap.mun })
+  const cost = formatResourceCost({ man: 0, mun: availableOffmap.mun, fuel: 0 })
 
   let available, unlimited, cooldown,
     duration,

@@ -22,7 +22,24 @@ module OMG
           requires :id, type: Integer, desc: "Doctrine ID"
         end
         get 'unlocks' do
-          present Doctrine.includes(doctrine_unlocks: [:restriction, unlock: :restriction]).find(params[:id]).doctrine_unlocks, type: :full
+          present DoctrineUnlock
+                    .includes(restriction:
+                                { enabled_units: :unit,
+                                  disabled_units: :unit,
+                                  enabled_offmaps: :offmap,
+                                  enabled_callin_modifiers: {
+                                    callin_modifier: [:callin_modifier_required_units,
+                                                      :callin_modifier_allowed_units] } },
+                              unlock: {
+                                unit_swaps: [:old_unit, :new_unit],
+                                restriction:
+                                  { enabled_units: :unit,
+                                    disabled_units: :unit,
+                                    enabled_offmaps: :offmap,
+                                    enabled_callin_modifiers: {
+                                      callin_modifier: [:callin_modifier_required_units,
+                                                        :callin_modifier_allowed_units] } } })
+                    .where(doctrine_id: params[:id]), type: :full
         end
       end
     end

@@ -174,24 +174,26 @@ ActiveRecord::Schema.define(version: 2024_01_22_011211) do
   end
 
   create_table "companies", force: :cascade do |t|
+    t.string "uuid", null: false, comment: "Uuid"
     t.string "name", comment: "Company name"
-    t.string "type", comment: "Company type"
+    t.string "type", null: false, comment: "Company type"
     t.bigint "player_id", null: false
     t.bigint "doctrine_id", null: false
     t.bigint "faction_id", null: false
     t.bigint "ruleset_id", null: false
     t.integer "vps_earned", default: 0, null: false, comment: "VPs earned by this company"
     t.integer "vps_current", default: 0, null: false, comment: "VPs available to spend"
-    t.integer "man", default: 0, comment: "Manpower available to this company"
-    t.integer "mun", default: 0, comment: "Munitions available to this company"
-    t.integer "fuel", default: 0, comment: "Fuel available to this company"
-    t.integer "pop", default: 0, comment: "Population cost of this company"
+    t.integer "man", default: 0, null: false, comment: "Manpower available to this company"
+    t.integer "mun", default: 0, null: false, comment: "Munitions available to this company"
+    t.integer "fuel", default: 0, null: false, comment: "Fuel available to this company"
+    t.integer "pop", default: 0, null: false, comment: "Population cost of this company"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["doctrine_id"], name: "index_companies_on_doctrine_id"
     t.index ["faction_id"], name: "index_companies_on_faction_id"
     t.index ["player_id"], name: "index_companies_on_player_id"
     t.index ["ruleset_id"], name: "index_companies_on_ruleset_id"
+    t.index ["uuid"], name: "index_companies_on_uuid", unique: true
   end
 
   create_table "company_callin_modifiers", comment: "Mapping of company to available callin modifiers", force: :cascade do |t|

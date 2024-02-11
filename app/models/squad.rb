@@ -99,7 +99,7 @@ class Squad < ApplicationRecord
   end
 
   def used_squad_slots
-    squads_in_transport.count
+    squads_in_transport.size
   end
 
   def used_model_slots

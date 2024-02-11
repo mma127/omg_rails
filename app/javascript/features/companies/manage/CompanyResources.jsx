@@ -29,6 +29,7 @@ const ResourceDisplay = ({resource, quantity}) => {
     </>
   )
 }
+
 export const CompanyResources = ({companyId}) => {
   const pop = useSelector(state => selectCompanyPop(state, companyId))
   const man = useSelector(state => selectCompanyMan(state, companyId))

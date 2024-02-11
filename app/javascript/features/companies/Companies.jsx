@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 import { CreateCompaniesForm } from "./creation/CreateCompaniesForm";
 import { selectIsAuthed } from "../player/playerSlice";
-import { fetchActiveCompanies, selectAllCompanies } from "./companiesSlice";
+import { selectAllCompanies } from "./companiesSlice";
 import { DisplayCompanies } from "./display/DisplayCompanies";
 import { Fingerprint } from "@mui/icons-material";
-import store from "../../app/store";
 import { PageContainer } from "../../components/PageContainer";
+import { fetchPlayerSnapshotCompanies, resetSnapshotState } from "./snapshotCompaniesSlice";
 
 export const Companies = () => {
   // Companies page container
@@ -17,7 +17,11 @@ export const Companies = () => {
   //    Enter company builder
   const dispatch = useDispatch()
   useEffect( () => {
-    dispatch(fetchActiveCompanies())
+    dispatch(fetchPlayerSnapshotCompanies())
+
+    return () => {
+      dispatch(resetSnapshotState())
+    }
   },[])
 
   const isAuthed = useSelector(selectIsAuthed)

@@ -29,27 +29,41 @@ export const TransportDropTarget = ({
                                       onSquadCopy,
                                       transportSquadDelete,
                                       onSquadUpgradeDestroyClick,
-                                      enabled
+                                      enabled,
+                                      isSnapshot,
                                     }) => {
   const classes = useStyles()
+
+  const squadContent = (
+    <Paper key={`${transportUuid}-transport`} className={classes.transportHitBox}>
+      <Box>
+        {transportedSquads.map(ts => <SquadCard key={ts.uuid}
+                                                uuid={ts.uuid} index={index} tab={tab}
+                                                transportUuid={transportUuid}
+                                                onSquadClick={onSquadClick}
+                                                onDestroyClick={transportSquadDelete}
+                                                onSquadMove={onSquadMove}
+                                                onSquadCopy={onSquadCopy}
+                                                onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
+                                                enabled={enabled}
+                                                isSnapshot={isSnapshot}/>)}
+      </Box>
+    </Paper>
+  )
+
+  if (isSnapshot) {
+    return (
+      <Box className={classes.wrapper}>
+        {squadContent}
+      </Box>
+    )
+  }
 
   return (
     <Box className={classes.wrapper}>
       <DropTarget targetKey="unit" onHit={unitCreateOnHit}>
         <DropTarget targetKey="squad" onHit={squadMoveOnHit}>
-          <Paper key={`${transportUuid}-transport`} className={classes.transportHitBox}>
-            <Box>
-              {transportedSquads.map(ts => <SquadCard key={ts.uuid}
-                                                      uuid={ts.uuid} index={index} tab={tab}
-                                                      transportUuid={transportUuid}
-                                                      onSquadClick={onSquadClick}
-                                                      onDestroyClick={transportSquadDelete}
-                                                      onSquadMove={onSquadMove}
-                                                      onSquadCopy={onSquadCopy}
-                                                      onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                                      enabled={enabled} />)}
-            </Box>
-          </Paper>
+          {squadContent}
         </DropTarget>
       </DropTarget>
     </Box>

@@ -1,5 +1,5 @@
 import { createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit";
-import { fetchCompanySquads, upsertSquads } from "../units/squadsSlice";
+import { fetchCompanySquads, fetchSnapshotCompanySquads, upsertSquads } from "../units/squadsSlice";
 
 const companyOffmapsAdapter = createEntityAdapter()
 
@@ -41,6 +41,10 @@ const companyOffmapsSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchCompanySquads.fulfilled, (state, action) => {
+        companyOffmapsAdapter.setAll(state, action.payload.companyOffmaps)
+        state.newCompanyOffmaps = {}
+      })
+      .addCase(fetchSnapshotCompanySquads.fulfilled, (state, action) => {
         companyOffmapsAdapter.setAll(state, action.payload.companyOffmaps)
         state.newCompanyOffmaps = {}
       })

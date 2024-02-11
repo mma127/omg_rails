@@ -8,7 +8,7 @@ RSpec.describe AvailableUpgradeService do
   let(:doctrine1) { create :doctrine, faction: faction }
   let(:doctrine2) { create :doctrine, faction: faction }
   let(:doctrine) { doctrine1 }
-  let!(:company) { create :company, faction: faction, doctrine: doctrine, ruleset: ruleset }
+  let!(:company) { create :active_company, faction: faction, doctrine: doctrine, ruleset: ruleset }
   let!(:restriction_faction) { create :restriction, faction: faction, doctrine: nil, unlock: nil, description: "for faction #{faction.id}" }
   let!(:restriction_faction2) { create :restriction, faction: faction2, doctrine: nil, unlock: nil, description: "for faction #{faction2.id}" }
   let!(:restriction_doctrine1) { create :restriction, faction: nil, doctrine: doctrine1, unlock: nil, name: "doctrine1 level", description: "for doctrine #{doctrine1.id}" }
@@ -159,7 +159,7 @@ RSpec.describe AvailableUpgradeService do
 
   describe "#recreate_disabled_from_doctrine_unlock" do
     let!(:ruleset) { create :ruleset }
-    let!(:company) { create :company, faction: faction, doctrine: doctrine1, ruleset: ruleset }
+    let!(:company) { create :active_company, faction: faction, doctrine: doctrine1, ruleset: ruleset }
     let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine1, ruleset: ruleset }
     let(:du_restriction) { doctrine_unlock.restriction }
     let!(:enabled_upgrade) { create :enabled_upgrade, upgrade: upgrade4, man: 100, mun: 100, fuel: 100, pop: 0, uses: 0, restriction: restriction_doctrine1, ruleset: ruleset }

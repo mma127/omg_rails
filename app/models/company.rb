@@ -3,12 +3,13 @@
 # Table name: companies
 #
 #  id                                       :bigint           not null, primary key
-#  fuel(Fuel available to this company)     :integer          default(0)
-#  man(Manpower available to this company)  :integer          default(0)
-#  mun(Munitions available to this company) :integer          default(0)
+#  fuel(Fuel available to this company)     :integer          default(0), not null
+#  man(Manpower available to this company)  :integer          default(0), not null
+#  mun(Munitions available to this company) :integer          default(0), not null
 #  name(Company name)                       :string
-#  pop(Population cost of this company)     :integer          default(0)
-#  type(Company type)                       :string
+#  pop(Population cost of this company)     :integer          default(0), not null
+#  type(Company type)                       :string           not null
+#  uuid(Uuid)                               :string           not null
 #  vps_current(VPs available to spend)      :integer          default(0), not null
 #  vps_earned(VPs earned by this company)   :integer          default(0), not null
 #  created_at                               :datetime         not null
@@ -24,6 +25,7 @@
 #  index_companies_on_faction_id   (faction_id)
 #  index_companies_on_player_id    (player_id)
 #  index_companies_on_ruleset_id   (ruleset_id)
+#  index_companies_on_uuid         (uuid) UNIQUE
 #
 # Foreign Keys
 #
@@ -53,7 +55,7 @@ class Company < ApplicationRecord
   has_many :callin_modifiers, -> { distinct }, through: :company_callin_modifiers
   has_many :upgrades, -> { distinct }, through: :available_upgrades
   has_many :company_resource_bonuses, dependent: :destroy
-  has_many :battle_players, dependent: :nullify # TODO should this link to a permanent record of the company like a historical company containing only doctrine/faction data?
+  has_many :battle_players, dependent: :nullify
   has_many :transporting_transported_squads, through: :squads
   has_one :company_stats, dependent: :destroy
 
@@ -83,7 +85,7 @@ class Company < ApplicationRecord
   end
 
   def active_battle_id
-    battle_players.in_active_battle.first&.id
+    battle_players.in_active_battle.first&.id # TODO Improve this
   end
 
   def entity
@@ -103,7 +105,8 @@ class Company < ApplicationRecord
     expose :faction_name, as: :factionName
     expose :doctrine_name, as: :doctrineName
     expose :doctrine_display_name, as: :doctrineDisplayName
-    expose :active_battle_id, as: :activeBattleId
+    expose :active_battle_id, as: :activeBattleId, if: { type: :full }
+    expose :active_battle_id, as: :activeBattleId, if: { type: :with_active_battle }
     expose :type
 
     expose :available_units, as: :availableUnits, using: AvailableUnit::Entity, if: { type: :full }
@@ -113,5 +116,6 @@ class Company < ApplicationRecord
     # TODO resource bonuses
 
     expose :company_stats, as: :companyStats, using: CompanyStats::Entity, if: { type: :with_stats }
+    expose :company_stats, as: :companyStats, using: CompanyStats::Entity, if: { type: :full }
   end
 end

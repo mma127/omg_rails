@@ -1,7 +1,7 @@
 import {createAsyncThunk, createEntityAdapter, createSlice} from "@reduxjs/toolkit";
 import axios from "axios"
 import {fetchCompanyById} from "../../companiesSlice";
-import { fetchCompanySquads } from "../units/squadsSlice";
+import { fetchCompanySquads, fetchSnapshotCompanySquads } from "../units/squadsSlice";
 
 const companyBonusesAdapter = createEntityAdapter()
 
@@ -89,6 +89,20 @@ const companyBonusesSlice = createSlice({
         state.currentMun = action.payload.currentMun
         state.currentFuel = action.payload.currentFuel
         state.maxResourceBonuses = action.payload.maxResourceBonuses
+      })
+      .addCase(fetchSnapshotCompanySquads.fulfilled, (state, action) => {
+        state.isChanged = false
+        const companyResourceBonuses = action.payload.companyResourceBonuses
+        state.manResourceBonus = action.payload.manResourceBonus
+        state.munResourceBonus = companyResourceBonuses.munResourceBonus
+        state.fuelResourceBonus = companyResourceBonuses.fuelResourceBonus
+        state.manBonusCount = companyResourceBonuses.manBonusCount
+        state.munBonusCount = companyResourceBonuses.munBonusCount
+        state.fuelBonusCount = companyResourceBonuses.fuelBonusCount
+        state.currentMan = companyResourceBonuses.currentMan
+        state.currentMun = companyResourceBonuses.currentMun
+        state.currentFuel = companyResourceBonuses.currentFuel
+        state.maxResourceBonuses = companyResourceBonuses.maxResourceBonuses
       })
       .addCase(purchaseCompanyResourceBonus.pending, (state) => {
         state.notifySnackbar = false

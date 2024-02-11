@@ -29,6 +29,8 @@ import {
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { selectCurrentCompany } from "../../companiesSlice";
 import { buildVetBonuses, getVetLevel } from "../units/unit_vet";
+import _ from "lodash";
+import { selectCurrentSnapshotCompany } from "../../snapshotCompaniesSlice";
 
 const useStyles = makeStyles(() => ({
   squadCard: {
@@ -100,6 +102,7 @@ export const SquadCard = (
     onSquadMove,
     onSquadCopy,
     onSquadUpgradeDestroyClick,
+    isSnapshot = false
   }
 ) => {
   const classes = useStyles()
@@ -114,7 +117,12 @@ export const SquadCard = (
   const unit = useSelector(state => selectUnitById(state, squad.unitId))
   const squadUpgrades = useSelector(state => selectSquadUpgradesForSquad(state, tab, index, uuid))
   const selectedSquadUuid = useSelector(selectSelectedSquadUuid)
-  const company = useSelector(selectCurrentCompany)
+  let company
+  if (isSnapshot) {
+    company = useSelector(selectCurrentSnapshotCompany)
+  } else {
+    company = useSelector(selectCurrentCompany)
+  }
 
   const [isTooltipOpen, setIsTooltipOpen] = useState(false)
   const elementRef = useRef()
@@ -232,7 +240,7 @@ export const SquadCard = (
 
   const onCopyClick = () => {
     selectSquad(squad.availableUnitId, squad.tab, squad.index, squad.uuid, squad.transportUuid)
-    dispatch(deepCopySquad({squad, squadUpgrades}))
+    dispatch(deepCopySquad({ squad, squadUpgrades }))
   }
 
   // Vet
@@ -277,7 +285,8 @@ export const SquadCard = (
                                             onSquadCopy={onSquadCopy}
                                             transportSquadDelete={transportSquadDelete}
                                             onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                            enabled={enabled}/>
+                                            enabled={enabled}
+                                            isSnapshot={isSnapshot}/>
 
     transportSlotsContent = <TransportSlots usedSquadSlots={usedSquadSlots}
                                             usedModelSlots={usedModelSlots}
@@ -294,6 +303,49 @@ export const SquadCard = (
 
   // Use a specific drag handle class so the entire card doesn't drag. This allows nesting SquadCards of transported units
   let dragHandleClassName = `unit-card-drag-handle-${uuid}`
+  const cardContent = (
+    <Card className={`${classes.squadCard} ${isSelected ? 'selected' : null}`}>
+      <Tooltip
+        key={uuid}
+        open={isTooltipOpen}
+        onMouseLeave={handleTooltipClose}
+        onMouseEnter={handleTooltipOpen}
+        title={
+          <>
+            <Typography variant="subtitle2" className={classes.tooltipHeader}>{unit.displayName}</Typography>
+            <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
+            <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
+            <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
+            {vetBonuses.map(vb => <Box key={vb.level} className={classes.squadCardItems}><SquadVetIcon
+              level={vb.level}/> {vb.desc}</Box>)}
+          </>
+        }
+        // TransitionComponent={Zoom}
+        followCursor={true}
+        placement="bottom-start"
+        arrow
+      >
+        <Box sx={{ p: 1 }} className={classes.squadCardItems} ref={elementRef}>
+          <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
+                    onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
+          <SquadVetIcon level={level}/>
+          <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeClick}
+                         enabled={enabled}/>
+          {transportContent}
+          <Box className={classes.slotsDeleteWrapper}>
+            {actionsContent}
+            {transportSlotsContent}
+          </Box>
+        </Box>
+      </Tooltip>
+    </Card>
+  )
+
+
+  if (isSnapshot) {
+    return cardContent
+  }
+
   return (
     <DragDropContainer targetKey="squad"
                        onDragStart={() => onSquadClick(squad.availableUnitId, squad.tab, squad.index, squad.uuid, transportUuid)}
@@ -344,41 +396,7 @@ export const SquadCard = (
                          </Card>
                        }
     >
-      <Card className={`${classes.squadCard} ${isSelected ? 'selected' : null}`}>
-        <Tooltip
-          key={uuid}
-          open={isTooltipOpen}
-          onMouseLeave={handleTooltipClose}
-          onMouseEnter={handleTooltipOpen}
-          title={
-            <>
-              <Typography variant="subtitle2" className={classes.tooltipHeader}>{unit.displayName}</Typography>
-              <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
-              <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
-              <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
-              {vetBonuses.map(vb => <Box key={vb.level} className={classes.squadCardItems}><SquadVetIcon
-                level={vb.level}/> {vb.desc}</Box>)}
-            </>
-          }
-          // TransitionComponent={Zoom}
-          followCursor={true}
-          placement="bottom-start"
-          arrow
-        >
-          <Box sx={{ p: 1 }} className={classes.squadCardItems} ref={elementRef}>
-            <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
-                      onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
-            <SquadVetIcon level={level}/>
-            <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeClick}
-                           enabled={enabled}/>
-            {transportContent}
-            <Box className={classes.slotsDeleteWrapper}>
-              {actionsContent}
-              {transportSlotsContent}
-            </Box>
-          </Box>
-        </Tooltip>
-      </Card>
+      {cardContent}
     </DragDropContainer>
   )
 }

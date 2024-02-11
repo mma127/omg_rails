@@ -22,6 +22,7 @@ import { CompanyBonuses } from "./bonuses/CompanyBonuses";
 import { selectIsCompanyBonusesChanged } from "./bonuses/companyBonusesSlice";
 import { CompactSelector } from "./CompactSelector";
 import { PageContainer } from "../../../components/PageContainer";
+import { SnapshotCreator } from "./SnapshotCreator";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -46,7 +47,8 @@ const useStyles = makeStyles(theme => ({
   compactWrapper: {
     flex: 1,
     display: "flex",
-    alignItems: "center",
+    flexDirection: "column",
+    alignItems: "flex-end",
     justifyContent: "flex-end"
   },
   contentContainer: {
@@ -169,6 +171,7 @@ export const CompanyManager = () => {
         </Box>
         <Box className={classes.compactWrapper}>
           <CompactSelector />
+          <SnapshotCreator companyId={companyId} companyName={companyName} />
         </Box>
       </Box>
       <Box className={classes.contentContainer}>

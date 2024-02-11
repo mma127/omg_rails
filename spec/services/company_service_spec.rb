@@ -6,7 +6,7 @@ RSpec.describe CompanyService do
 
   let(:name) { "My new company" }
   let!(:ruleset) { create :ruleset }
-  let!(:company2) { create :company, ruleset: ruleset }
+  let!(:company2) { create :active_company, ruleset: ruleset }
   let(:faction) { create :faction }
   let(:doctrine) { create :doctrine, faction: faction }
   let!(:restriction_faction) { create :restriction, faction: faction, doctrine: nil, unlock: nil }
@@ -79,9 +79,9 @@ RSpec.describe CompanyService do
     end
 
     it "raises a validation error when the Player has too many Companies of that side" do
-      create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
-      create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
-      create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
+      create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
+      create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
+      create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       expect { subject }
         .to raise_error(
               CompanyService::CompanyCreationValidationError,
@@ -2196,31 +2196,31 @@ RSpec.describe CompanyService do
 
   describe "#can_create_company" do
     it "can create when the player does not have the max number of companies for that side" do
-      create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
+      create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       expect(instance.send(:can_create_company, doctrine)).to be true
     end
 
     it "cannot create when the player has the max number of companies for that side" do
-      create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
-      create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
-      create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
+      create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
+      create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
+      create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       expect(instance.send(:can_create_company, doctrine)).to be false
     end
   end
 
   describe "#can_update_company" do
     it "returns true when the player is associated with the company" do
-      company = create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
+      company = create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset
       expect(instance.send(:can_update_company, company, false)).to be true
     end
     it "returns false when the player is not associated with the company" do
       player2 = create :player
-      company = create :company, player: player2, faction: faction, doctrine: doctrine, ruleset: ruleset
+      company = create :active_company, player: player2, faction: faction, doctrine: doctrine, ruleset: ruleset
       expect(instance.send(:can_update_company, company, false)).to be false
     end
     it "returns true when the player is not associated with the company but the override is true" do
       player2 = create :player
-      company = create :company, player: player2, faction: faction, doctrine: doctrine, ruleset: ruleset
+      company = create :active_company, player: player2, faction: faction, doctrine: doctrine, ruleset: ruleset
       expect(instance.send(:can_update_company, company, true)).to be true
     end
   end
@@ -2262,7 +2262,7 @@ RSpec.describe CompanyService do
   end
 
   describe "#validate_squad_available_units_exist" do
-    let!(:company) { create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
+    let!(:company) { create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
     let!(:available_unit_1) { create :available_unit, company: company, unit: unit1 }
     let!(:available_unit_2) { create :available_unit, company: company, unit: unit2 }
 
@@ -2284,7 +2284,7 @@ RSpec.describe CompanyService do
   end
 
   describe "#validate_squad_units_available" do
-    let!(:company) { create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
+    let!(:company) { create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
     let!(:available_unit_1) { create :available_unit, company: company, unit: unit1 }
     let!(:available_unit_2) { create :available_unit, company: company, unit: unit2 }
 
@@ -2317,7 +2317,7 @@ RSpec.describe CompanyService do
   end
 
   describe "#calculate_squad_resources" do
-    let(:company) { create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
+    let(:company) { create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
     let(:available_unit_1) { create :available_unit, company: company, unit: unit1, man: 100, mun: 0, fuel: 40, pop: 2 }
     let(:available_unit_2) { create :available_unit, company: company, unit: unit2, man: 400, mun: 130, fuel: 0, pop: 8 }
     let(:squads) { [{ unit_id: unit1.id, available_unit_id: available_unit_1.id, tab: "core", index: 0 },
@@ -2364,7 +2364,7 @@ RSpec.describe CompanyService do
     end
 
     context "when there are resource bonuses" do
-      let(:company) { create :company, ruleset: ruleset }
+      let(:company) { create :active_company, ruleset: ruleset }
       let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15, ruleset: ruleset }
       let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10, ruleset: ruleset }
       before do
@@ -2400,7 +2400,7 @@ RSpec.describe CompanyService do
     end
 
     context "when there are resource bonuses" do
-      let(:company) { create :company, ruleset: ruleset }
+      let(:company) { create :active_company, ruleset: ruleset }
       let(:man_rb) { create :resource_bonus, resource: "man", man: 100, mun: -10, fuel: -15, ruleset: ruleset }
       let(:mun_rb) { create :resource_bonus, resource: "mun", man: -50, mun: 40, fuel: -10, ruleset: ruleset }
       before do
@@ -2447,7 +2447,7 @@ RSpec.describe CompanyService do
   end
 
   describe "#build_available_unit_deltas" do
-    let(:company) { create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
+    let(:company) { create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
     let(:available_unit_1) { create :available_unit, company: company, unit: unit1, available: 1 }
     let(:available_unit_2) { create :available_unit, company: company, unit: unit2, available: 1 }
     let(:available_unit_3) { create :available_unit, company: company, unit: unit3, available: 0 }
@@ -2484,7 +2484,7 @@ RSpec.describe CompanyService do
   end
 
   describe "#add_existing_squads_to_remove" do
-    let(:company) { create :company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
+    let(:company) { create :active_company, player: player, faction: faction, doctrine: doctrine, ruleset: ruleset }
     let(:available_unit_1) { create :available_unit, company: company, unit: unit1, available: 1 }
     let(:available_unit_2) { create :available_unit, company: company, unit: unit2, available: 1 }
     let(:available_unit_3) { create :available_unit, company: company, unit: unit3, available: 0 }

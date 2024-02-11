@@ -23,7 +23,7 @@
 require "rails_helper"
 
 RSpec.describe TransportedSquad, type: :model do
-  let!(:company) { create :company }
+  let!(:company) { create :active_company }
   let!(:available_unit) { create :available_unit, company: company }
   let(:squad1) { create :squad, company: company, available_unit: available_unit }
   let(:squad2) { create :squad, company: company, available_unit: available_unit }
