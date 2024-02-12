@@ -12,14 +12,14 @@ const useStyles = makeStyles(() => ({
     flexWrap: "wrap"
   }
 }))
-export const SquadUpgrades = ({ tab, index, squadUuid, onUpgradeClick, enabled }) => {
+export const SquadUpgrades = ({ tab, index, squadUuid, onUpgradeClick, enabled, isSnapshot }) => {
   const classes = useStyles()
   const squadUpgrades = useSelector(state => selectSquadUpgradesForSquad(state, tab, index, squadUuid))
 
   return (
     <Box className={classes.wrapper}>
       {squadUpgrades.map(su => <SquadUpgradeClickable squadUpgrade={su} onUpgradeClick={onUpgradeClick}
-                                                      enabled={enabled} key={su.uuid}/>)}
+                                                      enabled={enabled} isSnapshot={isSnapshot} key={su.uuid}/>)}
     </Box>
   )
 }

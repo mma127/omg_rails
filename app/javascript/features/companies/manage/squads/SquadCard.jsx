@@ -330,7 +330,7 @@ export const SquadCard = (
                     onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
           <SquadVetIcon level={level}/>
           <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeClick}
-                         enabled={enabled}/>
+                         enabled={enabled} isSnapshot={isSnapshot}/>
           {transportContent}
           <Box className={classes.slotsDeleteWrapper}>
             {actionsContent}

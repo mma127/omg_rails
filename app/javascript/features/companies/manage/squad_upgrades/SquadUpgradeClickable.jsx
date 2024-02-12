@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
     cursor: 'pointer'
   }
 }))
-export const SquadUpgradeClickable = ({ squadUpgrade, onUpgradeClick, enabled }) => {
+export const SquadUpgradeClickable = ({ squadUpgrade, onUpgradeClick, enabled, isSnapshot }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const elementRef = useRef()
@@ -65,7 +65,7 @@ export const SquadUpgradeClickable = ({ squadUpgrade, onUpgradeClick, enabled })
       placement="bottom-start"
       arrow
     >
-      <Box onClick={onUpgradeBoxClick} className={`${classes.container} ${disabled ? null : classes.wrapperEnabled}`}
+      <Box onClick={onUpgradeBoxClick} className={`${classes.container} ${(disabled || isSnapshot) ? null : classes.wrapperEnabled}`}
            ref={elementRef}>
         <UpgradeIcon upgrade={upgrade} disabled={disabled}/>
       </Box>
