@@ -253,7 +253,7 @@ export const SquadCard = (
 
 
   let actionsContent
-  if (enabled) {
+  if (enabled && !isSnapshot) {
     actionsContent = <Box className={classes.actionIcons}>
       <DeleteOutlineIcon
         onClick={() => onDestroyClick(squad, squadUpgrades, null)}
