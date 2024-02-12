@@ -89,7 +89,7 @@ export const DoctrineUnlock = ({ doctrineUnlock, companyUnlock, companyId, isSna
       <Button variant="contained" color="error" size="small" onClick={refund} className={classes.button}
               disabled={isSaving || battleLocked || isSnapshot}>
         <Typography variant="button" display="block">
-          Refund {doctrineUnlock.vpCost} VP
+          {isSnapshot ? null : "Refund"} {doctrineUnlock.vpCost} VP
         </Typography>
       </Button>
     )

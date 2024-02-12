@@ -57,6 +57,8 @@ class SnapshotCompany < Company
     expose :vps_earned, as: :vpsEarned
     expose :vps_current, as: :vpsCurrent
 
+    expose :company_unlocks, as: :unlocks, using: CompanyUnlock::Entity
+
     # expose :available_units, as: :availableUnits, using: AvailableUnit::Entity, if: { type: :full }
     # expose :squads, using: Squad::Entity, if: { type: :full }
     # expose :company_unlocks, as: :companyUnlocks, using: CompanyUnlock::Entity, if: { type: :full }
