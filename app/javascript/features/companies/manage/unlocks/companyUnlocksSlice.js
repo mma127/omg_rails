@@ -2,6 +2,7 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/too
 import axios from "axios"
 import { fetchCompanyById } from "../../companiesSlice";
 import { fetchDoctrineUnlocksByDoctrineId } from "../../../doctrines/doctrinesSlice";
+import { fetchSnapshotCompanyByUuid } from "../../snapshotCompaniesSlice";
 
 const companyUnlocksAdapter = createEntityAdapter()
 
@@ -53,6 +54,10 @@ const companyUnlocksSlice = createSlice({
       .addCase(fetchCompanyById.fulfilled, (state, action) => {
         companyUnlocksAdapter.setAll(state, action.payload.company.unlocks)
         state.activeCompanyId = action.payload.company.id
+      })
+      .addCase(fetchSnapshotCompanyByUuid.fulfilled, (state, action) => {
+        companyUnlocksAdapter.setAll(state, action.payload.unlocks)
+        state.activeCompanyId = action.payload.id
       })
       .addCase(purchaseUnlock.pending, (state, action) => {
         state.errorMessage = null
