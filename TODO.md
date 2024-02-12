@@ -41,3 +41,4 @@ TODO
 1. War Stats page
 2. Company Snapshot descriptions & tab notes
 3. War reset admin page
+4. Clear company related slices when component closes for CompanyManager, SnapshotCompanyView
