@@ -1,19 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import {
-  Box,
-  Button,
-  Card, FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
-  TextField, Tooltip,
-  Typography
-} from "@mui/material";
+import React from 'react'
+import { Alert, Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +9,7 @@ import { createBattle, selectIsPending } from "../lobbySlice";
 import { ErrorTypography } from "../../../components/ErrorTypography";
 import { selectAllCompanies } from "../../companies/companiesSlice";
 import { doctrineImgMapping } from "../../../constants/doctrines";
+import { CompanySelectTooltip } from "./CompanySelectTooltip";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
@@ -49,7 +38,6 @@ const useStyles = makeStyles(theme => ({
 const schema = yup.object().shape({
   name: yup.string().max(50),
   size: yup.number().required("Battle size is required"),
-  // initialCompanyId: yup.number().required("Joining company is required").positive("Joining company is required")
   initialCompanyId: yup
     .number()
     .transform(value => (isNaN(value) ? undefined : value))
@@ -66,6 +54,16 @@ const nameSort = (a, b) => {
     return 1;
   }
   return 0;
+}
+
+const CompanyMenuItem = ({ company }) => {
+  const classes = useStyles()
+  return (
+    <Tooltip title={<CompanySelectTooltip company={company} /> } placement="right" arrow>
+      <img src={doctrineImgMapping[company.doctrineName]} alt={company.doctrineName}
+           className={classes.optionImage}/>
+    </Tooltip>
+  )
 }
 
 export const CreateBattleForm = ({ rulesetId, onCreateCallback }) => {
@@ -88,6 +86,32 @@ export const CreateBattleForm = ({ rulesetId, onCreateCallback }) => {
     onCreateCallback()
   }
 
+  const selectedCompanyId = useWatch({
+    control,
+    name: "initialCompanyId",
+  })
+
+  let warnContent
+  const floatingResources = []
+  if (selectedCompanyId) {
+    const selectedCompany = companies.find(c => c.id === selectedCompanyId)
+    if (selectedCompany?.man > 100) {
+      floatingResources.push(`${selectedCompany.man} man`)
+    }
+    if (selectedCompany?.mun > 100) {
+      floatingResources.push(`${selectedCompany.mun} mun`)
+    }
+    if (selectedCompany?.fuel > 100) {
+      floatingResources.push(`${selectedCompany.fuel} fuel`)
+    }
+
+    if (floatingResources.length > 0) {
+      warnContent = (
+        <Alert severity="warning">Selected company has excess {floatingResources.join(', ')}</Alert>
+      )
+    }
+  }
+
   return (
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -99,7 +123,7 @@ export const CreateBattleForm = ({ rulesetId, onCreateCallback }) => {
                 render={({ field }) => (
                   <TextField
                     variant="standard"
-                    label="Name"
+                    label="Name (optional)"
                     color="secondary"
                     error={Boolean(errors.name)}
                     helperText={errors.name?.message}
@@ -109,7 +133,7 @@ export const CreateBattleForm = ({ rulesetId, onCreateCallback }) => {
             </Box>
           </Grid>
           <Grid item xs={2}>
-            <Box pt={2} pb={2} sx={{display: "flex", justifyContent: "center"}}>
+            <Box pt={2} pb={2} sx={{ display: "flex", justifyContent: "center" }}>
               <Controller
                 name="size" control={control} defaultValue={3}
                 render={({ field }) => (
@@ -146,13 +170,14 @@ export const CreateBattleForm = ({ rulesetId, onCreateCallback }) => {
                       label="Company"
                       color="secondary"
                       error={Boolean(errors.initialCompanyId)}
+                      onChange={e => {
+                        onChange(e)
+                        field.onChange(e)
+                      } }
                       {...field}
                     >
                       {sortedCompanies.map(c => <MenuItem key={c.id} value={c.id} className={classes.optionMenuItem}>
-                        <Tooltip title={c.name} placement="right" arrow>
-                          <img src={doctrineImgMapping[c.doctrineName]} alt={c.doctrineName}
-                               className={classes.optionImage}/>
-                        </Tooltip>
+                        <CompanyMenuItem company={c} />
                       </MenuItem>)}
                     </Select>
                   </FormControl>)}
@@ -161,7 +186,8 @@ export const CreateBattleForm = ({ rulesetId, onCreateCallback }) => {
             </Box>
           </Grid>
         </Grid>
-        <Grid container pt={4} justifyContent="center">
+        {warnContent}
+        <Grid container pt={2} justifyContent="center">
           <Button variant="contained" type="submit" color="secondary" size="small"
                   sx={{ marginRight: '9px' }} disabled={isPending}>Create</Button>
         </Grid>
