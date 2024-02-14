@@ -1,22 +1,15 @@
 import React from 'react'
-import { Box, Stack, Button, Popover, Typography, Divider, createTheme } from "@mui/material";
+import { Box, Button, createTheme, Popover, Stack, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import CheckIcon from '@mui/icons-material/Check';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { TeamBalanceIcon } from '../../resources/TeamBalanceIcon';
 import { useDispatch, useSelector } from "react-redux";
-import {
-  abandonBattle,
-  fetchActiveBattles,
-  leaveBattle,
-  readyPlayer,
-  unreadyPlayer,
-  selectIsPending
-} from "../lobbySlice";
+import { abandonBattle, leaveBattle, readyPlayer, selectIsPending, unreadyPlayer } from "../lobbySlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 import { ALLIED_SIDE, doctrineImgMapping } from "../../../constants/doctrines";
 import { JoinBattlePopover } from "./JoinBattlePopover";
-import { ABANDONABLE_STATES, FULL, GENERATING, INGAME, OPEN } from "../../../constants/battles/states";
+import { ABANDONABLE_STATES, FULL, OPEN } from "../../../constants/battles/states";
 
 const useStyles = makeStyles(theme => ({
   wrapperRow: {
