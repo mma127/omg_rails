@@ -42,7 +42,7 @@ class RestrictionUpgrade < ApplicationRecord
   belongs_to :restriction
   belongs_to :upgrade
   belongs_to :ruleset
-  has_many :restriction_upgrade_units, inverse_of: :restriction_upgrade
+  has_many :restriction_upgrade_units, inverse_of: :restriction_upgrade, dependent: :destroy
   has_many :units, through: :restriction_upgrade_units
 
   scope :modified, -> { where(type: RestrictionUpgrade::MODIFY_CLASSES)}
