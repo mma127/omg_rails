@@ -5,7 +5,6 @@ ranger_grenade,ALLY.GRENADE,Grenades,Elite infantry grenades,consumable,,airborn
 ranger_grenade,ALLY.GRENADE,Grenades,Elite infantry grenades,consumable,,infantry,,0,40,0,0,2,0,0,1,,,rangers
 bar,ALLY.BAR,BAR,A single Browning Automatic Rifle,single_weapon,americans,,,0,55,0,0,0,1,0,1,,,riflemen
 bar,ALLY.BAR,BAR,A single Browning Automatic Rifle,single_weapon,,infantry,,0,55,0,0,0,1,0,1,,,ambush_riflemen
-bar,ALLY.BAR,BAR,A single Browning Automatic Rifle,single_weapon,,infantry,,0,70,0,0,0,0,0,1,,,rangers
 sticky_bombs,ALLY.STICKY,Sticky Bombs,Anti-tank grenades that stick to targets,consumable,americans,,,0,55,0,0,3,0,0,1,,,riflemen
 sticky_bombs,ALLY.STICKY,Sticky Bombs,Anti-tank grenades that stick to targets,consumable,,infantry,,0,55,0,0,3,0,0,1,,,ambush_riflemen
 ally_smoke_grenade,ALLY.SMOKE_GRENADE,Smoke Grenades,Grenade that provides smoke cover,consumable,americans,,,0,10,0,0,1,0,0,1,,,riflemen
@@ -35,7 +34,7 @@ ally_mines,ALLY.MINES,Mines,Camouflaged explosives that detonate on enemy contac
 57mm_ap_rounds,ALLY.AT_AP_ROUNDS,AP Rounds,Increases armor penetration and damage for 10 seconds,ability,,airborne,,0,60,0,0,0,1,0,1,,,airborne_atg
 m8_side_skirts,ALLY.M8_SIDE_SKIRTS,Side Skirts,Side skirts that double the M8's health,passive,americans,,,100,0,20,0,0,0,0,1,,,greyhound
 m8_50_cal,ALLY.M8_50_CAL,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,americans,,,0,50,0,0,0,0,0,1,,,greyhound
-m8_mines,ALLY.M8_MINES,Greyhound Mines,"Camouflaged explosives that detonate on enemy contact, more powerful than engineer-laid mines",consumable,americans,,,0,40,0,0,1,1,0,1,,,greyhound
+m8_mines,ALLY.M8_MINES,Greyhound Mines,"Camouflaged explosives that detonate on enemy contact, more powerful than engineer-laid mines",consumable,americans,,,0,40,0,0,1,1,0,2,,,greyhound
 t17_wp,ALLY.T17WHITE,White Phosphorus Round,"Fire a white phosphorus round at a target vehicle, blinding and slowing it",ability,americans,,,0,40,0,0,0,2,0,1,,,t17
 t17_sandbags,ALLY.T17SAND,Sandbags,Increases T17 health,passive,americans,,,60,0,10,0,0,0,0,1,,,t17
 bulldozer,ALLY.BULLDOZER,Bulldozer,Bulldozer that can plow through tank traps and hedge rows. Increases tank health,ability,americans,,,0,35,0,0,0,2,0,1,,,sherman_croc
@@ -76,6 +75,7 @@ snare_mines,ALLY.SNARE_TRAPS,Snare Mines,Camouflaged mines that slow enemy infan
 snare_mines,ALLY.SNARE_TRAPS,Snare Mines,Camouflaged mines that slow enemy infantry but deal no damage ,consumable,,infantry,snare_traps,0,20,0,0,2,0,0,1,,,engineers
 snare_mines,ALLY.SNARE_TRAPS,Snare Mines,Camouflaged mines that slow enemy infantry but deal no damage ,consumable,,infantry,snare_traps,0,20,0,0,2,0,0,1,,,ambush_riflemen
 two_bazookas,ALLY.TWO_BAZOOKAS,Two Bazookas,Two hand-held anti-tank Bazookas,single_weapon,,infantry,here_to_clean_up_this_mess,0,85,0,0,0,0,0,1,,,rangers
+two_bars,ALLY.BAR,Two BARs,Two Browning Automatic Rifle,single_weapon,,infantry,here_to_clean_up_this_mess,0,70,0,0,0,0,0,1,,,rangers
 repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,20,0,0,1,0,0,1,,,greyhound
 repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,20,0,0,1,0,0,1,,,halftrack_allied
 repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,20,0,0,1,0,0,1,,,quad_halftrack
