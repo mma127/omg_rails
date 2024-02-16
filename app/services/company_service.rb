@@ -376,7 +376,7 @@ class CompanyService
     side = doctrine.faction.side
     factions_for_side = Faction.where(side: side)
 
-    @player.companies.where(faction: factions_for_side).size < MAX_COMPANIES_PER_SIDE
+    ActiveCompany.where(player: @player, faction: factions_for_side).size < MAX_COMPANIES_PER_SIDE
   end
 
   def can_update_company(company, override)

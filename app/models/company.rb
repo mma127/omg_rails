@@ -55,7 +55,7 @@ class Company < ApplicationRecord
   has_many :callin_modifiers, -> { distinct }, through: :company_callin_modifiers
   has_many :upgrades, -> { distinct }, through: :available_upgrades
   has_many :company_resource_bonuses, dependent: :destroy
-  has_many :battle_players, dependent: :nullify
+  has_many :battle_players, dependent: nil # Don't change the battle player
   has_many :transporting_transported_squads, through: :squads
   has_one :company_stats, dependent: :destroy
 
