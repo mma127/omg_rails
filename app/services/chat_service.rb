@@ -1,7 +1,10 @@
 class ChatService < ApplicationService
   def self.fetch_recent_messages(chat_name, limit)
     chat = Chat.find_by!(name: chat_name)
-    ChatMessage.where(chat: chat).order(created_at: :asc).limit(limit)
+    ChatMessage.from(
+      ChatMessage.where(chat: chat).order(id: :desc).limit(limit),
+      :chat_messages
+    ).order(:id)
   end
 
   def self.create_message(chat_name, sender_id, content)
