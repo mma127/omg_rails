@@ -159,7 +159,7 @@ export const TopCompaniesList = ({ statType, player }) => {
             </TableHead>
             <TableBody>
               {companies.map((c, idx) => <CompanyRow index={idx + 1} companyStats={c} statType={statType}
-                                                     isPlayerCompany={c.playerId === player.id} key={idx}/>)}
+                                                     isPlayerCompany={c.playerId === player?.id} key={idx}/>)}
             </TableBody>
           </Table>
         </TableContainer>
