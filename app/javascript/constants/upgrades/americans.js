@@ -83,6 +83,7 @@ export const STICKY_BOMBS = 'sticky_bombs'
 export const T17_SANDBAGS = 't17_sandbags'
 export const T17_WP = 't17_wp'
 export const TRIAGE_CENTER = 'triage_center'
+export const TWO_BARS = 'two_bars'
 export const TWO_BAZOOKAS = 'two_bazookas'
 export const TWO_THOMPSONS = 'two_thompsons'
 
@@ -129,6 +130,7 @@ export const upgradeImageMapping = {
   [T17_SANDBAGS]: t17_sandbags,
   [T17_WP]: t17_wp,
   [TRIAGE_CENTER]: triage_center,
+  [TWO_BARS]: bar,
   [TWO_BAZOOKAS]: two_bazookas,
   [TWO_THOMPSONS]: four_thompsons,
 }

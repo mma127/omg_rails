@@ -75,7 +75,7 @@ snare_mines,ALLY.SNARE_TRAPS,Snare Mines,Camouflaged mines that slow enemy infan
 snare_mines,ALLY.SNARE_TRAPS,Snare Mines,Camouflaged mines that slow enemy infantry but deal no damage ,consumable,,infantry,snare_traps,0,20,0,0,2,0,0,1,,,engineers
 snare_mines,ALLY.SNARE_TRAPS,Snare Mines,Camouflaged mines that slow enemy infantry but deal no damage ,consumable,,infantry,snare_traps,0,20,0,0,2,0,0,1,,,ambush_riflemen
 two_bazookas,ALLY.TWO_BAZOOKAS,Two Bazookas,Two hand-held anti-tank Bazookas,single_weapon,,infantry,here_to_clean_up_this_mess,0,85,0,0,0,0,0,1,,,rangers
-two_bars,ALLY.BAR,Two BARs,Two Browning Automatic Rifle,single_weapon,,infantry,here_to_clean_up_this_mess,0,70,0,0,0,0,0,1,,,rangers
+two_bars,ALLY.BAR,Two BARs,Two Browning Automatic Rifles,single_weapon,,infantry,here_to_clean_up_this_mess,0,70,0,0,0,0,0,1,,,rangers
 repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,20,0,0,1,0,0,1,,,greyhound
 repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,20,0,0,1,0,0,1,,,halftrack_allied
 repair_manuals,ALLY.REPAIR_MANUAL,Repair Manuals,"Vehicle self repair kits, slows while repairing",consumable,,armor,vehicular_repair_manuals,0,20,0,0,1,0,0,1,,,quad_halftrack
