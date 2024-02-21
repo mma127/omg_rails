@@ -109,6 +109,7 @@ export const BattleCard = ({ id, rulesetId }) => {
   const isFull = battle.battlePlayers.length === size * 2
 
   const balanceColor = (balance) => {
+
     switch (balance) {
       case "Perfect":
         return "gold";
@@ -136,20 +137,20 @@ export const BattleCard = ({ id, rulesetId }) => {
 
   const balanceState = (balance) => {
     const min = minDiff(battle.size)
-    const val = Math.abs(balance)
+
     if (!balance)
       return "Pending"
 
     if (balance < (0 - 100))
-      return "Allied Stomp"
+      return `Allied Stomp`
     else if (balance > 100)
-      return "Axis Stomp"
+      return `Axis Stomp`
     else if (balance < (0 - min))
-      return "Allied Favoured"
+      return `Allied Favoured`
     else if (balance > min)
-      return "Axis Favoured"
+      return `Axis Favoured`
     else if (balance < 10)
-      return "Perfect"
+      return `Perfect`
 
     else
       return "Balanced"
@@ -158,13 +159,13 @@ export const BattleCard = ({ id, rulesetId }) => {
   let optimumBalance = false;
   const k = axisPlayers.reduce((accumulator, currentValue) => accumulator + currentValue.teamBalance, 0)
   if (k === size || k === size * 2) {
-    optimumBalance = false;
+    optimumBalance = true;
   }
 
   const calculatedBalanceState = balanceState(battle.eloDifference)
 
   let optimumBalanceContent
-  if (!optimumBalance && isFull) {
+  if (!optimumBalance && Math.abs(battle.eloDifference) > 50 && isFull) {
     optimumBalanceContent = (
       <Box className={classes.balanceAlertContainer}>
         <Alert severity="warning" className={classes.balanceAlert}>
@@ -190,7 +191,7 @@ export const BattleCard = ({ id, rulesetId }) => {
           <Box className={classes.balanceText}>
             <Typography variant="h5" pl="9px" gutterBottom>Balance: </Typography>
             <Typography variant="h5" pl="9px" gutterBottom
-                        color={balanceColor(calculatedBalanceState)}>{calculatedBalanceState}</Typography>
+                        color={balanceColor(calculatedBalanceState)}>{calculatedBalanceState} {Math.abs(parseInt(battle.eloDifference) || 0 )}</Typography>
           </Box>
         </Box>
         {optimumBalanceContent}

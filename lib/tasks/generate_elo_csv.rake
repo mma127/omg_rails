@@ -53,17 +53,6 @@ task generate_elo_csv: :environment do
     [row["Game-ID"], parse_date(row["Date"]), row["Winner"], match_player]
   end
 
-  def update_sigma_decay(ts_rating, weeks_since_last_played)
-    # within 3 weeks, no decay
-    if weeks_since_last_played > 3
-      weeks_since_last_played -= 3
-
-      sigma_decay = WEEKLY_DECAY * weeks_since_last_played
-      ts_rating = Rating.new(ts_rating.mean, [SIGMA, ts_rating.deviation + sigma_decay].min)
-    end
-    ts_rating
-  end
-
   # Run rating update for the players in the match
   def process_match(match)
     match_date = match.date
@@ -71,11 +60,6 @@ task generate_elo_csv: :environment do
     # For each player, get last played date
     # Calculate sigma decay if necessary and update rating
     match_players = match.allies_players + match.axis_players
-    match_players.each do |match_player|
-      weeks_since_last_played = match_player.weeks_since_last_played(match_date)
-      ts_rating = update_sigma_decay(match_player.ts_rating, weeks_since_last_played)
-      match_player.ts_rating = ts_rating
-    end
 
     # Build lists of team ratings
     # Rate the match using the model (first team is the winner)
@@ -143,8 +127,8 @@ task generate_elo_csv: :environment do
 
     ts_min, ts_max = get_min_max_mu(@players_by_name.values)
 
-    CSV.open("elo_output_decay.csv", "w") do |csv|
-      csv << ["name", "games played", "wins", "losses", "last_played", "ts_elo", "ts_mu", "ts_sigma"]
+    CSV.open("elo_output.csv", "w") do |csv|
+      csv << ["name", "games played", "wins", "losses", "last_played", "ts_elo", "ts_mu", "ts_sigma", "mu_normal"]
 
       keys = @players_by_name.keys.sort
       keys.each do |key|
