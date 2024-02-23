@@ -88,6 +88,15 @@ RSpec.describe CompanyService do
               "Player #{player.id} has too many #{faction.side} companies, cannot create another one.")
     end
 
+    it "raise a validation error when the company name is too long" do
+      long_name = "a" * 51
+      expect {
+        instance.create_company(doctrine, long_name)
+      }.to raise_error(
+              CompanyService::CompanyCreationValidationError,
+              "Company name must be between 1 and 50 characters")
+    end
+
     context "when the player has less than max vps - starting_vps" do
       let(:max_vps) { 20 }
       let!(:player) { create :player, vps: 2 }

@@ -21,6 +21,10 @@ class CompanyService
       raise CompanyCreationValidationError.new("Player #{@player.id} has too many #{doctrine.faction.side} companies, cannot create another one.")
     end
 
+    unless name.length.between?(1, 50)
+      raise CompanyCreationValidationError.new("Company name must be between 1 and 50 characters")
+    end
+
     # Get ruleset
     ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
 
