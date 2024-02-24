@@ -20,6 +20,7 @@ export const Navbar = () => {
           <Tab label="Companies" value="/companies" component={Link} to="/companies" />
           <Tab label="Restrictions" value="/restrictions" component={Link} to="/restrictions" />
           <Tab label="Leaderboards" value="/leaderboards" component={Link} to="/leaderboards" />
+          <Tab label="Download" href="https://data.omgmod.net/OMG_Updater_v2.1.0.0.zip" download />
         </Tabs>
         <PlayerAuthStatus />
       </Toolbar>
