@@ -128,7 +128,7 @@ task generate_elo_csv: :environment do
     ts_min, ts_max = get_min_max_mu(@players_by_name.values)
 
     CSV.open("elo_output.csv", "w") do |csv|
-      csv << ["name", "games played", "wins", "losses", "last_played", "ts_elo", "ts_mu", "ts_sigma", "mu_normal"]
+      csv << ["name", "games played", "wins", "losses", "last_played", "ts_elo", "ts_mu", "ts_sigma"]
 
       keys = @players_by_name.keys.sort
       keys.each do |key|

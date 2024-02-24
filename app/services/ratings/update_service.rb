@@ -16,8 +16,8 @@ module Ratings
       allied_player_ratings = @battle.allied_battle_players.map { |bp| bp.player.player_rating }
       axis_player_ratings = @battle.axis_battle_players.map { |bp| bp.player.player_rating }
 
-      allied_ts_ratings = allied_player_ratings.map { |pr| update_sigma_decay(pr.ts_rating) }
-      axis_ts_ratings = axis_player_ratings.map { |pr| update_sigma_decay(pr.ts_rating) }
+      allied_ts_ratings = allied_player_ratings.map { |pr| pr.ts_rating }
+      axis_ts_ratings = axis_player_ratings.map { |pr| pr.ts_rating }
 
       team_ratings_list = create_team_ratings_list(winner, allied_ts_ratings, axis_ts_ratings)
       calculate_team_ratings(team_ratings_list)
@@ -41,10 +41,6 @@ module Ratings
 
     def axis
       Battle.winners[:axis]
-    end
-
-    def update_sigma_decay(ts_rating)
-      ts_rating
     end
 
     def create_team_ratings_list(winner, allied_ts_ratings, axis_ts_ratings)
