@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const schema = yup.object().shape({
-  name: yup.string().required("Company name is required"),
+  name: yup.string().max(50, "Company Name is too long, max 50 characters").required("Company name is required"),
   doctrine: yup.string().required("Doctrine is required")
 })
 
