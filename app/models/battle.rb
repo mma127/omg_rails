@@ -92,8 +92,16 @@ class Battle < ApplicationRecord
     battle_players.all? { |bp| bp.ready }
   end
 
-  def players_abandoned?
-    battle_players.all? { |bp| bp.abandoned }
+  def both_sides_abandoned?
+    allied_abandoned? && axis_abandoned?
+  end
+
+  def allied_abandoned?
+    allied_battle_players.any? { |bp| bp.abandoned }
+  end
+
+  def axis_abandoned?
+    axis_battle_players.any? { |bp| bp.abandoned }
   end
 
   def joinable?
