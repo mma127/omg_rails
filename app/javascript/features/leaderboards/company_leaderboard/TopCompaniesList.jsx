@@ -92,7 +92,7 @@ const gameSizeBreakdown = (companyStats, statType) => {
     case TOP_EXP_SQUADS:
       return <>
         <Box><Typography variant="body"><b>Unit: </b>{companyStats.unitDisplayName}</Typography></Box>
-        <Box><Typography variant="body"><b>Vet: </b>{getVetLevel(parseFloat(companyStats.vet), companyStats.vet)[0]}</Typography></Box>
+        <Box><Typography variant="body"><b>Vet: </b>{getVetLevel(parseFloat(companyStats.exp), companyStats.vet)[0]}</Typography></Box>
       </>
 
     default:
@@ -118,10 +118,16 @@ const CompanyRow = ({ index, companyStats, statType, isPlayerCompany }) => {
   const statName = TYPE_TO_STAT[statType]
 
   let entity
+  let value
   if (statType === TOP_EXP_SQUADS) {
     entity = companyStats.unitDisplayName
+    value = parseFloat(companyStats[statName]).toFixed(2)
+  } else if (statType === TOP_EXP_COMPANIES) {
+    entity = companyStats.companyName
+    value = parseFloat(companyStats[statName]).toFixed(2)
   } else {
     entity = companyStats.companyName
+    value = companyStats[statName]
   }
 
   return (
@@ -131,7 +137,7 @@ const CompanyRow = ({ index, companyStats, statType, isPlayerCompany }) => {
         <TableCell><Typography color={color} className={classes.rowText}>{index}</Typography></TableCell>
         <TableCell><Typography color={color} sx={{lineHeight: 1.2}}
                                className={`${classes.companyName} ${classes.rowText}`}>{entity}</Typography></TableCell>
-        <TableCell><Typography color={color} className={classes.rowText}>{companyStats[statName]}</Typography></TableCell>
+        <TableCell><Typography color={color} className={classes.rowText}>{value}</Typography></TableCell>
       </TableRow>
     </Tooltip>
   )
