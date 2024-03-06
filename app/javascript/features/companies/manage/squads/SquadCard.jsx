@@ -301,6 +301,8 @@ export const SquadCard = (
     dispatch(clearHighlightedUuid())
   }
 
+  const displayVet = parseFloat(squad.vet).toFixed(2)
+
   // Use a specific drag handle class so the entire card doesn't drag. This allows nesting SquadCards of transported units
   let dragHandleClassName = `unit-card-drag-handle-${uuid}`
   const cardContent = (
@@ -315,9 +317,9 @@ export const SquadCard = (
             <Typography variant="subtitle2" className={classes.tooltipHeader}>{unit.displayName}</Typography>
             <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
             <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
-            <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
+            <Box><Typography variant="body"><b>Exp:</b> {displayVet} {nextLevelContent}</Typography></Box>
             {vetBonuses.map(vb => <Box key={vb.level} className={classes.squadCardItems}><SquadVetIcon
-              level={vb.level}/> {vb.desc}</Box>)}
+              level={vb.level} side={company.side}/> {vb.desc}</Box>)}
           </>
         }
         // TransitionComponent={Zoom}
@@ -326,9 +328,9 @@ export const SquadCard = (
         arrow
       >
         <Box sx={{ p: 1 }} className={classes.squadCardItems} ref={elementRef}>
-          <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}
+          <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}F
                     onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
-          <SquadVetIcon level={level}/>
+          <SquadVetIcon level={level} side={company.side}/>
           <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeClick}
                          enabled={enabled} isSnapshot={isSnapshot}/>
           {transportContent}
@@ -368,10 +370,12 @@ export const SquadCard = (
                                              className={classes.tooltipHeader}>{unit.displayName}</Typography>
                                  <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
                                  <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
-                                 <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
-                                 {vetBonuses.map(vb => <Box key={vb.level}
-                                                            className={classes.squadCardItems}><SquadVetIcon
-                                   level={vb.level} side={company.side}/> {vb.desc}</Box>)}
+                                 <Box><Typography variant="body"><b>Exp:</b> {displayVet} {nextLevelContent}</Typography></Box>
+                                 {vetBonuses.map(vb =>
+                                   <Box key={vb.level} className={classes.squadCardItems}>
+                                     <SquadVetIcon level={vb.level} side={company.side}/>
+                                     {vb.desc}
+                                   </Box>)}
                                </>
                              }
                              // TransitionComponent={Zoom}
