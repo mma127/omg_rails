@@ -62,9 +62,9 @@ johnson_lmg,CMW.JOHNSON,Johnson LMG,A single Johnson LMG,single_weapon,,canadian
 cmw_satchel_charge,ALLY.SATCHEL,Satchel Charges,Large packages of thrown explosives on a five-second timer,consumable,,canadians,,0,75,0,0,2,0,0,1,,,ssf
 cmw_satchel_charge,ALLY.SATCHEL,Satchel Charges,Large packages of thrown explosives on a five-second timer,consumable,,commandos,,0,60,0,0,2,0,0,1,,,polish_commandos
 cmw_tank_smoke,ALLY.TANK_SMOKE,Tank Smoke,Defensive smoke grenade,consumable,,canadians,,0,15,0,0,2,0,0,1,,,stuart_recce
-supercharge_mortar,CMW.MORTAR_SUPER,Supercharge,Increases weapon range,passive,,canadians,supercharged_shells,50,20,0,1,0,0,0,1,,,mortar_british
-supercharge_priest,CMW.PRIEST_SUPER,Supercharge,Increases weapon range,passive,,canadians,supercharged_shells,0,0,0,1,0,0,0,1,,,priest
-supercharge_25pdr,CMW.TWENTYFIVEPOUNDER_SUPER,Supercharge,Increases weapon range,passive,,canadians,supercharged_shells,50,20,0,1,0,0,0,1,,,25pdr
+supercharge_mortar,CMW.MORTAR_SUPER,Supercharge,Increases weapon range,unit_replacement,,canadians,supercharged_shells,50,20,0,1,0,0,0,1,3,0,mortar_british
+supercharge_priest,CMW.PRIEST_SUPER,Supercharge,Increases weapon range,unit_replacement,,canadians,supercharged_shells,0,0,0,1,0,0,0,1,1,0,priest
+supercharge_25pdr,CMW.TWENTYFIVEPOUNDER_SUPER,Supercharge,Increases weapon range,unit_replacement,,canadians,supercharged_shells,50,20,0,1,0,0,0,1,1,0,25pdr
 commando_grenade,CMW.COMMANDO_GRENADE,Commando Grenade,Grenade,consumable,,commandos,,0,40,0,0,2,0,0,1,,,commandos
 commando_grenade,CMW.COMMANDO_GRENADE,Commando Grenade,Grenade,consumable,,commandos,,0,40,0,0,2,0,0,1,,,polish_commandos
 commando_grenade,CMW.COMMANDO_GRENADE,Commando Grenade,Grenade,consumable,,commandos,packing_heat,0,40,0,0,2,0,0,1,,,lt
