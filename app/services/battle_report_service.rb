@@ -137,7 +137,7 @@ class BattleReportService < ApplicationService
     squad_exp_pairs.each do |squad_exp_str|
       squad_id, exp = squad_exp_str.split(',')
       squad = starting_squads_by_id.delete(squad_id.to_i)
-      squad.vet = exp.to_f
+      squad.vet = [squad.vet, exp.to_f].max
       squads_to_update << squad
     end
     Squad.import!(squads_to_update, on_duplicate_key_update: { conflict_target: [:id], columns: [:vet] })
