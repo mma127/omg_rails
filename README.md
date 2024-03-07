@@ -140,6 +140,11 @@ or the script
 
 Create an alias with `alias reset_db='sh reset_db.sh'`
 
+#### Loading a Production DB Dump
+1. `bundle exec rake db:drop` to drop the existing DB
+2. `heroku pg:pull DATABASE_URL omg_development --app omgmod-rails-prod`
+3. `bin/rails db:environment:set RAILS_ENV=development`
+
 ## Deployment
 ### Heroku
 
