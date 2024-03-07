@@ -336,6 +336,19 @@ RSpec.describe BattleReportService do
       expect(squad21.reload.vet).to eq 5
       expect(squad23.reload.vet).to eq 24.52
     end
+
+    context "when the surviving squad's given vet is less than what it had at the start" do
+      let(:surviving_squads) { "#{squad11.id},0.0;" }
+
+      before do
+        squad11.update!(vet: 100)
+      end
+
+      it "does not change the surviving squad's vet" do
+        instance.send(:update_surviving_squads, starting_squads_by_id, surviving_squads)
+        expect(squad11.reload.vet).to eq 100
+      end
+    end
   end
 
   describe "#add_rubberband_vet" do
