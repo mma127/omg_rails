@@ -115,8 +115,8 @@ export const SquadBuilder = ({}) => {
   const [openDelete, setOpenDelete] = React.useState(false)
   const [openTransportDelete, setOpenTransportDelete] = React.useState(false)
   
-  const [squad, setSquad] = React.useState(null)
-  const [transportUuid, setTransportUuid] = React.useState(null)
+  const [squadToDelete, setSquadToDelete] = React.useState(null)
+  const [transportOfSquadToDelete, setTransportOfSquadToDelete] = React.useState(null)
 
   useEffect(() => {
     console.log("dispatching squad and available_unit fetch from SquadBuilder")
@@ -137,12 +137,14 @@ export const SquadBuilder = ({}) => {
     setOpenDelete(true)
   };
 
-  const handleDeleteClose = () => {
+  const handleDeleteCancel = () => {
     setOpenDelete(false)
+    setSquadToDelete(null)
   };
 
-  const handleDeleteCloseAction = () => {
-    dispatch(removeSquad(squad))
+  const handleDeleteAction = () => {
+    dispatch(removeSquad(squadToDelete))
+    setSquadToDelete(null)
     setOpenDelete(false)
   };
 
@@ -150,13 +152,17 @@ export const SquadBuilder = ({}) => {
     setOpenTransportDelete(true)
   };
 
-  const handleTransportDeleteClose = () => {
+  const handleTransportDeleteCancel = () => {
     setOpenTransportDelete(false)
+    setSquadToDelete(null)
+    setTransportOfSquadToDelete(null)
   };
 
-  const handleTransportDeleteCloseAction = () => {
-    dispatch(removeTransportedSquad({ squad, transportUuid }))
+  const handleTransportDeleteAction = () => {
+    dispatch(removeTransportedSquad({ squadToDelete, transportOfSquadToDelete }))
     setOpenTransportDelete(false)
+    setSquadToDelete(null)
+    setTransportOfSquadToDelete(null)
   };
 
   const handleCloseSnackbar = () => {
@@ -294,7 +300,7 @@ export const SquadBuilder = ({}) => {
     dispatch(clearSelectedAvailableUnitId())
     if (_.isNull(transportUuid)) {
       if (squad.vet > 0) {
-        setSquad(squad)
+        setSquadToDelete(squad)
         handleDeleteOpen()
       } else {
         dispatch(removeSquad(squad))
@@ -302,8 +308,8 @@ export const SquadBuilder = ({}) => {
       
     } else {
       if (squad.vet > 0) {
-        setSquad(squad)
-        setTransportUuid(transportUuid)
+        setSquadToDelete(squad)
+        setTransportOfSquadToDelete(transportUuid)
         handleTransportDeleteOpen()
       } else {
         dispatch(removeTransportedSquad({ squad, transportUuid }))
@@ -556,7 +562,7 @@ export const SquadBuilder = ({}) => {
         </Grid>
         <Dialog
           open={openDelete}
-          onClose={handleDeleteClose}
+          onClose={handleDeleteCancel}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
           >
@@ -570,15 +576,15 @@ export const SquadBuilder = ({}) => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleDeleteClose}>Cancel</Button>
-            <Button onClick={handleDeleteCloseAction} autoFocus>
+            <Button onClick={handleDeleteCancel}>Cancel</Button>
+            <Button onClick={handleDeleteAction} autoFocus>
               Delete
             </Button>
           </DialogActions>
       </Dialog>
       <Dialog
           open={openTransportDelete}
-          onClose={handleTransportDeleteClose}
+          onClose={handleTransportDeleteCancel}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
           >
@@ -592,8 +598,8 @@ export const SquadBuilder = ({}) => {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleTransportDeleteClose}>Cancel</Button>
-            <Button onClick={handleTransportDeleteCloseAction} autoFocus>
+            <Button onClick={handleTransportDeleteCancel}>Cancel</Button>
+            <Button onClick={handleTransportDeleteAction} autoFocus>
               Delete
             </Button>
           </DialogActions>

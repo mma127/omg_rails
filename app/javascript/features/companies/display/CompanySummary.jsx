@@ -31,23 +31,23 @@ export const CompanySummary = ({ company }) => {
 
   const doctrine = useSelector(state => selectDoctrineById(state, company.doctrineId))
 
-  const [open, setOpen] = React.useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
 
   const deleteCompany = () => {
     dispatch(deleteCompanyById({ companyId: company.id }))
   }
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleDeleteClick = () => {
+    setDeleteDialogOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
   };
 
-  const handleCloseDelete = () => {
+  const handleDeleteAction = () => {
     deleteCompany();
-    setOpen(false);
+    setDeleteDialogOpen(false);
   };
 
   const managementLink = `/companies/${company.id}`
@@ -80,14 +80,14 @@ export const CompanySummary = ({ company }) => {
               <Button variant="contained" onClick={manageCompany} color="secondary">Manage Company</Button>
             </Grid>
             <Grid item xs={1}>
-              <DeleteOutlineIcon onClick={handleClickOpen} className={classes.deleteIcon} color="error"/>
+              <DeleteOutlineIcon onClick={handleDeleteClick} className={classes.deleteIcon} color="error"/>
             </Grid>
           </Grid>
         </CardActions>
       </Card>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={deleteDialogOpen}
+        onClose={handleDeleteCancel}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -101,8 +101,8 @@ export const CompanySummary = ({ company }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleCloseDelete} autoFocus>
+          <Button onClick={handleDeleteCancel}>Cancel</Button>
+          <Button onClick={handleDeleteAction} autoFocus>
             Delete
           </Button>
         </DialogActions>
