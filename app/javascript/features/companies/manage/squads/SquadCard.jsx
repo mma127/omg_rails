@@ -301,6 +301,8 @@ export const SquadCard = (
     dispatch(clearHighlightedUuid())
   }
 
+  const displayVet = parseFloat(squad.vet).toFixed(2)
+
   // Use a specific drag handle class so the entire card doesn't drag. This allows nesting SquadCards of transported units
   let dragHandleClassName = `unit-card-drag-handle-${uuid}`
   const cardContent = (
@@ -315,7 +317,7 @@ export const SquadCard = (
             <Typography variant="subtitle2" className={classes.tooltipHeader}>{unit.displayName}</Typography>
             <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
             <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
-            <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
+            <Box><Typography variant="body"><b>Exp:</b> {displayVet} {nextLevelContent}</Typography></Box>
             {vetBonuses.map(vb => <Box key={vb.level} className={classes.squadCardItems}><SquadVetIcon
               level={vb.level} side={company.side}/> {vb.desc}</Box>)}
           </>
@@ -368,7 +370,7 @@ export const SquadCard = (
                                              className={classes.tooltipHeader}>{unit.displayName}</Typography>
                                  <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
                                  <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
-                                 <Box><Typography variant="body"><b>Exp:</b> {squad.vet} {nextLevelContent}</Typography></Box>
+                                 <Box><Typography variant="body"><b>Exp:</b> {displayVet} {nextLevelContent}</Typography></Box>
                                  {vetBonuses.map(vb =>
                                    <Box key={vb.level} className={classes.squadCardItems}>
                                      <SquadVetIcon level={vb.level} side={company.side}/>

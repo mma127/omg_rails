@@ -56,10 +56,10 @@ const useStyles = makeStyles((theme) => ({
 const gameSizeBreakdownContent = (_1v1, _2v2, _3v3, _4v4) => {
   return (
     <>
-      <Box><Typography variant="body"><b>1v1: </b>{_1v1}</Typography></Box>
-      <Box><Typography variant="body"><b>2v2: </b>{_2v2}</Typography></Box>
-      <Box><Typography variant="body"><b>3v3: </b>{_3v3}</Typography></Box>
-      <Box><Typography variant="body"><b>4v4: </b>{_4v4}</Typography></Box>
+      <Box><Typography variant="body"><b>1v1: </b>{parseFloat(_1v1).toFixed(0)}</Typography></Box>
+      <Box><Typography variant="body"><b>2v2: </b>{parseFloat(_2v2).toFixed(0)}</Typography></Box>
+      <Box><Typography variant="body"><b>3v3: </b>{parseFloat(_3v3).toFixed(0)}</Typography></Box>
+      <Box><Typography variant="body"><b>4v4: </b>{parseFloat(_4v4).toFixed(0)}</Typography></Box>
     </>
   )
 }
@@ -92,7 +92,7 @@ const gameSizeBreakdown = (companyStats, statType) => {
     case TOP_EXP_SQUADS:
       return <>
         <Box><Typography variant="body"><b>Unit: </b>{companyStats.unitDisplayName}</Typography></Box>
-        <Box><Typography variant="body"><b>Vet: </b>{getVetLevel(parseFloat(companyStats.vet), companyStats.vet)[0]}</Typography></Box>
+        <Box><Typography variant="body"><b>Vet: </b>{getVetLevel(parseFloat(companyStats.exp), companyStats.vet)[0]}</Typography></Box>
       </>
 
     default:
@@ -118,10 +118,16 @@ const CompanyRow = ({ index, companyStats, statType, isPlayerCompany }) => {
   const statName = TYPE_TO_STAT[statType]
 
   let entity
+  let value
   if (statType === TOP_EXP_SQUADS) {
     entity = companyStats.unitDisplayName
+    value = parseFloat(companyStats[statName]).toFixed(2)
+  } else if (statType === TOP_EXP_COMPANIES) {
+    entity = companyStats.companyName
+    value = parseFloat(companyStats[statName]).toFixed(2)
   } else {
     entity = companyStats.companyName
+    value = parseFloat(companyStats[statName]).toFixed(0)
   }
 
   return (
@@ -131,7 +137,7 @@ const CompanyRow = ({ index, companyStats, statType, isPlayerCompany }) => {
         <TableCell><Typography color={color} className={classes.rowText}>{index}</Typography></TableCell>
         <TableCell><Typography color={color} sx={{lineHeight: 1.2}}
                                className={`${classes.companyName} ${classes.rowText}`}>{entity}</Typography></TableCell>
-        <TableCell><Typography color={color} className={classes.rowText}>{companyStats[statName]}</Typography></TableCell>
+        <TableCell><Typography color={color} className={classes.rowText}>{value}</Typography></TableCell>
       </TableRow>
     </Tooltip>
   )

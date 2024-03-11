@@ -7,7 +7,7 @@ export const StatsDisplay = ({ stats }) => {
   const wins = stats.wins1v1 + stats.wins2v2 + stats.wins3v3 + stats.wins4v4
   const losses = stats.losses1v1 + stats.losses2v2 + stats.losses3v3 + stats.losses4v4
   const gamesPlayed = wins + losses
-  const winRatio = gamesPlayed > 0 ? wins / (wins + losses) : "-"
+  const winRatio = gamesPlayed > 0 ? ((wins / (wins + losses)) * 100).toFixed(0) : "-"
 
   const totalInfKills = stats.infantryKills1v1 + stats.infantryKills2v2 + stats.infantryKills3v3 + stats.infantryKills4v4
   const totalVehKills = stats.vehicleKills1v1 + stats.vehicleKills2v2 + stats.vehicleKills3v3 + stats.vehicleKills4v4
@@ -17,7 +17,7 @@ export const StatsDisplay = ({ stats }) => {
   const totalVehLosses = stats.vehicleLosses1v1 + stats.vehicleLosses2v2 + stats.vehicleLosses3v3 + stats.vehicleLosses4v4
   const totalLosses = totalInfLosses + totalVehLosses
 
-  const totalKD = totalLosses > 0 ? totalKills / totalLosses : "-"
+  const totalKD = totalLosses > 0 ? (totalKills / totalLosses).toFixed(2) : "-"
 
   return (
     <Grid container mt={1}>

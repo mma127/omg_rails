@@ -220,7 +220,7 @@ class BattleService
       BattlePlayer.find_by(battle: battle, player: @player).update!(abandoned: true)
 
       # Are all players abandoned?
-      if battle.reload.players_abandoned?
+      if battle.reload.both_sides_abandoned?
         battle.abandoned! # Should this just destroy the battle? What's the value in keeping it
         type = PLAYERS_ALL_ABANDONED
       else

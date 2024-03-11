@@ -63,10 +63,10 @@ apcr_at_ht,PE.APCR_ATHT,APCR Rounds,Grants increased penetration against armor,p
 apcr_hetzer,PE.APCR_HETZER,APCR Rounds,Grants increased penetration against armor,passive,,tank_hunters,apcr_ammunition,0,0,0,0,0,0,0,1,,,hetzer
 apcr_marder,PE.APCR_MARDER,APCR Rounds,Grants increased penetration against armor,passive,,tank_hunters,apcr_ammunition,0,0,0,0,0,0,0,1,,,marder
 apcr_panther,PE.APCR_PANTHER,APCR Rounds,Grants increased penetration against armor,passive,,tank_hunters,apcr_ammunition,0,0,0,0,0,0,0,1,,,panther_pe
-armored_plating_ac,PE.ARMOREDCAR_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,passive,,tank_hunters,mechanized_tactics,30,0,15,1,0,0,0,1,,,armored_car
-armored_plating_at_ht,PE.AT_HT_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,passive,,tank_hunters,mechanized_tactics,30,0,10,1,0,0,0,1,,,light_at_halftrack
-armored_plating_iht,PE.INFANTRY_HT_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,passive,,tank_hunters,mechanized_tactics,20,0,10,1,0,0,0,1,,,infantry_halftrack
-armored_plating_mht,PE.MORTAR_HT_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,passive,,tank_hunters,mechanized_tactics,20,0,10,1,0,0,0,1,,,mortar_halftrack
+armored_plating_ac,PE.ARMOREDCAR_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,unit_replacement,,tank_hunters,mechanized_tactics,30,0,15,1,0,0,0,1,1,0,armored_car
+armored_plating_at_ht,PE.AT_HT_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,unit_replacement,,tank_hunters,mechanized_tactics,30,0,10,1,0,0,0,1,1,0,light_at_halftrack
+armored_plating_iht,PE.INFANTRY_HT_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,unit_replacement,,tank_hunters,mechanized_tactics,20,0,10,1,0,0,0,1,1,0,infantry_halftrack
+armored_plating_mht,PE.MORTAR_HT_ARMOURED,Armor Plating,Grants increased resistance against small caliber weapons,unit_replacement,,tank_hunters,mechanized_tactics,20,0,10,1,0,0,0,1,1,0,mortar_halftrack
 armored_plating_sc,PE.SCOUT_HMG_ARMOURED,Fire Support & Armor Plating,"Grants increased resistance against small caliber weapons, as well as all Fire Support bonuses",unit_replacement,,tank_hunters,mechanized_tactics,75,0,35,1,0,1,0,1,1,0,scout_car
 improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,30,0,0,0,0,0,1,,,armored_car
 improved_scopes,PE.IMP_SCOPES,Improved Scopes,Grants increased sight range,passive,,tank_hunters,improvised_scopes,0,20,0,0,0,0,0,1,,,infantry_halftrack
