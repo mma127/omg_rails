@@ -135,6 +135,7 @@ class Battle < ApplicationRecord
     expose :state
     expose :ruleset_id, as: :rulesetId
     expose :winner
+    expose :map
 
     expose :battle_players, as: :battlePlayers, using: BattlePlayer::Entity, if: { type: :include_players }
     expose :elo_diff, as: :eloDifference, if: { type: :include_players }

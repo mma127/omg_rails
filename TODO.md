@@ -42,3 +42,4 @@ TODO
 2. Company Snapshot descriptions & tab notes
 3. War reset admin page
 4. Clear company related slices when component closes for CompanyManager, SnapshotCompanyView
+5. Add authorization for company/player specific endpoints
