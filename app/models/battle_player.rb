@@ -69,4 +69,17 @@ class BattlePlayer < ApplicationRecord
     expose :ready
     expose :team_balance, as: :teamBalance
   end
+
+  def history_entity
+
+  end
+
+  class HistoryEntity < Grape::Entity
+    expose :player_id, as: :playerId
+    expose :player_name, as: :playerName
+    expose :side
+    # TODO Can't expose company values as companies may have been deleted. Instead we should probably save the doctrine name to the BattlePlayer record
+    # expose :company_id, as: :companyId
+    # expose :company_doctrine, as: :companyDoctrine
+  end
 end

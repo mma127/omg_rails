@@ -156,6 +156,11 @@ module OMG
           params[:id]
         end
 
+        desc "get company battle history"
+        get "battles_history" do
+          present BattlesHistoryService.fetch_company_battles_history(params[:id]), with: Entities::BattleHistoryResponse
+        end
+
         mount CompanyUnlocks
         mount CompanyBonuses
       end
