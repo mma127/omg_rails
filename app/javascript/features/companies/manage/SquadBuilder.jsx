@@ -3,6 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 import { CompanyGridDropTarget } from "./squads/CompanyGridDropTarget";
 import { SquadsGridTabs } from "./squads/SquadsGridTabs";
@@ -48,6 +54,8 @@ import { SaveCompanyButton } from "./SaveCompanyButton";
 import { AvailableCounts } from "./available_units/AvailableCounts";
 import { selectAllAvailableOffmaps } from "./available_offmaps/availableOffmapsSlice";
 import { clearNotifySnackbarSnapshot, resetSnapshotState } from "../snapshotCompaniesSlice";
+import { unitTypes } from '../../../constants/units/all_factions';
+import { set } from 'lodash';
 
 const useStyles = makeStyles(theme => ({
   availableUnitsContainer: {
@@ -104,6 +112,12 @@ export const SquadBuilder = ({}) => {
 
   const isCompanyUnlocksChange = useSelector(selectIsCompanyUnlocksChanged)
 
+  const [openDelete, setOpenDelete] = React.useState(false)
+  const [openTransportDelete, setOpenTransportDelete] = React.useState(false)
+  
+  const [squadToDelete, setSquadToDelete] = React.useState(null)
+  const [transportOfSquadToDelete, setTransportOfSquadToDelete] = React.useState(null)
+
   useEffect(() => {
     console.log("dispatching squad and available_unit fetch from SquadBuilder")
     dispatch(fetchCompanySquads({ companyId }))
@@ -118,6 +132,38 @@ export const SquadBuilder = ({}) => {
 
   // TODO use this to constrain the drag area
   const constraintsRef = useRef(null)
+
+  const handleDeleteOpen = () => {
+    setOpenDelete(true)
+  };
+
+  const handleDeleteCancel = () => {
+    setOpenDelete(false)
+    setSquadToDelete(null)
+  };
+
+  const handleDeleteAction = () => {
+    dispatch(removeSquad(squadToDelete))
+    setSquadToDelete(null)
+    setOpenDelete(false)
+  };
+
+  const handleTransportDeleteOpen = () => {
+    setOpenTransportDelete(true)
+  };
+
+  const handleTransportDeleteCancel = () => {
+    setOpenTransportDelete(false)
+    setSquadToDelete(null)
+    setTransportOfSquadToDelete(null)
+  };
+
+  const handleTransportDeleteAction = () => {
+    dispatch(removeTransportedSquad({ squadToDelete, transportOfSquadToDelete }))
+    setOpenTransportDelete(false)
+    setSquadToDelete(null)
+    setTransportOfSquadToDelete(null)
+  };
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false)
@@ -253,9 +299,22 @@ export const SquadBuilder = ({}) => {
     dispatch(clearSelectedSquad())
     dispatch(clearSelectedAvailableUnitId())
     if (_.isNull(transportUuid)) {
-      dispatch(removeSquad(squad))
+      if (squad.vet > 0) {
+        setSquadToDelete(squad)
+        handleDeleteOpen()
+      } else {
+        dispatch(removeSquad(squad))
+      }
+      
     } else {
-      dispatch(removeTransportedSquad({ squad, transportUuid }))
+      if (squad.vet > 0) {
+        setSquadToDelete(squad)
+        setTransportOfSquadToDelete(transportUuid)
+        handleTransportDeleteOpen()
+      } else {
+        dispatch(removeTransportedSquad({ squad, transportUuid }))
+      }
+
     }
   }
 
@@ -501,6 +560,50 @@ export const SquadBuilder = ({}) => {
             </Grid>
           </Grid>
         </Grid>
+        <Dialog
+          open={openDelete}
+          onClose={handleDeleteCancel}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          >
+          <DialogTitle id="alert-dialog-title">
+            {"Delete Squad?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this veteran squad? <br />
+              It cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDeleteCancel}>Cancel</Button>
+            <Button onClick={handleDeleteAction} autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+      </Dialog>
+      <Dialog
+          open={openTransportDelete}
+          onClose={handleTransportDeleteCancel}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+          >
+          <DialogTitle id="alert-dialog-title">
+            {"Delete Squad?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete this veteran squad? <br />
+              It cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleTransportDeleteCancel}>Cancel</Button>
+            <Button onClick={handleTransportDeleteAction} autoFocus>
+              Delete
+            </Button>
+          </DialogActions>
+      </Dialog>
       </Box>
     </>
   )

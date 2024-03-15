@@ -8,6 +8,11 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { deleteCompanyById, setCurrentCompany } from "../companiesSlice";
 import { useNavigate } from "react-router-dom";
 import { StatsDisplay } from "./StatsDisplay";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 const useStyles = makeStyles(theme => ({
   optionImage: {
@@ -26,9 +31,24 @@ export const CompanySummary = ({ company }) => {
 
   const doctrine = useSelector(state => selectDoctrineById(state, company.doctrineId))
 
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+
   const deleteCompany = () => {
     dispatch(deleteCompanyById({ companyId: company.id }))
   }
+
+  const handleDeleteClick = () => {
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+  };
+
+  const handleDeleteAction = () => {
+    deleteCompany();
+    setDeleteDialogOpen(false);
+  };
 
   const managementLink = `/companies/${company.id}`
 
@@ -60,11 +80,33 @@ export const CompanySummary = ({ company }) => {
               <Button variant="contained" onClick={manageCompany} color="secondary">Manage Company</Button>
             </Grid>
             <Grid item xs={1}>
-              <DeleteOutlineIcon onClick={deleteCompany} className={classes.deleteIcon} color="error"/>
+              <DeleteOutlineIcon onClick={handleDeleteClick} className={classes.deleteIcon} color="error"/>
             </Grid>
           </Grid>
         </CardActions>
       </Card>
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleDeleteCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Delete Company?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this company? <br />
+            It cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel}>Cancel</Button>
+          <Button onClick={handleDeleteAction} autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }
