@@ -1,6 +1,7 @@
 class BattleReportService < ApplicationService
   class BattleReportValidationError < StandardError; end
   MINIMUM_ELAPSED = 300.freeze
+  MINIMUM_RANKED_ELAPSED = 1800.freeze
   RUBBERBAND_VET = 5.freeze
 
   FINAL = 1.freeze
@@ -75,7 +76,7 @@ class BattleReportService < ApplicationService
             finalize_battle(winner)
 
             # Update player ratings
-            maybe_update_player_ratings(winner)
+            maybe_update_player_ratings(winner, time_elapsed)
 
             # Update company stats
             process_battle_stats(battle_stats)
@@ -247,15 +248,18 @@ class BattleReportService < ApplicationService
   end
 
   # Skip updating ratings if battle is only 1v1
-  def maybe_update_player_ratings(winner)
+  def maybe_update_player_ratings(winner, time_elapsed)
     if @battle.size == 1
       info_logger("Battle #{@battle.id} size is 1, skipping updating player ratings")
       return
     end
 
-    info_logger("Updating player ratings")
-    ## Update player skill ratings
-    update_player_ratings(winner)
+    ## Only update ranks if game last > minimum
+    if time_elapsed > MINIMUM_RANKED_ELAPSED
+      info_logger("Updating player ratings")
+      ## Update player skill ratings
+      update_player_ratings(winner)
+    end
 
     # Save historical battle player records
     save_historical_battle_players(@battle.id)

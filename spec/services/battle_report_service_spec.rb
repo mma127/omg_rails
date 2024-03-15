@@ -126,6 +126,7 @@ RSpec.describe BattleReportService do
 
       context "when battle size is larger than one" do
         let(:size) { 4 }
+        let(:time_elapsed) { 2000 }
 
         it "calls rating update service" do
           expect(update_service_double).to receive(:update_player_ratings).once

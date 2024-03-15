@@ -6,7 +6,6 @@ module Ratings
   class UpdateService
     class RatingsUpdateValidationError < StandardError; end
 
-    WEEKLY_DECAY = 0.05
     SIGMA = 25.0 / 3.0
 
     def initialize(battle_id)
@@ -17,8 +16,8 @@ module Ratings
       allied_player_ratings = @battle.allied_battle_players.map { |bp| bp.player.player_rating }
       axis_player_ratings = @battle.axis_battle_players.map { |bp| bp.player.player_rating }
 
-      allied_ts_ratings = allied_player_ratings.map { |pr| update_sigma_decay(pr.ts_rating, pr.weeks_since_last_played) }
-      axis_ts_ratings = axis_player_ratings.map { |pr| update_sigma_decay(pr.ts_rating, pr.weeks_since_last_played) }
+      allied_ts_ratings = allied_player_ratings.map { |pr| pr.ts_rating }
+      axis_ts_ratings = axis_player_ratings.map { |pr| pr.ts_rating }
 
       team_ratings_list = create_team_ratings_list(winner, allied_ts_ratings, axis_ts_ratings)
       calculate_team_ratings(team_ratings_list)
@@ -42,17 +41,6 @@ module Ratings
 
     def axis
       Battle.winners[:axis]
-    end
-
-    def update_sigma_decay(ts_rating, weeks_since_last_played)
-      # within 3 weeks, no decay
-      if weeks_since_last_played > 3
-        weeks_since_last_played -= 3
-
-        sigma_decay = WEEKLY_DECAY * weeks_since_last_played
-        ts_rating = ::Ratings::NamedRating.new(ts_rating.name, ts_rating.mean, [SIGMA, ts_rating.deviation + sigma_decay].min)
-      end
-      ts_rating
     end
 
     def create_team_ratings_list(winner, allied_ts_ratings, axis_ts_ratings)
