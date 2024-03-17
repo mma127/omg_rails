@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { useDispatch } from "react-redux";
 import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { fetchBattlesHistory } from "./warLogSlice";
-import { BattlesHistory } from "./war_log/BattlesHistory";
+import { BattlesHistory } from "../../leaderboards/war_log/BattlesHistory";
+import { fetchCompanyBattlesHistory } from "../../leaderboards/warLogSlice";
+import { useParams } from "react-router-dom";
 
 
 const useStyles = makeStyles(() => ({
@@ -19,12 +20,14 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const WarLog = ({}) => {
+export const CompanyWarLog = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  let params = useParams()
+  const companyId = params.companyId
 
   useEffect(() => {
-    dispatch(fetchBattlesHistory({ ruleset_id: 1 }))
+    dispatch(fetchCompanyBattlesHistory({ companyId }))
   }, []);
 
   return (

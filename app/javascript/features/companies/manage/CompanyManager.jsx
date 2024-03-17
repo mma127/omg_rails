@@ -23,6 +23,8 @@ import { selectIsCompanyBonusesChanged } from "./bonuses/companyBonusesSlice";
 import { CompactSelector } from "./CompactSelector";
 import { PageContainer } from "../../../components/PageContainer";
 import { SnapshotCreator } from "./SnapshotCreator";
+import HistoryIcon from "@mui/icons-material/History";
+import { CompanyWarLog } from "./CompanyWarLog";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -88,6 +90,7 @@ const useStyles = makeStyles(theme => ({
 const SQUADS = "squads"
 const UNLOCKS = "unlocks"
 const BONUSES = "bonuses"
+const WAR_LOG = "war_log"
 const getCurrentUrlTab = (pathname) => {
   const lastPathElement = pathname.split("/").pop()
   switch (lastPathElement) {
@@ -95,6 +98,8 @@ const getCurrentUrlTab = (pathname) => {
       return UNLOCKS
     case BONUSES:
       return BONUSES
+    case WAR_LOG:
+      return WAR_LOG
     default:
       return SQUADS
   }
@@ -197,11 +202,19 @@ export const CompanyManager = () => {
                to="bonuses"
                className={classes.tab}
                component={Link}/>
+          <Tab key={`company-manager-tab-${WAR_LOG}`}
+               icon={matches ? <HistoryIcon/> : null}
+               label={matches ? null : "War Log"}
+               value={WAR_LOG}
+               to={WAR_LOG}
+               className={classes.tab}
+               component={Link}/>
         </Tabs>
         <Routes>
           <Route path="squads" element={<SquadBuilder/>}/>
           <Route path="unlocks" element={<CompanyUnlocks/>}/>
           <Route path="bonuses" element={<CompanyBonuses/>}/>
+          <Route path={WAR_LOG} element={<CompanyWarLog/>}/>
           <Route index element={<SquadBuilder/>}/>
         </Routes>
       </Box>
