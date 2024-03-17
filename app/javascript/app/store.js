@@ -17,6 +17,7 @@ import restrictionUnitsSlice from "../features/restrictions/restriction_units/re
 import factionsSlice from "../features/factions/factionsSlice";
 import companyLeaderboardSlice from "../features/leaderboards/companyLeaderboardSlice";
 import snapshotCompanySlice from "../features/companies/snapshotCompaniesSlice";
+import warLogSlice from "../features/leaderboards/warLogSlice";
 
 export default configureStore({
   reducer: {
@@ -37,6 +38,7 @@ export default configureStore({
     squadUpgrades: squadUpgradesSlice,
     restrictionUnits: restrictionUnitsSlice,
     companyLeaderboard: companyLeaderboardSlice,
-    snapshotCompanies: snapshotCompanySlice
+    snapshotCompanies: snapshotCompanySlice,
+    warLog: warLogSlice
   },
 })
