@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { makeStyles, useTheme } from "@mui/styles";
-import { Box, Container, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { WarStats } from "./WarStats";
 import { CompanyLeaderboard } from "./company_leaderboard/CompanyLeaderboard";
@@ -8,6 +8,8 @@ import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { PageContainer } from "../../components/PageContainer";
+import HistoryIcon from '@mui/icons-material/History';
+import { WarLog } from "./WarLog";
 
 const useStyles = makeStyles(theme => ({
   topWrapper: {
@@ -39,12 +41,15 @@ const useStyles = makeStyles(theme => ({
 
 const LEADERBOARD = "leaderboard"
 const WAR_STATS = "war_stats"
+const WAR_LOG = "war_log"
 
 const getCurrentUrlTab = (pathname) => {
   const lastPathElement = pathname.split("/").pop()
   switch (lastPathElement) {
     case WAR_STATS:
       return WAR_STATS
+    case WAR_LOG:
+      return WAR_LOG
     default:
       return LEADERBOARD
   }
@@ -84,10 +89,18 @@ export const Leaderboards = () => {
                  to={WAR_STATS}
                  className={classes.tab}
                  component={Link}/>
+            <Tab key={`leaderboards-tab-${WAR_LOG}`}
+                 icon={matches ? <HistoryIcon/> : null}
+                 label={matches ? null : "War Log"}
+                 value={WAR_LOG}
+                 to={WAR_LOG}
+                 className={classes.tab}
+                 component={Link}/>
           </Tabs>
           <Routes>
             <Route path={LEADERBOARD} element={<CompanyLeaderboard/>}/>
             <Route path={WAR_STATS} element={<WarStats/>}/>
+            <Route path={WAR_LOG} element={<WarLog/>}/>
             <Route index element={<CompanyLeaderboard/>}/>
           </Routes>
         </Box>
