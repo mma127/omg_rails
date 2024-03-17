@@ -21,6 +21,18 @@ export const fetchBattlesHistory = createAsyncThunk(
   }
 )
 
+export const fetchCompanyBattlesHistory = createAsyncThunk(
+  "warLog/fetchCompanyBattlesHistory",
+  async ({ companyId }, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`/companies/${companyId}/battles_history`)
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
 const warLogSlice = createSlice({
   name: "warLog",
   initialState,
@@ -35,6 +47,17 @@ const warLogSlice = createSlice({
         state.battles = action.payload
       })
       .addCase(fetchBattlesHistory.rejected, (state, action) => {
+        state.errorMessage = action.payload.error
+      })
+
+      .addCase(fetchCompanyBattlesHistory.pending, (state) => {
+        state.battles = []
+        state.errorMessage = null
+      })
+      .addCase(fetchCompanyBattlesHistory.fulfilled, (state, action) => {
+        state.battles = action.payload
+      })
+      .addCase(fetchCompanyBattlesHistory.rejected, (state, action) => {
         state.errorMessage = action.payload.error
       })
   }

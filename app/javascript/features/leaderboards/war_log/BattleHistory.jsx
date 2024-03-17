@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import { Box, Card, Typography } from "@mui/material";
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
 import { Link } from "react-router-dom";
+import { DateTime } from "luxon";
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -72,6 +73,8 @@ export const BattleHistory = ({ battle }) => {
   const axis = battle.battlePlayers.filter(bp => bp.side === AXIS_SIDE)
   const alliedWinner = battle.winner === ALLIED_SIDE
 
+  const date = DateTime.fromISO(battle.datetime)
+
   return (
     <Box sx={{ margin: "1rem" }}>
       <Card elevation={3} sx={{ padding: "1rem" }}>
@@ -84,7 +87,7 @@ export const BattleHistory = ({ battle }) => {
             <Typography variant="h5" pl="9px" gutterBottom color="secondary">{battle.id}</Typography>
           </Box>
           <Box className={classes.datetime}>
-            <Typography pl="9px" gutterBottom color="text.secondary">{battle.datetime}</Typography>
+            <Typography pl="9px" gutterBottom color="text.secondary">{date.toLocaleString (DateTime.DATETIME_MED)}</Typography>
           </Box>
         </Box>
         <Box className={classes.row} pb={1}>
