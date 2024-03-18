@@ -12,6 +12,8 @@ Redux
 
 BattlePlayer
 1. Pass `side` back for the BattlePlayer to create, to avoid relying on `company.faction.side` which may not be correct (ie, mixed teams)
+2. Add `side` to `HistoricalBattlePlayer`
+3. Use `HistoricalBattlePlayer.side` for war stats calculation
 
 Player
 1. Create a separate RulesetPlayer record to encapsulate ruleset specific data like vps current/earned in that ruleset
