@@ -7,7 +7,7 @@ import {
   TOP_UNIT_KILLERS, TOP_UNIT_LOSERS, TOP_VEH_KILLERS, TOP_VEH_LOSERS,
   TOP_WIN_STREAK,
   TOP_WINS
-} from "../../constants/leaderboard";
+} from "../../../constants/leaderboard";
 
 const companyLeaderboardAdapter = createEntityAdapter()
 // Don't need to use entities as this is display only. Sort should be server side
