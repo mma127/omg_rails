@@ -26,16 +26,18 @@ class WarStat
   end
 
   def ratings_avg
-    @ratings_sum / @ratings_count
+    @_ratings_avg ||= (@ratings_sum / @ratings_count)
   end
 
   def win_rate
-    games_played = @wins + @losses
-    if games_played > 0
-      (@wins / (@wins + @losses).to_f).round(4)
-    else
-      0
-    end
+    @_win_rate ||= begin
+                     games_played = @wins + @losses
+                     if games_played > 0
+                       (@wins / (@wins + @losses).to_f).round(4)
+                     else
+                       0
+                     end
+                   end
   end
 
   def entity

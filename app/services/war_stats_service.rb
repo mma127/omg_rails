@@ -42,8 +42,8 @@ class WarStatsService < ApplicationService
     end
 
     {
-      doctrines: doctrine_stats_by_id.values,
-      factions: faction_stats_by_id.values,
+      doctrines: doctrine_stats_by_id.values.sort_by(&:win_rate).reverse!,
+      factions: faction_stats_by_id.values.sort_by(&:win_rate).reverse!,
       allied_wins: allied_wins,
       axis_wins: axis_wins,
       generated_at: current_time
