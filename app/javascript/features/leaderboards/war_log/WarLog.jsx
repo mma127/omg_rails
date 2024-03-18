@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from "react-redux";
 import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { fetchBattlesHistory } from "./warLogSlice";
+import { BattlesHistory } from "./BattlesHistory";
 
 
 const useStyles = makeStyles(() => ({
@@ -17,13 +19,17 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const WarStats = ({}) => {
+export const WarLog = ({}) => {
   const classes = useStyles()
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    dispatch(fetchBattlesHistory({ ruleset_id: 1 }))
+  }, []);
+
   return (
     <Box className={classes.wrapper}>
-
+      <BattlesHistory/>
     </Box>
-    )
+  )
 }

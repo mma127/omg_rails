@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { makeStyles, useTheme } from "@mui/styles";
 import { Box, Tab, Tabs } from "@mui/material";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
-import { WarStats } from "./WarStats";
+import { WarStats } from "./war_stats/WarStats";
 import { CompanyLeaderboard } from "./company_leaderboard/CompanyLeaderboard";
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { PageContainer } from "../../components/PageContainer";
 import HistoryIcon from '@mui/icons-material/History';
-import { WarLog } from "./WarLog";
+import { WarLog } from "./war_log/WarLog";
 
 const useStyles = makeStyles(theme => ({
   topWrapper: {

@@ -1,7 +1,6 @@
 import React from 'react'
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
-import { selectCompanyLeaderboardStat } from "../companyLeaderboardSlice";
 import {
   Box,
   Card,
@@ -29,6 +28,7 @@ import {
   TYPE_TO_TITLE
 } from "../../../constants/leaderboard";
 import { getVetLevel } from "../../companies/manage/units/unit_vet";
+import { selectCompanyLeaderboardStat } from "./companyLeaderboardSlice";
 
 const useStyles = makeStyles((theme) => ({
   headerRow: {

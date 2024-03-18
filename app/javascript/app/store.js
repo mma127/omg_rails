@@ -15,9 +15,10 @@ import squadUpgradesSlice from "../features/companies/manage/squad_upgrades/squa
 import companyBonusesSlice from "../features/companies/manage/bonuses/companyBonusesSlice";
 import restrictionUnitsSlice from "../features/restrictions/restriction_units/restrictionUnitsSlice";
 import factionsSlice from "../features/factions/factionsSlice";
-import companyLeaderboardSlice from "../features/leaderboards/companyLeaderboardSlice";
+import companyLeaderboardSlice from "../features/leaderboards/company_leaderboard/companyLeaderboardSlice";
 import snapshotCompanySlice from "../features/companies/snapshotCompaniesSlice";
-import warLogSlice from "../features/leaderboards/warLogSlice";
+import warLogSlice from "../features/leaderboards/war_log/warLogSlice";
+import warStatsSlice from "../features/leaderboards/war_stats/warStatsSlice";
 
 export default configureStore({
   reducer: {
@@ -39,6 +40,7 @@ export default configureStore({
     restrictionUnits: restrictionUnitsSlice,
     companyLeaderboard: companyLeaderboardSlice,
     snapshotCompanies: snapshotCompanySlice,
-    warLog: warLogSlice
+    warLog: warLogSlice,
+    warStats: warStatsSlice
   },
 })

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { TopCompaniesList } from "./TopCompaniesList";
 import {
@@ -11,8 +11,8 @@ import {
   TOP_WIN_STREAK,
   TOP_WINS
 } from "../../../constants/leaderboard";
-import { fetchCompanyLeaderboard } from "../companyLeaderboardSlice";
 import { selectPlayer } from "../../player/playerSlice";
+import { fetchCompanyLeaderboard } from "./companyLeaderboardSlice";
 
 
 const useStyles = makeStyles(() => ({

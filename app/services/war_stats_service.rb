@@ -1,7 +1,7 @@
 class WarStatsService < ApplicationService
   def self.fetch_stats(ruleset_id)
     # Maybe use a job to create these regularly?
-    Rails.cache.fetch("war_stats", expires_in: 4.hours) do
+    Rails.cache.fetch("war_stats", expires_in: 5.minutes) do
       process_stats(ruleset_id)
     end
   end
@@ -27,7 +27,9 @@ class WarStatsService < ApplicationService
       if current_battle_id != hbp.battle_id
         current_battle_id = hbp.battle_id
 
-        if hbp.faction.side == Faction.sides[:allied]
+        allied_win = (hbp.faction.side == Faction.sides[:allied] && hbp.is_winner) ||
+          (hbp.faction.side == Faction.sides[:axis] && !hbp.is_winner)
+        if allied_win
           allied_wins += 1
         else
           axis_wins += 1
