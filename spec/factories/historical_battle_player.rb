@@ -5,6 +5,7 @@ FactoryBot.define do
     sequence :battle_id do |n| "Battle #{n}" end
     association :faction
     association :doctrine
+    association :ruleset
     is_winner { true }
     elo { 1500 }
     mu { 25.0 }

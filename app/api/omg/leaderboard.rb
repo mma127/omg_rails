@@ -12,6 +12,15 @@ module OMG
         present CompanyStatsService.new(declared_params[:limit]).get_leaderboard_stats, with: Entities::CompanyLeaderboardResponse
       end
 
+      desc "get war stats"
+      params do
+        requires :ruleset_id, type: Integer, desc: "Ruleset to find stats for"
+      end
+      get "war_stats" do
+        declared_params = declared(params)
+        present WarStatsService.fetch_stats(declared_params[:ruleset_id]), with: Entities::WarStatsResponse
+      end
+
       desc "get battle history"
       params do
         requires :ruleset_id, type: Integer, desc: "Ruleset to find battles for"

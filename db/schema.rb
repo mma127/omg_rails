@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_15_012611) do
+ActiveRecord::Schema.define(version: 2024_03_17_202440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -331,10 +331,12 @@ ActiveRecord::Schema.define(version: 2024_03_15_012611) do
     t.date "date", comment: "date of the battle"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "ruleset_id"
     t.index ["doctrine_id"], name: "index_historical_battle_players_on_doctrine_id"
     t.index ["faction_id"], name: "index_historical_battle_players_on_faction_id"
     t.index ["player_id"], name: "index_historical_battle_players_on_player_id"
     t.index ["player_name"], name: "index_historical_battle_players_on_player_name"
+    t.index ["ruleset_id"], name: "index_historical_battle_players_on_ruleset_id"
   end
 
   create_table "historical_player_ratings", force: :cascade do |t|
@@ -722,6 +724,7 @@ ActiveRecord::Schema.define(version: 2024_03_15_012611) do
   add_foreign_key "doctrine_unlocks", "rulesets"
   add_foreign_key "doctrine_unlocks", "unlocks"
   add_foreign_key "doctrines", "factions"
+  add_foreign_key "historical_battle_players", "rulesets"
   add_foreign_key "player_ratings", "players"
   add_foreign_key "resource_bonuses", "rulesets"
   add_foreign_key "restriction_callin_modifiers", "callin_modifiers"
