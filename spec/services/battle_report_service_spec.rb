@@ -442,6 +442,18 @@ RSpec.describe BattleReportService do
     end
   end
 
+  describe "#reconcile_company_unit_available" do
+    # Simulates post-resupply update of availability given 2 surviving squads of this available unit
+    let!(:available_unit1) { create :available_unit, unit: unit1, company: company1, available: 1, resupply: 1, resupply_max: 1, company_max: 2 }
+
+    subject { instance.send(:reconcile_company_unit_available, company1) }
+
+    it "sets available to 0" do
+      subject
+      expect(available_unit1.reload.available).to eq 0
+    end
+  end
+
   describe "#recalculate_company_resources" do
     it "updates the company resources" do
       instance.send(:recalculate_company_resources)

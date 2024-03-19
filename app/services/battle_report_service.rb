@@ -62,6 +62,11 @@ class BattleReportService < ApplicationService
 
             autorebuild_dead_squads(dead_squads)
 
+            @battle.companies.each do |c|
+              # Count number of squads for each unit, compare against AvailableUnit company max. If exceeds, reduce available until matches
+              reconcile_company_unit_available(c)
+            end
+
             ## Update company resources after rebuild
             recalculate_company_resources
 
@@ -168,6 +173,30 @@ class BattleReportService < ApplicationService
     end
 
     info_logger("Saving #{available_units_update.size} available_unit updates")
+    AvailableUnit.import!(available_units_update, on_duplicate_key_update: { conflict_target: [:id], columns: [:available] })
+  end
+
+  # Count number of squads for each unit, compare against AvailableUnit company max.
+  # If exceeds, reduce available until matches
+  # NOTE: This must be done after availability resupply and autorebuild is done in order to correct over resupply of
+  # availability for surviving squads (and avoid exceeding the company max)
+  def reconcile_company_unit_available(company)
+    info_logger("Reconciling company squad count + available for company #{company.id}")
+    available_unit_to_squad_count = company.squads.group(:available_unit_id).count
+    available_units_update = []
+    company.available_units.each do |au|
+      if available_unit_to_squad_count.include? au.id
+        squad_count = available_unit_to_squad_count[au.id]
+        if (squad_count + au.available) > au.company_max
+          overage = (squad_count + au.available) - au.company_max
+          new_available = [au.available - overage, 0].max
+          au.available = new_available
+          available_units_update << au
+        end
+      end
+    end
+
+    info_logger("Saving #{available_units_update.size} available_unit updates for unit available reconciliation")
     AvailableUnit.import!(available_units_update, on_duplicate_key_update: { conflict_target: [:id], columns: [:available] })
   end
 
