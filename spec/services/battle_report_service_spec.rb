@@ -12,8 +12,8 @@ RSpec.describe BattleReportService do
 
   let!(:company1) { create :active_company, player: player1, ruleset: ruleset }
   let!(:company2) { create :active_company, player: player2, ruleset: ruleset }
-  let!(:available_unit1) { create :available_unit, unit: unit1, company: company1, available: 10, resupply: 5, resupply_max: 10 }
-  let!(:available_unit2) { create :available_unit, unit: unit2, company: company2, available: 80, resupply: 10, resupply_max: 99 }
+  let!(:available_unit1) { create :available_unit, unit: unit1, company: company1, available: 10, resupply: 5, resupply_max: 10, company_max: 10 }
+  let!(:available_unit2) { create :available_unit, unit: unit2, company: company2, available: 80, resupply: 10, resupply_max: 99, company_max: 99 }
   let!(:squad11) { create :squad, available_unit: available_unit1, company: company1 }
   let!(:squad12) { create :squad, available_unit: available_unit1, company: company1, vet: 20 }
   let!(:squad21) { create :squad, available_unit: available_unit2, company: company2 }
@@ -74,7 +74,7 @@ RSpec.describe BattleReportService do
 
       it "updates availability" do
         process_report
-        expect(available_unit1.reload.available).to eq 9
+        expect(available_unit1.reload.available).to eq 8 # company max of 10 - 2 squads
         expect(available_unit2.reload.available).to eq 89
       end
 
@@ -110,6 +110,18 @@ RSpec.describe BattleReportService do
       it "calls battle report stats" do
         expect(report_parse_service_double).to receive(:process_battle_stats).once
         process_report
+      end
+
+      context "when an available_unit has only surviving squads" do
+        let!(:available_unit1) { create :available_unit, unit: unit1, company: company1, available: 0, resupply: 1, resupply_max: 1, company_max: 2 }
+        let(:dead_squads_str) { "#{squad22.id}" }
+        let(:surviving_squads) { "#{squad11.id},1.0;#{squad12.id}, 0.0;#{squad21.id},5.0" }
+
+        it "updates availability" do
+          process_report
+          expect(available_unit1.reload.available).to eq 8 # company max of 2 - 2 squads
+          expect(available_unit2.reload.available).to eq 89
+        end
       end
 
       context "when battle size is one" do
@@ -218,7 +230,7 @@ RSpec.describe BattleReportService do
 
       it "updates availability" do
         process_report
-        expect(available_unit1.reload.available).to eq 9
+        expect(available_unit1.reload.available).to eq 8
         expect(available_unit2.reload.available).to eq 89
       end
 
