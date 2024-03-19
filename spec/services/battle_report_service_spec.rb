@@ -382,6 +382,17 @@ RSpec.describe BattleReportService do
       instance.send(:add_company_availability, company1)
       expect(available_unit1.reload.available).to eq 10
     end
+
+    context "when there is 0 available" do
+      before do
+        available_unit1.update!(available: 0)
+      end
+
+      it "only adds the resupply amount to available" do
+        instance.send(:add_company_availability, company1)
+        expect(available_unit1.reload.available).to eq 5
+      end
+    end
   end
 
   describe "#autorebuild_dead_squads" do

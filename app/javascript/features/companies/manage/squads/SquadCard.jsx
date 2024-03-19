@@ -8,7 +8,8 @@ import { formatResourceCost } from "../../../../utils/company";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUnitById } from "../units/unitsSlice";
 import {
-  clearHighlightedUuid, copySquad, deepCopySquad,
+  clearHighlightedUuid,
+  deepCopySquad,
   selectHighlightedUuid,
   selectSelectedSquadUuid,
   selectSquadInTabIndexTransportUuid,
@@ -21,16 +22,13 @@ import { TransportDropTarget } from "./TransportDropTarget";
 import { SquadUpgrades } from "../squad_upgrades/SquadUpgrades";
 import { selectSquadUpgradesForSquad } from "../squad_upgrades/squadUpgradesSlice";
 import { SquadVetIcon } from "./SquadVetIcon";
-import {
-  selectAvailableByAvailableUnitId,
-  selectAvailableUnitById,
-  setSelectedAvailableUnitId
-} from "../available_units/availableUnitsSlice";
+import { setSelectedAvailableUnitId } from "../available_units/availableUnitsSlice";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { selectCurrentCompany } from "../../companiesSlice";
 import { buildVetBonuses, getVetLevel } from "../units/unit_vet";
 import _ from "lodash";
 import { selectCurrentSnapshotCompany } from "../../snapshotCompaniesSlice";
+import { UnitVetDescriptions } from "../units/UnitVetDescriptions";
 
 const useStyles = makeStyles(() => ({
   squadCard: {
@@ -318,8 +316,7 @@ export const SquadCard = (
             <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
             <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
             <Box><Typography variant="body"><b>Exp:</b> {displayVet} {nextLevelContent}</Typography></Box>
-            {vetBonuses.map(vb => <Box key={vb.level} className={classes.squadCardItems}><SquadVetIcon
-              level={vb.level} side={company.side}/> {vb.desc}</Box>)}
+            <UnitVetDescriptions vet={unit.vet} level={level} side={company.side}/>
           </>
         }
         // TransitionComponent={Zoom}
@@ -328,7 +325,7 @@ export const SquadCard = (
         arrow
       >
         <Box sx={{ p: 1 }} className={classes.squadCardItems} ref={elementRef}>
-          <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId}F
+          <UnitCard unitId={squad.unitId} availableUnitId={squad.availableUnitId} F
                     onUnitClick={onUnitClick} dragHandleClassName={dragHandleClassName}/>
           <SquadVetIcon level={level} side={company.side}/>
           <SquadUpgrades tab={tab} index={index} squadUuid={squad.uuid} onUpgradeClick={onSquadUpgradeClick}
@@ -370,12 +367,9 @@ export const SquadCard = (
                                              className={classes.tooltipHeader}>{unit.displayName}</Typography>
                                  <Box><Typography variant="body"><b>Cost:</b> {cost}</Typography></Box>
                                  <Box><Typography variant="body"><b>Pop:</b> {parseFloat(squad.pop)}</Typography></Box>
-                                 <Box><Typography variant="body"><b>Exp:</b> {displayVet} {nextLevelContent}</Typography></Box>
-                                 {vetBonuses.map(vb =>
-                                   <Box key={vb.level} className={classes.squadCardItems}>
-                                     <SquadVetIcon level={vb.level} side={company.side}/>
-                                     {vb.desc}
-                                   </Box>)}
+                                 <Box><Typography variant="body"><b>Exp:</b> {displayVet} {nextLevelContent}
+                                 </Typography></Box>
+                                 <UnitVetDescriptions vet={unit.vet} level={level} side={company.side}/>
                                </>
                              }
                              // TransitionComponent={Zoom}

@@ -11,6 +11,7 @@ import { FUEL, MAN, MUN, POP } from "../../../constants/resources";
 import { StaticUnitIcon } from "../../companies/manage/unlocks/StaticUnitIcon";
 import { BorderlessCell } from "../../../components/BorderlessCell";
 import { nanoid } from "@reduxjs/toolkit";
+import { UnitVet } from "./UnitVet";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -81,10 +82,11 @@ const Restriction = ({ restrictionName, type, factionId, doctrineId }) => {
   return content
 }
 
-const EnabledUnit = ({ enabledUnit, isActive }) => {
+const EnabledUnit = ({ enabledUnit, isActive, currentFactionId }) => {
   const classes = useStyles()
   const unit = enabledUnit.unit
   const restriction = enabledUnit.restriction
+  const faction = useSelector(state => selectFactionById(state, currentFactionId))
 
   return (
     <TableRow className={!isActive ? classes.notActive : null}>
@@ -97,6 +99,9 @@ const EnabledUnit = ({ enabledUnit, isActive }) => {
       <BorderlessCell>
         <Restriction restrictionName={restriction.name} type={enabledUnit.type}
                      factionId={restriction.factionId} doctrineId={restriction.doctrineId}/>
+      </BorderlessCell>
+      <BorderlessCell>
+        {isActive ? <UnitVet vet={unit.vet} side={faction.side} /> : null}
       </BorderlessCell>
       <BorderlessCell>
         <ResourceQuantity resource={MAN} quantity={enabledUnit.man}/>
@@ -162,7 +167,7 @@ const DisabledUnit = ({ disabledUnit, isActive }) => {
   )
 }
 
-export const RestrictionUnit = ({ entity, showDisabled }) => {
+export const RestrictionUnit = ({ entity, showDisabled, currentFactionId }) => {
   const classes = useStyles()
 
   const unitId = entity.unitId
@@ -172,10 +177,10 @@ export const RestrictionUnit = ({ entity, showDisabled }) => {
 
   let content = []
   if (activeRU.type === "EnabledUnit") {
-    content.push(<EnabledUnit enabledUnit={activeRU} isActive={true} key={activeRU.id}/>)
+    content.push(<EnabledUnit enabledUnit={activeRU} isActive={true} currentFactionId={currentFactionId} key={activeRU.id}/>)
   } else if (activeRU.type === "DisabledUnit") {
     if (showDisabled) {
-      content.push(<DisabledUnit disabledUnit={activeRU} isActive={true} key={activeRU.id}/>)
+      content.push(<DisabledUnit disabledUnit={activeRU} isActive={true} currentFactionId={currentFactionId} key={activeRU.id}/>)
     } else {
       return null
     }
@@ -186,9 +191,9 @@ export const RestrictionUnit = ({ entity, showDisabled }) => {
       content.push(<TableRow key={nanoid()}><BorderlessCell></BorderlessCell></TableRow>)
 
       if (oru.type === "EnabledUnit") {
-        content.push(<EnabledUnit enabledUnit={oru} isActive={false} key={oru.id}/>)
+        content.push(<EnabledUnit enabledUnit={oru} isActive={false} currentFactionId={currentFactionId} key={oru.id}/>)
       } else if (oru.type === "DisabledUnit") {
-        content.push(<DisabledUnit disabledUnit={oru} isActive={false} key={oru.id}/>)
+        content.push(<DisabledUnit disabledUnit={oru} isActive={false} currentFactionId={currentFactionId} key={oru.id}/>)
       }
     })
   }
