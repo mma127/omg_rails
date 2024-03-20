@@ -15,14 +15,18 @@ import { GLIDER } from "../../../../constants/units/types";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
 import _ from "lodash";
+import { MIN_PLATOON_POP } from "../../../../constants/company";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   placementBox: {
     minHeight: props => props.height,
     minWidth: '4rem',
     flexGrow: 1,
     "&.compact": {
       minHeight: props => props.compactHeight
+    },
+    "&.invalid": {
+      backgroundColor: theme.palette.error.dark
     }
   },
   popCMBox: {
@@ -164,6 +168,8 @@ export const CompanyGridDropTarget = ({
     }
   }
 
+  const validGridPop = gridPop === 0 || gridPop >= MIN_PLATOON_POP
+
   let callinModifierContent
   if (!_.isNil(callinModifiers) && callinModifiers.length > 0) {
     callinModifierContent = <CallinModifierIcon callinModifiers={callinModifiers} unitIds={unitIds}/>
@@ -178,7 +184,7 @@ export const CompanyGridDropTarget = ({
                      content={snackbarContent}/>
       <DropTarget targetKey="unit" onHit={onUnitHit} className={classes.gridDropTarget}>
         <DropTarget targetKey="squad" onHit={onSquadMoveHit} className={classes.gridDropTarget}>
-          <Paper key={gridIndex} className={`${classes.placementBox} ${isCompact ? 'compact' : null}`}>
+          <Paper key={gridIndex} className={`${classes.placementBox} ${isCompact ? 'compact' : null} ${!validGridPop ? 'invalid' : null}`}>
             <Box sx={{ position: 'relative', p: 1, pr: 3 }}>
               {squadCards}
               <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }}
