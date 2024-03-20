@@ -83,6 +83,7 @@ export const SPOTTING_SCOPE = 'spotting_scope'
 export const STUP_MG42 = 'stup_mg42'
 export const STUP_SKIRTS = 'stup_skirts'
 export const TELLER_MINES = 'teller_mines'
+export const TH_MP40s = 'th_mp40s'
 export const VETERAN_SERGEANT = 'veteran_sergeant'
 
 export const upgradeImageMapping = {
@@ -139,5 +140,6 @@ export const upgradeImageMapping = {
   [STUP_MG42]: mg_gunner,
   [STUP_SKIRTS]: skirts,
   [TELLER_MINES]: mines,
+  [TH_MP40s]: mp40,
   [VETERAN_SERGEANT]: veteran_sergeant,
 }
