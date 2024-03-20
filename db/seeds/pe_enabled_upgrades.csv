@@ -89,6 +89,7 @@ falls_panzerschreck,AXIS.ST_SCHRECK,Panzerschreck,A single Panzerschreck,single_
 falls_at_rifles,CMW.BOYSAT,Anti Tank Rifles,Anti tank rifles,single_weapon,,luftwaffe,anti_tank_requisition,0,50,0,0,0,1,0,1,,,falls
 falls_at_rifles,CMW.BOYSAT,Anti Tank Rifles,Anti tank rifles,single_weapon,,luftwaffe,anti_tank_requisition,0,50,0,0,0,1,0,1,,,crete_vets
 se_mp40s,PE.SE_ASSAULT,MP40s,Equip the squad with MP40s,squad_weapon,,scorched_earth,,0,75,0,0,0,0,1,1,,,ostfront_veterans
+th_mp40s,AXIS.MP40,MP40s,Equip the squad with MP40s,squad_weapon,,tank_hunters,mechanized_tactics,0,50,0,0,0,0,1,1,,,panzer_grenadiers
 flame_hotchkiss_stuka,PE.FLAME_HOTCH_STUKA,Hotchkiss Stuka Upgrade,Equip the tank with four rocket launchers,unit_replacement,,scorched_earth,,0,75,0,2,0,0,0,1,1,0,flammen_hotchkiss
 stup_mg42,PE.STUP_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,scorched_earth,,0,40,0,0,0,0,0,1,,,stup
 stup_skirts,PE.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,scorched_earth,,0,0,70,0,0,0,0,1,,,stup

@@ -46,6 +46,7 @@ export const RestrictionUnits = ({currentFactionId, currentDoctrineId, showDisab
               <BorderlessCell></BorderlessCell>
               <BorderlessCell><Typography variant="subtitle1">Unit</Typography></BorderlessCell>
               <BorderlessCell><Typography variant="subtitle1">Restriction</Typography></BorderlessCell>
+              <BorderlessCell><Typography variant="subtitle1">Vet</Typography></BorderlessCell>
               <BorderlessCell><Typography variant="subtitle1">Man</Typography></BorderlessCell>
               <BorderlessCell><Typography variant="subtitle1">Mun</Typography></BorderlessCell>
               <BorderlessCell><Typography variant="subtitle1">Fuel</Typography></BorderlessCell>
@@ -74,7 +75,7 @@ export const RestrictionUnits = ({currentFactionId, currentDoctrineId, showDisab
             </TableRow>
           </TableHead>
           <TableBody>
-            {restrictionUnits.map(ru => <RestrictionUnit entity={ru} key={ru.activeRestrictionUnit.id} showDisabled={showDisabled}/>)}
+            {restrictionUnits.map(ru => <RestrictionUnit entity={ru} key={ru.activeRestrictionUnit.id} showDisabled={showDisabled} currentFactionId={currentFactionId}/>)}
           </TableBody>
         </Table>
       </TableContainer>

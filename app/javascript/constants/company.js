@@ -19,3 +19,4 @@ export const DISPLAY_CATEGORIES = {
   [SUPPORT]: "Support"
 }
 
+export const MIN_PLATOON_POP = 7

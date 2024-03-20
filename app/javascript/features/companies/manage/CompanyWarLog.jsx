@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { BattlesHistory } from "../../leaderboards/war_log/BattlesHistory";
-import { fetchCompanyBattlesHistory } from "../../leaderboards/warLogSlice";
+import { fetchCompanyBattlesHistory } from "../../leaderboards/war_log/warLogSlice";
 import { useParams } from "react-router-dom";
 
 

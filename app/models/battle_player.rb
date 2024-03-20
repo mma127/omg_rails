@@ -71,7 +71,7 @@ class BattlePlayer < ApplicationRecord
   end
 
   def history_entity
-
+    HistoryEntity.new(self)
   end
 
   class HistoryEntity < Grape::Entity

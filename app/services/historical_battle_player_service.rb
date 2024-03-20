@@ -2,7 +2,7 @@ class HistoricalBattlePlayerService
   class HistoricalBattlePlayerValidationError < StandardError; end
 
   def initialize(battle_id)
-    @battle = Battle.includes(battle_players: { company: [:faction, :doctrine], player: :player_rating }).find(battle_id)
+    @battle = Battle.includes(battle_players: { company: [:faction, :doctrine, :ruleset], player: :player_rating }).find(battle_id)
   end
 
   def create_historical_battle_players_for_battle
@@ -35,7 +35,8 @@ class HistoricalBattlePlayerService
     HistoricalBattlePlayer.new(player: player, player_name: player.name, battle_id: @battle.id,
                                faction: company.faction, doctrine: company.doctrine, is_winner: win?(battle_player),
                                elo: player_rating.elo, mu: player_rating.mu, sigma: player_rating.sigma,
-                               wins: player_rating.wins, losses: player_rating.losses, date: date_played)
+                               wins: player_rating.wins, losses: player_rating.losses, date: date_played,
+                               ruleset: company.ruleset)
   end
 
   def win?(battle_player)

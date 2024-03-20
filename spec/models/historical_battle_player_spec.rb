@@ -17,6 +17,7 @@
 #  doctrine_id                                                                           :bigint           not null
 #  faction_id                                                                            :bigint           not null
 #  player_id                                                                             :bigint
+#  ruleset_id                                                                            :bigint
 #
 # Indexes
 #
@@ -24,6 +25,11 @@
 #  index_historical_battle_players_on_faction_id   (faction_id)
 #  index_historical_battle_players_on_player_id    (player_id)
 #  index_historical_battle_players_on_player_name  (player_name)
+#  index_historical_battle_players_on_ruleset_id   (ruleset_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (ruleset_id => rulesets.id)
 #
 require "rails_helper"
 
@@ -34,5 +40,6 @@ RSpec.describe HistoricalBattlePlayer, type: :model do
     it { should belong_to(:player).optional }
     it { should belong_to(:faction) }
     it { should belong_to(:doctrine) }
+    it { should belong_to(:ruleset) }
   end
 end

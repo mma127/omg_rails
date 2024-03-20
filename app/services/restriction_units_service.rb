@@ -1,9 +1,9 @@
 class RestrictionUnitsService < RestrictionsService
   # Retrieve restriction units by ruleset and faction, optionally narrowed by doctrine
   def get_restriction_units
-    faction_enabled_units = EnabledUnit.includes(:restriction, unit: :transport_allowed_units).where(restriction: faction_restriction, ruleset: ruleset)
-    doctrine_enabled_units = EnabledUnit.includes(:restriction, unit: :transport_allowed_units).where(restriction: doctrine_restriction, ruleset: ruleset)
-    doctrine_disabled_units = DisabledUnit.includes(:restriction, unit: :transport_allowed_units).where(restriction: doctrine_restriction, ruleset: ruleset)
+    faction_enabled_units = EnabledUnit.includes(:restriction, unit: [:transport_allowed_units, :unit_vet]).where(restriction: faction_restriction, ruleset: ruleset)
+    doctrine_enabled_units = EnabledUnit.includes(:restriction, unit: [:transport_allowed_units, :unit_vet]).where(restriction: doctrine_restriction, ruleset: ruleset)
+    doctrine_disabled_units = DisabledUnit.includes(:restriction, unit: [:transport_allowed_units, :unit_vet]).where(restriction: doctrine_restriction, ruleset: ruleset)
 
     faction_enabled_units_by_unit_id = faction_enabled_units.index_by(&:unit_id)
     doctrine_enabled_units_by_unit_id = doctrine_enabled_units.index_by(&:unit_id)

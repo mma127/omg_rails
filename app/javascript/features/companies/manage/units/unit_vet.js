@@ -20,19 +20,19 @@ export const buildVetBonuses = (level, unitVet) => {
     return bonuses
   }
   if (level >= 1) {
-    bonuses.push({ level: 1, desc: unitVet.vet1Desc })
+    bonuses.push({ level: 1, exp: unitVet.vet1Exp, desc: unitVet.vet1Desc })
   }
   if (level >= 2) {
-    bonuses.push({ level: 2, desc: unitVet.vet2Desc })
+    bonuses.push({ level: 2, exp: unitVet.vet2Exp, desc: unitVet.vet2Desc })
   }
   if (level >= 3) {
-    bonuses.push({ level: 3, desc: unitVet.vet3Desc })
+    bonuses.push({ level: 3, exp: unitVet.vet3Exp, desc: unitVet.vet3Desc })
   }
   if (level >= 4) {
-    bonuses.push({ level: 4, desc: unitVet.vet4Desc })
+    bonuses.push({ level: 4, exp: unitVet.vet4Exp, desc: unitVet.vet4Desc })
   }
   if (level === 5) {
-    bonuses.push({ level: 5, desc: unitVet.vet5Desc })
+    bonuses.push({ level: 5, exp: unitVet.vet5Exp, desc: unitVet.vet5Desc })
   }
   return bonuses
 }

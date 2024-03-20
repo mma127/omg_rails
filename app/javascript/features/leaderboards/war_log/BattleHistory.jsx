@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
       borderColor: theme.palette.secondary.light,
       borderWidth: '2px',
       borderStyle: 'solid',
-      borderRadius: '2px'
+      borderRadius: '4px'
     }
   }
 }))
