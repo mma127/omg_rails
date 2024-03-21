@@ -117,7 +117,7 @@ export const BattleCardPlayer = ({
 
   const handleKickClick = () => {
     if (isAdmin) {
-      dispatch(kickPlayer({ battleId: battleId, playerId: player.id, kickPlayerId: playerId }))
+      dispatch(kickPlayer({ battleId: battleId, kickPlayerId: playerId }))
     }
   }
 
