@@ -421,7 +421,7 @@ export const SquadBuilder = ({}) => {
   if (notifySnackbarSnapshot) {
     if (snapshotErrorMessage?.length > 0) {
       snackbarSeverity = "error"
-      snackbarContent = "Failed to create snapshot"
+      snackbarContent = snapshotError
     } else {
       snackbarContent = "Snapshot created"
     }

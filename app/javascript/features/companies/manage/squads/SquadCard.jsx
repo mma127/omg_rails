@@ -273,23 +273,25 @@ export const SquadCard = (
     if (transportedSquads.length > 0) {
       usedModelSlots = transportedSquads.map(s => s.totalModelCount).reduce((prev, next) => prev + next)
     }
-    transportContent = <TransportDropTarget transportedSquads={transportedSquads}
-                                            unitCreateOnHit={unitCreateOnHit}
-                                            squadMoveOnHit={squadMoveOnHit}
-                                            index={index} tab={tab}
-                                            transportUuid={uuid}
-                                            onSquadClick={onSquadClick}
-                                            onSquadMove={onSquadMove}
-                                            onSquadCopy={onSquadCopy}
-                                            transportSquadDelete={transportSquadDelete}
-                                            onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
-                                            enabled={enabled}
-                                            isSnapshot={isSnapshot}/>
+    if (!isSnapshot || (isSnapshot && transportedSquads.length > 0)) {
+      transportContent = <TransportDropTarget transportedSquads={transportedSquads}
+                                              unitCreateOnHit={unitCreateOnHit}
+                                              squadMoveOnHit={squadMoveOnHit}
+                                              index={index} tab={tab}
+                                              transportUuid={uuid}
+                                              onSquadClick={onSquadClick}
+                                              onSquadMove={onSquadMove}
+                                              onSquadCopy={onSquadCopy}
+                                              transportSquadDelete={transportSquadDelete}
+                                              onSquadUpgradeDestroyClick={onSquadUpgradeDestroyClick}
+                                              enabled={enabled}
+                                              isSnapshot={isSnapshot}/>
 
-    transportSlotsContent = <TransportSlots usedSquadSlots={usedSquadSlots}
-                                            usedModelSlots={usedModelSlots}
-                                            maxSquadSlots={unit.transportSquadSlots}
-                                            maxModelSlots={unit.transportModelSlots}/>
+      transportSlotsContent = <TransportSlots usedSquadSlots={usedSquadSlots}
+                                              usedModelSlots={usedModelSlots}
+                                              maxSquadSlots={unit.transportSquadSlots}
+                                              maxModelSlots={unit.transportModelSlots}/>
+    }
   }
 
   const handleTooltipOpen = () => {
