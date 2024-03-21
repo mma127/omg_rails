@@ -4,7 +4,7 @@ import { selectCallinModifiers, selectSquadsInTabIndex } from "../manage/units/s
 import { SquadCard } from "../manage/squads/SquadCard";
 import _, { noop } from "lodash";
 import { CallinModifierIcon } from "../manage/callin_modifiers/CallinModifierIcon";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
@@ -43,7 +43,7 @@ export const CompanyPlatoonBox = ({ tab, index, height = '13.5rem', compactHeigh
   let gridPop = 0
   const squadCards = []
   const unitIds = []
-  if (squads) {
+  if (!_.isEmpty(squads)) {
     for (const squad of Object.values(squads)) {
       insertSquadUnitIds(unitIds, squad)
 
@@ -65,6 +65,8 @@ export const CompanyPlatoonBox = ({ tab, index, height = '13.5rem', compactHeigh
                                  onSquadCopy={noop}
                                  onSquadUpgradeDestroyClick={noop}/>)
     }
+  } else {
+    return null;
   }
 
   let callinModifierContent
@@ -73,15 +75,17 @@ export const CompanyPlatoonBox = ({ tab, index, height = '13.5rem', compactHeigh
   }
 
   return (
-    <Paper key={index} className={`${classes.placementBox} ${isCompact ? 'compact' : null}`}>
-      <Box sx={{ position: 'relative', p: 1, pr: 3 }}>
-        {squadCards}
-        <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }}
-             className={classes.popCMBox}>
-          <Typography variant="subtitle2">{gridPop}</Typography>
-          {callinModifierContent}
+    <Grid item lg={3} sm={6} xs={12} sx={{ display: "flex" }}>
+      <Paper key={index} className={`${classes.placementBox} ${isCompact ? 'compact' : null}`}>
+        <Box sx={{ position: 'relative', p: 1, pr: 3 }}>
+          {squadCards}
+          <Box component="span" sx={{ position: 'absolute', right: '2px', top: '-1px' }}
+               className={classes.popCMBox}>
+            <Typography variant="subtitle2">{gridPop}</Typography>
+            {callinModifierContent}
+          </Box>
         </Box>
-      </Box>
-    </Paper>
+      </Paper>
+    </Grid>
   )
 }
