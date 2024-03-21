@@ -98,6 +98,17 @@ module OMG
           service.unready_player(declared_params[:battleId])
         end
 
+        # Kick player from battle
+        desc "Admin kick player from lobby"
+        params do
+          requires :battleId, type: Integer, desc: "Battle id to kick from"
+          requires :kickPlayerId, type: Integer, desc: "Player id to kick"
+        end
+        post 'kick' do
+          service = BattleService.new(current_player)
+          service.kick_player(declared_params[:battleId], declared_params[:kickPlayerId])
+        end
+
         # Abandon a 'generating', 'ingame', 'reporting'? Battle
         desc "Mark a player as abandoned in a battle"
         params do

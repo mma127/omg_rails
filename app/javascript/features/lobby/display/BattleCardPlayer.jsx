@@ -3,9 +3,10 @@ import { Box, Button, createTheme, Popover, Stack, Typography } from "@mui/mater
 import { makeStyles } from "@mui/styles";
 import CheckIcon from '@mui/icons-material/Check';
 import LogoutIcon from '@mui/icons-material/Logout';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { TeamBalanceIcon } from '../../resources/TeamBalanceIcon';
 import { useDispatch, useSelector } from "react-redux";
-import { abandonBattle, leaveBattle, readyPlayer, selectIsPending, unreadyPlayer } from "../lobbySlice";
+import { abandonBattle, leaveBattle, readyPlayer, selectIsPending, unreadyPlayer, kickPlayer } from "../lobbySlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 import { ALLIED_SIDE, doctrineImgMapping } from "../../../constants/doctrines";
 import { JoinBattlePopover } from "./JoinBattlePopover";
@@ -41,6 +42,9 @@ const useStyles = makeStyles(theme => ({
   },
   joinText: {
     cursor: 'pointer'
+  },
+  PlayerElo: {
+    marginLeft: '0.25rem'
   },
   selfPlayerName: {
     overflowX: 'clip',
@@ -111,6 +115,12 @@ export const BattleCardPlayer = ({
     }
   }
 
+  const handleKickClick = () => {
+    if (isAdmin) {
+      dispatch(kickPlayer({ battleId: battleId, playerId: player.id, kickPlayerId: playerId }))
+    }
+  }
+
   const handleAbandonClick = () => {
     dispatch(abandonBattle({ battleId, playerId }))
   }
@@ -167,12 +177,14 @@ export const BattleCardPlayer = ({
           <Box className={classes.wrapperRow}>
             <TeamBalanceIcon team={teamBalance} isFull={isFull}/>
             <Typography variant="h5" color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
+            {isAdmin ? <Typography variant="h5" color="darkgrey" theme={eloTheme}
+                                 className={classes.PlayerElo}> <sup>{playerElo}</sup></Typography> : null}
             {readyContent}
             {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame}/> : ""}
+            
+            {isAdmin ? <CancelIcon className={classes.clickableIcon} color="error" onClick={handleKickClick}/> : null}
           </Box>
-
-          {isAdmin ? <Typography variant="h6" color="darkgrey" theme={eloTheme}
-                                 className={classes.PlayerElo}>{playerElo}</Typography> : null}
+          
 
         </Stack>
         {side === ALLIED_SIDE ? doctrineIcon : null}
@@ -195,10 +207,13 @@ export const BattleCardPlayer = ({
           <Box className={classes.wrapperRow}>
             <TeamBalanceIcon team={teamBalance} isFull={isFull}/>
             <Typography variant="h5" className={classes.playerName}> {playerName}</Typography>
+            {isAdmin ? <Typography variant="h5" color="darkgrey" theme={eloTheme}
+                                 className={classes.PlayerElo}><sup>{playerElo}</sup></Typography> : null}
             {readyContent}
+            
+            {isAdmin ? <CancelIcon className={classes.clickableIcon} color="error" onClick={handleKickClick}/> : null}
           </Box>
-          {isAdmin ? <Typography variant="h6" color="darkgrey" theme={eloTheme}
-                                 className={classes.PlayerElo}>{playerElo}</Typography> : null}
+
         </Stack>
         {side === ALLIED_SIDE ? doctrineIcon : null}
       </>

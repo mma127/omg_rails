@@ -67,6 +67,18 @@ export const leaveBattle = createAsyncThunk(
   }
 )
 
+export const kickPlayer = createAsyncThunk(
+  "lobby/kickPlayer",
+  async ({ battleId, playerId, kickPlayerId }, { _, rejectWithValue }) => {
+    try {
+      const response = await axios.post("/battles/player/kick", { battleId, playerId, kickPlayerId })
+      return response.data
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
 export const readyPlayer = createAsyncThunk(
   "lobby/readyPlayer",
   async ({ battleId, playerId }, { _, rejectWithValue }) => {
