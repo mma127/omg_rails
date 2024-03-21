@@ -109,7 +109,7 @@ class BattleService
       validate_battle_readyable(battle)
 
       # Validate the player is in the battle
-      validate_player_in_battle(battle)
+      validate_player_in_battle(battle, @player.id)
 
       battle_player = BattlePlayer.includes(:company).find_by(battle: battle, player: @player)
       company = battle_player.company
@@ -148,7 +148,7 @@ class BattleService
       validate_battle_readyable(battle)
 
       # Validate the player is in the battle
-      validate_player_in_battle(battle)
+      validate_player_in_battle(battle, @player.id)
 
       unless battle.reload.all_players_ready?
         BattlePlayer.find_by(battle: battle, player: @player).update!(ready: false)
@@ -157,6 +157,41 @@ class BattleService
       battle.reload
       # Broadcast battle update
       message_hash = { type: PLAYER_UNREADY, battle: battle }
+      battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+      broadcast_cable(battle_message)
+    end
+  end
+
+  def kick_player(battle_id, player_id)
+    # Validate caller is admin
+    raise BattleValidationError.new "Player #{@player} is not an admin" unless @player.admin?
+
+    # Validate battle exists
+    battle = validate_battle(battle_id)
+
+    battle.with_lock do
+
+      # Validate the player is in the battle
+      validate_player_in_battle(battle, player_id)
+
+      # Attempt to remove player from battle
+      BattlePlayer.find_by(battle: battle, player: player_id).destroy
+
+      if battle.full?
+        battle.not_full!
+        battle.save!
+      end
+
+      if battle.reload.battle_players.count == 0
+        # Deleted the last player, delete the battle
+        battle.destroy
+        message_hash = { type: REMOVE_BATTLE, battle: battle }
+      else
+        unready_all_players(battle)
+        message_hash = { type: PLAYER_LEFT, battle: battle.reload }
+      end
+
+      # Broadcast battle update
       battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
       broadcast_cable(battle_message)
     end
@@ -171,7 +206,7 @@ class BattleService
       validate_battle_leavable(battle)
 
       # Validate the player is in the battle
-      validate_player_in_battle(battle)
+      validate_player_in_battle(battle, @player.id)
 
       # Attempt to remove player from battle
       BattlePlayer.find_by(battle: battle, player: @player).destroy
@@ -214,7 +249,7 @@ class BattleService
       validate_battle_abandonable(battle)
 
       # Validate the player is in the battle
-      validate_player_in_battle(battle)
+      validate_player_in_battle(battle, @player.id)
 
       # Set player abandon flag to true
       BattlePlayer.find_by(battle: battle, player: @player).update!(abandoned: true)
@@ -288,8 +323,8 @@ class BattleService
     raise BattleValidationError.new "Cannot ready up in a battle in #{battle.state} state" unless battle.full?
   end
 
-  def validate_player_in_battle(battle)
-    raise BattleValidationError.new "Player #{@player.name} is not in battle #{battle.id}" unless battle.battle_players.find_by(player: @player).present?
+  def validate_player_in_battle(battle, player_id)
+    raise BattleValidationError.new "Player #{Player.find(player_id).name} is not in battle #{battle.id}" unless battle.battle_players.find_by(player_id: player_id).present?  
   end
 
   def validate_player_company_resources(company)
