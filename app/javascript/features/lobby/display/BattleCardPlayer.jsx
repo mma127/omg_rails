@@ -182,7 +182,7 @@ export const BattleCardPlayer = ({
             {readyContent}
             {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame}/> : ""}
             
-            {isAdmin ? <CancelIcon className={classes.clickableIcon} color="error" onClick={handleKickClick}/> : null}
+            {isAdmin && leavable ? <CancelIcon className={classes.clickableIcon} color="error" onClick={handleKickClick}/> : null}
           </Box>
           
 
@@ -211,7 +211,7 @@ export const BattleCardPlayer = ({
                                  className={classes.PlayerElo}><sup>{playerElo}</sup></Typography> : null}
             {readyContent}
             
-            {isAdmin ? <CancelIcon className={classes.clickableIcon} color="error" onClick={handleKickClick}/> : null}
+            {isAdmin && leavable ? <CancelIcon className={classes.clickableIcon} color="error" onClick={handleKickClick}/> : null}
           </Box>
 
         </Stack>
