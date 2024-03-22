@@ -143,6 +143,8 @@ const copySingleSquad = ({ squad, squadUpgrades, transportUuid, getState, dispat
     fuel = newSquad.fuel
   const newSquadUpgrades = squadUpgrades.map(su => {
     const newSquadUpgrade = copySquadUpgrade(su, newSquad)
+    newSquad.pop += newSquadUpgrade.pop || 0
+    newSquad.totalModelCount += newSquadUpgrade.addModelCount || 0
     pop += newSquadUpgrade.pop
     man += newSquadUpgrade.man
     mun += newSquadUpgrade.mun
@@ -345,13 +347,14 @@ const squadsSlice = createSlice({
       if (_.has(platoon, transportUuid)) {
         const transport = platoon[transportUuid]
         if (_.has(transport.transportedSquads, squad.uuid)) {
-          transport.popWithTransported = parseFloat(transport.popWithTransported) - parseFloat(squad.pop)
+          const squadToDestroy = transport.transportedSquads[squad.uuid]
+          transport.popWithTransported = parseFloat(transport.popWithTransported) - parseFloat(squadToDestroy.pop)
           transport.usedSquadSlots -= 1
-          transport.usedModelSlots -= squad.totalModelCount
-          delete transport.transportedSquads[squad.uuid]
-          delete transport.transportedSquadUuids[transport.transportedSquadUuids.indexOf(squad.uuid)]
+          transport.usedModelSlots -= squadToDestroy.totalModelCount
+          delete transport.transportedSquads[squadToDestroy.uuid]
+          delete transport.transportedSquadUuids[transport.transportedSquadUuids.indexOf(squadToDestroy.uuid)]
 
-          if (squad.uuid === state.selectedSquadUuid) {
+          if (squadToDestroy.uuid === state.selectedSquadUuid) {
             state.selectedSquadTab = null
             state.selectedSquadIndex = null
             state.selectedSquadUuid = null
@@ -605,6 +608,7 @@ const squadsSlice = createSlice({
           }
         }
 
+        // For Pop or modelcount we update the squad
         if (newSquadUpgrade.pop > 0 || newSquadUpgrade.addModelCount > 0) {
           let workingSquad
           let transportSquad
