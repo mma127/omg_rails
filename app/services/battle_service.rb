@@ -171,8 +171,8 @@ class BattleService
 
     battle.with_lock do
       
-      # Validate battle is readyable
-      validate_battle_readyable(battle)
+      # Validate battle is leaveable
+      validate_battle_leavable(battle)
 
       # Validate the player is in the battle
       validate_player_in_battle(battle, player_id)
