@@ -1,0 +1,6 @@
+id,modifier,modifier_type,priority,description,unlock_name,created_at,updated_at
+1,0.25,multiplicative,1,Callin Modifier x0.25 Volks & Grens,Organized Platoons,2024-03-25 04:11:41.063946,2024-03-25 04:11:41.063946
+2,0.5,multiplicative,1,Callin Modifier x0.5 Airborne units,Weighted Packs,2024-03-25 04:11:41.119249,2024-03-25 04:11:41.119249
+3,0.25,multiplicative,1,"Callin Modifier x0.25, Commando units",Quick Reaction Force,2024-03-25 04:11:41.163170,2024-03-25 04:11:41.163170
+4,0.5,multiplicative,1,"Callin Modifier x0.5, Gliders + any",Glider Army,2024-03-25 04:11:41.214906,2024-03-25 04:11:41.214906
+5,0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,2024-03-25 04:11:41.246330,2024-03-25 04:11:41.246330
