@@ -46,6 +46,8 @@ class BattleService
       # battle_message = Battle::Entity.represent(battle, type: :include_players)
       battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
       broadcast_cable(battle_message)
+
+      battle
     end
   end
 
