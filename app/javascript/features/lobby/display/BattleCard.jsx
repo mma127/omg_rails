@@ -11,7 +11,7 @@ import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { createBattle, selectBattleById } from "../lobbySlice";
 import { ErrorTypography } from "../../../components/ErrorTypography";
-import { selectIsAuthed } from "../../player/playerSlice";
+import { selectIsAuthed, selectPlayer } from "../../player/playerSlice";
 import { BattleCardPlayer } from "./BattleCardPlayer";
 import { nanoid } from "@reduxjs/toolkit";
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
@@ -75,6 +75,11 @@ const useStyles = makeStyles(theme => ({
   },
   balanceAlertTitle: {
     margin: 0
+  },
+  border: {
+    borderColor: theme.palette.secondary.dark,
+    borderWidth: '4px',
+    borderStyle: 'solid'
   }
 }))
 
@@ -96,9 +101,8 @@ const addPlaceholders = (battlePlayers, size) => {
 
 export const BattleCard = ({ id, rulesetId }) => {
   const classes = useStyles()
-  const dispatch = useDispatch()
-  // const companies = useSelector(selectAllCompanies)
   const isAuthed = useSelector(selectIsAuthed)
+  const player = useSelector(selectPlayer)
   const battle = useSelector(state => selectBattleById(state, id))
   const size = battle.size
   const alliedPlayers = addPlaceholders(battle.battlePlayers.filter(p => p.side === 'allied'), size)
@@ -107,6 +111,8 @@ export const BattleCard = ({ id, rulesetId }) => {
   const ingameContent = battle.state === INGAME ?
     <Link to={`/api/battles/${id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link> : ""
   const isFull = battle.battlePlayers.length === size * 2
+
+  const playerInThisBattle = player ? battle.battlePlayers.some(bp => bp.playerId === player?.id) : false
 
   const balanceColor = (balance) => {
     switch (balance) {
@@ -176,62 +182,62 @@ export const BattleCard = ({ id, rulesetId }) => {
     )
   }
 
+  const showBorder = isFull && playerInThisBattle
   return (
-    <Box>
-      <Card elevation={3} sx={{ padding: '16px' }}>
-        <Box className={classes.row}>
-          <Box className={classes.battleName}>
-            <Typography variant="h5" pl="9px" gutterBottom>{battle.name}</Typography>
-          </Box>
-          <Box className={classes.battleId}>
-            <Typography variant="h5" pl="9px" gutterBottom>Battle ID: </Typography>
-            <Typography variant="h5" pl="9px" gutterBottom color="secondary">{battle.id}</Typography>
-          </Box>
-          <Box className={classes.balanceText}>
-            <Typography variant="h5" pl="9px" gutterBottom>Balance: </Typography>
-            <Typography variant="h5" pl="9px" gutterBottom
-                        color={balanceColor(calculatedBalanceState)}>{calculatedBalanceState}</Typography>
-          </Box>
+    <Card elevation={3} sx={{ padding: '16px' }} className={showBorder ? classes.border : null}>
+      <Box className={classes.row}>
+        <Box className={classes.battleName}>
+          <Typography variant="h5" pl="9px" gutterBottom>{battle.name}</Typography>
         </Box>
-        {optimumBalanceContent}
-        {generatingContent}
-        {ingameContent}
-        <Box className={classes.row}>
-          <Box className={classes.column}>
-            {alliedPlayers.map(p => <BattleCardPlayer key={p.playerId || nanoid()}
-                                                      battleId={id}
-                                                      playerId={p.playerId}
-                                                      playerName={p.playerName}
-                                                      teamBalance={p.teamBalance}
-                                                      playerElo={p.playerElo}
-                                                      companyDoctrine={p.companyDoctrine}
-                                                      side={ALLIED_SIDE}
-                                                      battleState={battle.state}
-                                                      ready={p.ready}
-                                                      abandoned={p.abandoned}
-                                                      isFull={isFull}
-            />)}
-          </Box>
-          <Box pt={2} pb={2} className={classes.vsColumn}>
-            vs
-          </Box>
-          <Box className={classes.column}>
-            {axisPlayers.map(p => <BattleCardPlayer key={p.playerId || nanoid()}
+        <Box className={classes.battleId}>
+          <Typography variant="h5" pl="9px" gutterBottom>Battle ID: </Typography>
+          <Typography variant="h5" pl="9px" gutterBottom color="secondary">{battle.id}</Typography>
+        </Box>
+        <Box className={classes.balanceText}>
+          <Typography variant="h5" pl="9px" gutterBottom>Balance: </Typography>
+          <Typography variant="h5" pl="9px" gutterBottom
+                      color={balanceColor(calculatedBalanceState)}>{calculatedBalanceState}</Typography>
+        </Box>
+      </Box>
+      {/*{fullBanner}*/}
+      {optimumBalanceContent}
+      {generatingContent}
+      {ingameContent}
+      <Box className={classes.row}>
+        <Box className={classes.column}>
+          {alliedPlayers.map(p => <BattleCardPlayer key={p.playerId || nanoid()}
                                                     battleId={id}
                                                     playerId={p.playerId}
                                                     playerName={p.playerName}
                                                     teamBalance={p.teamBalance}
                                                     playerElo={p.playerElo}
                                                     companyDoctrine={p.companyDoctrine}
-                                                    side={AXIS_SIDE}
+                                                    side={ALLIED_SIDE}
                                                     battleState={battle.state}
                                                     ready={p.ready}
                                                     abandoned={p.abandoned}
                                                     isFull={isFull}
-            />)}
-          </Box>
+          />)}
         </Box>
-      </Card>
-    </Box>
+        <Box pt={2} pb={2} className={classes.vsColumn}>
+          vs
+        </Box>
+        <Box className={classes.column}>
+          {axisPlayers.map(p => <BattleCardPlayer key={p.playerId || nanoid()}
+                                                  battleId={id}
+                                                  playerId={p.playerId}
+                                                  playerName={p.playerName}
+                                                  teamBalance={p.teamBalance}
+                                                  playerElo={p.playerElo}
+                                                  companyDoctrine={p.companyDoctrine}
+                                                  side={AXIS_SIDE}
+                                                  battleState={battle.state}
+                                                  ready={p.ready}
+                                                  abandoned={p.abandoned}
+                                                  isFull={isFull}
+          />)}
+        </Box>
+      </Box>
+    </Card>
   )
 }
