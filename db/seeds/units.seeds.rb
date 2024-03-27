@@ -41,6 +41,22 @@ after :doctrines do
                             transport_squad_slots: transport_squad_slots, transport_model_slots: transport_model_slots,
                             is_airdrop: is_airdrop, is_infiltrate: is_infiltrate, retreat_name: retreat_name)
   end
-
   Unit.import! units, on_duplicate_key_update: { conflict_target: [:name] }
+
+  transport_allowed_units = []
+  transports_by_name ={}
+  CSV.foreach("db/seeds/transport_allowed_units.csv", headers: true) do |row|
+    transport_name = row["transport_name"]
+    allowed_unit_name = row["allowed_unit_name"]
+
+    if transports_by_name.include? transport_name
+      transport = transports_by_name[transport_name]
+    else
+      transport = Unit.find_by!(name: transport_name)
+      transports_by_name[transport_name] = transport
+    end
+    allowed_unit = Unit.find_by!(name: allowed_unit_name)
+    transport_allowed_units << TransportAllowedUnit.new(transport: transport, allowed_unit: allowed_unit)
+  end
+  TransportAllowedUnit.import! transport_allowed_units, on_duplicate_key_update: { conflict_target: [:transport_id, :allowed_unit_id] }
 end
