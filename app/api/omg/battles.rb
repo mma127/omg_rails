@@ -43,7 +43,6 @@ module OMG
           authenticate!
         end
 
-        # TODO
         # Create new Battle
         desc 'create new Battle by the player'
         params do
@@ -54,7 +53,8 @@ module OMG
         end
         post 'create_match' do
           service = BattleService.new(current_player)
-          service.create_battle(declared_params[:name], declared_params[:size], declared_params[:rulesetId], declared_params[:initialCompanyId])
+          battle = service.create_battle(declared_params[:name], declared_params[:size], declared_params[:rulesetId], declared_params[:initialCompanyId])
+          present battle
         end
 
         # Join Battle with Company

@@ -21,13 +21,15 @@
 #  index_battle_players_on_player_id   (player_id)
 #
 class BattlePlayer < ApplicationRecord
-  belongs_to :battle, inverse_of: :battle_players
+  belongs_to :battle, inverse_of: :battle_players, touch: true # touch to update battle updated_at
   belongs_to :player
   belongs_to :company
 
   validates_presence_of :battle
   validates_presence_of :player
   validates_presence_of :company
+
+  after_destroy -> { battle.touch } # For some reason :touch is not triggering on destroy, do it manually
 
   enum side: {
     allied: "allied",
