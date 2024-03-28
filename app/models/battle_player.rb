@@ -47,7 +47,7 @@ class BattlePlayer < ApplicationRecord
   end
 
   def player_elo
-    player.player_rating.elo
+    player.player_rating.elo_effective
   end
 
   def win?

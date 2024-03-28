@@ -4,6 +4,7 @@
 #
 #  id                                                 :bigint           not null, primary key
 #  elo(trueskill mu normalized between 1000 and 2000) :integer
+#  elo_override(Override elo to provide a handicap)   :integer
 #  last_played(last played match)                     :date
 #  losses(losses to date)                             :integer          default(0)
 #  mu(trueskill mu)                                   :float
@@ -32,6 +33,25 @@ RSpec.describe PlayerRating, type: :model do
 
   describe 'associations' do
     it { should belong_to(:player) }
+  end
+
+  describe "#elo_effective" do
+    context "when elo_override is null" do
+      it "returns elo" do
+        expect(player_rating.elo_effective).to eq player_rating.elo
+      end
+    end
+
+    context "when elo_override is set" do
+      let(:elo_override) { 1250 }
+      before do
+        player_rating.update!(elo_override: elo_override)
+      end
+
+      it "returns elo_override" do
+        expect(player_rating.elo_effective).to eq elo_override
+      end
+    end
   end
 
   describe "#from_historical" do
