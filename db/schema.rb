@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_17_202440) do
+ActiveRecord::Schema.define(version: 2024_03_28_013430) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -385,6 +385,7 @@ ActiveRecord::Schema.define(version: 2024_03_17_202440) do
     t.integer "losses", default: 0, comment: "losses to date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "elo_override", comment: "Override elo to provide a handicap"
     t.index ["mu"], name: "index_player_ratings_on_mu"
     t.index ["player_id"], name: "index_player_ratings_on_player_id"
   end
