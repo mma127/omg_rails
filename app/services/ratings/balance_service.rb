@@ -46,7 +46,7 @@ module Ratings
     def average_elo(battle_players)
       return 0 unless battle_players.size.positive?
 
-      sum = battle_players.sum { |bp| bp.player.player_rating.elo }
+      sum = battle_players.sum { |bp| bp.player_elo }
 
       sum / battle_players.size
     end

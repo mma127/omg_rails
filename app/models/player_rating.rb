@@ -4,6 +4,7 @@
 #
 #  id                                                 :bigint           not null, primary key
 #  elo(trueskill mu normalized between 1000 and 2000) :integer
+#  elo_override(Override elo to provide a handicap)   :integer
 #  last_played(last played match)                     :date
 #  losses(losses to date)                             :integer          default(0)
 #  mu(trueskill mu)                                   :float
@@ -39,6 +40,14 @@ class PlayerRating < ApplicationRecord
 
   def self.for_new_player(player)
     PlayerRating.create!(player: player, elo: DEFAULT_ELO, mu: DEFAULT_MU, sigma: DEFAULT_SIGMA, last_played: nil)
+  end
+
+  def elo_effective
+    if elo_override.present?
+      elo_override
+    else
+      elo
+    end
   end
 
   def weeks_since_last_played(now = DateTime.now)

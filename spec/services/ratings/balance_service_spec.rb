@@ -130,6 +130,36 @@ RSpec.describe Ratings::BalanceService do
         end
       end
 
+      context "when there is zero elo diff but elo_overrides" do
+        let(:elo1) { 1800 }
+        let(:elo2) { 1800 }
+        let(:elo3) { 1200 }
+        let(:elo4) { 1200 }
+
+        before do
+          player2_rating.update!(elo_override: 1900)
+          player4_rating.update!(elo_override: 1700)
+        end
+
+        it "returns balanced teams" do
+          elo_diff, team1, team2 = subject
+
+          expect(elo_diff).to eq 200
+          expect(team1).to match_array [bp1, bp4]
+          expect(team2).to match_array [bp2, bp3]
+        end
+
+        it "persists the results" do
+          subject
+
+          expect(battle.reload.elo_diff).to eq 200
+          expect(bp1.reload.team_balance).to eq 1
+          expect(bp2.reload.team_balance).to eq 2
+          expect(bp3.reload.team_balance).to eq 2
+          expect(bp4.reload.team_balance).to eq 1
+        end
+      end
+
       context "when there is non-zero elo diff" do
         let(:elo1) { 1800 }
         let(:elo2) { 1100 }
