@@ -22,6 +22,8 @@ FactoryBot.define do
   trait :with_unlock do
     faction { nil }
     association :unlock
+    name { "unlock level" }
+    description { "for an unlock" }
   end
 end
 

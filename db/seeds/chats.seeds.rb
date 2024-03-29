@@ -1,1 +1,1 @@
-Chat.create!(name: Chat::LOBBY)
+Chat.find_or_create_by!(name: Chat::LOBBY)

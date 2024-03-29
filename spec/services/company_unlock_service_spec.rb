@@ -15,9 +15,9 @@ RSpec.describe CompanyUnlockService do
   let!(:unlock2) { create :unlock }
   let(:vp_cost) { 3 }
   let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, vp_cost: vp_cost, ruleset: ruleset }
-  let!(:du_restriction) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock }
+  let!(:du_restriction) { doctrine_unlock.restriction }
   let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, vp_cost: vp_cost, tree: 1, branch: 1, row: 2, ruleset: ruleset }
-  let!(:du_restriction2) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2 }
+  let!(:du_restriction2) { doctrine_unlock2.restriction }
   let!(:unit1) { create :unit }
   let!(:unit2) { create :unit }
   let!(:unit3) { create :unit }
@@ -176,8 +176,7 @@ RSpec.describe CompanyUnlockService do
       let(:add_pop) { -1 }
       let(:replace_fuel) { 0 }
       let(:replace_resupply) { 5 }
-      let!(:doc_restriction) { create :restriction, :with_doctrine, doctrine: doctrine }
-      let!(:doc_enabled_unit) { create :enabled_unit, restriction: doc_restriction, unit: unit1, ruleset: ruleset,
+      let!(:doc_enabled_unit) { create :enabled_unit, restriction: restriction_doctrine, unit: unit1, ruleset: ruleset,
                                        man: man1, mun: mun1, fuel: fuel1, pop: pop1, resupply: resupply_max, resupply_max: resupply_max }
       let!(:au) { create :base_available_unit, company: company, unit: unit1, man: man1, mun: mun1, fuel: fuel1, pop: pop1,
                          resupply: resupply_max, resupply_max: resupply_max }
@@ -618,8 +617,7 @@ RSpec.describe CompanyUnlockService do
       let(:add_pop) { -1 }
       let(:replace_fuel) { 0 }
       let(:replace_resupply) { 5 }
-      let!(:doc_restriction) { create :restriction, :with_doctrine, doctrine: doctrine }
-      let!(:doc_enabled_unit) { create :enabled_unit, restriction: doc_restriction, unit: unit1, ruleset: ruleset,
+      let!(:doc_enabled_unit) { create :enabled_unit, restriction: restriction_doctrine, unit: unit1, ruleset: ruleset,
                                        man: man1, mun: mun1, fuel: fuel1, pop: pop1, resupply: resupply_max, resupply_max: resupply_max }
       let!(:au) { create :base_available_unit, company: company, unit: unit1, man: man1 + add_man, mun: mun1, fuel: replace_fuel + add_fuel, pop: pop1 + add_pop,
                          resupply: replace_resupply, resupply_max: resupply_max }

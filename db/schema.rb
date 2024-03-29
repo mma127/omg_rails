@@ -523,10 +523,13 @@ ActiveRecord::Schema.define(version: 2024_03_28_013430) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["doctrine_id"], name: "index_restrictions_on_doctrine_id"
+    t.index ["doctrine_id"], name: "unique_not_null_doctrine_id", unique: true, where: "(doctrine_id IS NOT NULL)"
     t.index ["doctrine_unlock_id"], name: "index_restrictions_on_doctrine_unlock_id"
-    t.index ["faction_id", "doctrine_id", "doctrine_unlock_id", "unlock_id"], name: "idx_restrictions_uniq_id", unique: true
+    t.index ["doctrine_unlock_id"], name: "unique_not_null_doctrine_unlock_id", unique: true, where: "(doctrine_unlock_id IS NOT NULL)"
     t.index ["faction_id"], name: "index_restrictions_on_faction_id"
+    t.index ["faction_id"], name: "unique_not_null_faction_id", unique: true, where: "(faction_id IS NOT NULL)"
     t.index ["unlock_id"], name: "index_restrictions_on_unlock_id"
+    t.index ["unlock_id"], name: "unique_not_null_unlock_id", unique: true, where: "(unlock_id IS NOT NULL)"
     t.check_constraint "num_nonnulls(faction_id, doctrine_id, doctrine_unlock_id, unlock_id) = 1", name: "chk_only_one_is_not_null"
   end
 
