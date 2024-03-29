@@ -10,5 +10,4 @@ after :unlocks do
                         description: "#{doctrine.display_name} Doctrine Unlock Restriction - #{unlock.display_name}")
     Restriction.create!(unlock: unlock, name: unlock.display_name, description: "#{unlock.display_name} - Unlock Restriction")
   end
-
 end
