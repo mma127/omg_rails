@@ -18,8 +18,8 @@ flame_grenade,PE.INCENDIARY_GRENADE,Incendiary Grenade,Flame grenade,consumable,
 flame_grenade,PE.INCENDIARY_GRENADE,Incendiary Grenade,Flame grenade,consumable,,scorched_earth,,0,25,0,0,2,0,0,1,,,ostfront_veterans
 anti_building_grenade,PE.ANTI_BUILDING_GRENADE,Anti-Building Grenade,Flame grenade,consumable,,luftwaffe,,0,10,0,0,2,0,0,1,,,falls
 anti_building_grenade,PE.ANTI_BUILDING_GRENADE,Anti-Building Grenade,Flame grenade,consumable,,luftwaffe,,0,10,0,0,2,0,0,1,,,crete_vets
-teller_mines,PE.TELLER,Teller Mine,"Powerful anti tank mine. Cannot be triggered by infantry",consumable,,tank_hunters,,0,75,0,0,1,0,0,1,,,panzer_grenadiers
-teller_mines,PE.TELLER,Teller Mine,"Powerful anti tank mine. Cannot be triggered by infantry",consumable,,tank_hunters,,0,75,0,0,1,0,0,1,,,tank_busters
+teller_mines,PE.TELLER,Teller Mine,Powerful anti tank mine. Cannot be triggered by infantry,consumable,,tank_hunters,,0,75,0,0,1,0,0,1,,,panzer_grenadiers
+teller_mines,PE.TELLER,Teller Mine,Powerful anti tank mine. Cannot be triggered by infantry,consumable,,tank_hunters,,0,75,0,0,1,0,0,1,,,tank_busters
 advanced_repair,PE.ADVANCED_REPAIRS,Advanced Repair,Improved repair and wear&tear rates,passive,panzer_elite,,,0,35,0,0,0,0,0,1,,,panzer_grenadiers
 advanced_repair,PE.ADVANCED_REPAIRS,Advanced Repair,Improved repair and wear&tear rates,passive,panzer_elite,,,0,35,0,0,0,0,0,1,,,assault_grenadiers
 advanced_repair,PE.ADVANCED_REPAIRS,Advanced Repair,Improved repair and wear&tear rates,passive,panzer_elite,,,0,35,0,0,0,0,0,1,,,tank_busters
@@ -93,7 +93,7 @@ th_mp40s,AXIS.MP40,MP40s,Equip the squad with MP40s,squad_weapon,,tank_hunters,m
 flame_hotchkiss_stuka,PE.FLAME_HOTCH_STUKA,Hotchkiss Stuka Upgrade,Equip the tank with four rocket launchers,unit_replacement,,scorched_earth,,0,75,0,2,0,0,0,1,1,0,flammen_hotchkiss
 stup_mg42,PE.STUP_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,scorched_earth,,0,40,0,0,0,0,0,1,,,stup
 stup_skirts,PE.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,scorched_earth,,0,0,70,0,0,0,0,1,,,stup
-molotov,PE.MOLOTOVS,Molotov Cocktails,"A longer range sticky bomb style projectile that sets tanks on fire doing minor damage over time, -40% speed reduction, -75% sight.",consumable,,scorched_earth,molotov_cocktails,0,25,0,0,3,0,0,1,,,ostfront_veterans
+molotov,PE.MOLOTOVS,Molotov Cocktails,"A longer range sticky bomb style projectile that sets tanks on fire doing minor damage over time, -40% speed reduction, -75% sight.",consumable,,scorched_earth,the_hand_that_destroys,0,25,0,0,3,0,0,1,,,ostfront_veterans
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,panzer_grenadiers
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,assault_grenadiers
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,tank_busters
