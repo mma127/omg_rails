@@ -17,6 +17,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
 import { GENERATING, INGAME } from "../../../constants/battles/states";
 import { Link } from "react-router-dom";
+import { DateTime } from "luxon";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
@@ -43,31 +44,42 @@ const useStyles = makeStyles(theme => ({
   },
   row: {
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
-    alignContent: "center"
   },
   battleId: {
     textAlign: "center",
     display: "flex"
   },
-  battleName: {
+  headerLeft: {
     flex: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start"
   },
-  balanceText: {
+  headerRight: {
     flex: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-end"
   },
+  battleTimes: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start"
+  },
+  time: {
+    fontStyle: "italic"
+  },
+  balanceAlertWrapper: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   balanceAlertContainer: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    paddingBottom: "1rem"
+    justifyContent: "center"
   },
   balanceAlert: {
     alignItems: "center",
@@ -91,7 +103,7 @@ const addPlaceholders = (battlePlayers, size) => {
       battlePlayersCopy.push({
         playerId: null,
         playerName: null,
-        companyDoctrine: null,
+        companyFaction: null,
         playerElo: null
       })
     }
@@ -170,6 +182,7 @@ export const BattleCard = ({ id, rulesetId }) => {
   const calculatedBalanceState = balanceState(battle.eloDifference)
 
   let optimumBalanceContent
+  let eloDiffContent
   if (!optimumBalance && isFull) {
     optimumBalanceContent = (
       <Box className={classes.balanceAlertContainer}>
@@ -180,27 +193,49 @@ export const BattleCard = ({ id, rulesetId }) => {
         </Alert>
       </Box>
     )
+    eloDiffContent = <Typography variant="h6" pl="0.25rem" gutterBottom
+                                 color={balanceColor(calculatedBalanceState)}>({battle.eloDifference})</Typography>
   }
+
+  const updatedAtTime = DateTime.fromISO(battle.updatedAt)
+  const createdAtTime = DateTime.fromISO(battle.createdAt)
 
   const showBorder = isFull && playerInThisBattle
   return (
-    <Card elevation={3} sx={{ padding: '16px' }} className={showBorder ? classes.border : null}>
+    <Card elevation={3} sx={{ padding: '1rem' }} className={showBorder ? classes.border : null}>
       <Box className={classes.row}>
-        <Box className={classes.battleName}>
-          <Typography variant="h5" pl="9px" gutterBottom>{battle.name}</Typography>
+        <Box className={classes.headerLeft}>
+          <Typography variant="h6" gutterBottom>{battle.name}</Typography>
         </Box>
         <Box className={classes.battleId}>
-          <Typography variant="h5" pl="9px" gutterBottom>Battle ID: </Typography>
-          <Typography variant="h5" pl="9px" gutterBottom color="secondary">{battle.id}</Typography>
+          <Typography variant="h5" pl="0.5rem" gutterBottom>Battle ID: </Typography>
+          <Typography variant="h5" pl="0.5rem" gutterBottom color="secondary">{battle.id}</Typography>
         </Box>
-        <Box className={classes.balanceText}>
-          <Typography variant="h5" pl="9px" gutterBottom>Balance: </Typography>
-          <Typography variant="h5" pl="9px" gutterBottom
+        <Box className={classes.headerRight}>
+          <Typography variant="h6" pl="0.5rem" gutterBottom>Balance: </Typography>
+          <Typography variant="h6" pl="0.5rem" gutterBottom
                       color={balanceColor(calculatedBalanceState)}>{calculatedBalanceState}</Typography>
+          {eloDiffContent}
+        </Box>
+      </Box>
+      <Box className={classes.row} sx={{ paddingBottom: "1rem" }}>
+        <Box className={classes.battleTimes}>
+          <Box>
+            <Typography variant="caption" color="text.secondary">Last Update: </Typography>
+            <Typography variant="caption" className={classes.time}
+                        color="text.secondary">{updatedAtTime.toLocaleString(DateTime.DATETIME_MED)}</Typography>
+          </Box>
+          <Box>
+            <Typography variant="caption" color="text.secondary">Created: </Typography>
+            <Typography variant="caption" className={classes.time}
+                        color="text.secondary">{createdAtTime.toLocaleString(DateTime.DATETIME_MED)}</Typography>
+          </Box>
+        </Box>
+        <Box className={classes.balanceAlertWrapper}>
+          {optimumBalanceContent}
         </Box>
       </Box>
       {/*{fullBanner}*/}
-      {optimumBalanceContent}
       {generatingContent}
       {ingameContent}
       <Box className={classes.row}>
@@ -211,7 +246,7 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                     playerName={p.playerName}
                                                     teamBalance={p.teamBalance}
                                                     playerElo={p.playerElo}
-                                                    companyDoctrine={p.companyDoctrine}
+                                                    companyFaction={p.companyFaction}
                                                     side={ALLIED_SIDE}
                                                     battleState={battle.state}
                                                     ready={p.ready}
@@ -229,7 +264,7 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                   playerName={p.playerName}
                                                   teamBalance={p.teamBalance}
                                                   playerElo={p.playerElo}
-                                                  companyDoctrine={p.companyDoctrine}
+                                                  companyFaction={p.companyFaction}
                                                   side={AXIS_SIDE}
                                                   battleState={battle.state}
                                                   ready={p.ready}

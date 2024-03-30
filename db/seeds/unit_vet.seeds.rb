@@ -62,5 +62,8 @@ after :units do
     unit_vets << UnitVet.new(values)
   end
 
-  UnitVet.import!(unit_vets)
+  UnitVet.import! unit_vets, on_duplicate_key_update: {
+    conflict_target: [:unit_id],
+    columns: [:vet1_desc, :vet1_exp, :vet2_desc, :vet2_exp, :vet3_desc, :vet3_exp, :vet4_desc, :vet4_exp, :vet5_desc, :vet5_exp]
+  }
 end

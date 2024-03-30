@@ -234,9 +234,9 @@ RSpec.describe Snapshot::Creator do
     end
 
     context "when there are company unlocks" do
-      let!(:unlock1) { create :unlock }
-      let!(:unlock2) { create :unlock }
-      let!(:unlock3) { create :unlock }
+      let!(:unlock1) { create :unlock, ruleset: ruleset }
+      let!(:unlock2) { create :unlock, ruleset: ruleset }
+      let!(:unlock3) { create :unlock, ruleset: ruleset }
       let!(:doc_unlock1) { create :doctrine_unlock, unlock: unlock1, doctrine: doctrine, ruleset: ruleset, row: 1 }
       let!(:doc_unlock2) { create :doctrine_unlock, unlock: unlock2, doctrine: doctrine, ruleset: ruleset, row: 2 }
       let!(:doc_unlock3) { create :doctrine_unlock, unlock: unlock3, doctrine: doctrine, ruleset: ruleset, row: 3 }

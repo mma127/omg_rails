@@ -15,11 +15,14 @@
 #
 # Indexes
 #
-#  idx_restrictions_uniq_id                  (faction_id,doctrine_id,doctrine_unlock_id,unlock_id) UNIQUE
 #  index_restrictions_on_doctrine_id         (doctrine_id)
 #  index_restrictions_on_doctrine_unlock_id  (doctrine_unlock_id)
 #  index_restrictions_on_faction_id          (faction_id)
 #  index_restrictions_on_unlock_id           (unlock_id)
+#  unique_not_null_doctrine_id               (doctrine_id) UNIQUE WHERE (doctrine_id IS NOT NULL)
+#  unique_not_null_doctrine_unlock_id        (doctrine_unlock_id) UNIQUE WHERE (doctrine_unlock_id IS NOT NULL)
+#  unique_not_null_faction_id                (faction_id) UNIQUE WHERE (faction_id IS NOT NULL)
+#  unique_not_null_unlock_id                 (unlock_id) UNIQUE WHERE (unlock_id IS NOT NULL)
 #
 # Foreign Keys
 #
@@ -31,8 +34,6 @@
 require "rails_helper"
 
 RSpec.describe Restriction, type: :model do
-  let!(:restriction) { create :restriction }
-
   describe 'associations' do
     it { should belong_to(:faction).optional }
     it { should belong_to(:doctrine).optional }
@@ -49,6 +50,32 @@ RSpec.describe Restriction, type: :model do
 
   describe 'validations' do
     it { should validate_presence_of(:name) }
+    context "when faction_id is not null" do
+      subject { create :restriction }
+      it { should validate_uniqueness_of(:faction_id) }
+    end
+
+    context "when doctrine_id is not null" do
+      subject { create :restriction, :with_doctrine }
+      it { should validate_uniqueness_of(:doctrine_id) }
+    end
+
+    context "when doctrine_unlock_id is not null" do
+      before do
+        # Weirdness around Shoulda matchers not using the correct subject, so I'm explicitly nuking Restrictions then creating one for the doctrine unlock
+        doctrine_unlock = create :doctrine_unlock
+        Restriction.destroy_all
+        create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock
+      end
+      it { should validate_uniqueness_of(:doctrine_unlock_id) }
+    end
+
+    context "when unlock_id is not null" do
+      before do
+        create :unlock
+      end
+      it { should validate_uniqueness_of(:unlock_id) }
+    end
   end
 
   context "validate only_one_of_faction_doctrine_unlock" do
@@ -79,6 +106,7 @@ RSpec.describe Restriction, type: :model do
 
   context "traits" do
     context "default" do
+      let!(:restriction) { create :restriction }
       it "has non-null faction" do
         expect(restriction.faction.present?).to be true
         expect(restriction.doctrine.present?).to be false
@@ -105,7 +133,7 @@ RSpec.describe Restriction, type: :model do
 
     context "with_doctrine_unlock" do
       let!(:doctrine_unlock) { create :doctrine_unlock }
-      let!(:restriction) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock }
+      let!(:restriction) { doctrine_unlock.restriction }
 
       it "has non-null doctrine_unlock" do
         expect(restriction.faction.present?).to be false
@@ -121,7 +149,7 @@ RSpec.describe Restriction, type: :model do
 
     context "with_unlock" do
       let!(:unlock) { create :unlock }
-      let!(:restriction) { create :restriction, :with_unlock, unlock: unlock }
+      let!(:restriction) { unlock.restriction }
 
       it "has non-null unlock" do
         expect(restriction.faction.present?).to be false

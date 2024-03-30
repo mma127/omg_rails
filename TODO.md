@@ -1,3 +1,6 @@
+### Data model
+1. Should CallinModifier, Restriction also be associated with Ruleset to allow for modifications across rulesets?
+
 ### SquadBuilder
 1. Only open the transport drop target when dragging units/squads
 

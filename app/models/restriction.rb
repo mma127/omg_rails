@@ -15,11 +15,14 @@
 #
 # Indexes
 #
-#  idx_restrictions_uniq_id                  (faction_id,doctrine_id,doctrine_unlock_id,unlock_id) UNIQUE
 #  index_restrictions_on_doctrine_id         (doctrine_id)
 #  index_restrictions_on_doctrine_unlock_id  (doctrine_unlock_id)
 #  index_restrictions_on_faction_id          (faction_id)
 #  index_restrictions_on_unlock_id           (unlock_id)
+#  unique_not_null_doctrine_id               (doctrine_id) UNIQUE WHERE (doctrine_id IS NOT NULL)
+#  unique_not_null_doctrine_unlock_id        (doctrine_unlock_id) UNIQUE WHERE (doctrine_unlock_id IS NOT NULL)
+#  unique_not_null_faction_id                (faction_id) UNIQUE WHERE (faction_id IS NOT NULL)
+#  unique_not_null_unlock_id                 (unlock_id) UNIQUE WHERE (unlock_id IS NOT NULL)
 #
 # Foreign Keys
 #
@@ -56,6 +59,10 @@ class Restriction < ApplicationRecord
 
   validates_presence_of :name
   validate :only_one_of_faction_doctrine_unlock
+  validates :faction_id, uniqueness: { allow_blank: true }
+  validates :doctrine_id, uniqueness: { allow_blank: true }
+  validates :doctrine_unlock_id, uniqueness: { allow_blank: true }
+  validates :unlock_id, uniqueness: { allow_blank: true }
 
   def only_one_of_faction_doctrine_unlock
     if faction_id.present? && (doctrine_id.present? || doctrine_unlock_id.present? || unlock_id.present?)
@@ -71,7 +78,7 @@ class Restriction < ApplicationRecord
       errors.add(:unlock_id, "Can only have one of faction_id, doctrine_id, doctrine_unlock_id, or unlock_id present")
     end
     if faction_id.blank? && doctrine_id.blank? && doctrine_unlock_id.blank? && unlock_id.blank?
-      errors.add("Must have one of faction_id, doctrine_id, doctrine_unlock_id, unlock_id")
+      errors.add(:only_one_of_faction_doctrine_unlock, "Must have one of faction_id, doctrine_id, doctrine_unlock_id, unlock_id")
     end
   end
 
