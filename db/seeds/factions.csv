@@ -1,0 +1,5 @@
+name,display_name,const_name,internal_name,side,race,restriction_name,restriction_description
+americans,Americans,ALLY,Factions.Allies,allied,1,American faction,For the American faction
+british,British,CMW,Factions.British2ndArmy,allied,0,British faction,For the British faction
+wehrmacht,Wehrmacht,AXIS,Factions.Axis,axis,2,Wehrmacht faction,For the Wehrmacht faction
+panzer_elite,Panzer Elite,PE,Factions.PanzerElite,axis,3,Panzer Elite faction,For the Panzer Elite faction

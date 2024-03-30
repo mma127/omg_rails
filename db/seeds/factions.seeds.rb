@@ -1,11 +1,29 @@
 after :rulesets do
-  americans = Faction.create!(name: "americans", display_name: "Americans", const_name: "ALLY", internal_name: "Factions.Allies", side: "allied", race: 1)
-  british = Faction.create!(name: "british", display_name: "British", const_name: "CMW", internal_name: "Factions.British2ndArmy", side: "allied", race: 0)
-  wehrmacht = Faction.create!(name: "wehrmacht", display_name: "Wehrmacht", const_name: "AXIS", internal_name: "Factions.Axis", side: "axis", race: 2)
-  pe = Faction.create!(name: "panzer_elite", display_name: "Panzer Elite", const_name: "PE", internal_name: "Factions.PanzerElite", side: "axis", race: 3)
-
-  Restriction.create!(name: "American faction", description: "For the American faction", faction: americans)
-  Restriction.create!(name: "British faction", description: "For the British faction", faction: british)
-  Restriction.create!(name: "Wehrmacht faction", description: "For the Wehrmacht faction", faction: wehrmacht)
-  Restriction.create!(name: "Panzer Elite faction", description: "For the Panzer Elite faction", faction: pe)
+  factions = []
+  faction_restrictions = []
+  CSV.foreach("db/seeds/factions.csv", headers: true) do |row|
+    name = row["name"]
+    display_name = row["display_name"]
+    const_name = row["const_name"]
+    internal_name = row["internal_name"]
+    side = row["side"]
+    race = row["race"]
+    restriction_name = row["restriction_name"]
+    restriction_description = row["restriction_description"]
+    f = Faction.new(name: name, display_name: display_name, const_name: const_name,
+                            internal_name: internal_name, side: side, race: race)
+    factions << f
+    faction_restrictions << Restriction.new(faction: f, name: restriction_name, description: restriction_description)
+  end
+  Faction.import! factions,
+                  on_duplicate_key_update: {
+                    conflict_target: [:name],
+                    columns: [:display_name, :const_name, :internal_name, :side, :race]
+                  }
+  Restriction.import! faction_restrictions,
+                      on_duplicate_key_update: {
+                        conflict_target: [:faction_id],
+                        index_predicate: "faction_id IS NOT NULL", # this is a partial index
+                        columns: [:name, :description]
+                      }
 end

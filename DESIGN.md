@@ -5,9 +5,13 @@ Models in the OMG Rails app fall in one of five categories:
 These models are important keystone models that are essential and are not expected to change. Records in 
 these models should exist for the duration of the app's existence.
 
+_**Feature changes for a patch should result in new records, not modifications of existing records (except in case of a fix).**_
+* For example, if a doctrine's unlock tree is reworked for a patch, new unlocks should be created for the updated doctrine unlocks. This allows snapshot companies from old rulesets to continue linking to their old doctrine unlocks
+
 ### Permanent, not ruleset specific, associated with KEY models
-These models provide additional functionality on top of KEY models that is also not expected to change. Feature changes for a patch
-should result in new records, not modifications of existing records (except in case of a fix).
+These models provide additional functionality on top of KEY models that is also not expected to change. 
+
+_**Feature changes for a patch should result in new records, not modifications of existing records (except in case of a fix).**_
 
 ### Temporary per ruleset, user and stats facing
 These models expect to be cleared of data during a war reset and aren't required for company snapshots, but records should still only exist for the duration of

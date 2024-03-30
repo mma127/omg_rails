@@ -7,9 +7,9 @@ RSpec.describe AvailableUnitService do
   let(:faction2) { create :faction }
   let(:doctrine) { create :doctrine, faction: faction }
   let!(:company) { create :active_company, faction: faction, doctrine: doctrine, ruleset: ruleset }
-  let!(:restriction_faction) { create :restriction, faction: faction, doctrine: nil, unlock: nil, description: "for faction #{faction.id}" }
-  let!(:restriction_faction2) { create :restriction, faction: faction2, doctrine: nil, unlock: nil, description: "for faction #{faction2.id}" }
-  let!(:restriction_doctrine) { create :restriction, faction: nil, doctrine: doctrine, unlock: nil, name: "doctrine level", description: "for doctrine #{doctrine.id}" }
+  let!(:restriction_faction) { create :restriction, faction: faction, description: "for faction #{faction.id}" }
+  let!(:restriction_faction2) { create :restriction, faction: faction2, description: "for faction #{faction2.id}" }
+  let!(:restriction_doctrine) { create :restriction, :with_doctrine, doctrine: doctrine }
   let(:unit1) { create :unit }
   let(:unit2) { create :unit }
   let(:unit3) { create :unit }
@@ -216,7 +216,7 @@ RSpec.describe AvailableUnitService do
       before do
         # Create doctrine unlock that enables unit2
         doctrine_unlock2 = create :doctrine_unlock, doctrine: doctrine, branch: 2, ruleset: ruleset
-        restriction_du2 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2
+        restriction_du2 = doctrine_unlock2.restriction
         create :enabled_unit, unit: unit2, restriction: restriction_du2, ruleset: ruleset
         company_unlock2 = create :company_unlock, company: company, doctrine_unlock: doctrine_unlock2
       end
@@ -237,8 +237,8 @@ RSpec.describe AvailableUnitService do
         # Create doctrine unlock that enables unit2
         doctrine_unlock2 = create :doctrine_unlock, ruleset: ruleset
         doctrine_unlock3 = create :doctrine_unlock, ruleset: ruleset
-        restriction_du2 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2
-        restriction_du3 = create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock3
+        restriction_du2 = doctrine_unlock2.restriction
+        restriction_du3 = doctrine_unlock3.restriction
         create :enabled_unit, unit: unit2, restriction: restriction_du2, ruleset: ruleset
         create :disabled_unit, unit: unit3, restriction: restriction_du3, ruleset: ruleset
         create :company_unlock, company: company, doctrine_unlock: doctrine_unlock2
@@ -288,17 +288,18 @@ RSpec.describe AvailableUnitService do
     let!(:unlock1) { create :unlock }
     let!(:unlock2) { create :unlock }
     let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, ruleset: ruleset }
-    let!(:du_restriction) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock }
-    let!(:doc_restriction) { create :restriction, :with_doctrine, doctrine: doctrine }
-    let!(:doc_enabled_unit) { create :enabled_unit, restriction: doc_restriction, unit: unit1, ruleset: ruleset,
-                                     man: man1, mun: mun1, fuel: fuel1, pop: pop1, resupply: resupply_max, resupply_max: resupply_max }
+    let!(:du_restriction) { doctrine_unlock.restriction }
     let!(:au) { create :base_available_unit, company: company, unit: unit1, man: man1, mun: mun1, fuel: fuel1, pop: pop1,
-                       resupply: resupply_max, resupply_max: resupply_max}
+                       resupply: resupply_max, resupply_max: resupply_max }
 
     let!(:du_modified_replace_unit) { create :modified_replace_unit, restriction: du_restriction, unit: unit1, ruleset: ruleset,
                                              fuel: replace_fuel, resupply: replace_resupply, priority: 50 }
     let!(:du_modified_add_unit) { create :modified_add_unit, restriction: du_restriction, unit: unit1, ruleset: ruleset,
                                          man: add_man, fuel: add_fuel, pop: add_pop, priority: 60 }
+
+    before do
+      restriction_unit1_doctrine.update!(man: man1, mun: mun1, fuel: fuel1, pop: pop1, resupply: resupply_max, resupply_max: resupply_max)
+    end
 
     it "applies all modifications for the doctrine unlock" do
       subject.add_unit_modifications([du_modified_add_unit, du_modified_replace_unit], doctrine_unlock)
@@ -321,14 +322,11 @@ RSpec.describe AvailableUnitService do
     let!(:unlock1) { create :unlock }
     let!(:unlock2) { create :unlock }
     let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, ruleset: ruleset }
-    let!(:du_restriction) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock }
+    let!(:du_restriction) { doctrine_unlock.restriction }
     let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, tree: 1, branch: 1, row: 2, ruleset: ruleset }
-    let!(:du_restriction2) { create :restriction, :with_doctrine_unlock, doctrine_unlock: doctrine_unlock2 }
-    let!(:doc_restriction) { create :restriction, :with_doctrine, doctrine: doctrine }
-    let!(:doc_enabled_unit) { create :enabled_unit, restriction: doc_restriction, unit: unit1, ruleset: ruleset,
-                                     man: man1, mun: mun1, fuel: fuel1, pop: pop1, resupply: resupply_max, resupply_max: resupply_max }
+    let!(:du_restriction2) { doctrine_unlock2.restriction }
     let!(:au) { create :base_available_unit, company: company, unit: unit1, man: man1 + add_man, mun: mun1, fuel: replace_fuel + add_fuel, pop: pop1 + add_pop,
-                       resupply: replace_resupply, resupply_max: resupply_max}
+                       resupply: replace_resupply, resupply_max: resupply_max }
 
     let!(:du_modified_replace_unit) { create :modified_replace_unit, restriction: du_restriction, unit: unit1, ruleset: ruleset,
                                              fuel: replace_fuel, resupply: replace_resupply, priority: 50 }
@@ -337,6 +335,7 @@ RSpec.describe AvailableUnitService do
     before do
       create :company_unlock, company: company, doctrine_unlock: doctrine_unlock
       create :company_unlock, company: company, doctrine_unlock: doctrine_unlock2
+      restriction_unit1_doctrine.update!(man: man1, mun: mun1, fuel: fuel1, pop: pop1, resupply: resupply_max, resupply_max: resupply_max)
     end
 
     it "removes the modification but reapplies all other modifications not being removed" do

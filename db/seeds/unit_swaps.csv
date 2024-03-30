@@ -1,0 +1,6 @@
+unlock_name,old_unit_name,new_unit_name
+support_teams,30cal_hmg,airborne_hmg
+support_teams,mortar_allied,airborne_mortar
+support_teams,57mm_atg,airborne_atg
+support_teams,sniper_allied,airborne_sniper
+fully_aware,vampire_halftrack,vampire_th
