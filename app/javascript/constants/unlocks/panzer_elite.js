@@ -28,6 +28,7 @@ import take_and_deny from '../../../assets/images/doctrines/panzer_elite/unlocks
 import the_hand_that_destroys from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/the_hand_that_destroys.png'
 import third_degree_burns from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/third_degree_burns.png'
 import warm_welcome from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/warm_welcome.png'
+import declare_festung from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/declare_festung_placeholder.png'
 //tank hunters
 import advanced_anti_tank_tactics from '../../../assets/images/doctrines/panzer_elite/unlocks/tank_hunters/advanced_anti_tank_tactics.png'
 import advanced_halftracks from '../../../assets/images/doctrines/panzer_elite/unlocks/tank_hunters/advanced_halftracks.png'
@@ -74,6 +75,7 @@ export const TAKE_AND_DENY = 'take_and_deny'
 export const THE_HAND_THAT_DESTROYS = 'the_hand_that_destroys'
 export const THIRD_DEGREE_BURNS = 'third_degree_burns'
 export const WARM_WELCOME = 'warm_welcome'
+export const DECLARE_FESTUNG = 'declare_festung'
 //tank hunters
 export const ADVANCED_ANTI_TANK_TACTICS = 'advanced_anti_tank_tactics'
 export const ADVANCED_HALFTRACKS = 'advanced_halftracks'
@@ -120,6 +122,7 @@ export const unlockImageMapping = {
   [THE_HAND_THAT_DESTROYS]: the_hand_that_destroys,
   [THIRD_DEGREE_BURNS]: third_degree_burns,
   [WARM_WELCOME]: warm_welcome,
+  [DECLARE_FESTUNG]: declare_festung,
 
   [ADVANCED_ANTI_TANK_TACTICS]: advanced_anti_tank_tactics,
   [ADVANCED_HALFTRACKS]: advanced_halftracks,
