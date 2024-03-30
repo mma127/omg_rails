@@ -2,6 +2,7 @@ after :unlocks do
   # Factions and Doctrines already have their standard Restriction created
   # This should contain unlock restrictions
 
+  # TODO THIS NEEDS TO SKIP EXISTING RESTRICTIONS
   DoctrineUnlock.includes(:doctrine, :unlock).each do |du|
     doctrine = du.doctrine
     unlock = du.unlock
