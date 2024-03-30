@@ -321,8 +321,8 @@ RSpec.describe AvailableUpgradeService do
     let(:add_pop) { 1 }
     let(:replace_mun) { 50 }
     let(:replace_uses) { 5 }
-    let!(:unlock1) { create :unlock }
-    let!(:unlock2) { create :unlock }
+    let!(:unlock1) { create :unlock, ruleset: ruleset }
+    let!(:unlock2) { create :unlock, ruleset: ruleset }
     let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, ruleset: ruleset }
     let!(:du_restriction) { doctrine_unlock.restriction }
     let!(:doc_available_upgrade1) { create :base_available_upgrade, company: company, upgrade: upgrade1, unit: unit1,
@@ -368,8 +368,8 @@ RSpec.describe AvailableUpgradeService do
     let(:add_pop) { 1 }
     let(:replace_mun) { 50 }
     let(:replace_uses) { 5 }
-    let!(:unlock1) { create :unlock }
-    let!(:unlock2) { create :unlock }
+    let!(:unlock1) { create :unlock, ruleset: ruleset }
+    let!(:unlock2) { create :unlock, ruleset: ruleset }
     let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, ruleset: ruleset }
     let!(:du_restriction) { doctrine_unlock.restriction }
     let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, tree: 1, branch: 1, row: 2, ruleset: ruleset }

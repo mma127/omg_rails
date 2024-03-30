@@ -10,10 +10,16 @@
 #  name(Unlock internal name)                                         :string           not null
 #  created_at                                                         :datetime         not null
 #  updated_at                                                         :datetime         not null
+#  ruleset_id                                                         :bigint           not null
 #
 # Indexes
 #
-#  index_unlocks_on_name  (name) UNIQUE
+#  index_unlocks_on_name        (name) UNIQUE
+#  index_unlocks_on_ruleset_id  (ruleset_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (ruleset_id => rulesets.id)
 #
 require "rails_helper"
 

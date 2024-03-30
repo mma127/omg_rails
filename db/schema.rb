@@ -655,9 +655,11 @@ ActiveRecord::Schema.define(version: 2024_03_28_013430) do
     t.string "const_name", comment: "Const name of the doctrine ability for the battle file"
     t.text "description", comment: "Display description of this doctrine ability"
     t.string "image_path", comment: "Url to the image to show for this doctrine ability"
+    t.bigint "ruleset_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_unlocks_on_name", unique: true
+    t.index ["ruleset_id"], name: "index_unlocks_on_ruleset_id"
   end
 
   create_table "upgrade_swap_units", comment: "Association of upgrade swap to affected units", force: :cascade do |t|
@@ -759,6 +761,7 @@ ActiveRecord::Schema.define(version: 2024_03_28_013430) do
   add_foreign_key "unit_swaps", "units", column: "new_unit_id"
   add_foreign_key "unit_swaps", "units", column: "old_unit_id"
   add_foreign_key "unit_swaps", "unlocks"
+  add_foreign_key "unlocks", "rulesets"
   add_foreign_key "upgrade_swap_units", "units"
   add_foreign_key "upgrade_swap_units", "upgrade_swaps"
   add_foreign_key "upgrade_swaps", "unlocks"
