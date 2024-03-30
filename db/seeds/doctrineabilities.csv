@@ -7,7 +7,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 202,Flamethrower Envy,OMGDOCUPG.ALLY.AIRBOURNE.TR1.B2.T3,1,2,3,Sherman Crocs can purchase a .50 cal turret MG. Engineer Flamethrowers gain +5 range and +15% damage.,3
 4,Big Boom,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T1,2,1,1,All Airborne now throw a second Satchel Charge after throwing the first.,4
 129,Long Range Options,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T2,2,1,2,"All Airborne may equip 4 Ranger Garands for free, and may purchase up to 2 M1919A6 LMGs for 80 MU.",5
-203,Hot Drop,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T3,2,1,3,"Airborne have +15% sight range and health for 90 seconds after a dropping in hostile territory, and reset Fireup cooldown after 45 seconds. Assault Airborne Squads now spawn a smoke cloud on drop. ",999
+203,Hot Drop,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T3,2,1,3,"Airborne have +15% sight range and health for 90 seconds after a dropping in hostile territory, and reset Fireup cooldown after 45 seconds. Assault Airborne Squads now spawn a smoke cloud on drop. ",5
 5,Weighted Packs,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B2.T1,2,2,1,All purely airdropped platoons deploy 50% faster. Includes Airborne support teams.,2
 130,Improved Carbines,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B2.T2,2,2,2,All Airborne may equip 4 M1A1 Carbines for free. Assault Airborne Thompson upgrade is replaced by M2 Carbines.,5
 204,Raid Assault,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B2.T3,2,2,3,Fireup grants heroic charge bonuses instead. Ending the charge in hostile territory delays the exhaustion. Note: Heroic Charge does NOT grant suppression immunity.,3
@@ -112,7 +112,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 225,Commando Officers,OMGDOCUPG.CMW.COMMANDO.TR1.B1.T3,34,1,3,LTs and Captains gain Commando smoke on a 5 minute cooldown.,3
 47,Packing Heat,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T1,34,2,1,"Lieutenants and Captains may now purchase Commando Grenades for 40 Munitions, a PIAT for 30 Munitions, a Bren Gun for 20 Munitions, or a Boys AT Rifle for free.",3
 152,Commando Fire Teams,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T2,34,2,2,"PIAT Commandos may purchase a 4th squad member. They may also choose to swap their PIATs for 3 Bren Guns with a 20 MU refund, or 3 Boys AT Rifles and a 60 MU refund.",4
-226,Commando Hospitals,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T3,34,2,3,Gilder CCS is available for deployment. [Bugged],4
+226,Commando Hospitals,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T3,34,2,3,Gilder CCS is available for deployment.,4
 49,Quick Reaction Force,OMGDOCUPG.CMW.COMMANDO.TR2.B1.T1,35,1,1,Pure Commando platoons now deploy 75% faster (including Polish Paras and gliders).,2
 153,25 Pounder Artillery Barrage,OMGDOCUPG.CMW.COMMANDO.TR2.B1.T2,35,1,2,25 Pounder Artillery Barrage (80 mu per use) and Decoy Smoke (5 mu per use) now available for purchase.,3
 227,Tier 3 alpha,OMGDOCUPG.CMW.COMMANDO.TR2.B1.T3,35,1,3,,1000
@@ -184,7 +184,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 237,Counter Offensive,OMGDOCUPG.PE.SCORCHED.TR1.B1.T3,22,1,3,"Offmap available for purchase that provides all units outside friendly territory -25% damage and infantry units -25% received suppression. Recharging cooldown, 120 mu.",4
 83,Increased Payloads,OMGDOCUPG.PE.SCORCHED.TR1.B2.T1,22,2,1,"Hummels fire an extra shell on their normal barrage. In addition, Mortar Half-tracks fire two extra shells in its barrage ability.",3
 164,Surplus Armaments,OMGDOCUPG.PE.SCORCHED.TR1.B2.T2,22,2,2,Panzer IV ISTs' weapon range is increased by five and may purchase Thermite rounds.,3
-238,Molotov Cocktails,OMGDOCUPG.PE.SCORCHED.TR1.B2.T3,22,2,3,"Molotovs are unlocked for purchase on Ostfront Vets. A longer range sticky bomb style projectile that sets tanks on fire doing minor damage over time, -40% speed reduction, -75% sight.",4
+238,Declare Festung,OMGDOCUPG.PE.SCORCHED.TR1.B2.T3,22,2,3,"Target friendly squads, any of your infantry hit by this ability will gain extreme combat buffs in exchange for a speed reduction for the next 25 seconds.",4
 85,Steady Aim,OMGDOCUPG.PE.SCORCHED.TR2.B1.T1,23,1,1,Suppressive Volley Fire on G43s can be used while garrisoned in buildings and the Slow effect lasts 15% longer.,3
 165,Ignoring the Wounds,OMGDOCUPG.PE.SCORCHED.TR2.B1.T2,23,1,2,Forward HQ ability unlocks and allows you to capture an occupied building which heals nearby infantry.On a long cooldown with unlimited uses.,5
 239,Nosferatu,OMGDOCUPG.PE.SCORCHED.TR2.B1.T3,23,1,3,Deployed Vampire Halftracks reduce healing and repair speeds of all enemy units in the sector. Also grants Vampires an MG.,4
