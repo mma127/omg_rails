@@ -98,8 +98,4 @@ booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,abilit
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,assault_grenadiers
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,tank_busters
 booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,warm_welcome,0,20,0,0,0,0,0,1,,,ostfront_veterans
-booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,panzer_grenadiers
-booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,assault_grenadiers
-booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,tank_busters
-booby_trap,PE.BOOBY_TRAP,Booby Trap,Grants the ability to set booby traps,ability,,scorched_earth,forsaken_ground,0,20,0,0,0,0,0,1,,,ostfront_veterans
 p4_ist_wp,ALLY.T17WHITE,Thermite Rounds,"Fire a white phosphorus round at a target vehicle, blinding and slowing it",ability,,scorched_earth,surplus_armaments,0,40,0,0,0,0,0,1,,,p4_ist

@@ -28,6 +28,11 @@ import take_and_deny from '../../../assets/images/doctrines/panzer_elite/unlocks
 import the_hand_that_destroys from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/the_hand_that_destroys.png'
 import third_degree_burns from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/third_degree_burns.png'
 import warm_welcome from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/warm_welcome.png'
+import improved_pe_regime from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/improved_pe_regime.png'
+import overextended_offensive from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/overextended_offensive.png'
+import nosferatu from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/nosferatu.png'
+import sector_artillery from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/sector_artillery.png'
+import trade_space_for_time from '../../../assets/images/doctrines/panzer_elite/unlocks/scorched_earth/trade_space_for_time.png'
 //tank hunters
 import advanced_anti_tank_tactics from '../../../assets/images/doctrines/panzer_elite/unlocks/tank_hunters/advanced_anti_tank_tactics.png'
 import advanced_halftracks from '../../../assets/images/doctrines/panzer_elite/unlocks/tank_hunters/advanced_halftracks.png'
@@ -66,13 +71,18 @@ export const FIERY_CRESCENDO = 'fiery_crescendo'
 export const FORSAKEN_GROUND = 'forsaken_ground'
 export const IGNORING_THE_WOUNDS = 'ignoring_the_wounds'
 export const IMMOVABLE_OBJECTS = 'immovable_objects'
+export const IMPROVED_PE_REGIME = 'improved_pe_regime'
 export const INCREASED_PAYLOADS = 'increased_payloads'
 export const MOLOTOV_COCKTAILS = 'molotov_cocktails'
+export const NOSFERATU = 'nosferatu'
+export const OVEREXTENDED_OFFENSIVE = 'overextended_offensive'
+export const SECTOR_ARTILLERY = 'sector_artillery'
 export const STEADY_AIM = 'steady_aim'
 export const SURPLUS_ARMAMENTS = 'surplus_armaments'
 export const TAKE_AND_DENY = 'take_and_deny'
 export const THE_HAND_THAT_DESTROYS = 'the_hand_that_destroys'
 export const THIRD_DEGREE_BURNS = 'third_degree_burns'
+export const TRADE_SPACE_FOR_TIME = 'trade_space_for_time'
 export const WARM_WELCOME = 'warm_welcome'
 //tank hunters
 export const ADVANCED_ANTI_TANK_TACTICS = 'advanced_anti_tank_tactics'
@@ -112,13 +122,18 @@ export const unlockImageMapping = {
   [FORSAKEN_GROUND]: forsaken_ground,
   [IGNORING_THE_WOUNDS]: ignoring_the_wounds,
   [IMMOVABLE_OBJECTS]: immovable_objects,
+  [IMPROVED_PE_REGIME]: improved_pe_regime,
   [INCREASED_PAYLOADS]: increased_payloads,
   [MOLOTOV_COCKTAILS]: molotov_cocktails,
+  [NOSFERATU]: nosferatu,
+  [OVEREXTENDED_OFFENSIVE]: overextended_offensive,
+  [SECTOR_ARTILLERY]: sector_artillery,
   [STEADY_AIM]: steady_aim,
   [SURPLUS_ARMAMENTS]: surplus_armaments,
   [TAKE_AND_DENY]: take_and_deny,
   [THE_HAND_THAT_DESTROYS]: the_hand_that_destroys,
   [THIRD_DEGREE_BURNS]: third_degree_burns,
+  [TRADE_SPACE_FOR_TIME]: trade_space_for_time,
   [WARM_WELCOME]: warm_welcome,
 
   [ADVANCED_ANTI_TANK_TACTICS]: advanced_anti_tank_tactics,
