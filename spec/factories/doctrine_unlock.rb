@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :doctrine_unlock do
     association :doctrine
-    association :unlock
-    association :ruleset
+    ruleset
+    unlock { association :unlock, ruleset: ruleset } # This lets use reuse ruleset
     tree { 1 }
     branch { 1 }
     row { 1 }
