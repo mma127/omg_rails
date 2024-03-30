@@ -6,11 +6,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { TeamBalanceIcon } from '../../resources/TeamBalanceIcon';
 import { useDispatch, useSelector } from "react-redux";
-import { abandonBattle, leaveBattle, readyPlayer, selectIsPending, unreadyPlayer, kickPlayer } from "../lobbySlice";
+import { abandonBattle, kickPlayer, leaveBattle, readyPlayer, selectIsPending, unreadyPlayer } from "../lobbySlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
-import { ALLIED_SIDE, doctrineImgMapping } from "../../../constants/doctrines";
+import { ALLIED_SIDE } from "../../../constants/doctrines";
 import { JoinBattlePopover } from "./JoinBattlePopover";
 import { ABANDONABLE_STATES, FULL, OPEN } from "../../../constants/battles/states";
+import { FactionIcon } from "../../factions/FactionIcon";
 
 const useStyles = makeStyles(theme => ({
   wrapperRow: {
@@ -35,6 +36,10 @@ const useStyles = makeStyles(theme => ({
   optionImage: {
     height: '60px',
     width: '120px'
+  },
+  factionImage: {
+    height: "50px",
+    width: "66.66px"
   },
   clickableIcon: {
     cursor: 'pointer',
@@ -68,7 +73,7 @@ export const BattleCardPlayer = ({
                                    playerName,
                                    playerElo,
                                    teamBalance,
-                                   companyDoctrine,
+                                   companyFaction,
                                    side,
                                    battleState,
                                    ready,
@@ -133,16 +138,18 @@ export const BattleCardPlayer = ({
     },
   });
 
-  let doctrineIcon
-  if (companyDoctrine) {
-    doctrineIcon = (
+  let factionIcon
+  if (companyFaction) {
+    factionIcon = (
       <Box sx={{ display: "flex", justifyContent: 'center' }} pl={1} pr={1}>
-        <img src={doctrineImgMapping[companyDoctrine]} alt={companyDoctrine}
-             className={classes.optionImage}/>
+        <FactionIcon factionName={companyFaction} alt={companyFaction} height={50}/>
       </Box>
     )
   } else {
-    doctrineIcon = <Box ml={1} mr={1} className={classes.optionImage}/>
+    factionIcon =
+      <Box sx={{ display: "flex", justifyContent: 'center' }} pl={1} pr={1}>
+        <Box ml={1} mr={1} className={classes.factionImage}/>
+      </Box>
   }
 
   let content
@@ -170,24 +177,22 @@ export const BattleCardPlayer = ({
 
     content = (
       <>
-        {side === ALLIED_SIDE ? null : doctrineIcon}
+        {side === ALLIED_SIDE ? null : factionIcon}
         <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
-
-
           <Box className={classes.wrapperRow}>
             <TeamBalanceIcon team={teamBalance} isFull={isFull}/>
             <Typography variant="h5" color="secondary" className={classes.selfPlayerName}>{playerName}</Typography>
             {isAdmin ? <Typography variant="h5" color="darkgrey" theme={eloTheme}
-                                 className={classes.PlayerElo}> <sup>{playerElo}</sup></Typography> : null}
+                                   className={classes.PlayerElo}> <sup>{playerElo}</sup></Typography> : null}
             {readyContent}
             {leavable ? <LogoutIcon className={classes.clickableIcon} color="error" onClick={leaveGame}/> : ""}
-            
-            {isAdmin && leavable ? <CancelIcon className={classes.clickableIcon} color="error" onClick={handleKickClick}/> : null}
+            {isAdmin && leavable ?
+              <CancelIcon className={classes.clickableIcon} color="error" onClick={handleKickClick}/> : null}
           </Box>
-          
+
 
         </Stack>
-        {side === ALLIED_SIDE ? doctrineIcon : null}
+        {side === ALLIED_SIDE ? factionIcon : null}
       </>
     )
   } else if (playerId) {
@@ -201,30 +206,28 @@ export const BattleCardPlayer = ({
     }
     content = (
       <>
-        {side === ALLIED_SIDE ? null : doctrineIcon}
+        {side === ALLIED_SIDE ? null : factionIcon}
         <Stack className={classes.playerRow} sx={{ display: "flex", justifyContent: 'center' }}>
-
           <Box className={classes.wrapperRow}>
             <TeamBalanceIcon team={teamBalance} isFull={isFull}/>
             <Typography variant="h5" className={classes.playerName}> {playerName}</Typography>
             {isAdmin ? <Typography variant="h5" color="darkgrey" theme={eloTheme}
-                                 className={classes.PlayerElo}><sup>{playerElo}</sup></Typography> : null}
+                                   className={classes.PlayerElo}><sup>{playerElo}</sup></Typography> : null}
             {readyContent}
-            
-            {isAdmin && leavable ? <CancelIcon className={classes.clickableIcon} color="error" onClick={handleKickClick}/> : null}
+            {isAdmin && leavable ?
+              <CancelIcon className={classes.clickableIcon} color="error" onClick={handleKickClick}/> : null}
           </Box>
 
         </Stack>
-        {side === ALLIED_SIDE ? doctrineIcon : null}
+        {side === ALLIED_SIDE ? factionIcon : null}
       </>
     )
   } else if (isAuthed && !currentBattleId) {
     // Empty spot, Player is logged in but not in a battle
     content = (
       <>
-        {side === ALLIED_SIDE ? null : doctrineIcon} {/*Used for spacing*/}
-        <Typography variant="h6" color="primary" className={classes.joinText} onClick={handleClick}>Join
-          Battle</Typography>
+        {side === ALLIED_SIDE ? null : factionIcon} {/*Used for spacing*/}
+        <Typography variant="h6" color="primary" className={classes.joinText} onClick={handleClick}>Join Battle</Typography>
         <Popover id={id}
                  open={open}
                  anchorEl={anchorEl}
@@ -232,16 +235,16 @@ export const BattleCardPlayer = ({
                  anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
           <JoinBattlePopover battleId={battleId} side={side} handleClose={handleClose}/>
         </Popover>
-        {side === ALLIED_SIDE ? doctrineIcon : null} {/*Used for spacing*/}
+        {side === ALLIED_SIDE ? factionIcon : null} {/*Used for spacing*/}
       </>
     )
   } else {
     // Empty spot, Player is either logged in but already in a battle, or is not logged in. Either way, show read only
     content = (
       <>
-        {side === ALLIED_SIDE ? null : doctrineIcon} {/*Used for spacing*/}
+        {side === ALLIED_SIDE ? null : factionIcon} {/*Used for spacing*/}
         <Typography variant="h6" color="text.secondary">Available</Typography>
-        {side === ALLIED_SIDE ? doctrineIcon : null} {/*Used for spacing*/}
+        {side === ALLIED_SIDE ? factionIcon : null} {/*Used for spacing*/}
       </>)
   }
 
