@@ -7,7 +7,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 202,Flamethrower Envy,OMGDOCUPG.ALLY.AIRBOURNE.TR1.B2.T3,1,2,3,Sherman Crocs can purchase a .50 cal turret MG. Engineer Flamethrowers gain +5 range and +15% damage.,3
 4,Big Boom,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T1,2,1,1,All Airborne now throw a second Satchel Charge after throwing the first.,4
 129,Long Range Options,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T2,2,1,2,"All Airborne may equip 4 Ranger Garands for free, and may purchase up to 2 M1919A6 LMGs for 80 MU.",5
-203,Hot Drop,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T3,2,1,3,"Airborne have +15% sight range and health for 90 seconds after a dropping in hostile territory, and reset Fireup cooldown after 45 seconds. Assault Airborne Squads now spawn a smoke cloud on drop. ",5
+203,Hot Drop,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B1.T3,2,1,3,"Airborne have +15% sight range and health for 90 seconds after a dropping in hostile territory. Assault Airborne Squads now spawn a smoke cloud on drop. ",5
 5,Weighted Packs,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B2.T1,2,2,1,All purely airdropped platoons deploy 50% faster. Includes Airborne support teams.,2
 130,Improved Carbines,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B2.T2,2,2,2,All Airborne may equip 4 M1A1 Carbines for free. Assault Airborne Thompson upgrade is replaced by M2 Carbines.,5
 204,Raid Assault,OMGDOCUPG.ALLY.AIRBOURNE.TR2.B2.T3,2,2,3,Fireup grants heroic charge bonuses instead. Ending the charge in hostile territory delays the exhaustion. Note: Heroic Charge does NOT grant suppression immunity.,3
