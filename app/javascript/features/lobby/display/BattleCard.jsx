@@ -103,7 +103,7 @@ const addPlaceholders = (battlePlayers, size) => {
       battlePlayersCopy.push({
         playerId: null,
         playerName: null,
-        companyDoctrine: null,
+        companyFaction: null,
         playerElo: null
       })
     }
@@ -246,7 +246,7 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                     playerName={p.playerName}
                                                     teamBalance={p.teamBalance}
                                                     playerElo={p.playerElo}
-                                                    companyDoctrine={p.companyDoctrine}
+                                                    companyFaction={p.companyFaction}
                                                     side={ALLIED_SIDE}
                                                     battleState={battle.state}
                                                     ready={p.ready}
@@ -264,7 +264,7 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                   playerName={p.playerName}
                                                   teamBalance={p.teamBalance}
                                                   playerElo={p.playerElo}
-                                                  companyDoctrine={p.companyDoctrine}
+                                                  companyFaction={p.companyFaction}
                                                   side={AXIS_SIDE}
                                                   battleState={battle.state}
                                                   ready={p.ready}
