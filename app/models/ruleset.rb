@@ -21,6 +21,7 @@
 #  index_rulesets_on_ruleset_type_and_is_active  (ruleset_type,is_active)
 #
 class Ruleset < ApplicationRecord
+  has_many :unlocks, inverse_of: :ruleset
   has_many :doctrine_unlocks, inverse_of: :ruleset
   has_many :restriction_units, inverse_of: :ruleset
   has_many :restriction_upgrades, inverse_of: :ruleset

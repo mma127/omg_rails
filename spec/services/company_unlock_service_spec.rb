@@ -11,8 +11,8 @@ RSpec.describe CompanyUnlockService do
   let(:starting_mun) { ruleset.starting_mun }
   let(:starting_fuel) { ruleset.starting_fuel }
   let!(:company) { create :active_company, doctrine: doctrine, faction: faction, ruleset: ruleset, vps_current: vps_current, man: starting_man, mun: starting_mun, fuel: starting_fuel }
-  let!(:unlock1) { create :unlock }
-  let!(:unlock2) { create :unlock }
+  let!(:unlock1) { create :unlock, ruleset: ruleset }
+  let!(:unlock2) { create :unlock, ruleset: ruleset }
   let(:vp_cost) { 3 }
   let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, vp_cost: vp_cost, ruleset: ruleset }
   let!(:du_restriction) { doctrine_unlock.restriction }

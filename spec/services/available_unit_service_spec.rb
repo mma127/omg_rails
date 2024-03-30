@@ -285,8 +285,8 @@ RSpec.describe AvailableUnitService do
     let(:add_pop) { -1 }
     let(:replace_fuel) { 0 }
     let(:replace_resupply) { 5 }
-    let!(:unlock1) { create :unlock }
-    let!(:unlock2) { create :unlock }
+    let!(:unlock1) { create :unlock, ruleset: ruleset }
+    let!(:unlock2) { create :unlock, ruleset: ruleset }
     let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, ruleset: ruleset }
     let!(:du_restriction) { doctrine_unlock.restriction }
     let!(:au) { create :base_available_unit, company: company, unit: unit1, man: man1, mun: mun1, fuel: fuel1, pop: pop1,
@@ -319,8 +319,8 @@ RSpec.describe AvailableUnitService do
     let(:add_pop) { -1 }
     let(:replace_fuel) { 0 }
     let(:replace_resupply) { 5 }
-    let!(:unlock1) { create :unlock }
-    let!(:unlock2) { create :unlock }
+    let!(:unlock1) { create :unlock, ruleset: ruleset }
+    let!(:unlock2) { create :unlock, ruleset: ruleset }
     let!(:doctrine_unlock) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock1, ruleset: ruleset }
     let!(:du_restriction) { doctrine_unlock.restriction }
     let!(:doctrine_unlock2) { create :doctrine_unlock, doctrine: doctrine, unlock: unlock2, tree: 1, branch: 1, row: 2, ruleset: ruleset }

@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :unlock do
+    association :ruleset
     sequence :name do |n| "Unlock #{n}" end
     display_name { 'Unlock Display Name' }
     after :create do |unlock|
