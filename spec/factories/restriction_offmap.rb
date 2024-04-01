@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :restriction_offmap do
     association :restriction
-    association :offmap
-    association :ruleset
+    ruleset
+    offmap { association :offmap, ruleset: ruleset }
 
     internal_description { 'Restriction Offmap' }
     mun { 90 }
