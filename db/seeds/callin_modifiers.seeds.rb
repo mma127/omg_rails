@@ -1,4 +1,6 @@
 after :restrictions do
+  @war_ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
+
   def get_modifier_type(modifier_type)
     case modifier_type
     when CallinModifier::modifier_types[:multiplicative]
@@ -21,8 +23,8 @@ after :restrictions do
       @restriction_by_name[key]
     else
       doctrine = Doctrine.find_by!(name: doctrine_name)
-      unlock = Unlock.find_by!(name: unlock_name)
-      doctrine_unlock = DoctrineUnlock.find_by!(doctrine: doctrine, unlock: unlock)
+      unlock = Unlock.find_by!(name: unlock_name, ruleset: @war_ruleset)
+      doctrine_unlock = DoctrineUnlock.find_by!(doctrine: doctrine, unlock: unlock, ruleset: @war_ruleset)
       du_restriction = Restriction.find_by!(doctrine_unlock: doctrine_unlock)
       @restriction_by_name[key] = du_restriction
       du_restriction

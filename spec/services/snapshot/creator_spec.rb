@@ -7,8 +7,8 @@ RSpec.describe Snapshot::Creator do
   let(:unit1) { create :unit }
   let(:unit2) { create :unit }
   let(:unit3) { create :unit }
-  let(:offmap1) { create :offmap }
-  let(:offmap2) { create :offmap }
+  let(:offmap1) { create :offmap, ruleset: ruleset }
+  let(:offmap2) { create :offmap, ruleset: ruleset }
   let(:upgrade1) { create :upgrade }
   let(:upgrade2) { create :upgrade }
   let(:upgrade3) { create :upgrade }

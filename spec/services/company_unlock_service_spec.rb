@@ -21,7 +21,7 @@ RSpec.describe CompanyUnlockService do
   let!(:unit1) { create :unit }
   let!(:unit2) { create :unit }
   let!(:unit3) { create :unit }
-  let!(:offmap1) { create :offmap }
+  let!(:offmap1) { create :offmap, ruleset: ruleset }
   let!(:callin_modifier) { create :callin_modifier }
   let!(:upgrade1) { create :upgrade }
   let!(:upgrade2) { create :upgrade }

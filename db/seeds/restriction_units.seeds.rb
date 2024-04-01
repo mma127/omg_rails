@@ -14,8 +14,8 @@ after :restrictions do
 
   @factions_by_name = Faction.all.index_by(&:name)
   @doctrines_by_name = Doctrine.all.index_by(&:name)
-  @unlocks_by_name = Unlock.all.index_by(&:name)
-  @doctrine_unlocks_by_names = DoctrineUnlock.includes(:doctrine, :unlock).all.index_by { |du| doctrine_unlock_name(du.doctrine.name, du.unlock.name) }
+  @unlocks_by_name = Unlock.where(ruleset: war_ruleset).all.index_by(&:name)
+  @doctrine_unlocks_by_names = DoctrineUnlock.includes(:doctrine, :unlock).where(ruleset: war_ruleset).all.index_by { |du| doctrine_unlock_name(du.doctrine.name, du.unlock.name) }
 
   @faction_restrictions_by_name = {}
   @doctrine_restrictions_by_name = {}

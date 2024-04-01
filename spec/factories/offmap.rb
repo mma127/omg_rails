@@ -7,5 +7,6 @@ FactoryBot.define do
     const_name { 'Offmap Const Name' }
     description { 'Offmap description' }
     unlimited_uses { true }
+    association :ruleset
   end
 end

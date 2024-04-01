@@ -17,8 +17,8 @@ RSpec.describe CompanyService do
   let!(:restriction_unit1) { create :enabled_unit, unit: unit1, pop: 4, resupply: 4, resupply_max: 6, company_max: 10, restriction: restriction_faction, ruleset: ruleset }
   let!(:restriction_unit2) { create :enabled_unit, unit: unit2, pop: 7, resupply: 2, resupply_max: 5, company_max: 5, restriction: restriction_faction, ruleset: ruleset }
   let!(:restriction_unit3) { create :enabled_unit, unit: unit3, pop: 13, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: ruleset }
-  let(:offmap1) { create :offmap }
-  let(:offmap2) { create :offmap, unlimited_uses: false }
+  let(:offmap1) { create :offmap, ruleset: ruleset }
+  let(:offmap2) { create :offmap, ruleset: ruleset, unlimited_uses: false }
   let!(:restriction_offmap1) { create :restriction_offmap, ruleset: ruleset, restriction: restriction_faction, offmap: offmap1, mun: 100, max: 1 }
   let!(:restriction_offmap2) { create :restriction_offmap, ruleset: ruleset, restriction: restriction_doctrine, offmap: offmap2, mun: 120, max: 3 }
   let(:upgrade1) { create :upgrade }
@@ -408,7 +408,7 @@ RSpec.describe CompanyService do
       end
 
       it "raises a validation error if an AvailableOffmap id is given that doesn't match any AvailableOffmap in the Company" do
-        new_offmap = create :offmap
+        new_offmap = create :offmap, ruleset: ruleset
         new_available_offmap = create :available_offmap, offmap: new_offmap, company: company2 # company will not be the same
         invalid_offmap_param = { company_offmap_id: nil, available_offmap_id: new_available_offmap.id }
         offmaps_param << invalid_offmap_param
@@ -1346,7 +1346,7 @@ RSpec.describe CompanyService do
         end
 
         it "raises a validation error if an AvailableOffmap id is given that doesn't match any AvailableOffmap in the Company" do
-          new_offmap = create :offmap
+          new_offmap = create :offmap, ruleset: ruleset
           new_available_offmap = create :available_offmap, offmap: new_offmap, company: company2 # company will not be the same
           invalid_offmap_param = { company_offmap_id: nil, available_offmap_id: new_available_offmap.id }
           @offmaps_param << invalid_offmap_param

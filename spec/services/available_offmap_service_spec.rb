@@ -10,9 +10,9 @@ RSpec.describe AvailableOffmapService do
   let!(:restriction_faction) { create :restriction, faction: faction, doctrine: nil, unlock: nil, description: "for faction #{faction.id}" }
   let!(:restriction_faction2) { create :restriction, faction: faction2, doctrine: nil, unlock: nil, description: "for faction #{faction2.id}" }
   let!(:restriction_doctrine) { create :restriction, faction: nil, doctrine: doctrine, unlock: nil, name: "doctrine level", description: "for doctrine #{doctrine.id}" }
-  let(:offmap1) { create :offmap }
-  let(:offmap2) { create :offmap }
-  let(:offmap3) { create :offmap }
+  let(:offmap1) { create :offmap, ruleset: ruleset }
+  let(:offmap2) { create :offmap, ruleset: ruleset }
+  let(:offmap3) { create :offmap, ruleset: ruleset }
   let!(:restriction_offmap1) { create :restriction_offmap, ruleset: ruleset, restriction: restriction_faction, offmap: offmap1, mun: 100, max: 1 }
   let!(:restriction_offmap2) { create :restriction_offmap, ruleset: ruleset, restriction: restriction_faction2, offmap: offmap2, mun: 120, max: 2 }
   let!(:restriction_offmap3) { create :restriction_offmap, ruleset: ruleset, restriction: restriction_doctrine, offmap: offmap3, mun: 150, max: 4 }

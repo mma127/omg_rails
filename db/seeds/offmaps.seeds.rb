@@ -14,6 +14,7 @@ after :restrictions do
     name = snake_case(row["internal_name"])
     display_name = title_case(name)
     offmap = Offmap.create!(name: name,
+                            ruleset: ruleset,
                             display_name: display_name,
                             const_name: row["const_name"],
                             description: row["description"],
@@ -31,9 +32,9 @@ after :restrictions do
     puts "name: #{name}, const_name: #{row["const_name"]}, doctrine: #{row["doctrine"]}, unlock: #{row["unlock"]}"
     doctrine = Doctrine.find_by(name: row["doctrine"])
     if doctrine.present?
-      unlock = Unlock.find_by(name: row["unlock"])
+      unlock = Unlock.find_by(name: row["unlock"], ruleset: ruleset)
       puts "-- Doctrine #{doctrine.name} and unlock #{unlock.name}"
-      doctrine_unlock = DoctrineUnlock.find_by(unlock: unlock, doctrine: doctrine)
+      doctrine_unlock = DoctrineUnlock.find_by(unlock: unlock, doctrine: doctrine, ruleset: ruleset)
       restriction = Restriction.find_by(doctrine_unlock: doctrine_unlock)
       EnabledOffmap.create!(restriction: restriction, offmap: offmap, mun: row["mun"].to_i, max: row["max"].to_i, ruleset: ruleset)
     else

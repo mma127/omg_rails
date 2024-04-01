@@ -61,7 +61,7 @@ Cases:
 ## Offmaps 
 Follow the Unit model, where
 
-* `offmap` describes the base offmap entity with no cost
+* `offmap` describes the base offmap entity with no cost. Associated with `Ruleset` to allow tracking changes across rulesets 
 * `restriction_offmap` describes how a base `offmap` is made available to different restrictions. Costs included
 * `available_offmap` describes what `offmaps` are available to a company, established from `restriction_offmap`
 
@@ -78,3 +78,6 @@ Follow the Unit model, where
 ## Squad Upgrades
 1. `Squad` model has a `pop` attribute encompassing both the unit's pop and any squad upgrades with pop
 2. UI will update this pop value for the user's convenience during company construction, but the backend will recalculate the squad pop value before saving
+
+## Unlocks
+1. Unlock details may change across ruleset, so `Unlock` should be replicated per `Ruleset`.
