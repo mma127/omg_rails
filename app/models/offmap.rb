@@ -18,8 +18,18 @@
 #  weapon_rgd(Weapon rgd name)                                       :string
 #  created_at                                                        :datetime         not null
 #  updated_at                                                        :datetime         not null
+#  ruleset_id                                                        :bigint           not null
+#
+# Indexes
+#
+#  index_offmaps_on_ruleset_id  (ruleset_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (ruleset_id => rulesets.id)
 #
 class Offmap < ApplicationRecord
+  belongs_to :ruleset
   has_many :available_offmaps
 
   def entity

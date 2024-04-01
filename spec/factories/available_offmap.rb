@@ -5,7 +5,7 @@ FactoryBot.define do
     end
 
     company { association :company, ruleset: ruleset }
-    association :offmap
+    offmap { association :offmap, ruleset: ruleset }
 
     available { 4 }
     max { 4 }

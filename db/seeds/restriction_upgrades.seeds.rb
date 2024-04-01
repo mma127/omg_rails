@@ -1,5 +1,5 @@
 after :upgrades do
-  war_ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
+  @war_ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
 
   @faction_restrictions_by_name = {}
   @doctrine_restrictions_by_name = {}
@@ -20,8 +20,8 @@ after :upgrades do
         @unlock_restrictions_by_name[unlock_name]
       else
         doctrine = Doctrine.find_by!(name: doctrine_name)
-        unlock = Unlock.find_by!(name: unlock_name)
-        doctrine_unlock = DoctrineUnlock.find_by!(doctrine: doctrine, unlock: unlock)
+        unlock = Unlock.find_by!(name: unlock_name, ruleset: @war_ruleset)
+        doctrine_unlock = DoctrineUnlock.find_by!(doctrine: doctrine, unlock: unlock, ruleset: @war_ruleset)
         doctrine_unlock_restriction = Restriction.find_by!(doctrine_unlock: doctrine_unlock)
         @unlock_restrictions_by_name[unlock_name] = doctrine_unlock_restriction
         doctrine_unlock_restriction
@@ -56,7 +56,7 @@ after :upgrades do
       unit = Unit.find_by!(name: row['unit'])
       upgrade = Upgrade.find_by!(name: row['upgrade'])
       restriction = get_restriction(row['faction_restriction'], row['doctrine_restriction'], row['unlock_restriction'])
-      enabled_upgrade = EnabledUpgrade.find_or_create_by!(restriction: restriction, upgrade: upgrade, ruleset: war_ruleset,
+      enabled_upgrade = EnabledUpgrade.find_or_create_by!(restriction: restriction, upgrade: upgrade, ruleset: @war_ruleset,
                                                           man: man, mun: mun, fuel: fuel, pop: pop, uses: uses, max: max,
                                                           upgrade_slots: slots, unitwide_upgrade_slots: unitwide_slots,
                                                           priority: 1)
@@ -68,14 +68,14 @@ after :upgrades do
     unit = Unit.find_by!(name: row['unit'])
     upgrade = Upgrade.find_by!(name: row['upgrade'])
     restriction = get_restriction(row['faction_restriction'], row['doctrine_restriction'], row['unlock_restriction'])
-    disabled_upgrade = DisabledUpgrade.find_or_create_by!(restriction: restriction, upgrade: upgrade, ruleset: war_ruleset, priority: 1)
+    disabled_upgrade = DisabledUpgrade.find_or_create_by!(restriction: restriction, upgrade: upgrade, ruleset: @war_ruleset, priority: 1)
     RestrictionUpgradeUnit.create!(restriction_upgrade: disabled_upgrade, unit: unit)
   end
 
   CSV.foreach('db/seeds/upgrade_swaps.csv', headers: true) do |row|
     old_upgrade = Upgrade.find_by!(name: row['old_upgrade'])
     new_upgrade = Upgrade.find_by!(name: row['new_upgrade'])
-    unlock = Unlock.find_by!(name: row['unlock_restriction'])
+    unlock = Unlock.find_by!(name: row['unlock_restriction'], ruleset: @war_ruleset)
     unit = Unit.find_by!(name: row['unit'])
 
     upgrade_swap = UpgradeSwap.find_or_create_by!(unlock: unlock, old_upgrade: old_upgrade, new_upgrade: new_upgrade)

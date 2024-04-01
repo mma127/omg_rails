@@ -52,6 +52,11 @@ after :units do
     puts "name: #{name}, constname: #{row["const"]}, doctrine: #{doctrine.display_name}"
     is_disabled = row["vp"].to_i > 25
     unlock = Unlock.create!(name: snakecase(name), const_name: row["const"], display_name: name, description: row["description"], ruleset: war_ruleset)
-    DoctrineUnlock.create!(doctrine: doctrine, unlock: unlock, ruleset: war_ruleset, vp_cost: row["vp"], tree: row["tree"], branch: row["branch"], row: row["tier"], disabled: is_disabled)
+    du = DoctrineUnlock.create!(doctrine: doctrine, unlock: unlock, ruleset: war_ruleset, vp_cost: row["vp"], tree: row["tree"], branch: row["branch"], row: row["tier"], disabled: is_disabled)
+
+    Restriction.create!(doctrine_unlock: du,
+                        name: "#{doctrine.display_name} | #{unlock.display_name}",
+                        description: "#{doctrine.display_name} Doctrine Unlock Restriction - #{unlock.display_name}")
+    Restriction.create!(unlock: unlock, name: unlock.display_name, description: "#{unlock.display_name} - Unlock Restriction")
   end
 end

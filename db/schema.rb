@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_28_013430) do
+ActiveRecord::Schema.define(version: 2024_04_01_005310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -368,6 +368,8 @@ ActiveRecord::Schema.define(version: 2024_03_28_013430) do
     t.integer "shells_fired", comment: "Number of shells fired during the offmap"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "ruleset_id", null: false
+    t.index ["ruleset_id"], name: "index_offmaps_on_ruleset_id"
   end
 
   create_table "player_discord_temp", comment: "Temporary table for migrating player discord ids", force: :cascade do |t|
@@ -655,9 +657,9 @@ ActiveRecord::Schema.define(version: 2024_03_28_013430) do
     t.string "const_name", comment: "Const name of the doctrine ability for the battle file"
     t.text "description", comment: "Display description of this doctrine ability"
     t.string "image_path", comment: "Url to the image to show for this doctrine ability"
-    t.bigint "ruleset_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "ruleset_id", null: false
     t.index ["name"], name: "index_unlocks_on_name", unique: true
     t.index ["ruleset_id"], name: "index_unlocks_on_ruleset_id"
   end
@@ -730,6 +732,7 @@ ActiveRecord::Schema.define(version: 2024_03_28_013430) do
   add_foreign_key "doctrine_unlocks", "unlocks"
   add_foreign_key "doctrines", "factions"
   add_foreign_key "historical_battle_players", "rulesets"
+  add_foreign_key "offmaps", "rulesets"
   add_foreign_key "player_ratings", "players"
   add_foreign_key "resource_bonuses", "rulesets"
   add_foreign_key "restriction_callin_modifiers", "callin_modifiers"

@@ -61,7 +61,7 @@ Cases:
 ## Offmaps 
 Follow the Unit model, where
 
-* `offmap` describes the base offmap entity with no cost
+* `offmap` describes the base offmap entity with no cost. Associated with `Ruleset` to allow tracking changes across rulesets 
 * `restriction_offmap` describes how a base `offmap` is made available to different restrictions. Costs included
 * `available_offmap` describes what `offmaps` are available to a company, established from `restriction_offmap`
 
