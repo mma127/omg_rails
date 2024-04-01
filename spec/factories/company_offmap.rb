@@ -4,8 +4,8 @@ FactoryBot.define do
       ruleset { create :ruleset }
     end
 
-    association :company, ruleset: ruleset
-    association :available_offmap, ruleset: ruleset
+    company { association :company, ruleset: ruleset }
+    available_offmap { association :available_offmap, ruleset: ruleset }
   end
 end
 
