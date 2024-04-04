@@ -8,22 +8,19 @@ Bundler.require(*Rails.groups)
 
 module OMGRails
   class Application < Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    Rails.application.configure do
+      # Initialize configuration defaults for originally generated Rails version.
+      config.load_defaults 6.1
 
-    config.generators do |g|
-      g.assets = false
-      g.helper = false
-      g.view_specs false
-      g.helper_specs false
+      # Configuration for the application, engines, and railties goes here.
+      #
+      # These settings can be overridden in specific environments using the files
+      # in config/environments, which are processed later.
+      #
+      # config.time_zone = "Central Time (US & Canada)"
+      # config.eager_load_paths << Rails.root.join("extras")
     end
 
-    # Configuration for the application, engines, and railties goes here.
-    #
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+    config.active_support.disable_to_s_conversion = true
   end
 end

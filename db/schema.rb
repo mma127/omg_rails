@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_01_005310) do
-
+ActiveRecord::Schema[7.0].define(version: 2024_04_04_035811) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,7 +19,7 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -32,8 +31,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.text "metadata"
     t.string "service_name", null: false
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.string "checksum"
+    t.datetime "created_at", precision: nil, null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -49,8 +48,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "available", default: 0, null: false, comment: "Number of this offmap available to purchase for the company"
     t.integer "max", default: 0, null: false, comment: "Max number of this offmap that the company can hold"
     t.integer "mun", default: 0, null: false, comment: "Munitions cost of this offmap"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_available_offmaps_on_company_id"
     t.index ["offmap_id"], name: "index_available_offmaps_on_offmap_id"
   end
@@ -68,8 +67,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "mun", null: false, comment: "Calculated mun cost of this unit for the company"
     t.integer "fuel", null: false, comment: "Calculated fuel cost of this unit for the company"
     t.decimal "callin_modifier", null: false, comment: "Calculated base callin modifier of this unit for the company"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_id", "unit_id", "type"], name: "index_available_units_on_company_id_and_unit_id_and_type", unique: true
     t.index ["company_id"], name: "index_available_units_on_company_id"
     t.index ["unit_id"], name: "index_available_units_on_unit_id"
@@ -88,8 +87,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "max", comment: "Maximum number of this upgrade purchasable by a unit"
     t.integer "upgrade_slots", comment: "Upgrade slot cost for per model upgrades"
     t.integer "unitwide_upgrade_slots", comment: "Upgrade slot cost for unit wide upgrades"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_id", "upgrade_id", "unit_id", "type"], name: "idx_available_upgrade_uniq", unique: true
     t.index ["company_id"], name: "index_available_upgrades_on_company_id"
     t.index ["unit_id"], name: "index_available_upgrades_on_unit_id"
@@ -103,8 +102,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.boolean "ready", default: false, comment: "Ready flag for the player"
     t.string "side", null: false, comment: "Team side"
     t.boolean "abandoned", default: false, comment: "Is this player abandoning?"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "team_balance", comment: "Assigned team for balance"
     t.boolean "is_dropped", default: false, comment: "Has this player dropped?"
     t.index ["battle_id"], name: "index_battle_players_on_battle_id"
@@ -118,10 +117,10 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "size", null: false, comment: "Size of each team"
     t.string "winner", comment: "Winning side"
     t.bigint "ruleset_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "elo_diff", comment: "Elo difference between most balanced teams, absolute value"
-    t.datetime "last_notified", comment: "Last time a notification was sent to players"
+    t.datetime "last_notified", precision: nil, comment: "Last time a notification was sent to players"
     t.string "map", comment: "Map name"
     t.index ["ruleset_id"], name: "index_battles_on_ruleset_id"
     t.index ["state"], name: "index_battles_on_state"
@@ -131,8 +130,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.bigint "callin_modifier_id"
     t.bigint "unit_id"
     t.string "unit_name", comment: "Denormalized unit name for faster access"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["callin_modifier_id"], name: "index_callin_modifier_allowed_units_on_callin_modifier_id"
     t.index ["unit_id"], name: "index_callin_modifier_allowed_units_on_unit_id"
   end
@@ -141,8 +140,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.bigint "callin_modifier_id"
     t.bigint "unit_id"
     t.string "unit_name", comment: "Denormalized unit name for faster access"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["callin_modifier_id"], name: "index_callin_modifier_required_units_on_callin_modifier_id"
     t.index ["unit_id"], name: "index_callin_modifier_required_units_on_unit_id"
   end
@@ -153,24 +152,24 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "priority", comment: "Priority in which the modifier is applied, from 1 -> 100"
     t.string "description", comment: "Description"
     t.string "unlock_name", comment: "Name of the unlock associated with this callin modifier"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "chat_messages", comment: "messages for a chat room", force: :cascade do |t|
     t.bigint "chat_id"
     t.bigint "sender_id", null: false
     t.text "content", comment: "chat message content"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["chat_id"], name: "index_chat_messages_on_chat_id"
     t.index ["sender_id"], name: "index_chat_messages_on_sender_id"
   end
 
   create_table "chats", comment: "chat rooms", force: :cascade do |t|
     t.string "name", null: false, comment: "chat room name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_chats_on_name", unique: true
   end
 
@@ -188,8 +187,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "mun", default: 0, null: false, comment: "Munitions available to this company"
     t.integer "fuel", default: 0, null: false, comment: "Fuel available to this company"
     t.integer "pop", default: 0, null: false, comment: "Population cost of this company"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["doctrine_id"], name: "index_companies_on_doctrine_id"
     t.index ["faction_id"], name: "index_companies_on_faction_id"
     t.index ["player_id"], name: "index_companies_on_player_id"
@@ -200,8 +199,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
   create_table "company_callin_modifiers", comment: "Mapping of company to available callin modifiers", force: :cascade do |t|
     t.bigint "company_id"
     t.bigint "callin_modifier_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["callin_modifier_id"], name: "index_company_callin_modifiers_on_callin_modifier_id"
     t.index ["company_id"], name: "index_company_callin_modifiers_on_company_id"
   end
@@ -209,8 +208,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
   create_table "company_offmaps", force: :cascade do |t|
     t.bigint "company_id"
     t.bigint "available_offmap_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["available_offmap_id"], name: "index_company_offmaps_on_available_offmap_id"
     t.index ["company_id"], name: "index_company_offmaps_on_company_id"
   end
@@ -219,8 +218,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.bigint "company_id"
     t.bigint "resource_bonus_id"
     t.integer "level", comment: "Number of this bonus taken"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_company_resource_bonuses_on_company_id"
     t.index ["resource_bonus_id"], name: "index_company_resource_bonuses_on_resource_bonus_id"
   end
@@ -255,8 +254,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "streak_2v2", default: 0, null: false, comment: "win streak 2v2"
     t.integer "streak_3v3", default: 0, null: false, comment: "win streak 3v3"
     t.integer "streak_4v4", default: 0, null: false, comment: "win streak 4v4"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_id"], name: "idx_company_stats_company_id_uniq", unique: true
     t.index ["company_id"], name: "index_company_stats_on_company_id"
   end
@@ -264,10 +263,13 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
   create_table "company_unlocks", force: :cascade do |t|
     t.bigint "company_id"
     t.bigint "doctrine_unlock_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_company_unlocks_on_company_id"
     t.index ["doctrine_unlock_id"], name: "index_company_unlocks_on_doctrine_unlock_id"
+  end
+
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
   create_table "doctrine_unlocks", comment: "Associates doctrines to unlocks", force: :cascade do |t|
@@ -280,8 +282,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "branch", comment: "Which branch of the doctrine tree this unlock will appear at"
     t.integer "row", comment: "Which row of the doctrine tree branch this unlock will appear at"
     t.boolean "disabled", default: false, null: false, comment: "Is this doctrine unlock disabled?"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["doctrine_id", "tree", "branch", "row"], name: "index_doctrine_unlocks_on_doctrine_tree", unique: true
     t.index ["doctrine_id", "unlock_id"], name: "index_doctrine_unlocks_on_doctrine_id_and_unlock_id", unique: true
     t.index ["doctrine_id"], name: "index_doctrine_unlocks_on_doctrine_id"
@@ -295,8 +297,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.string "const_name", null: false, comment: "Doctrine CONST name for battlefile"
     t.string "internal_name", null: false, comment: "Name for internal code use, may not be needed"
     t.bigint "faction_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["const_name"], name: "index_doctrines_on_const_name", unique: true
     t.index ["faction_id"], name: "index_doctrines_on_faction_id"
     t.index ["name"], name: "index_doctrines_on_name", unique: true
@@ -309,8 +311,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.string "internal_name", null: false, comment: "Name for internal code use, may not be needed"
     t.string "side", null: false, comment: "Allied or Axis side"
     t.integer "race", comment: "In-game race id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["const_name"], name: "index_factions_on_const_name", unique: true
     t.index ["name"], name: "index_factions_on_name", unique: true
   end
@@ -328,8 +330,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "wins", default: 0, comment: "wins to date"
     t.integer "losses", default: 0, comment: "losses to date"
     t.date "date", comment: "date of the battle"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "ruleset_id"
     t.index ["doctrine_id"], name: "index_historical_battle_players_on_doctrine_id"
     t.index ["faction_id"], name: "index_historical_battle_players_on_faction_id"
@@ -347,8 +349,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.date "last_played", comment: "last played match"
     t.integer "wins", default: 0, comment: "wins to date"
     t.integer "losses", default: 0, comment: "losses to date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["player_id"], name: "index_historical_player_ratings_on_player_id"
   end
 
@@ -366,8 +368,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.string "debuffs", comment: "Description of debuffs this offmap inflicts"
     t.string "weapon_rgd", comment: "Weapon rgd name"
     t.integer "shells_fired", comment: "Number of shells fired during the offmap"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "ruleset_id", null: false
     t.index ["ruleset_id"], name: "index_offmaps_on_ruleset_id"
   end
@@ -385,8 +387,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.date "last_played", comment: "last played match"
     t.integer "wins", default: 0, comment: "wins to date"
     t.integer "losses", default: 0, comment: "losses to date"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "elo_override", comment: "Override elo to provide a handicap"
     t.index ["mu"], name: "index_player_ratings_on_mu"
     t.index ["player_id"], name: "index_player_ratings_on_player_id"
@@ -400,12 +402,12 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.string "discord_id", comment: "Discord id"
     t.integer "vps", default: 0, null: false, comment: "WAR VPs earned up to ruleset max"
     t.integer "total_vps_earned", default: 0, null: false, comment: "Total WAR VPs earned, not capped"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "role", null: false, comment: "Player role for permissions"
@@ -419,8 +421,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "man", default: 0, null: false, comment: "Man change"
     t.integer "mun", default: 0, null: false, comment: "Mun change"
     t.integer "fuel", default: 0, null: false, comment: "Fuel change"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["resource"], name: "index_resource_bonuses_on_resource", unique: true
     t.index ["ruleset_id"], name: "index_resource_bonuses_on_ruleset_id"
   end
@@ -431,8 +433,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.bigint "ruleset_id"
     t.string "internal_description", null: false, comment: "What does this RestrictionCallinModifier do?"
     t.string "type", null: false, comment: "What effect this restriction has on the callin modifier"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["callin_modifier_id"], name: "index_restriction_callin_modifiers_on_callin_modifier_id"
     t.index ["restriction_id"], name: "index_restriction_callin_modifiers_on_restriction_id"
     t.index ["ruleset_id"], name: "index_restriction_callin_modifiers_on_ruleset_id"
@@ -446,8 +448,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.string "type", null: false, comment: "What effect this restriction has on the offmap"
     t.integer "max", comment: "Maximum number purchasable"
     t.integer "mun", comment: "Munitions cost"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["offmap_id"], name: "index_restriction_offmaps_on_offmap_id"
     t.index ["restriction_id"], name: "index_restriction_offmaps_on_restriction_id"
     t.index ["ruleset_id"], name: "index_restriction_offmaps_on_ruleset_id"
@@ -468,8 +470,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "company_max", comment: "Maximum number of the unit a company can hold"
     t.decimal "callin_modifier", comment: "Base callin modifier"
     t.integer "priority", comment: "Priority order to apply the modification from 1 -> 100"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "upgrade_slots", comment: "Slots used for per model weapon upgrades"
     t.integer "unitwide_upgrade_slots", comment: "Unit wide weapon replacement slot"
     t.index ["restriction_id", "ruleset_id"], name: "index_restriction_units_on_restriction_id_and_ruleset_id"
@@ -483,8 +485,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
   create_table "restriction_upgrade_units", comment: "Association between RestrictionUpgrade and Units", force: :cascade do |t|
     t.bigint "restriction_upgrade_id"
     t.bigint "unit_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["restriction_upgrade_id"], name: "index_restriction_upgrade_units_on_restriction_upgrade_id"
     t.index ["unit_id"], name: "index_restriction_upgrade_units_on_unit_id"
   end
@@ -504,8 +506,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "priority", comment: "Priority of this restriction"
     t.integer "upgrade_slots", comment: "Upgrade slot cost for per model upgrades"
     t.integer "unitwide_upgrade_slots", comment: "Upgrade slot cost for unit wide upgrades"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["restriction_id", "upgrade_id", "ruleset_id", "type", "uses", "max", "man", "mun", "fuel"], name: "idx_restriction_upgrades_ruleset_type_uniq", unique: true
     t.index ["restriction_id"], name: "index_restriction_upgrades_on_restriction_id"
     t.index ["ruleset_id", "restriction_id"], name: "index_restriction_upgrades_on_ruleset_id_and_restriction_id"
@@ -522,8 +524,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.bigint "doctrine_unlock_id"
     t.bigint "unlock_id"
     t.integer "vet_requirement", comment: "Minimum veterancy requirement"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["doctrine_id"], name: "index_restrictions_on_doctrine_id"
     t.index ["doctrine_id"], name: "unique_not_null_doctrine_id", unique: true, where: "(doctrine_id IS NOT NULL)"
     t.index ["doctrine_unlock_id"], name: "index_restrictions_on_doctrine_unlock_id"
@@ -546,8 +548,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "starting_vps", null: false, comment: "Company starting vps"
     t.integer "max_vps", null: false, comment: "Company max vps"
     t.integer "max_resource_bonuses", null: false, comment: "Company maximum number of resource bonuses"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["ruleset_type", "is_active"], name: "index_rulesets_on_ruleset_type_and_is_active"
   end
 
@@ -555,8 +557,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.bigint "squad_id"
     t.bigint "available_upgrade_id"
     t.boolean "is_free", comment: "Flag for whether this upgrade is free for the squad and has no availability cost"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["available_upgrade_id"], name: "index_squad_upgrades_on_available_upgrade_id"
     t.index ["squad_id"], name: "index_squad_upgrades_on_squad_id"
   end
@@ -571,8 +573,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.string "name", comment: "Squad's custom name"
     t.decimal "pop", comment: "Total pop of the squad including unit and all upgrades"
     t.integer "total_model_count", comment: "Total model count of the unit and all upgrades"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["available_unit_id"], name: "index_squads_on_available_unit_id"
     t.index ["company_id"], name: "index_squads_on_company_id"
     t.index ["uuid"], name: "index_squads_on_uuid", unique: true
@@ -582,8 +584,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.bigint "transport_id", null: false
     t.bigint "allowed_unit_id", null: false
     t.string "internal_description", comment: "Internal description of this TransportAllowedUnit"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["allowed_unit_id"], name: "index_transport_allowed_units_on_allowed_unit_id"
     t.index ["transport_id", "allowed_unit_id"], name: "idx_transport_allowed_units_uniq", unique: true
     t.index ["transport_id"], name: "index_transport_allowed_units_on_transport_id"
@@ -592,8 +594,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
   create_table "transported_squads", comment: "Association of transport squad to embarked squad", force: :cascade do |t|
     t.bigint "transport_squad_id", null: false
     t.bigint "embarked_squad_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["embarked_squad_id"], name: "idx_transported_squads_embarked_squad_uniq", unique: true
     t.index ["embarked_squad_id"], name: "index_transported_squads_on_embarked_squad_id"
     t.index ["transport_squad_id", "embarked_squad_id"], name: "idx_transported_squads_assoc_uniq", unique: true
@@ -605,8 +607,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.bigint "old_unit_id", null: false
     t.bigint "new_unit_id", null: false
     t.string "internal_description", comment: "Internal description of this UnitSwap"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["new_unit_id"], name: "index_unit_swaps_on_new_unit_id"
     t.index ["old_unit_id"], name: "index_unit_swaps_on_old_unit_id"
     t.index ["unlock_id", "new_unit_id"], name: "index_unit_swaps_on_unlock_id_and_new_unit_id", unique: true
@@ -626,8 +628,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.string "vet4_desc", null: false
     t.integer "vet5_exp", default: 0, null: false
     t.string "vet5_desc", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["unit_id"], name: "idx_unit_vet_unit_id_uniq", unique: true
     t.index ["unit_id"], name: "index_unit_vet_on_unit_id"
   end
@@ -646,8 +648,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.boolean "is_airdrop", default: false, null: false, comment: "Is this unit airdroppable?"
     t.boolean "is_infiltrate", default: false, null: false, comment: "Is this unit able to infiltrate?"
     t.string "retreat_name", comment: "Name for retreating unit"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_units_on_name", unique: true
   end
 
@@ -657,8 +659,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.string "const_name", comment: "Const name of the doctrine ability for the battle file"
     t.text "description", comment: "Display description of this doctrine ability"
     t.string "image_path", comment: "Url to the image to show for this doctrine ability"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "ruleset_id", null: false
     t.index ["name"], name: "index_unlocks_on_name", unique: true
     t.index ["ruleset_id"], name: "index_unlocks_on_ruleset_id"
@@ -667,8 +669,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
   create_table "upgrade_swap_units", comment: "Association of upgrade swap to affected units", force: :cascade do |t|
     t.bigint "upgrade_swap_id", null: false
     t.bigint "unit_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["unit_id"], name: "index_upgrade_swap_units_on_unit_id"
     t.index ["upgrade_swap_id", "unit_id"], name: "index_upgrade_swap_units_on_upgrade_swap_id_and_unit_id", unique: true
     t.index ["upgrade_swap_id"], name: "index_upgrade_swap_units_on_upgrade_swap_id"
@@ -679,8 +681,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.bigint "old_upgrade_id", null: false
     t.bigint "new_upgrade_id", null: false
     t.string "internal_description", comment: "Internal description of this UpgradeSwap"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["new_upgrade_id"], name: "index_upgrade_swaps_on_new_upgrade_id"
     t.index ["old_upgrade_id"], name: "index_upgrade_swaps_on_old_upgrade_id"
     t.index ["unlock_id", "new_upgrade_id"], name: "index_upgrade_swaps_on_unlock_id_and_new_upgrade_id", unique: true
@@ -696,8 +698,8 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "model_count", comment: "How many model entities this unit replacement consists of"
     t.integer "additional_model_count", comment: "How many model entities this upgrade adds to the base unit"
     t.string "type", null: false, comment: "Type of Upgrade"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
