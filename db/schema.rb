@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_04_035811) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_04_054751) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -269,9 +269,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_04_035811) do
     t.index ["doctrine_unlock_id"], name: "index_company_unlocks_on_doctrine_unlock_id"
   end
 
-  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
-  end
-
   create_table "doctrine_unlocks", comment: "Associates doctrines to unlocks", force: :cascade do |t|
     t.bigint "doctrine_id"
     t.bigint "unlock_id"
@@ -412,6 +409,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_04_035811) do
     t.string "last_sign_in_ip"
     t.string "role", null: false, comment: "Player role for permissions"
     t.index ["provider", "uid"], name: "index_players_on_provider_and_uid", unique: true
+  end
+
+  create_table "quotes", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "resource_bonuses", force: :cascade do |t|

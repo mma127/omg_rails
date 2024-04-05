@@ -128,3 +128,5 @@ gem "pundit", "~> 2.3"
 gem "sprockets-rails"
 gem "turbo-rails", "~> 2.0"
 gem "net-http", "~> 0.4.1"
+
+gem "simple_form", "~> 5.3"
