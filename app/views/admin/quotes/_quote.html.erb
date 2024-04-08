@@ -1,12 +1,23 @@
-<div class="quote">
-  <%= link_to quote.name, admin_quote_path(quote) %>
-  <div class="quote__actions">
-    <%= button_to "Delete",
-                  admin_quote_path(quote),
-                  method: :delete,
-                  class: "btn btn--light" %>
-    <%= link_to "Edit",
-                edit_admin_quote_path(quote),
-                class: "btn btn--light" %>
+<%= turbo_frame_tag quote do %>
+  <div class="quote row">
+    <div class="col">
+      <%= link_to quote.name, admin_quote_path(quote), data: { turbo_frame: "_top" } %>
+    </div>
+    <div class="col-2">
+      <div class="row">
+        <div class="col">
+          <%= link_to "Edit",
+                      edit_admin_quote_path(quote),
+                      class: "btn btn-light" %>
+        </div>
+        <div class="col">
+          <%= button_to "Delete",
+                        admin_quote_path(quote),
+                        method: :delete,
+                        form: { data: { turbo_frame: "_top" } },
+                        class: "btn btn-danger" %>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+<% end %>

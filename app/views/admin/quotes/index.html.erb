@@ -1,10 +1,19 @@
 <main class="container">
-  <div class="header">
-    <h1>Quotes</h1>
-    <%= link_to "New quote",
-                new_admin_quote_path,
-                class: "btn btn--primary" %>
+  <div class="header row">
+    <div class="col">
+      <h1>Quotes</h1>
+    </div>
+    <div class="col">
+      <%= link_to "New quote",
+                  new_admin_quote_path,
+                  data: { turbo_frame: dom_id(Quote.new) },
+                  class: "btn btn-primary float-end" %>
+    </div>
   </div>
 
-  <%= render @quotes %>
+  <%= turbo_frame_tag Quote.new %>
+
+  <%= turbo_frame_tag "quotes" do %>
+    <%= render @quotes %>
+  <% end %>
 </main>
