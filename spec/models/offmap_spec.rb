@@ -18,7 +18,7 @@
 #  weapon_rgd(Weapon rgd name)                                       :string
 #  created_at                                                        :datetime         not null
 #  updated_at                                                        :datetime         not null
-#  ruleset_id                                                        :bigint           not null
+#  ruleset_id                                                        :bigint
 #
 # Indexes
 #
