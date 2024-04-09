@@ -34,7 +34,7 @@ class DoctrineUnlock < ApplicationRecord
   belongs_to :unlock
   belongs_to :ruleset
   has_one :restriction
-
+  has_many :company_unlocks
   has_many :restriction_units, through: :restriction
   has_many :restriction_upgrades, through: :restriction
   has_many :restriction_offmaps, through: :restriction
