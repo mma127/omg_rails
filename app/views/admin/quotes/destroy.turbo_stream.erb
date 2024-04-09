@@ -1,3 +1,9 @@
 <%= turbo_stream.remove @quote %>
 
 <%= render_turbo_stream_flash_messages %>
+
+<%# unless Quote.exists? %>
+  <%#= turbo_stream.update Quote.new do %>
+    <%#= render "admin/quotes/empty_state" %>
+  <%# end %>
+<%# end %>
