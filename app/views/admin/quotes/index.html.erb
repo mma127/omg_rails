@@ -16,4 +16,7 @@
   <%= turbo_frame_tag "quotes" do %>
     <%= render @quotes %>
   <% end %>
+
+  <%# Generates a custom element to subscribe to the channel name %>
+  <%= turbo_stream_from "quotes" %>
 </main>
