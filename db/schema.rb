@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_01_005310) do
+ActiveRecord::Schema.define(version: 2024_04_10_011448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -368,7 +368,7 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.integer "shells_fired", comment: "Number of shells fired during the offmap"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "ruleset_id"
+    t.bigint "ruleset_id", null: false
     t.index ["ruleset_id"], name: "index_offmaps_on_ruleset_id"
   end
 
@@ -659,7 +659,7 @@ ActiveRecord::Schema.define(version: 2024_04_01_005310) do
     t.string "image_path", comment: "Url to the image to show for this doctrine ability"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "ruleset_id"
+    t.bigint "ruleset_id", null: false
     t.index ["name"], name: "index_unlocks_on_name", unique: true
     t.index ["ruleset_id"], name: "index_unlocks_on_ruleset_id"
   end
