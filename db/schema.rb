@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_04_035811) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -267,9 +267,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_04_035811) do
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_company_unlocks_on_company_id"
     t.index ["doctrine_unlock_id"], name: "index_company_unlocks_on_doctrine_unlock_id"
-  end
-
-  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
   end
 
   create_table "doctrine_unlocks", comment: "Associates doctrines to unlocks", force: :cascade do |t|
