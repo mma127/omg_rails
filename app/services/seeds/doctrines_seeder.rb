@@ -1,7 +1,7 @@
 require 'csv'
 
 module Seeds
-  class DoctrinesService < ApplicationService
+  class DoctrinesSeeder < ApplicationService
     FILENAME = 'lib/assets/doctrines.csv'.freeze
 
     class << self

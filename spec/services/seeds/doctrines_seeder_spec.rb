@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe Seeds::DoctrinesService do
+RSpec.describe Seeds::DoctrinesSeeder do
   before do
-    Seeds::FactionsService.update_or_create_all
+    Seeds::FactionsSeeder.update_or_create_all
   end
 
   describe "#update_or_create_all" do

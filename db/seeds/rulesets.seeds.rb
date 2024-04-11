@@ -1,1 +1,1 @@
-Seeds::RulesetService.create_new_ruleset(Ruleset.ruleset_types[:war], "War 1")
+WarResetService.reset_ruleset(Ruleset.ruleset_types[:war], "War 1")
