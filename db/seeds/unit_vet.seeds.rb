@@ -1,4 +1,4 @@
-after :units do
+after :rulesets do
 
   REPLACEMENT_VET = {
     "PE.TH_VAMPIRE": "PE.VAMPIRE",
