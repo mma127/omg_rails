@@ -1,6 +1,6 @@
 require 'csv'
 
-after :units do
+after :rulesets do
   # Unlocks
   # Create a doctrineUnlock for the unlock as our seed unlocks are 1 to 1 with doctrineUnlocks
   #

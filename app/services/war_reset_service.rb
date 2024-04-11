@@ -6,6 +6,7 @@ class WarResetService < ApplicationService
     new_ruleset = Seeds::RulesetSeeder.create_new_ruleset(ruleset_type, name)
     Seeds::FactionsSeeder.update_or_create_all
     Seeds::DoctrinesSeeder.update_or_create_all
+    Seeds::UnitsSeeder.create_or_update_all
 
     Seeds::ResourceBonusesSeeder.create_for_ruleset(new_ruleset)
   end
