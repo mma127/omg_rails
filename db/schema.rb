@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_10_011448) do
+ActiveRecord::Schema.define(version: 2024_04_11_054425) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -421,7 +421,7 @@ ActiveRecord::Schema.define(version: 2024_04_10_011448) do
     t.integer "fuel", default: 0, null: false, comment: "Fuel change"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["resource"], name: "index_resource_bonuses_on_resource", unique: true
+    t.index ["resource", "ruleset_id"], name: "index_resource_bonuses_on_resource_and_ruleset_id", unique: true
     t.index ["ruleset_id"], name: "index_resource_bonuses_on_ruleset_id"
   end
 

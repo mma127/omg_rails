@@ -14,8 +14,8 @@
 #
 # Indexes
 #
-#  index_resource_bonuses_on_resource    (resource) UNIQUE
-#  index_resource_bonuses_on_ruleset_id  (ruleset_id)
+#  index_resource_bonuses_on_resource_and_ruleset_id  (resource,ruleset_id) UNIQUE
+#  index_resource_bonuses_on_ruleset_id               (ruleset_id)
 #
 # Foreign Keys
 #
