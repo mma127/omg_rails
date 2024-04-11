@@ -1,7 +1,7 @@
 require 'csv'
 
 module Seeds
-  class RulesetService < ApplicationService
+  class RulesetSeeder < ApplicationService
     FILENAME = 'lib/assets/rulesets.csv'.freeze
 
     class << self

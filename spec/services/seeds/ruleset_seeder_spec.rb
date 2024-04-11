@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Seeds::RulesetService do
+RSpec.describe Seeds::RulesetSeeder do
   let(:name) { "new war" }
   let(:ruleset_type) { Ruleset.ruleset_types[:war] }
 

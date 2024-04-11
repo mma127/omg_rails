@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Seeds::FactionsService do
+RSpec.describe Seeds::FactionsSeeder do
   describe "#update_or_create_all" do
     subject { described_class.update_or_create_all }
 

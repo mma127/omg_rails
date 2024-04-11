@@ -1,0 +1,12 @@
+class WarResetService < ApplicationService
+
+  # IMPORTANT: Use this method to conduct a war reset.
+  # This method orchestrates all required data seeding in order, particularly for data that requires a ruleset association
+  def self.reset_ruleset(ruleset_type, name)
+    new_ruleset = Seeds::RulesetSeeder.create_new_ruleset(ruleset_type, name)
+    Seeds::FactionsSeeder.update_or_create_all
+    Seeds::DoctrinesSeeder.update_or_create_all
+
+    Seeds::ResourceBonusesSeeder.create_for_ruleset(new_ruleset)
+  end
+end

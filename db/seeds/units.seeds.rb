@@ -1,4 +1,4 @@
-after :doctrines do
+after :rulesets do
 
   def get_unit_class(type)
     case type

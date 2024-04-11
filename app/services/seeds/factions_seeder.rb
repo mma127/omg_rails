@@ -1,7 +1,7 @@
 require 'csv'
 
 module Seeds
-  class FactionsService < ApplicationService
+  class FactionsSeeder < ApplicationService
     FILENAME = 'lib/assets/factions.csv'.freeze
 
     class << self
