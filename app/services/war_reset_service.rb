@@ -9,5 +9,6 @@ class WarResetService < ApplicationService
     Seeds::UnitsSeeder.create_or_update_all # Also creates TransportAllowedUnits and UnitVet
 
     Seeds::ResourceBonusesSeeder.create_for_ruleset(new_ruleset)
+    Seeds::UnlocksSeeder.create_for_ruleset(new_ruleset)
   end
 end
