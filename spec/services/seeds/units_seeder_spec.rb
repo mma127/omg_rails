@@ -13,6 +13,10 @@ RSpec.describe Seeds::UnitsSeeder do
       it "creates all transport allowed units" do
         expect { subject }.to change { TransportAllowedUnit.count }.by 105
       end
+
+      it "creates all unit vets" do
+        expect { subject }.to change { UnitVet.count }.by 157
+      end
     end
 
     context "when there are some units" do
@@ -22,6 +26,8 @@ RSpec.describe Seeds::UnitsSeeder do
 
       before do
         create :transport_allowed_unit, transport: halftrack_allied, allowed_unit: riflemen
+        create :unit_vet, unit: riflemen
+        create :unit_vet, unit: m10
       end
 
       it "creates the missing units" do
@@ -30,6 +36,10 @@ RSpec.describe Seeds::UnitsSeeder do
 
       it "creates the missing transport allowed units" do
         expect { subject }.to change { TransportAllowedUnit.count }.by 104
+      end
+
+      it "creates the missing unit vets" do
+        expect { subject }.to change { UnitVet.count }.by 155
       end
 
       it "updates the existing units" do
@@ -52,6 +62,10 @@ RSpec.describe Seeds::UnitsSeeder do
 
       it "does not add any new transport allowed units" do
         expect { subject }.not_to change { TransportAllowedUnit.count }
+      end
+
+      it "does not add any new unit vet" do
+        expect { subject }.not_to change { UnitVet.count }
       end
     end
   end
