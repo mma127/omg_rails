@@ -1,4 +1,4 @@
-after :restriction_units do
+after :rulesets do
   def get_upgrade_class(type)
     case type
     when "single_weapon"
