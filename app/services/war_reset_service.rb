@@ -11,5 +11,6 @@ class WarResetService < ApplicationService
     Seeds::ResourceBonusesSeeder.create_for_ruleset(new_ruleset)
     Seeds::UnlocksSeeder.create_for_ruleset(new_ruleset)
     Seeds::OffmapsSeeder.create_for_ruleset(new_ruleset)
+    Seeds::CallinModifiersSeeder.create_for_ruleset(new_ruleset)
   end
 end
