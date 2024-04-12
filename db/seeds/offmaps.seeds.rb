@@ -1,6 +1,6 @@
 require 'csv'
 
-after :restrictions do
+after :rulesets do
   def snake_case(str)
     str.parameterize.underscore
   end
