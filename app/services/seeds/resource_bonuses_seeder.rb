@@ -7,7 +7,7 @@ module Seeds
     class << self
       def create_for_ruleset(ruleset)
         resource_bonuses = []
-        CSV.foreach(FILENAME, headers: true) do |row|
+        resource_bonuses_csv.each do |row|
           name = row["name"]
           resource = row["resource"]
           man = row["man"]
@@ -17,6 +17,12 @@ module Seeds
                                                 man: man, mun: mun, fuel: fuel)
         end
         ResourceBonus.import! resource_bonuses
+      end
+
+      private
+
+      def resource_bonuses_csv
+        CSV.open(FILENAME, headers: true)
       end
     end
   end

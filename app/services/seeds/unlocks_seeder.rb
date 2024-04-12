@@ -33,7 +33,7 @@ module Seeds
         unlocks = []
         doctrine_unlocks = []
         restrictions = []
-        CSV.foreach(FILENAME, headers: true) do |row|
+        unlocks_csv.each do |row|
           name = row["internal_name"]
           doc = get_doc_str_from_const(row["const"])
           doctrine = doctrines_by_const[doc]
@@ -61,6 +61,10 @@ module Seeds
       end
 
       private
+
+      def unlocks_csv
+        CSV.open(FILENAME, headers: true)
+      end
 
       def snakecase(str)
         str.parameterize.underscore

@@ -20,9 +20,21 @@ module Seeds
 
       private
 
+      def units_csv
+        CSV.open(UNITS_FILENAME, headers: true)
+      end
+
+      def transport_allowed_csv
+        CSV.open(TRANSPORT_UNITS_FILENAME, headers: true)
+      end
+
+      def unit_vet_csv
+        CSV.open(UNIT_VET_FILENAME, headers: true)
+      end
+
       def create_or_update_units
         units = []
-        CSV.foreach(UNITS_FILENAME, headers: true) do |row|
+        units_csv.each do |row|
           name = row["name"]
           type = row["type"]
           unit_class = get_unit_class(type)
@@ -56,7 +68,7 @@ module Seeds
         units_by_name = units.index_by(&:name)
 
         transport_allowed_units = []
-        CSV.foreach(TRANSPORT_UNITS_FILENAME, headers: true) do |row|
+        transport_allowed_csv.each do |row|
           transport_name = row["transport_name"]
           allowed_unit_name = row["allowed_unit_name"]
           transport = units_by_name[transport_name]
@@ -71,7 +83,7 @@ module Seeds
 
         # Generated from query
         # select CONSTNAME, Vet1, Vet2, Vet3, Vet4, Vet5 from units;
-        CSV.foreach(UNIT_VET_FILENAME, headers: true) do |row|
+        unit_vet_csv.each do |row|
           next if row["CONSTNAME"].blank?
 
           const = row["CONSTNAME"].strip
@@ -102,10 +114,9 @@ module Seeds
           vet5_exp = split_vet_string(vet_hash[:vet5])[0]
           vet5_desc = split_vet_string(vet_hash[:vet5])[1]
 
-          values = {unit: unit, vet1_exp: vet1_exp, vet1_desc: vet1_desc, vet2_exp: vet2_exp, vet2_desc: vet2_desc,
-                    vet3_exp: vet3_exp, vet3_desc: vet3_desc, vet4_exp: vet4_exp, vet4_desc: vet4_desc,
-                    vet5_exp: vet5_exp, vet5_desc: vet5_desc}
-          puts "#{const} vet values #{values}"
+          values = { unit: unit, vet1_exp: vet1_exp, vet1_desc: vet1_desc, vet2_exp: vet2_exp, vet2_desc: vet2_desc,
+                     vet3_exp: vet3_exp, vet3_desc: vet3_desc, vet4_exp: vet4_exp, vet4_desc: vet4_desc,
+                     vet5_exp: vet5_exp, vet5_desc: vet5_desc }
 
           unit_vets << UnitVet.new(values)
         end
