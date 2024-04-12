@@ -1,4 +1,4 @@
-after :restrictions do
+after :rulesets do
   # Create RestrictionUnits to associate Units with Restrictions and their costs per restriction
   # This associates Units with a Faction, Doctrine, or Unlock, and allows them to be priced separately
   # For example, a Riflemen unit in the Infantry doctrine can have different pricing and resupply than the

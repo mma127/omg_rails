@@ -1,4 +1,4 @@
-after :restrictions do
+after :rulesets do
   @war_ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
 
   def get_modifier_type(modifier_type)
