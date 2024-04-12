@@ -12,7 +12,7 @@ module Seeds
           doctrines = []
           doctrine_restrictions = []
           factions_by_name = Faction.all.index_by(&:name); 0
-          CSV.foreach(FILENAME, headers: true) do |row|
+          doctrines_csv.each do |row|
             name = row["name"]
             display_name = row["display_name"]
             const_name = row["const_name"]
@@ -38,6 +38,12 @@ module Seeds
                                 columns: [:name, :description]
                               }
         end
+      end
+
+      private
+
+      def doctrines_csv
+        CSV.open(FILENAME, headers: true)
       end
     end
   end

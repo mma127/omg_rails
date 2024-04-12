@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Seeds::UnitsSeeder do
+  let(:units_csv) { CSV.open("spec/support/seeds/units.csv", headers: true) }
+  let(:transport_allowed_units_csv) { CSV.open("spec/support/seeds/transport_allowed_units.csv", headers: true) }
+  let(:unit_vet_csv) { CSV.open("spec/support/seeds/unit_vet.csv", headers: true) }
+
+  before do
+    allow(described_class).to receive(:units_csv).and_return units_csv
+    allow(described_class).to receive(:transport_allowed_csv).and_return transport_allowed_units_csv
+    allow(described_class).to receive(:unit_vet_csv).and_return unit_vet_csv
+  end
 
   describe "#create_or_update_all" do
     subject { described_class.create_or_update_all }

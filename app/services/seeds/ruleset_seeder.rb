@@ -31,9 +31,12 @@ module Seeds
 
       private
 
+      def ruleset_csv
+        CSV.read(FILENAME, headers: true)
+      end
+
       def get_ruleset_csv_row(ruleset_type)
-        csv = CSV.read(FILENAME, headers: true)
-        csv.find { |row| row["type"] == ruleset_type }
+        ruleset_csv.find { |row| row["type"] == ruleset_type }
       end
 
       def get_active_ruleset(ruleset_type)

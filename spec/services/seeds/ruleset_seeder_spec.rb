@@ -3,6 +3,11 @@ require 'rails_helper'
 RSpec.describe Seeds::RulesetSeeder do
   let(:name) { "new war" }
   let(:ruleset_type) { Ruleset.ruleset_types[:war] }
+  let(:test_csv) { CSV.open("spec/support/seeds/rulesets.csv", headers: true) }
+
+  before do
+    allow(described_class).to receive(:ruleset_csv).and_return test_csv
+  end
 
   describe "#create_new_ruleset" do
     subject { described_class.create_new_ruleset(ruleset_type, name) }
@@ -44,6 +49,14 @@ RSpec.describe Seeds::RulesetSeeder do
       it "marks the formerly active ruleset as not active" do
         subject
         expect(existing_ruleset.reload.is_active).to be false
+      end
+    end
+
+    context "when the requested ruleset is not in the csv" do
+      let(:ruleset_type) { "Invalid type" }
+
+      it "raises an error" do
+        expect { subject }.to raise_error(ArgumentError, "No row found matching ruleset type Invalid type in seed file [lib/assets/rulesets.csv]")
       end
     end
   end

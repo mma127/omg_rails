@@ -1,8 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe Seeds::FactionsSeeder do
+  let(:test_csv) { CSV.open("spec/support/seeds/factions.csv", headers: true) }
+
   describe "#update_or_create_all" do
     subject { described_class.update_or_create_all }
+
+    before do
+      allow(described_class).to receive(:factions_csv).and_return test_csv
+    end
 
     context "when there are no existing factions" do
       it "creates all expected factions" do

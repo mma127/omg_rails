@@ -1,7 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Seeds::DoctrinesSeeder do
+  let(:factions_csv) { CSV.open("spec/support/seeds/factions.csv", headers: true) }
+  let(:test_csv) { CSV.open("spec/support/seeds/doctrines.csv", headers: true) }
+
   before do
+    allow(Seeds::FactionsSeeder).to receive(:factions_csv).and_return factions_csv
+    allow(described_class).to receive(:doctrines_csv).and_return test_csv
+
     Seeds::FactionsSeeder.update_or_create_all
   end
 

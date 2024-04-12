@@ -11,7 +11,7 @@ module Seeds
         ActiveRecord::Base.transaction do
           factions = []
           faction_restrictions = []
-          CSV.foreach(FILENAME, headers: true) do |row|
+          factions_csv.each do |row|
             name = row["name"]
             display_name = row["display_name"]
             const_name = row["const_name"]
@@ -37,6 +37,12 @@ module Seeds
                                 columns: [:name, :description]
                               }
         end
+      end
+
+      private
+
+      def factions_csv
+        CSV.open(FILENAME, headers: true)
       end
     end
   end

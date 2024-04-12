@@ -3,6 +3,12 @@ require 'rails_helper'
 RSpec.describe Seeds::ResourceBonusesSeeder do
   let(:ruleset) { create :ruleset }
 
+  let(:test_csv) { CSV.open("spec/support/seeds/resource_bonuses.csv", headers: true) }
+
+  before do
+    allow(described_class).to receive(:resource_bonuses_csv).and_return test_csv
+  end
+
   describe "#create_for_ruleset" do
     subject { described_class.create_for_ruleset(ruleset) }
 
