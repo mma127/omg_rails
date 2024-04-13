@@ -21,10 +21,6 @@ task remove_dup_upgrades: :environment do
       is_only_one_upgrade_id_au = uniq_upgrade_ids_au.length < 2
       raise StandardError.new("Upgrade #{name} has available upgrades using more than one upgrade id [#{uniq_upgrade_ids_au}]") unless is_only_one_upgrade_id_au
 
-      if uniq_upgrade_ids_ru != uniq_upgrade_ids_au
-        raise StandardError.new("Upgrade #{name} restriction upgrades #{uniq_upgrade_ids_ru} is different from available upgrades #{uniq_upgrade_ids_au}")
-      end
-
       ## We are clear, keep the upgrade that's used
       upgrade_to_keep = restriction_upgrades.first.upgrade
 
