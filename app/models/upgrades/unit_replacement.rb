@@ -10,10 +10,12 @@
 #  model_count(How many model entities this unit replacement consists of)             :integer
 #  name(Unique upgrade name)                                                          :string           not null
 #  type(Type of Upgrade)                                                              :string           not null
-#  unitwide_upgrade_slots(Upgrade slot cost for unit wide upgrades)                   :integer
-#  upgrade_slots(Upgrade slot cost for per model upgrades)                            :integer
 #  created_at                                                                         :datetime         not null
 #  updated_at                                                                         :datetime         not null
+#
+# Indexes
+#
+#  index_upgrades_on_name  (name) UNIQUE
 #
 class Upgrades::UnitReplacement < Upgrade
 
