@@ -18,7 +18,7 @@ task remove_dup_upgrades: :environment do
       # Find AvailableUpgrades using any of the upgrades
       available_upgrades = AvailableUpgrade.where(upgrade: all_upgrades_with_name)
       uniq_upgrade_ids_au = available_upgrades.map { |au| au.upgrade_id }.uniq.sort
-      is_only_one_upgrade_id_au = uniq_upgrade_ids_au.length == 1
+      is_only_one_upgrade_id_au = uniq_upgrade_ids_au.length < 2
       raise StandardError.new("Upgrade #{name} has available upgrades using more than one upgrade id [#{uniq_upgrade_ids_au}]") unless is_only_one_upgrade_id_au
 
       if uniq_upgrade_ids_ru != uniq_upgrade_ids_au
