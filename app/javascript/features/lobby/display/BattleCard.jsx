@@ -167,14 +167,14 @@ export const BattleCard = ({ id }) => {
   let optimumBalance = false;
   const k = axisPlayers.reduce((accumulator, currentValue) => accumulator + currentValue.teamBalance, 0)
   if (k === size || k === size * 2) {
-    optimumBalance = false;
+    optimumBalance = true;
   }
 
   const calculatedBalanceState = balanceState(battle.eloDifference)
 
   let optimumBalanceContent
   let eloDiffContent
-  if (!optimumBalance && isFull) {
+  if (!optimumBalance && Math.abs(battle.eloDifference) > 50 && isFull) {
     optimumBalanceContent = (
       <Box className={classes.balanceAlertContainer}>
         <Alert severity="warning" className={classes.balanceAlert}>

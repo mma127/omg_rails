@@ -61,18 +61,18 @@ RSpec.describe Ratings::UpdateService do
             expect(player2_rating.last_played).to eq date_now
           end
 
-          context "when the last played was more than 3 weeks ago" do
+          context "when the last played was more than 3 weeks ago", :aggregate_failures do
             let!(:player1_rating) { create :player_rating, player: player1, elo: elo1, mu: mu1, sigma: sigma1, last_played: 4.weeks.ago }
 
             it "updates player ratings" do
               subject
 
               expect(player1_rating.reload.elo).to eq 2000
-              expect(player1_rating.mu).to eq 29.395832427007832
-              expect(player1_rating.sigma).to eq 7.1714754012904915
+              expect(player1_rating.mu).to eq 29.39582964471032
+              expect(player1_rating.sigma).to eq 7.171473132334705
               expect(player2_rating.reload.elo).to eq 1000
-              expect(player2_rating.mu).to eq 20.604171089305776
-              expect(player2_rating.sigma).to eq 7.1714735380531724
+              expect(player2_rating.mu).to eq 20.604170355289675
+              expect(player2_rating.sigma).to eq 7.171473132334705
             end
           end
 

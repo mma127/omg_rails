@@ -138,6 +138,7 @@ RSpec.describe BattleReportService do
 
       context "when battle size is larger than one" do
         let(:size) { 4 }
+        let(:time_elapsed) { 2000 }
 
         it "calls rating update service" do
           expect(update_service_double).to receive(:update_player_ratings).once
@@ -147,6 +148,20 @@ RSpec.describe BattleReportService do
         it "calls historical player service" do
           expect(historical_player_service_double).to receive(:create_historical_battle_players_for_battle).once
           process_report
+        end
+
+        context "when the time elapsed is too short" do
+          let(:time_elapsed) { 1000 }
+
+          it "does not call rating update service" do
+            expect(update_service_double).not_to receive(:update_player_ratings)
+            process_report
+          end
+
+          it "does not call historical player service" do
+            expect(historical_player_service_double).not_to receive(:create_historical_battle_players_for_battle)
+            process_report
+          end
         end
       end
     end
