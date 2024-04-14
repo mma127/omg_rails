@@ -5,6 +5,7 @@ import { makeStyles } from "@mui/styles";
 import { fetchRestrictionUnits, selectRestrictionUnits } from "./restrictionUnitsSlice";
 import { RestrictionUnit } from "./RestrictionUnit";
 import { BorderlessCell } from "../../../components/BorderlessCell";
+import { selectActiveRuleset } from "../../rulesets/rulesetsSlice";
 
 
 const useStyles = makeStyles(() => ({
@@ -23,15 +24,15 @@ const useStyles = makeStyles(() => ({
 export const RestrictionUnits = ({currentFactionId, currentDoctrineId, showDisabled}) => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const activeRuleset = useSelector(selectActiveRuleset)
 
   useEffect(() => {
     fetchData()
   }, [currentFactionId, currentDoctrineId])
 
-  // TODO RULESET
   const fetchData = () => {
     if (currentFactionId !== null) {
-      dispatch(fetchRestrictionUnits({ rulesetId: 1, factionId: currentFactionId, doctrineId: currentDoctrineId }))
+      dispatch(fetchRestrictionUnits({ rulesetId: activeRuleset.id, factionId: currentFactionId, doctrineId: currentDoctrineId }))
     }
   }
 

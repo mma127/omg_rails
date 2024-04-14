@@ -51,4 +51,17 @@ class Ruleset < ApplicationRecord
   enum ruleset_type: {
     war: "war"
   }
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :name
+    expose :description
+    expose :is_active, as: :isActive
+    expose :ruleset_type, as: :type
+    expose :created_at, as: :createdAt
+  end
 end

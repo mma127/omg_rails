@@ -9,21 +9,27 @@ module OMG
 
     resource :companies do
       desc 'get all active companies for the player'
+      params do
+        requires :rulesetId, type: Integer, desc: "Ruleset for the active companies"
+      end
       get 'active' do
-        present ActiveCompany.includes(:faction, :doctrine, :battle_players, :company_stats).where(player: current_player), type: :with_stats
+        declared_params = declared(params)
+        present ActiveCompany.includes(:faction, :doctrine, :battle_players, :company_stats)
+                             .where(player: current_player, ruleset_id: declared_params[:rulesetId]), type: :with_stats
       end
 
       desc 'create new company for the player'
       params do
         requires :doctrineId, type: Integer, as: :doctrine_id, desc: "Doctrine ID"
         requires :name, type: String, desc: "Company name"
+        requires :rulesetId, type: Integer, desc: "Ruleset for the company"
       end
       post do
         begin
           declared_params = declared(params)
           doctrine = Doctrine.find_by(id: declared_params[:doctrine_id])
           company_service = CompanyService.new(current_player)
-          new_company = company_service.create_company(doctrine, declared_params[:name])
+          new_company = company_service.create_company(doctrine, declared_params[:name], declared_params[:rulesetId])
 
           present new_company, type: :with_stats
         rescue StandardError => e

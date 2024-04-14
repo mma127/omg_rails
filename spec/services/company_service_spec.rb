@@ -36,7 +36,7 @@ RSpec.describe CompanyService do
   end
 
   describe "#create_company" do
-    subject { instance.create_company(doctrine, name) }
+    subject { instance.create_company(doctrine, name, ruleset.id) }
     it "creates the Company with valid params" do
       company = subject
 
@@ -91,10 +91,21 @@ RSpec.describe CompanyService do
     it "raise a validation error when the company name is too long" do
       long_name = "a" * 51
       expect {
-        instance.create_company(doctrine, long_name)
+        instance.create_company(doctrine, long_name, ruleset)
       }.to raise_error(
               CompanyService::CompanyCreationValidationError,
               "Company name must be between 1 and 50 characters")
+    end
+
+    context "when the ruleset is not active" do
+      let(:ruleset) { create :ruleset, is_active: false }
+
+      it "raises a validation error" do
+        expect{subject}
+          .to raise_error(
+                CompanyService::CompanyCreationValidationError,
+                "Ruleset #{ruleset.name} with id #{ruleset.id} is not active")
+      end
     end
 
     context "when the player has less than max vps - starting_vps" do
@@ -131,7 +142,7 @@ RSpec.describe CompanyService do
     subject { instance.update_company_squads(company, squads_param, offmaps_param, squad_upgrades_param) }
 
     context "when the Company is empty" do
-      let!(:company) { instance.create_company(doctrine, name) }
+      let!(:company) { instance.create_company(doctrine, name, ruleset) }
       let!(:available_unit_1) { company.available_units.find_by(unit_id: unit1.id) }
       let!(:available_unit_2) { company.available_units.find_by(unit_id: unit2.id) }
       let!(:available_unit_3) { company.available_units.find_by(unit_id: unit3.id) }
@@ -1041,7 +1052,7 @@ RSpec.describe CompanyService do
     context "when Company has Squads, CompanyOffmaps, and SquadUpgrades" do
       let!(:unit4) { create :unit }
       let!(:restriction_unit4) { create :enabled_unit, unit: unit4, pop: 8, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: ruleset }
-      let!(:company) { instance.create_company(doctrine, name) } # Create the company here to include unit4
+      let!(:company) { instance.create_company(doctrine, name, ruleset) } # Create the company here to include unit4
       let!(:available_unit_1) { company.available_units.find_by(unit_id: unit1.id) }
       let!(:available_unit_2) { company.available_units.find_by(unit_id: unit2.id) }
       let!(:available_unit_3) { company.available_units.find_by(unit_id: unit3.id) }
@@ -2101,7 +2112,7 @@ RSpec.describe CompanyService do
     subject { instance.delete_company(@company) }
 
     before do
-      @company = instance.create_company(doctrine, name)
+      @company = instance.create_company(doctrine, name, ruleset)
       @available_unit_1 = @company.available_units.find_by(unit: unit1)
       @available_unit_2 = @company.available_units.find_by(unit: unit2)
       @available_unit_3 = @company.available_units.find_by(unit: unit3)
@@ -2175,7 +2186,7 @@ RSpec.describe CompanyService do
 
   describe "#recalculate_resources" do
     before do
-      @company = instance.create_company(doctrine, name)
+      @company = instance.create_company(doctrine, name, ruleset)
       @available_unit_1 = @company.available_units.find_by(unit: unit1)
       @available_unit_2 = @company.available_units.find_by(unit: unit2)
       @available_unit_3 = @company.available_units.find_by(unit: unit3)

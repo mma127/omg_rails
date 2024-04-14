@@ -11,6 +11,7 @@ import { DateTime } from "luxon";
 import { DoctrineStats } from "./DoctrineStats";
 import { AlliedAxisStats } from "./AlliedAxisStats";
 import { FactionStats } from "./FactionStats";
+import { selectActiveRuleset } from "../../rulesets/rulesetsSlice";
 
 
 const useStyles = makeStyles(() => ({
@@ -47,10 +48,13 @@ const useStyles = makeStyles(() => ({
 export const WarStats = ({}) => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const activeRuleset = useSelector(selectActiveRuleset)
 
   useEffect(() => {
-    dispatch(fetchWarStats({ ruleset_id: 1 }))
-  }, []);
+    if (activeRuleset) {
+      dispatch(fetchWarStats({ ruleset_id: activeRuleset.id }))
+    }
+  }, [activeRuleset]);
 
   const generatedAt = useSelector(selectWarStatsGeneratedAt)
   const date = DateTime.fromISO(generatedAt)
@@ -67,14 +71,14 @@ export const WarStats = ({}) => {
       <AlliedAxisStats/>
       <Box className={classes.column} sx={{ paddingTop: "1rem", paddingBottom: "1rem" }}>
         {doctrines.map(d => (
-          <Box className={classes.doctrineStatsWrapper}>
-            <DoctrineStats doctrineStats={d} key={d.id}/>
+          <Box className={classes.doctrineStatsWrapper} key={d.id}>
+            <DoctrineStats doctrineStats={d}/>
           </Box>))}
       </Box>
       <Box className={classes.column} sx={{ paddingTop: "1rem" }}>
         {factions.map(f => (
-          <Box className={classes.doctrineStatsWrapper}>
-            <FactionStats factionStats={f} key={f.id}/>
+          <Box className={classes.doctrineStatsWrapper} key={f.id}>
+            <FactionStats factionStats={f}/>
           </Box>
         ))}
       </Box>

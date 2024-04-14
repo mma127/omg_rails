@@ -13,6 +13,7 @@ import {
 } from "../../../doctrines/doctrinesSlice";
 import { DoctrineUnlock } from "./DoctrineUnlock";
 import { selectCompanyUnlockIds, selectCompanyUnlocksByDoctrineUnlockId, clearNotifySnackbar } from "./companyUnlocksSlice";
+import { selectActiveRuleset } from "../../../rulesets/rulesetsSlice";
 
 const buildUnlock = (doctrineUnlock, companyUnlocksByDoctrineUnlockId, companyId) => {
   const companyUnlock = _.get(companyUnlocksByDoctrineUnlockId, doctrineUnlock.id, null)
@@ -56,9 +57,10 @@ export const CompanyUnlocks = () => {
   const editEnabled = !company.activeBattleId
   const needsRefresh = useSelector(state => state.companies.needsRefresh)
   const companyUnlocksByDoctrineUnlockId = useSelector(selectCompanyUnlocksByDoctrineUnlockId)
+  const activeRuleset = useSelector(selectActiveRuleset)
 
   useEffect(() => {
-    dispatch(fetchDoctrineUnlocksByDoctrineId({ doctrineId: company.doctrineId }))
+    dispatch(fetchDoctrineUnlocksByDoctrineId({ doctrineId: company.doctrineId, rulesetId: activeRuleset.id }))
   }, [companyId])
 
   useEffect(() => {

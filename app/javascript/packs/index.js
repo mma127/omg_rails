@@ -5,16 +5,12 @@ import { Provider } from 'react-redux'
 import axios from "axios";
 import { App } from "../app/App";
 import store from '../app/store'
-import { fetchPlayer } from "../features/player/playerSlice";
-import { fetchActiveCompanies } from "../features/companies/companiesSlice";
-import { fetchDoctrines } from "../features/doctrines/doctrinesSlice";
+import { loadInitialData } from "../features/rulesets/rulesetsSlice";
 
 axios.defaults.headers.common['Accept'] = 'application/json';
 axios.defaults.baseURL = "/api"
 
-store.dispatch(fetchPlayer())
-store.dispatch(fetchActiveCompanies())
-store.dispatch(fetchDoctrines())
+store.dispatch(loadInitialData())
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
