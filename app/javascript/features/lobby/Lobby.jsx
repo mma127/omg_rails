@@ -43,10 +43,6 @@ export const Lobby = () => {
   const currentBattleId = useSelector(selectPlayerCurrentBattleId)
   const activeRuleset = useSelector(selectActiveRuleset)
 
-  if (!activeRuleset) {
-    return
-  }
-
   // Use stateRef to pass the current value of player to the handleReceivedBattlesCable callback. Otherwise the callback
   // method is created with the original null value for player and never updated
   stateRef.current = player
@@ -173,7 +169,7 @@ export const Lobby = () => {
                      severity={snackbarSeverity}
                      content={snackbarContent}/>
       {errorAlert}
-      <LobbyContent rulesetId={activeRuleset.id}/>
+      <LobbyContent/>
     </PageContainer>
   )
 }
