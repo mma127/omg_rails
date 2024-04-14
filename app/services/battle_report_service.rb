@@ -2,7 +2,7 @@ class BattleReportService < ApplicationService
   class BattleReportValidationError < StandardError; end
 
   MINIMUM_ELAPSED = 300.freeze
-  MINIMUM_RANKED_ELAPSED = 1800.freeze
+  MINIMUM_RANKED_ELAPSED = 1200.freeze
   RUBBERBAND_VET = 5.freeze
 
   FINAL = 1.freeze

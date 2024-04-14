@@ -1,4 +1,4 @@
-csv_path = "db/seeds/elo_output_decay.csv"
+csv_path = "db/seeds/elo_output.csv"
 
 hpr = []
 
