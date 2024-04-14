@@ -29,8 +29,7 @@ import {
 } from "../../constants/battles/events";
 import { AlertSnackbar } from "../companies/AlertSnackbar";
 import { PageContainer } from "../../components/PageContainer";
-
-const rulesetId = 1
+import { selectActiveRuleset } from "../rulesets/rulesetsSlice";
 
 export const Lobby = () => {
   // Lobby page container
@@ -42,6 +41,11 @@ export const Lobby = () => {
   const isAuthed = useSelector(selectIsAuthed)
   const player = useSelector(selectPlayer)
   const currentBattleId = useSelector(selectPlayerCurrentBattleId)
+  const activeRuleset = useSelector(selectActiveRuleset)
+
+  if (!activeRuleset) {
+    return
+  }
 
   // Use stateRef to pass the current value of player to the handleReceivedBattlesCable callback. Otherwise the callback
   // method is created with the original null value for player and never updated
@@ -169,7 +173,7 @@ export const Lobby = () => {
                      severity={snackbarSeverity}
                      content={snackbarContent}/>
       {errorAlert}
-      <LobbyContent rulesetId={rulesetId}/>
+      <LobbyContent rulesetId={activeRuleset.id}/>
     </PageContainer>
   )
 }

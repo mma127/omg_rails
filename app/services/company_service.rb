@@ -16,7 +16,7 @@ class CompanyService
     @player = player
   end
 
-  def create_company(doctrine, name)
+  def create_company(doctrine, name, ruleset_id)
     unless can_create_company(doctrine)
       raise CompanyCreationValidationError.new("Player #{@player.id} has too many #{doctrine.faction.side} companies, cannot create another one.")
     end
@@ -26,7 +26,9 @@ class CompanyService
     end
 
     # Get ruleset
-    ruleset = Ruleset.find_by(ruleset_type: Ruleset.ruleset_types[:war], is_active: true)
+    ruleset = Ruleset.find_by!(id: ruleset_id)
+
+    validate_active_ruleset(ruleset)
 
     # Starting vps
     vps = [@player.vps + ruleset.starting_vps, ruleset.max_vps].min
@@ -35,16 +37,16 @@ class CompanyService
       # Create Company entity
       new_company = ActiveCompany.create!(name: name,
                                           uuid: SecureRandom.uuid,
-                                    player: @player,
-                                    doctrine: doctrine,
-                                    faction: doctrine.faction,
-                                    vps_earned: vps,
-                                    vps_current: vps,
-                                    man: ruleset.starting_man,
-                                    mun: ruleset.starting_mun,
-                                    fuel: ruleset.starting_fuel,
-                                    pop: 0,
-                                    ruleset: ruleset
+                                          player: @player,
+                                          doctrine: doctrine,
+                                          faction: doctrine.faction,
+                                          vps_earned: vps,
+                                          vps_current: vps,
+                                          man: ruleset.starting_man,
+                                          mun: ruleset.starting_mun,
+                                          fuel: ruleset.starting_fuel,
+                                          pop: 0,
+                                          ruleset: ruleset
       )
 
       # Create AvailableUnits for the Company
@@ -234,8 +236,8 @@ class CompanyService
           ## Create new Squad records for squads without squad id
           available_unit = available_units_by_id[s[:available_unit_id]]
           squad = Squad.new(company: company, vet: s[:vet], tab_category: s[:tab], uuid: s[:uuid],
-                                  category_position: s[:index], available_unit: available_unit,
-                                  total_model_count: s[:totalModelCount], pop: s[:pop])
+                            category_position: s[:index], available_unit: available_unit,
+                            total_model_count: s[:totalModelCount], pop: s[:pop])
           new_squad_upgrades.concat(build_recursive_squad_upgrades(s, squad))
           new_squads << squad
         else
@@ -332,14 +334,14 @@ class CompanyService
   end
 
   # Recalculates resources remaining for the company based on squads and availability, AND updates the company
-  def recalculate_and_update_resources(company, force_update=false)
+  def recalculate_and_update_resources(company, force_update = false)
     man, mun, fuel, pop = recalculate_resources(company, force_update)
     company.update!(man: man, mun: mun, fuel: fuel, pop: pop)
   end
 
   # Based on squads of the company and ruleset starting resources, determine what resources are left
   # TODO refactor with similar block in #update_company_squads
-  def recalculate_resources(company, force_update=false)
+  def recalculate_resources(company, force_update = false)
     # Index available units by id
     available_units_by_id = company.reload.available_units.index_by(&:id)
     # Index available upgrades by id
@@ -375,6 +377,12 @@ class CompanyService
 
   private
 
+  def validate_active_ruleset(ruleset)
+    unless ruleset.is_active?
+      raise CompanyCreationValidationError.new("Ruleset #{ruleset.name} with id #{ruleset.id} is not active")
+    end
+  end
+
   # A company can be created for a player if they have fewer than the limit of companies for the doctrine's side
   def can_create_company(doctrine)
     side = doctrine.faction.side
@@ -398,14 +406,14 @@ class CompanyService
     uniq_payload_squad_ids = payload_squad_ids.uniq
     unless uniq_payload_squad_ids.size == payload_squad_ids.size
       # Raise validation error if one or more given squad ids are duplicated
-      raise CompanyUpdateValidationError.new("Duplicate squad ids found in payload squad ids: "\
-        "#{payload_squad_ids.group_by { |e| e }.select { |_, v| v.size > 1 }.map(&:first)}")
+      raise CompanyUpdateValidationError.new("Duplicate squad ids found in payload squad ids: " \
+                                               "#{payload_squad_ids.group_by { |e| e }.select { |_, v| v.size > 1 }.map(&:first)}")
     end
 
     unless (payload_squad_ids - existing_squad_ids).size == 0
       # Raise validation error if one or more given squad ids do not belong to the company
-      raise CompanyUpdateValidationError.new("Given squad ids #{payload_squad_ids - existing_squad_ids}"\
-        " that don't exist for the company #{company_id}")
+      raise CompanyUpdateValidationError.new("Given squad ids #{payload_squad_ids - existing_squad_ids}" \
+                                               " that don't exist for the company #{company_id}")
     end
   end
 
@@ -414,14 +422,14 @@ class CompanyService
     uniq_payload_co_offmap_ids = payload_co_offmap_ids.uniq
     unless uniq_payload_co_offmap_ids.size == payload_co_offmap_ids.size
       # Raise validation error if one or more company offmap ids are duplicated
-      raise CompanyUpdateValidationError.new("Duplicate company offmap ids found in payload company offmap ids: "\
-        "#{payload_co_offmap_ids.group_by { |e| e }.select { |_, v| v.size > 1 }.map(&:first)}")
+      raise CompanyUpdateValidationError.new("Duplicate company offmap ids found in payload company offmap ids: " \
+                                               "#{payload_co_offmap_ids.group_by { |e| e }.select { |_, v| v.size > 1 }.map(&:first)}")
     end
 
     unless (payload_co_offmap_ids - existing_co_offmap_ids).size == 0
       # Raise validation error if one or more given company offmap ids do not belong to the company
-      raise CompanyUpdateValidationError.new("Given company offmap ids #{payload_co_offmap_ids - existing_co_offmap_ids}"\
-        " that don't exist for the company #{company_id}")
+      raise CompanyUpdateValidationError.new("Given company offmap ids #{payload_co_offmap_ids - existing_co_offmap_ids}" \
+                                               " that don't exist for the company #{company_id}")
     end
   end
 
@@ -430,14 +438,14 @@ class CompanyService
     uniq_payload_squad_upgrade_ids = payload_squad_upgrade_ids.uniq
     unless uniq_payload_squad_upgrade_ids.size == payload_squad_upgrade_ids.size
       # Raise validation error if one or more squad upgrade ids are duplicated
-      raise CompanyUpdateValidationError.new("Duplicate squad upgrade ids found in payload squad upgrade ids: "\
-        "#{payload_squad_upgrade_ids.group_by { |e| e }.select { |_, v| v.size > 1 }.map(&:first)}")
+      raise CompanyUpdateValidationError.new("Duplicate squad upgrade ids found in payload squad upgrade ids: " \
+                                               "#{payload_squad_upgrade_ids.group_by { |e| e }.select { |_, v| v.size > 1 }.map(&:first)}")
     end
 
     unless (payload_squad_upgrade_ids - existing_squad_upgrade_ids).size == 0
       # Raise validation error if one or more given squad upgrades ids do not belong to the company
-      raise CompanyUpdateValidationError.new("Given squad upgrade ids #{payload_squad_upgrade_ids - existing_squad_upgrade_ids}"\
-        " that don't exist for the company #{company_id}")
+      raise CompanyUpdateValidationError.new("Given squad upgrade ids #{payload_squad_upgrade_ids - existing_squad_upgrade_ids}" \
+                                               " that don't exist for the company #{company_id}")
     end
   end
 
@@ -571,7 +579,7 @@ class CompanyService
   end
 
   # Calculate resources remaining after subtracting the used resources from the company's total starting resources
-  def calculate_remaining_resources(ruleset, company_resource_bonuses, man_new, mun_new, fuel_new, force_update=false)
+  def calculate_remaining_resources(ruleset, company_resource_bonuses, man_new, mun_new, fuel_new, force_update = false)
     available_man, available_mun, available_fuel = get_total_available_resources(ruleset, company_resource_bonuses)
     man_remaining = available_man - man_new
     mun_remaining = available_mun - mun_new
@@ -580,8 +588,8 @@ class CompanyService
     unless (man_remaining >= 0 && mun_remaining >= 0 && fuel_remaining >= 0) || force_update
       # Raise validation error if the new squads' cost is greater in one or more resource than the ruleset's starting resources
       # Skip validation error if we are forcing the update even with negative resource amounts. Currently used for resource bonuses
-      raise CompanyUpdateValidationError.new("Invalid squad update, negative resource balance found: #{man_remaining} manpower"\
-        ", #{mun_remaining} munitions, #{fuel_remaining} fuel")
+      raise CompanyUpdateValidationError.new("Invalid squad update, negative resource balance found: #{man_remaining} manpower" \
+                                               ", #{mun_remaining} munitions, #{fuel_remaining} fuel")
     end
     [man_remaining, mun_remaining, fuel_remaining]
   end
@@ -595,8 +603,8 @@ class CompanyService
         unless pop == 0 || (MIN_POP_PER_PLATOON <= pop && pop <= MAX_POP_PER_PLATOON)
           # Raise validation error if a platoon (squads within a tab and index) has either less pop than the minimum or
           # more pop than the maximum allowed
-          raise CompanyUpdateValidationError.new("Platoon at [#{tab} #{index}] has #{pop} pop, "\
-            "must be between #{MIN_POP_PER_PLATOON} and #{MAX_POP_PER_PLATOON}, inclusive")
+          raise CompanyUpdateValidationError.new("Platoon at [#{tab} #{index}] has #{pop} pop, " \
+                                                   "must be between #{MIN_POP_PER_PLATOON} and #{MAX_POP_PER_PLATOON}, inclusive")
         end
       end
     end
@@ -625,8 +633,8 @@ class CompanyService
       #   To validate we take the inverse, -1, and compare against the available number. For cases like this where the payload count is < existing, we should
       #   always pass the validation as we are adding to the available number for the unit
       unless -availability_delta <= available_number
-        raise CompanyUpdateValidationError.new("Insufficient availability to create squads for available unit #{available_unit_id} in company"\
-          " #{company.id}: Existing count #{existing_count}, payload count #{payload_unit_count}, available number #{available_number}")
+        raise CompanyUpdateValidationError.new("Insufficient availability to create squads for available unit #{available_unit_id} in company" \
+                                                 " #{company.id}: Existing count #{existing_count}, payload count #{payload_unit_count}, available number #{available_number}")
       end
 
       # Save the delta so we can update it later after we finish validating availability
@@ -661,8 +669,8 @@ class CompanyService
       available_number = available_offmaps_by_id[available_offmap_id].available
 
       unless -availability_delta <= available_number
-        raise CompanyUpdateValidationError.new("Insufficient availability to create squads for available offmap #{available_offmap_id} in company"\
-          " #{company.id}: Existing count #{existing_count}, payload count #{payload_offmap_count}, available number #{available_number}")
+        raise CompanyUpdateValidationError.new("Insufficient availability to create squads for available offmap #{available_offmap_id} in company" \
+                                                 " #{company.id}: Existing count #{existing_count}, payload count #{payload_offmap_count}, available number #{available_number}")
       end
 
       # save the delta to update later
@@ -712,21 +720,21 @@ class CompanyService
       upgrade_id_to_count[upgrade.id] += 1
 
       unless available_upgrade.max.blank? || upgrade_id_to_count[upgrade.id] <= available_upgrade.max
-        raise CompanyUpdateValidationError.new("Found #{upgrade_id_to_count[upgrade.id]} uses of available upgrade "\
-          "#{available_upgrade_id} with max #{available_upgrade.max}, for company #{company_id} update and squad "\
-          "available unit id #{payload_squad[:available_unit_id]}")
+        raise CompanyUpdateValidationError.new("Found #{upgrade_id_to_count[upgrade.id]} uses of available upgrade " \
+                                                 "#{available_upgrade_id} with max #{available_upgrade.max}, for company #{company_id} update and squad " \
+                                                 "available unit id #{payload_squad[:available_unit_id]}")
       end
 
       unless slots_used <= unit.upgrade_slots
-        raise CompanyUpdateValidationError.new("Found #{slots_used} upgrade slots used for unit #{unit.id} with "\
-          "#{unit.upgrade_slots} upgrade slots, for company #{company_id} update and squad "\
-          "available unit id #{payload_squad[:available_unit_id]}")
+        raise CompanyUpdateValidationError.new("Found #{slots_used} upgrade slots used for unit #{unit.id} with " \
+                                                 "#{unit.upgrade_slots} upgrade slots, for company #{company_id} update and squad " \
+                                                 "available unit id #{payload_squad[:available_unit_id]}")
       end
 
       unless unitwide_slots_used <= unit.unitwide_upgrade_slots
-        raise CompanyUpdateValidationError.new("Found #{unitwide_slots_used} unitwide upgrade slots used for unit "\
-          "#{unit.id} with #{unit.unitwide_upgrade_slots} unitwide upgrade slots, for company #{company_id} update and"\
-          " squad available unit id #{payload_squad[:available_unit_id]}")
+        raise CompanyUpdateValidationError.new("Found #{unitwide_slots_used} unitwide upgrade slots used for unit " \
+                                                 "#{unit.id} with #{unit.unitwide_upgrade_slots} unitwide upgrade slots, for company #{company_id} update and" \
+                                                 " squad available unit id #{payload_squad[:available_unit_id]}")
       end
     end
   end

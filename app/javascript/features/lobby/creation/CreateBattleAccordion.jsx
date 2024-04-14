@@ -8,10 +8,9 @@ import { fetchActiveBattles } from "../lobbySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchActiveCompanies } from "../../companies/companiesSlice";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
+import { selectActiveRuleset } from "../../rulesets/rulesetsSlice";
 
-const rulesetId = 1
-
-export const CreateBattleAccordion = ({rulesetId}) => {
+export const CreateBattleAccordion = ({}) => {
   // Create battle accordion expansion control
   const [isExpanded, setIsExpanded] = React.useState(false);
   const isAuthed = useSelector(selectIsAuthed)
@@ -42,7 +41,7 @@ export const CreateBattleAccordion = ({rulesetId}) => {
         <Button variant="contained" color="secondary" disabled={isExpanded || isDisabled}>Create New Battle</Button>
       </AccordionSummary>
       <AccordionDetails>
-        <CreateBattleForm rulesetId={rulesetId} onCreateCallback={onCreateCallback} />
+        <CreateBattleForm onCreateCallback={onCreateCallback} />
       </AccordionDetails>
     </Accordion>
   )

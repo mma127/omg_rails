@@ -8,6 +8,7 @@ import * as constants from '../../../constants/doctrines'
 import { makeStyles } from "@mui/styles";
 import { createCompany } from "../companiesSlice";
 import { ErrorTypography } from "../../../components/ErrorTypography";
+import { selectActiveRuleset } from "../../rulesets/rulesetsSlice";
 
 
 const reviewStep = "review"
@@ -31,7 +32,7 @@ export const CreateCompaniesForm = () => {
 
   const doctrines = useSelector(selectAllDoctrines)
   const creationError = useSelector(state => state.companies.creatingError)
-
+  const activeRuleset = useSelector(selectActiveRuleset)
 
   const setCompany = ({ name, doctrine }) => {
     if (currentStep === constants.ALLIED_SIDE) {
@@ -57,13 +58,13 @@ export const CreateCompaniesForm = () => {
     const axisDoctrine = doctrines.find(d => d.name === axisCompany.doctrine)
     dispatch(createCompany({
       name: alliedCompany.name,
-      doctrine: alliedCompany.doctrine,
-      doctrineId: alliedDoctrine.id
+      doctrineId: alliedDoctrine.id,
+      rulesetId: activeRuleset.id
     }))
     dispatch(createCompany({
       name: axisCompany.name,
-      doctrine: axisCompany.doctrine,
-      doctrineId: axisDoctrine.id
+      doctrineId: axisDoctrine.id,
+      rulesetId: activeRuleset.id
     }))
   }
 

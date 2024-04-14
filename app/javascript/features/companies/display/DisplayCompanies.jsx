@@ -12,6 +12,7 @@ import { SnapshotCompanies } from "./SnapshotCompanies";
 import { AlertSnackbar } from "../AlertSnackbar";
 import { clearNotifySnackbar } from "../manage/units/squadsSlice";
 import { clearNotifySnackbarSnapshot } from "../snapshotCompaniesSlice";
+import { selectActiveRuleset } from "../../rulesets/rulesetsSlice";
 
 /**
  * Expect there will be up to 4 companies, 2 allied + 2 axis
@@ -48,6 +49,7 @@ export const DisplayCompanies = () => {
   const dispatch = useDispatch()
   const companies = useSelector(selectAllCompanies)
   const doctrines = useSelector(selectAllDoctrines)
+  const activeRuleset = useSelector(selectActiveRuleset)
 
   const snapshotDeletingError = useSelector(state => state.companies.deletingError)
 
@@ -71,8 +73,8 @@ export const DisplayCompanies = () => {
     const doctrine = doctrines.find(d => d.name === company.doctrine)
     const companyPayload = {
       name: company.name,
-      doctrine: company.doctrine,
-      doctrineId: doctrine.id
+      doctrineId: doctrine.id,
+      rulesetId: activeRuleset.id
     }
     dispatch(createCompany(companyPayload))
   }
