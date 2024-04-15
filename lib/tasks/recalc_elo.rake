@@ -1,0 +1,3 @@
+task recalc_elo: :environment do
+  Ratings::HistoricalBattlePlayerRatingsService.new.recalculate_player_ratings_from_historical
+end

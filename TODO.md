@@ -48,3 +48,7 @@
 3. War reset admin page
 4. Clear company related slices when component closes for CompanyManager, SnapshotCompanyView
 5. Add authorization for company/player specific endpoints
+
+### Reset Ratings
+1. `Ratings::HistoricalPlayerRatingsService.create_or_update` to reseed HPR with updated elo output csv
+2. 

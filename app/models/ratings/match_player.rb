@@ -1,11 +1,12 @@
 module Ratings
   class MatchPlayer
-    attr_accessor :name, :side, :ts_rating, :last_played
-    def initialize(name, side, ts_rating, last_played)
+    attr_accessor :name, :side, :ts_rating, :last_played, :player_id
+    def initialize(name, side, ts_rating, last_played, player_id = nil)
       @name = name
       @side = side
       @ts_rating = ts_rating
       @last_played = last_played
+      @player_id = player_id
     end
 
     def weeks_since_last_played(now)
