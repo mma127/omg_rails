@@ -16,7 +16,8 @@
 #
 # Indexes
 #
-#  index_historical_player_ratings_on_player_id  (player_id)
+#  index_historical_player_ratings_on_player_id    (player_id)
+#  index_historical_player_ratings_on_player_name  (player_name) UNIQUE
 #
 class HistoricalPlayerRating < ApplicationRecord
   belongs_to :player, inverse_of: :historical_player_ratings, optional: true

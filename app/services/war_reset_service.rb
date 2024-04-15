@@ -4,8 +4,8 @@ class WarResetService < ApplicationService
   # This method orchestrates all required data seeding in order, particularly for data that requires a ruleset association
   def self.reset_ruleset(ruleset_type, name)
     ActiveRecord::Base.transaction do
-      old_ruleset = Ruleset.find_by!(ruleset_type: ruleset_type, is_active: true)
-      delete_ruleset_specific_records(old_ruleset)
+      old_ruleset = Ruleset.find_by(ruleset_type: ruleset_type, is_active: true)
+      delete_ruleset_specific_records(old_ruleset) if old_ruleset.present?
 
       new_ruleset = Seeds::RulesetSeeder.create_new_ruleset(ruleset_type, name)
       Seeds::FactionsSeeder.update_or_create_all # Also creates faction restrictions
