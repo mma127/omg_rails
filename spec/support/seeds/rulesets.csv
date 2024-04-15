@@ -1,0 +1,2 @@
+type,description,starting_man,starting_mun,starting_fuel,starting_vps,max_vps,max_resource_bonuses
+war,"OMG standard WAR format",9000,1900,1400,20,25,5

@@ -1,0 +1,13 @@
+name,display_name,const_name,internal_name,faction_name,restriction_name,restriction_description
+infantry,Infantry,OMGUPG.ALLY.INFANTRYDOC,ALLY.DOC.Infantry,americans,Infantry doctrine,For the Infantry doctrine
+airborne,Airborne,OMGUPG.ALLY.AIRBORNEDOC,ALLY.DOC.Airborne,americans,Airborne doctrine,For the Airborne doctrine
+armor,Armor,OMGUPG.ALLY.ARMOURDOC,ALLY.DOC.Armor,americans,Armor doctrine,For the Armor doctrine
+defensive,Defensive,OMGUPG.AXIS.DEFENSEDOC,AXIS.DOC.Defense,wehrmacht,Defensive doctrine,For the Defensive doctrine
+terror,Terror,OMGUPG.AXIS.TERRORDOC,AXIS.DOC.Terror,wehrmacht,Terror doctrine,For the Terror doctrine
+blitz,Blitzkrieg,OMGUPG.AXIS.BLITZDOC,AXIS.DOC.Blitz,wehrmacht,Blitzkrieg doctrine,For the Blitzkrieg doctrine
+tank_hunters,Tank Hunters,OMGUPG.PE.TANKHUNTERDOC,PE.DOC.tank_hunters,panzer_elite,Tank Hunters doctrine,For the Tank Hunters doctrine
+scorched_earth,Scorched Earth,OMGUPG.PE.SCORCHEDDOC,PE.DOC.scorched_earth,panzer_elite,Scorched Earth doctrine,For the Scorched Earth doctrine
+luftwaffe,Luftwaffe,OMGUPG.PE.LUFTDOC,PE.DOC.luftwaffe,panzer_elite,Luftwaffe doctrine,For the Luftwaffe doctrine
+engineers,Engineers,OMGUPG.CMW.ROYALENGIESDOC,CMW.DOC.engineers,british,Royal Engineers doctrine,For the Royal Engineers doctrine
+canadians,Canadians,OMGUPG.CMW.ARTYDOC,CMW.DOC.artillery,british,Royal Canadian doctrine,For the Royal Canadians doctrine
+commandos,Commandos,OMGUPG.CMW.COMMANDODOC,CMW.DOC.commandos,british,Commandos doctrine,For the Commandos doctrine

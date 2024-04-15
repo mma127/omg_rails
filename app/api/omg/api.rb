@@ -38,6 +38,7 @@ module OMG
     mount Restrictions
     mount Chat
     mount Leaderboard
+    mount Rulesets
 
     route :any, '*path' do
       error! "Not implemented", 404

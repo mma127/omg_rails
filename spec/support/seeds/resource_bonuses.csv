@@ -1,0 +1,4 @@
+name,resource,man,mun,fuel
+Manpower Bonus,man,450,-45,-40
+Munitions Bonus,mun,-125,180,-40
+Fuel Bonus,fuel,-90,-30,160

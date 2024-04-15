@@ -12,8 +12,8 @@ export const fetchDoctrines = createAsyncThunk("doctrines/fetchDoctrines", async
 
 export const fetchDoctrineUnlocksByDoctrineId = createAsyncThunk(
   "doctrineUnlocks/fetchDoctrineUnlocksByDoctrineId",
-  async ({ doctrineId }) => {
-    const response = await axios.get(`/doctrines/${doctrineId}/unlocks`)
+  async ({ doctrineId, rulesetId }) => {
+    const response = await axios.get(`/doctrines/${doctrineId}/unlocks?rulesetId=${rulesetId}`)
     return response.data
   },
   {

@@ -26,7 +26,7 @@ class WarStat
   end
 
   def ratings_avg
-    @_ratings_avg ||= (@ratings_sum / @ratings_count)
+    @_ratings_avg ||= @ratings_count.positive? ? (@ratings_sum / @ratings_count) : 0
   end
 
   def win_rate

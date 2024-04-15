@@ -14,8 +14,8 @@
 #
 # Indexes
 #
-#  index_unlocks_on_name        (name) UNIQUE
-#  index_unlocks_on_ruleset_id  (ruleset_id)
+#  index_unlocks_on_name_and_ruleset_id  (name,ruleset_id) UNIQUE
+#  index_unlocks_on_ruleset_id           (ruleset_id)
 #
 # Foreign Keys
 #

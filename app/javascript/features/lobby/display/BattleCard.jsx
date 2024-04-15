@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import {
-  Alert, AlertTitle,
-  Box,
-  Button,
-  Card,
-  Grid,
-  Typography
-} from "@mui/material";
+import React from 'react'
+import { Alert, AlertTitle, Box, Card, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useDispatch, useSelector } from "react-redux";
-import { createBattle, selectBattleById } from "../lobbySlice";
-import { ErrorTypography } from "../../../components/ErrorTypography";
-import { selectIsAuthed, selectPlayer } from "../../player/playerSlice";
+import { useSelector } from "react-redux";
+import { selectBattleById } from "../lobbySlice";
+import { selectPlayer } from "../../player/playerSlice";
 import { BattleCardPlayer } from "./BattleCardPlayer";
 import { nanoid } from "@reduxjs/toolkit";
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
@@ -111,9 +103,8 @@ const addPlaceholders = (battlePlayers, size) => {
   return battlePlayersCopy
 }
 
-export const BattleCard = ({ id, rulesetId }) => {
+export const BattleCard = ({ id }) => {
   const classes = useStyles()
-  const isAuthed = useSelector(selectIsAuthed)
   const player = useSelector(selectPlayer)
   const battle = useSelector(state => selectBattleById(state, id))
   const size = battle.size
@@ -176,14 +167,14 @@ export const BattleCard = ({ id, rulesetId }) => {
   let optimumBalance = false;
   const k = axisPlayers.reduce((accumulator, currentValue) => accumulator + currentValue.teamBalance, 0)
   if (k === size || k === size * 2) {
-    optimumBalance = false;
+    optimumBalance = true;
   }
 
   const calculatedBalanceState = balanceState(battle.eloDifference)
 
   let optimumBalanceContent
   let eloDiffContent
-  if (!optimumBalance && isFull) {
+  if (!optimumBalance && Math.abs(battle.eloDifference) > 50 && isFull) {
     optimumBalanceContent = (
       <Box className={classes.balanceAlertContainer}>
         <Alert severity="warning" className={classes.balanceAlert}>

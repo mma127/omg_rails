@@ -14,8 +14,8 @@
 #
 # Indexes
 #
-#  index_unlocks_on_name        (name) UNIQUE
-#  index_unlocks_on_ruleset_id  (ruleset_id)
+#  index_unlocks_on_name_and_ruleset_id  (name,ruleset_id) UNIQUE
+#  index_unlocks_on_ruleset_id           (ruleset_id)
 #
 # Foreign Keys
 #
@@ -33,9 +33,8 @@ class Unlock < ApplicationRecord
   has_many :restriction_upgrades, through: :restriction
   has_many :restriction_offmaps, through: :restriction
 
-  validates_presence_of :name
-  validates_presence_of :display_name
-  validates_uniqueness_of :name
+  validates :name, presence: true, uniqueness: { scope: :ruleset_id }
+  validates :display_name, presence: true
 
   def entity
     Entity.new(self)

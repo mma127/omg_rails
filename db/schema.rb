@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_15_013722) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -269,6 +270,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.index ["doctrine_unlock_id"], name: "index_company_unlocks_on_doctrine_unlock_id"
   end
 
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
   create_table "doctrine_unlocks", comment: "Associates doctrines to unlocks", force: :cascade do |t|
     t.bigint "doctrine_id"
     t.bigint "unlock_id"
@@ -281,7 +285,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.boolean "disabled", default: false, null: false, comment: "Is this doctrine unlock disabled?"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["doctrine_id", "tree", "branch", "row"], name: "index_doctrine_unlocks_on_doctrine_tree", unique: true
+    t.index ["doctrine_id", "tree", "branch", "row", "ruleset_id"], name: "index_doctrine_unlocks_on_doctrine_tree", unique: true
     t.index ["doctrine_id", "unlock_id"], name: "index_doctrine_unlocks_on_doctrine_id_and_unlock_id", unique: true
     t.index ["doctrine_id"], name: "index_doctrine_unlocks_on_doctrine_id"
     t.index ["ruleset_id"], name: "index_doctrine_unlocks_on_ruleset_id"
@@ -349,6 +353,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["player_id"], name: "index_historical_player_ratings_on_player_id"
+    t.index ["player_name"], name: "index_historical_player_ratings_on_player_name", unique: true
   end
 
   create_table "offmaps", force: :cascade do |t|
@@ -420,7 +425,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.integer "fuel", default: 0, null: false, comment: "Fuel change"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["resource"], name: "index_resource_bonuses_on_resource", unique: true
+    t.index ["resource", "ruleset_id"], name: "index_resource_bonuses_on_resource_and_ruleset_id", unique: true
     t.index ["ruleset_id"], name: "index_resource_bonuses_on_ruleset_id"
   end
 
@@ -659,7 +664,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "ruleset_id", null: false
-    t.index ["name"], name: "index_unlocks_on_name", unique: true
+    t.index ["name", "ruleset_id"], name: "index_unlocks_on_name_and_ruleset_id", unique: true
     t.index ["ruleset_id"], name: "index_unlocks_on_ruleset_id"
   end
 
@@ -697,6 +702,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.string "type", null: false, comment: "Type of Upgrade"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_upgrades_on_name", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

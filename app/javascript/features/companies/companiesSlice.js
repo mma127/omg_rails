@@ -20,9 +20,9 @@ const initialState = companiesAdapter.getInitialState({
  */
 export const fetchActiveCompanies = createAsyncThunk(
   "companies/fetchActiveCompanies",
-  async () => {
+  async (rulesetId) => {
     try {
-      const response = await axios.get("/companies/active")
+      const response = await axios.get(`/companies/active?rulesetId=${rulesetId}`)
       return response.data
     } catch (err) {
       return rejectWithValue(err.response.data)
@@ -46,9 +46,9 @@ export const fetchCompanyById = createAsyncThunk(
 
 export const createCompany = createAsyncThunk(
   "companies/createCompany",
-  async ({ name, doctrineId }, { rejectWithValue }) => {
+  async ({ name, doctrineId, rulesetId }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/companies", { name, doctrineId })
+      const response = await axios.post("/companies", { name, doctrineId, rulesetId })
       return response.data
     } catch (err) {
       return rejectWithValue(err.response.data)

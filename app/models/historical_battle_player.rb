@@ -36,4 +36,8 @@ class HistoricalBattlePlayer < ApplicationRecord
   belongs_to :faction
   belongs_to :doctrine
   belongs_to :ruleset
+
+  def side
+    faction.sideds
+  end
 end
