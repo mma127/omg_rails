@@ -38,6 +38,6 @@ class HistoricalBattlePlayer < ApplicationRecord
   belongs_to :ruleset
 
   def side
-    faction.side
+    faction.sides
   end
 end
