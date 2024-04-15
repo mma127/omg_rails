@@ -470,6 +470,7 @@ DEPENDENCIES
   rails (~> 7.0.8.1, >= 7.0.1)
   rails-data-migrations
   redis (~> 4.0)
+  rexml
   rspec
   rspec-rails
   rspec_junit_formatter
