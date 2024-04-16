@@ -48,3 +48,9 @@
 3. War reset admin page
 4. Clear company related slices when component closes for CompanyManager, SnapshotCompanyView
 5. Add authorization for company/player specific endpoints
+
+### Ruby 3
+We currently cannot easily upgrade to Ruby 3 as CircleCI does not have a ruby convenience image with
+node 16 for any Ruby 3 image. Using node 18 causes an issue with webpack 4 due to an openssl bug. We should 
+try to either keep using node 16 and add manual steps in the CI config to install node 16 on a clean ruby image
+without node or browsers, or upgrade webpacker to shakapacker/jsbundling.
