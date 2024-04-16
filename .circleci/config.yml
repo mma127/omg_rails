@@ -1,5 +1,5 @@
 version: 2.1 # Use 2.1 to enable using orbs and other features.
- 
+
 # Declare the orbs that we'll use in our config.
 # read more about orbs: https://circleci.com/docs/2.0/orb-intro/
 orbs:
@@ -22,14 +22,14 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
           cache-key: "yarn.lock"
- 
+
   test:  # our next job, called "test"
     # we run "parallel job containers" to enable speeding up our tests;
     # this splits our tests across multiple containers.
     parallelism: 3
     # here we set TWO docker images.
     docker:
-      - image: cimg/2.7.5-node # this is our primary docker image, where step commands run.
+      - image: cimg/ruby:2.7.5-node # this is our primary docker image, where step commands run.
         auth:
           username: temeraire02
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
@@ -39,7 +39,7 @@ jobs:
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
         environment: # add POSTGRES environment variables.
           POSTGRES_USER: root
-#          POSTGRES_USER: circleci-demo-ruby
+          #          POSTGRES_USER: circleci-demo-ruby
           POSTGRES_DB: omg_test
           POSTGRES_PASSWORD: "omgtestpassword"
     # environment variables specific to Ruby/Rails, applied to the primary container.
