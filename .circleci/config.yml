@@ -15,10 +15,6 @@ jobs:
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
       - checkout # pull down our git code.
-      - node/install:
-          install-yarn: true
-          yarn-version: '1.22.19'
-          node-version: '16.20.2'
       - ruby/install-deps # use the ruby orb to install dependencies
       # use the node orb to install our packages
       # specifying that we use `yarn` and to cache dependencies with `yarn.lock`
@@ -57,10 +53,6 @@ jobs:
     # A series of steps to run, some are similar to those in "build".
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
-          yarn-version: '1.22.19'
-          node-version: '16.20.2'
       - ruby/install-deps
       - node/install-packages:
           pkg-manager: yarn
