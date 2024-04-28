@@ -2,7 +2,7 @@ class WarResetService < ApplicationService
 
   # IMPORTANT: Use this method to conduct a war reset.
   # This method orchestrates all required data seeding in order, particularly for data that requires a ruleset association
-  def self.reset_ruleset(ruleset_type, name)
+  def self.reset_ruleset(ruleset_type, name, upload_stats: false)
     ActiveRecord::Base.transaction do
       old_ruleset = Ruleset.find_by(ruleset_type: ruleset_type, is_active: true)
       delete_ruleset_specific_records(old_ruleset) if old_ruleset.present?
@@ -20,6 +20,10 @@ class WarResetService < ApplicationService
 
       Seeds::RestrictionUnitsSeeder.new(new_ruleset).create_for_ruleset # Also creates unit swaps
       Seeds::RestrictionUpgradesSeeder.new(new_ruleset).create_for_ruleset # Also creates upgrade swaps
+
+      if upload_stats
+        Seeds::SgaStatsSeeder.new(new_ruleset).create_for_ruleset
+      end
     end
   end
 

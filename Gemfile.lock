@@ -186,6 +186,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.2)
+    json (2.7.2)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
     listen (3.9.0)
@@ -453,6 +454,7 @@ DEPENDENCIES
   grape_on_rails_routes
   http
   jbuilder (~> 2.7)
+  json
   jsonapi-serializer
   listen (~> 3.3)
   net-http (~> 0.4.1)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_28_170347) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_28_185122) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -604,6 +604,28 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_28_170347) do
     t.index ["ruleset_id"], name: "index_stats_units_on_ruleset_id"
   end
 
+  create_table "stats_upgrades", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "reference", null: false, comment: "Attrib reference string, a unique identifier"
+    t.string "const_name", comment: "SCAR const string, optional"
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ruleset_id", "const_name"], name: "index_stats_upgrades_on_ruleset_id_and_const_name", unique: true, where: "(const_name IS NOT NULL)"
+    t.index ["ruleset_id", "reference", "const_name"], name: "index_stats_upgrades_on_ruleset_id_and_reference_and_const_name", unique: true
+    t.index ["ruleset_id"], name: "index_stats_upgrades_on_ruleset_id"
+  end
+
+  create_table "stats_weapons", comment: "Table for entity level stats, expect unique by reference", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "reference", null: false, comment: "Attrib reference string, a unique identifier"
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ruleset_id", "reference"], name: "index_stats_weapons_on_ruleset_id_and_reference", unique: true
+    t.index ["ruleset_id"], name: "index_stats_weapons_on_ruleset_id"
+  end
+
   create_table "transport_allowed_units", comment: "Association of transport units and the units they are allowed to transport", force: :cascade do |t|
     t.bigint "transport_id", null: false
     t.bigint "allowed_unit_id", null: false
@@ -786,6 +808,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_28_170347) do
   add_foreign_key "squads", "companies"
   add_foreign_key "stats_entities", "rulesets"
   add_foreign_key "stats_units", "rulesets"
+  add_foreign_key "stats_upgrades", "rulesets"
+  add_foreign_key "stats_weapons", "rulesets"
   add_foreign_key "transport_allowed_units", "units", column: "allowed_unit_id"
   add_foreign_key "transport_allowed_units", "units", column: "transport_id"
   add_foreign_key "transported_squads", "squads", column: "embarked_squad_id"
