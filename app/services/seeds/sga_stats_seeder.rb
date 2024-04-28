@@ -8,6 +8,7 @@ module Seeds
     UPGRADES_JSON_FILENAME = 'lib/assets/stats/upgrades.json'.freeze
     SLOT_ITEMS_JSON_FILENAME = 'lib/assets/stats/slot_items.json'.freeze
     DOC_MARKERS_JSON_FILENAME = 'lib/assets/stats/docmarkers.json'.freeze
+    ABILITIES_JSON_FILENAME = 'lib/assets/stats/abilities.json'.freeze
 
     def initialize(ruleset)
       @ruleset = ruleset
@@ -36,6 +37,8 @@ module Seeds
       StatsWeapon.where(ruleset_id: @ruleset.id).destroy_all
       StatsUpgrade.where(ruleset_id: @ruleset.id).destroy_all
       StatsSlotItem.where(ruleset_id: @ruleset.id).destroy_all
+      StatsDocMarker.where(ruleset_id: @ruleset.id).destroy_all
+      StatsAbility.where(ruleset_id: @ruleset.id).destroy_all
     end
 
     def create_stats_units_for_ruleset
@@ -138,7 +141,19 @@ module Seeds
     end
 
     def create_stats_abilities_for_ruleset
-
+      file = File.read(ABILITIES_JSON_FILENAME)
+      data_hash = JSON.parse(file)
+      stats_abilities = []
+      data_hash.each do |value|
+        stats_abilities << StatsAbility.new(
+          ruleset_id: @ruleset.id,
+          reference: value['reference'],
+          data: value
+        )
+      end
+      StatsAbility.import! stats_abilities
+      Rails.logger.info("Loaded #{stats_abilities.size} StatsAbilities for ruleset #{@ruleset.id}")
+      puts "Loaded #{stats_abilities.size} StatsAbilities for ruleset #{@ruleset.id}"
     end
 
     def upgrade_const_name(upgrade)

@@ -22,4 +22,5 @@
 class StatsDocMarker < ApplicationRecord
   belongs_to :ruleset
 
+  validates :reference, presence: true, uniqueness: true
 end
