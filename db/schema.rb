@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_28_185122) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_28_233217) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -592,6 +592,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_28_185122) do
     t.index ["ruleset_id"], name: "index_stats_entities_on_ruleset_id"
   end
 
+  create_table "stats_slot_items", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "reference", null: false, comment: "Attrib reference string, a unique identifier"
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ruleset_id", "reference"], name: "index_stats_slot_items_on_ruleset_id_and_reference", unique: true
+    t.index ["ruleset_id"], name: "index_stats_slot_items_on_ruleset_id"
+  end
+
   create_table "stats_units", comment: "Table for squad level stats, allows duplicate references as multiple const_names may refer to the same reference", force: :cascade do |t|
     t.bigint "ruleset_id", null: false
     t.string "reference", null: false, comment: "Attrib reference string"
@@ -807,6 +817,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_28_185122) do
   add_foreign_key "squads", "available_units"
   add_foreign_key "squads", "companies"
   add_foreign_key "stats_entities", "rulesets"
+  add_foreign_key "stats_slot_items", "rulesets"
   add_foreign_key "stats_units", "rulesets"
   add_foreign_key "stats_upgrades", "rulesets"
   add_foreign_key "stats_weapons", "rulesets"

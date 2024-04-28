@@ -6,7 +6,7 @@ module Seeds
     ENTITIES_JSON_FILENAME = 'lib/assets/stats/entities.json'.freeze
     WEAPONS_JSON_FILENAME = 'lib/assets/stats/weapons.json'.freeze
     UPGRADES_JSON_FILENAME = 'lib/assets/stats/upgrades.json'.freeze
-
+    SLOT_ITEMS_JSON_FILENAME = 'lib/assets/stats/slot_items.json'.freeze
 
     def initialize(ruleset)
       @ruleset = ruleset
@@ -20,6 +20,10 @@ module Seeds
         create_stats_entities_for_ruleset
         create_stats_weapons_for_ruleset
         create_stats_upgrades_for_ruleset
+
+        create_stats_slot_items_for_ruleset
+        create_stats_doc_markers_for_ruleset
+        create_stats_abilities_for_ruleset
       end
     end
 
@@ -30,6 +34,7 @@ module Seeds
       StatsEntity.where(ruleset_id: @ruleset.id).destroy_all
       StatsWeapon.where(ruleset_id: @ruleset.id).destroy_all
       StatsUpgrade.where(ruleset_id: @ruleset.id).destroy_all
+      StatsSlotItem.where(ruleset_id: @ruleset.id).destroy_all
     end
 
     def create_stats_units_for_ruleset
@@ -96,6 +101,30 @@ module Seeds
       StatsUpgrade.import! stats_upgrades
       Rails.logger.info("Loaded #{stats_upgrades.size} StatsUpgrades for ruleset #{@ruleset.id}")
       puts "Loaded #{stats_upgrades.size} StatsUpgrades for ruleset #{@ruleset.id}"
+    end
+
+    def create_stats_slot_items_for_ruleset
+      file = File.read(SLOT_ITEMS_JSON_FILENAME)
+      data_hash = JSON.parse(file)
+      stats_slot_items = []
+      data_hash.each do |value|
+        stats_slot_items << StatsSlotItem.new(
+          ruleset_id: @ruleset.id,
+          reference: value['reference'],
+          data: value
+        )
+      end
+      StatsSlotItem.import! stats_slot_items
+      Rails.logger.info("Loaded #{stats_slot_items.size} StatsSlotItems for ruleset #{@ruleset.id}")
+      puts "Loaded #{stats_slot_items.size} StatsSlotItems for ruleset #{@ruleset.id}"
+    end
+
+    def create_stats_doc_markers_for_ruleset
+
+    end
+
+    def create_stats_abilities_for_ruleset
+
     end
 
     def upgrade_const_name(upgrade)
