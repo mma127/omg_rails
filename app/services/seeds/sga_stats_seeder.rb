@@ -7,6 +7,7 @@ module Seeds
     WEAPONS_JSON_FILENAME = 'lib/assets/stats/weapons.json'.freeze
     UPGRADES_JSON_FILENAME = 'lib/assets/stats/upgrades.json'.freeze
     SLOT_ITEMS_JSON_FILENAME = 'lib/assets/stats/slot_items.json'.freeze
+    DOC_MARKERS_JSON_FILENAME = 'lib/assets/stats/docmarkers.json'.freeze
 
     def initialize(ruleset)
       @ruleset = ruleset
@@ -120,7 +121,20 @@ module Seeds
     end
 
     def create_stats_doc_markers_for_ruleset
-
+      file = File.read(DOC_MARKERS_JSON_FILENAME)
+      data_hash = JSON.parse(file)
+      stats_doc_markers = []
+      data_hash.each do |key, value|
+        stats_doc_markers << StatsDocMarker.new(
+          ruleset_id: @ruleset.id,
+          reference: value['value'],
+          const_name: key,
+          faction: value['faction']
+        )
+      end
+      StatsDocMarker.import! stats_doc_markers
+      Rails.logger.info("Loaded #{stats_doc_markers.size} StatsDocMarkers for ruleset #{@ruleset.id}")
+      puts "Loaded #{stats_doc_markers.size} StatsDocMarkers for ruleset #{@ruleset.id}"
     end
 
     def create_stats_abilities_for_ruleset

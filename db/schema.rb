@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_28_233217) do
+ActiveRecord::Schema[7.0].define(version: 2024_04_28_233713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -582,6 +582,17 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_28_233217) do
     t.index ["uuid"], name: "index_squads_on_uuid", unique: true
   end
 
+  create_table "stats_doc_markers", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "const_name", null: false
+    t.string "reference", null: false
+    t.string "faction", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ruleset_id", "reference"], name: "index_stats_doc_markers_on_ruleset_id_and_reference", unique: true
+    t.index ["ruleset_id"], name: "index_stats_doc_markers_on_ruleset_id"
+  end
+
   create_table "stats_entities", comment: "Table for entity level stats, no const name but expect unique by reference", force: :cascade do |t|
     t.bigint "ruleset_id", null: false
     t.string "reference", null: false, comment: "Attrib reference string, a unique identifier"
@@ -816,6 +827,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_28_233217) do
   add_foreign_key "squad_upgrades", "squads"
   add_foreign_key "squads", "available_units"
   add_foreign_key "squads", "companies"
+  add_foreign_key "stats_doc_markers", "rulesets"
   add_foreign_key "stats_entities", "rulesets"
   add_foreign_key "stats_slot_items", "rulesets"
   add_foreign_key "stats_units", "rulesets"
