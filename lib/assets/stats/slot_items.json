@@ -1,0 +1,1645 @@
+[
+    {
+        "reference": "slot_item/commonwealth_bren_mark_3",
+        "drop_rate": "0.25",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/machine_gun/light_machine_gun/bren_mark_3_lmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_mortar_flare",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/commonwealth_smoke_grenade",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/single_fire/rifle/cw_lee_enfield_rifle_grenade_smoke",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_smoke_launcher_item",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/tank_gun/villers_bocage_smoke_launcher_weapon",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_halftrack_flammenwerfer_right",
+        "slot_size": "3",
+        "weapon": {
+            "weapon": "weapon/axis/flame_throwers/halftrack_flammenwerfer_right",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/t1_commonwealth_white_cloud",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/smoke_grenade"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m1a1_carbine",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/single_fire/rifle/m1a1_carbine"
+        }
+    },
+    {
+        "reference": "slot_item/axis_tank_top_mg42_king_tiger",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/light_machine_gun/mg42_turret_mounted",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/molotov",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/grenade/molotov",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_bren_carrier_pintle_bren",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/machine_gun/light_machine_gun/bren_mark_2_lmg_pintle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_repair_manuals"
+    },
+    {
+        "reference": "slot_item/shovel",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/allies_m1919_lmg",
+        "drop_rate": "0.200000003",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/light_machine_gun/m1919a6_lmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_fireup"
+    },
+    {
+        "reference": "slot_item/allies_m1_garand_ranger",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/single_fire/rifle/ranger_m1_garand_rifle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_hetzer_top_gun",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis_pe/small_arms/machine_gun/light_machine_gun/mg42_hetzer",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_mp44",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/sub_machine_gun/mp44_assault_rifle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/stup_fire_petard",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/howitzer/StuP_150mm",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_tank_top_mg42",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/light_machine_gun/mg42_turret_mounted",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/trun_axis_panzerschreck",
+        "drop_rate": "0.3000000119",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/infantry_anti_tank_weapon/trun_panzerschreck_atw",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_panzerfaust",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/infantry_anti_tank_weapon/villers_bocage_panzerfaust",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_spotter_arty"
+    },
+    {
+        "reference": "slot_item/allies_gren_mech",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/single_fire/rifle/m1917_us_enfield",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_50cal_hellcat_turret_item",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/m2hb_turret_mount_hellcat",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_g43",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/axis_pe/small_arms/single_fire/rifle/gewehr_43",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_bren_button",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/machine_gun/light_machine_gun/bren_mark_2_lmg_button_weapon",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_medical_package",
+        "slot_size": "4"
+    },
+    {
+        "reference": "slot_item/trun_axis_flammenwerfer_42_item",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/cw_sten_smg",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/machine_gun/sub_machine_gun/cw_sten_smg_silencer",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/t1_pe_air_mine"
+    },
+    {
+        "reference": "slot_item/allies_apat"
+    },
+    {
+        "reference": "slot_item/pe_pak_stun_shot",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/anti_tank_gun/75mm_pak_40_stun",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/pe_apcr_marker"
+    },
+    {
+        "reference": "slot_item/allies_pathfinder_smoke",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/pathfinder_smoke",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_incendiary_grenade_scorched",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/grenade/incendiary_grenade_scorched",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m2_60mm_mortar",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/mortar/m2_60mm_mortar",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_rifle_grenade",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/single_fire/rifle/cw_lee_enfield_rifle_grenade",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/mg32_luft",
+        "drop_rate": "0.6000000238",
+        "weapon": {
+            "weapon": "weapon/axis_pe/small_arms/machine_gun/light_machine_gun/mg34_lmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_churchill_mine_plow"
+    },
+    {
+        "reference": "slot_item/cmw_johnson",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis_pe/small_arms/machine_gun/sub_machine_gun/johnson_assault_rifle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_fallschirmjager_incendiary",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/grenade/incendiary_grenade_fallschirmjager",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_terror_goliath"
+    },
+    {
+        "reference": "slot_item/axis_bundled_grenades"
+    },
+    {
+        "reference": "slot_item/commonwealth_fire_petard",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/tank_gun/cw_avre_churchill_gun",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_panther_mg42_turret_mount",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/light_machine_gun/mg42_turret_mounted",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_satchel"
+    },
+    {
+        "reference": "slot_item/pe_ist_stun_shot",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/tank_gun/kwk37_pziv_stubby_stun",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/smoke_grenades",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/smoke_grenade",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_fire_petard_at",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/tank_gun/cw_avre_churchill_gun_at",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_grenades_stun",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/grenade/stielhandgranate24_grenade_stun_171",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_thompson_smg",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/sub_machine_gun/m1_thompson_smg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_regular_gun_slot_item",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/tank_gun/villers_bocage_kwk36_88mm_tiger_gun_regular",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_gren_mech_snipe",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/single_fire/rifle/m1917_sniper_mech_inf",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_pfaust"
+    },
+    {
+        "reference": "slot_item/commonwealth_marksman_rifle",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/single_fire/rifle/lee_enfield_sniper_rifle",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_bren_3_button",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/machine_gun/light_machine_gun/bren_mark_3_lmg_button_weapon",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_stickies"
+    },
+    {
+        "reference": "slot_item/allies_la_fiere_fire_recoiless",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/infantry_anti_tank_weapon/la_fiere_fire_recoiless",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_falschirmjager_fg42",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis_pe/small_arms/machine_gun/sub_machine_gun/fg_42_assault_rifle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/reward_axis_flammenwerfer_42_item",
+        "slot_size": "2"
+    },
+    {
+        "reference": "slot_item/axis_flammenwerfer_42_item",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/allies/flame_throwers/flammenwerfer_42_backpack",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/la_fiere_grenade_bundled_stielgranate",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/grenade/la_fiere_bundled_stielgranate",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_puma_50mm_turret",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/tank_gun/kwk39_50mm_puma_gun",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_firegrenades",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/commonwealth_tetrarch_smoke_launcher",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/tank_gun/cw_tetrarch_smoke_launcher",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/spotter_los"
+    },
+    {
+        "reference": "slot_item/axis_tank_smoke"
+    },
+    {
+        "reference": "slot_item/commonwealth_boys_at_rifle",
+        "drop_rate": "0.25",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/infantry_anti_tank_weapon/boys_at_rifle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_panzerfaust",
+        "drop_rate": "0.200000003",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/infantry_anti_tank_weapon/panzerfaust_atw",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_fallschirmjager_incendiary",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/grenade/incendiary_grenade_engineers",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/churchill_crocodile_flame_projector",
+        "weapon": {
+            "weapon": "weapon/allies/flame_throwers/churchill_crocodile_flame_projector",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/sturm_fire_petard",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/howitzer/sturmtiger_380mm",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_panzerschreck",
+        "drop_rate": "0.3000000119",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/infantry_anti_tank_weapon/panzerschreck_atw",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_stug_iv_top_mg42_geschutzwagen",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/light_machine_gun/mg42_vehicle_geschutzwagen",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_he_slot_item",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/tank_gun/villers_bocage_kwk36_88mm_tiger_gun_he",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_mp44",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/sub_machine_gun/mp44_assault_rifle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_defense_weapon",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/tank_gun/villers_bocage_dot_weapon",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_stug_iv_armoured_skirts",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/commonwealth_canister"
+    },
+    {
+        "reference": "slot_item/allies_demos"
+    },
+    {
+        "reference": "slot_item/villers_bocage_commander_slot_item"
+    },
+    {
+        "reference": "slot_item/panzer_elite_hotchkiss_h35_gun",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/tank_gun/kwk39_50mm_h35_upgun",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_sherman_crab",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/allies_demolition_charges",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/demolitions",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_panther_long_range",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/tank_gun/kwk42_75mm_panther_gun_long_range",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m97_shotgun_item",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/single_fire/rifle/m97_trench_gun",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_30cal_vehicle_jeep",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/light_machine_gun/m1919a4_vehicle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/stup_fire_flame_petard",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/howitzer/StuP_flame_150mm",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/action_luckystrikes_item",
+        "drop_rate": "1",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/first_aid_kit",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/la_fiere_allies_grenades",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/la_fiere_stun_mkii_a1_grenade",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_50cal_hellhound",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/m2hb_turret_mount_hellhound",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m1919a6_omg",
+        "drop_rate": "0.400000006",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/light_machine_gun/m1919a6",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_quad_50_cal_item",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/quad_50_cal_m2hb",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/flame_icon_item"
+    },
+    {
+        "reference": "slot_item/panzer_elite_rifle_grenade",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis_pe/small_arms/single_fire/rifle/pe_kar_98k_rifle_grenade",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_mg42_mgnest",
+        "drop_rate": "0.3000000119",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/heavy_machine_gun/mg42_mgnest",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_mines"
+    },
+    {
+        "reference": "slot_item/panzer_elite_stuka_zu_fuss",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/rockets/stuka_pe_hotchkiss",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_t17_white"
+    },
+    {
+        "reference": "slot_item/allies_grenades",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/mkii_a1_grenade",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_mg42_hmg_item",
+        "drop_rate": "0.200000003",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/heavy_machine_gun/mg42_hmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/cmw_tetrach_upgun_upgrade",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/tank_gun/cw_2_pounder_tetrarch_gun_upgun",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_commando_grenades",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/grenade/commonwealth_grenade_commando",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m2_flamethrower_item_sp_m01",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/allies/flame_throwers/m2_backpack_flamethrower_sp_m01",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_stup_iv_top_mg42",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/light_machine_gun/mg42_vehicle_stup",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/la_fiere_canister_ammunition",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/tank_gun/la_fiere_cw_m6_37mm_stuart_canister_ammunition",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_pzgr_slot_item_double",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/tank_gun/villers_bocage_kwk36_88mm_tiger_gun_pzgr",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_grenades_sp_m01",
+        "slot_size": "1",
+        "item_uses": "5",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/mkii_a1_grenade",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_enfield",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/single_fire/rifle/m1917_us_enfield"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m1_garand"
+    },
+    {
+        "reference": "slot_item/allies_50cal_staghound",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/m2hb_turret_mount_staghound",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_mines"
+    },
+    {
+        "reference": "slot_item/allies_50cal_generic_vehicle_item",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/m2hb_m3_halftrack",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/omg_precision_icon",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/villers_bocage_cromwell"
+    },
+    {
+        "reference": "slot_item/commonwealth_atap"
+    },
+    {
+        "reference": "slot_item/omg_termite_charges",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/termite_charge_throw",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_lmg34",
+        "drop_rate": "0.200000003",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis_pe/small_arms/machine_gun/light_machine_gun/mg34_lmg_Doctrine_LMG42skin",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m1917_hmg_item",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/m1917_browning_30_cal_hmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m1918_bar",
+        "drop_rate": "0.200000003",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/light_machine_gun/m1918_browning_automatic_rifle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/pe_sharpshooter_rifle",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/single_fire/rifle/gewehr_43_fsj",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m1_garand_ranger_nosub",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/single_fire/rifle/ranger_m1_garand_rifle_nosub"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_de_lisle_carbine",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/single_fire/rifle/de_lisle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m1918_bar_precision",
+        "drop_rate": "0.200000003",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/light_machine_gun/m1918_browning_automatic_rifle_precision",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_panzerschreck_no_slot",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/infantry_anti_tank_weapon/panzerschreck_atw_pe",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/la_fiere_smoke_grenade",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/grenade/stielhandgranate24_grenade_smoke",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m2_flamethrower_item",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/allies/flame_throwers/m2_backpack_flamethrower",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_anti_tank_grenade",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/grenade/pe_anti_tank_grenade",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/binoculars",
+        "drop_rate": "1",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/allies_50cal_hmg_squad_item",
+        "drop_rate": "0.200000003",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/m2hb_hmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_k98_elite",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/single_fire/rifle/stormtrooper_kar_98k_rifle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/munitions_ammobox_item",
+        "drop_rate": "1",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/axis_halftrack_stuka_zu_fuss",
+        "slot_size": "6",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/rockets/stuka",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_grenades",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/grenade/stielhandgranate24_grenade",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_sdkfz_251_halftrack_mg42_front",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/light_machine_gun/mg42_vehicle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/grenades",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/axis_grenades_vehicle_stun",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/grenade/stielhandgranate24_vehicle_stun",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/sniper_sprint_cancel"
+    },
+    {
+        "reference": "slot_item/axis_assault_grenades"
+    },
+    {
+        "reference": "slot_item/commonwealth_withdraw"
+    },
+    {
+        "reference": "slot_item/axis_panzerschreck_knights_cross",
+        "drop_rate": "0.3000000119",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/infantry_anti_tank_weapon/panzerschreck_terror",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m2_flamethrower_item_improved",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/allies/flame_throwers/m2_backpack_flamethrower_improved",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_command_tank_smoke"
+    },
+    {
+        "reference": "slot_item/panzer_elite_squad_weapon_item",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/smoke_canister"
+    },
+    {
+        "reference": "slot_item/allies_sherman_calliope_at",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/rockets/calliope_at",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_satchel_charge",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/villers_bocage_satchel_charge_throw",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_grw34_81mm_mortar",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/mortar/grw34_81mm_mortar",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/flak_vest",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/panzer_elite_mortar_incindinary"
+    },
+    {
+        "reference": "slot_item/allies_m9bazooka",
+        "drop_rate": "0.125",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/infantry_anti_tank_weapon/m1_bazooka_atw",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_mg34",
+        "drop_rate": "0.6000000238",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/axis_pe/small_arms/machine_gun/light_machine_gun/mg34_lmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_mg42",
+        "drop_rate": "0.3000000119",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/light_machine_gun/mg42_lmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_berge_revive",
+        "drop_rate": "1",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/panzer_elite_flame_trap"
+    },
+    {
+        "reference": "slot_item/tank_ram",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/anti_tank_gun/tank_ram",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_panzerschreck",
+        "drop_rate": "0.3000000119",
+        "slot_size": "4",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/infantry_anti_tank_weapon/panzerschreck_atw_pe",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_gren_mech_rifle",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/single_fire/rifle/m1917_us_enfield",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/smoke",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/trun_minesweeper",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/allies_sticky_bomb_vet_2",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/sticky_bomb_vet_2",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/minesweeper",
+        "slot_size": "2"
+    },
+    {
+        "reference": "slot_item/axis_mp40_smg",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/sub_machine_gun/mp40_smg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_bren_mmg_carrier",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/machine_gun/heavy_machine_gun/cw_vickers_bren",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_panther_armoured_skirts",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/axis_panzerfaust_sp_fireslowly",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/infantry_anti_tank_weapon/panzerfaust_atw_sp_fireslowly",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_50cal_sherman_turret_item",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/m2hb_turret_mount",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_stug_iv_top_mg42",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/light_machine_gun/mg42_vehicle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_expert_wrench",
+        "slot_size": "2"
+    },
+    {
+        "reference": "slot_item/axis_halftrack_flammenwerfer",
+        "slot_size": "3",
+        "weapon": {
+            "weapon": "weapon/axis/flame_throwers/halftrack_flammenwerfer",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/fuel_fuelcan_item",
+        "drop_rate": "1",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/allies_apmg"
+    },
+    {
+        "reference": "slot_item/axis_medpack"
+    },
+    {
+        "reference": "slot_item/commonwealth_tetrarch_smoke_launcher_right",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/tank_gun/cw_tetrarch_smoke_launcher_2",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_oneshot_flamer"
+    },
+    {
+        "reference": "slot_item/pershing_smoke_launcher_ammunition",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/tank_gun/m3_90mm_pershing_gun_smoke",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/t2_repair_manuals",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/grenade/stielhandgranate24_grenade",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/sherman_smoke_launcher_ammunition",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/tank_gun/75mm_m4_sherman_gun_smoke",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_he_slot_item_double",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/tank_gun/villers_bocage_kwk36_88mm_tiger_gun_he",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_piat",
+        "drop_rate": "0.200000003",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/infantry_anti_tank_weapon/villers_bocage_piat",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_goliath"
+    },
+    {
+        "reference": "slot_item/allies_greesegun",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/sub_machine_gun/m3_smg_doctrin"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_mines"
+    },
+    {
+        "reference": "slot_item/allies_sherman_76mm_upgrade",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/tank_gun/m1a1c_76mm_sherman_upgunned",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/manpower_k_rations_item",
+        "drop_rate": "1",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/axis_k98_sniper",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/single_fire/rifle/gewehr_98_sniper",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_pzgr_slot_item",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/tank_gun/villers_bocage_kwk36_88mm_tiger_gun_pzgr",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_sticky_bomb",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/sticky_bomb",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_bren_repair"
+    },
+    {
+        "reference": "slot_item/panzer_elite_butterfly_bomb_package"
+    },
+    {
+        "reference": "slot_item/panzer_elite_panzerschreck_dropped",
+        "drop_rate": "0.3000000119",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/infantry_anti_tank_weapon/panzerschreck_atw_pe",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_demo_charges",
+        "slot_size": "2"
+    },
+    {
+        "reference": "slot_item/commonwealth_demo_charges_commando",
+        "slot_size": "2"
+    },
+    {
+        "reference": "slot_item/panzer_elite_antibuilding"
+    },
+    {
+        "reference": "slot_item/t1_potato_grenade",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/t1_potato_grenade",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/saboteur_greesegun",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/sub_machine_gun/m3_smg_doctrin",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/wire_cutters",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/allies_grenades_jeep",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/mkii_a1_grenade_jeep",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_bren_ap"
+    },
+    {
+        "reference": "slot_item/allies_tank_smoke"
+    },
+    {
+        "reference": "slot_item/axis_grenade_bundled_stielgranate",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/grenade/bundled_stielgranate",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_sherman_crocodile",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/flame_throwers/sherman_crocodile_flame_projector",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_mines_snare"
+    },
+    {
+        "reference": "slot_item/allies_50cal_m8_greyhound",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/m2hb_turret_mount",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_bren_mark_2",
+        "drop_rate": "0.200000003",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/machine_gun/light_machine_gun/bren_mark_2_lmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_sherman_calliope",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/rockets/calliope",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/villers_bocage_ammo_slot_item"
+    },
+    {
+        "reference": "slot_item/allies_satchel_charges",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/satchel_charge_throw",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/munitions_legbag_item",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/panzer_elite_teller_mines"
+    },
+    {
+        "reference": "slot_item/allies_satchel_charges_sp_m01",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/satchel_charge_throw_sp_m01",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_atgrenades",
+        "drop_rate": "1",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/commonwealth_piat",
+        "drop_rate": "0.200000003",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/infantry_anti_tank_weapon/piat",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/la_fiere_allies_thompson_smg",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/villers_bocage_sherman"
+    },
+    {
+        "reference": "slot_item/axis_panzer_iv_armoured_skirts",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/allies_50cal_m10",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/m2hb_turret_mount",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m1919_lmg_item",
+        "drop_rate": "0.200000003",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/light_machine_gun/m1919a4_lmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m8_mines"
+    },
+    {
+        "reference": "slot_item/commonwealth_squad_weapon_item",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/commonwealth_sharpshooter_rifle",
+        "slot_size": "4",
+        "weapon": {
+            "weapon": "weapon/allies_cw/small_arms/single_fire/rifle/cw_lee_enfield_sharpshooter",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_demos"
+    },
+    {
+        "reference": "slot_item/panzer_elite_overdrive"
+    },
+    {
+        "reference": "slot_item/axis_geshutz_rapid"
+    },
+    {
+        "reference": "slot_item/trun_axis_mp44",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/sub_machine_gun/trun_mp44_assault_rifle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m2_carbine",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/sub_machine_gun/m2_carbine",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_fire_panzerfaust",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/axis/ballistic_weapon/infantry_anti_tank_weapon/panzerfaust_atw",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/hotchkiss_50mm_turret",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/tank_gun/kwk39_50mm_h35_upgun",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m8_armour_upgrade_item",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/allies_sherman_bulldozer",
+        "slot_size": "1"
+    },
+    {
+        "reference": "slot_item/panzer_elite_tread_breaker_round",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/anti_tank_gun/37mm_pak_35_halftrack_tread_breaker",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/smoke_grenades_jeep",
+        "slot_size": "1",
+        "item_uses": "1",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/grenade/smoke_grenade_jeep",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_mg151_hmg_item",
+        "drop_rate": "0.200000003",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis_pe/small_arms/machine_gun/heavy_machine_gun/mg_151_hmg",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_staghound_stun_shot",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/tank_gun/m6_37mm_greyhound_gun_staghound_stun",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_priest_50cal_gunner",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/heavy_machine_gun/m2hb_turret_mount",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/allies_m18_recoilless_rifle",
+        "drop_rate": "0.400000006",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/allies/ballistic_weapon/infantry_anti_tank_weapon/m18_recoilless_rifle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/la_fiere_allies_m18_recoilless_rifle",
+        "drop_rate": "0.400000006",
+        "slot_size": "2"
+    },
+    {
+        "reference": "slot_item/panzer_elite_incendiary_grenade",
+        "weapon": {
+            "weapon": "weapon/axis_pe/ballistic_weapon/grenade/incendiary_grenade",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/allies_30cal_generic_vehicle_item",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/allies/small_arms/machine_gun/light_machine_gun/m1919a4_vehicle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/panzer_elite_mines"
+    },
+    {
+        "reference": "slot_item/axis_sdkfz_251_halftrack_mg42_rear",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/light_machine_gun/mg42_vehicle_rear",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/axis_sdkfz_251_halftrack_mg42_omg",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/light_machine_gun/mg42_vehicle",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/commonwealth_canister_ammunition",
+        "weapon": {
+            "weapon": "weapon/allies_cw/ballistic_weapon/tank_gun/cw_m6_37mm_stuart_canister_ammunition",
+            "type": "accessory"
+        }
+    },
+    {
+        "reference": "slot_item/axis_mg42_hmg_sp_suppression_only_item",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/axis/small_arms/machine_gun/heavy_machine_gun/mg42_hmg_sp_suppression_only",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/omgmod/cmw_piat_accurate",
+        "drop_rate": "0.200000003",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/OMGMod/Commonwealth/ballistic_weapon/infantry_anti_tank_weapon/piat_vet2_accurate",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/omgmod/axis_g43_def",
+        "slot_size": "2",
+        "weapon": {
+            "weapon": "weapon/axis_pe/small_arms/single_fire/rifle/gewehr_43_def",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/omgmod/axis_shreck_accurate",
+        "drop_rate": "0.3000000119",
+        "slot_size": "4",
+        "weapon": {
+            "weapon": "weapon/OMGMod/Panzer_Elite/ballistic_weapon/infantry_anti_tank_weapon/PE_tankbuster_vet2",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/omgmod/pe_wavebreaker_disrupt"
+    },
+    {
+        "reference": "slot_item/omgmod/axis_officer_vet1",
+        "slot_size": "99"
+    },
+    {
+        "reference": "slot_item/omgmod/axis_officer_miles"
+    },
+    {
+        "reference": "slot_item/omgmod/allied_thompson_smg_accurate",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/OMGMod/Allied/Small_Arms/SMGs/M1_Thompson_SMG_Accurate",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/omgmod/axis_officer_supervise"
+    },
+    {
+        "reference": "slot_item/omgmod/axis_mp44_accurate",
+        "slot_size": "1",
+        "weapon": {
+            "weapon": "weapon/OMGMod/Axis/Small_Arms/SMGs/Storm_vet2_accuracy",
+            "type": "squad"
+        }
+    },
+    {
+        "reference": "slot_item/omg/repair_stack"
+    }
+]
