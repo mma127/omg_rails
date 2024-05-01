@@ -23,4 +23,15 @@ class StatsEntity < ApplicationRecord
 
   validates :reference, presence: true, uniqueness: true
   validates :data, presence: true
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :ruleset_id, as: :rulesetId
+    expose :reference
+    expose :data
+  end
 end

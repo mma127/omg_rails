@@ -29,4 +29,16 @@ class StatsUnit < ApplicationRecord
   validates :const_name, presence: true, uniqueness: { scope: :ruleset_id }
   validates :reference, presence: true
   validates :data, presence: true
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :const_name, as: :constName
+    expose :ruleset_id, as: :rulesetId
+    expose :reference
+    expose :data
+  end
 end
