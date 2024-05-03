@@ -25,6 +25,9 @@
 1. Tooltip for enabled units
 2. EnabledUpgrades
 
+### Stats
+1. Further reduce unnecessary stats json records by keeping only weapons, upgrades, abilities, etc that are associated with units or entities
+
 ### Performance
 1. doctrine_unlock.rb associations for Grape entities are sequential
 
