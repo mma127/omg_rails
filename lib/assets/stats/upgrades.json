@@ -20,16 +20,17 @@
                             {
                                 "reference": "horizontal_speed_weapon_modifier",
                                 "value": "1.25",
-                                "target_type_name": "[[hardpoint_01]]",
+                                "target_type_name": "hardpoint_01",
                                 "usage_type": "multiplication"
                             },
                             {
                                 "reference": "accuracy_weapon_modifier",
-                                "target_type_name": "[[hardpoint_02]]"
+                                "target_type_name": "hardpoint_02",
+                                "usage_type": "multiplication"
                             },
                             {
                                 "reference": "cooldown_weapon_modifier",
-                                "target_type_name": "[[hardpoint_02]]",
+                                "target_type_name": "hardpoint_02",
                                 "usage_type": "multiplication"
                             }
                         ]
@@ -81,12 +82,13 @@
                         "modifiers": [
                             {
                                 "reference": "accuracy_weapon_modifier",
-                                "target_type_name": "[[hardpoint_02]]"
+                                "target_type_name": "hardpoint_02",
+                                "usage_type": "multiplication"
                             },
                             {
                                 "reference": "cooldown_weapon_modifier",
                                 "value": "2",
-                                "target_type_name": "[[hardpoint_02]]",
+                                "target_type_name": "hardpoint_02",
                                 "usage_type": "multiplication"
                             }
                         ]
@@ -404,7 +406,8 @@
                     },
                     {
                         "reference": "received_damage_modifier",
-                        "value": "0.75"
+                        "value": "0.75",
+                        "usage_type": "multiplication"
                     }
                 ]
             }
@@ -545,7 +548,7 @@
                     {
                         "reference": "weapon_penetration_modifier",
                         "value": "1.75",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -873,7 +876,8 @@
                 "modifiers": [
                     {
                         "reference": "received_suppression_squad_modifier",
-                        "value": "1.5"
+                        "value": "1.5",
+                        "usage_type": "multiplication"
                     }
                 ]
             }
@@ -1115,17 +1119,18 @@
                             {
                                 "reference": "horizontal_speed_weapon_modifier",
                                 "value": "1.200000048",
-                                "target_type_name": "[[hardpoint_01]]",
+                                "target_type_name": "hardpoint_01",
                                 "usage_type": "multiplication"
                             },
                             {
                                 "reference": "accuracy_weapon_modifier",
-                                "target_type_name": "[[hardpoint_02]]"
+                                "target_type_name": "hardpoint_02",
+                                "usage_type": "multiplication"
                             },
                             {
                                 "reference": "cooldown_weapon_modifier",
                                 "value": "2",
-                                "target_type_name": "[[hardpoint_02]]",
+                                "target_type_name": "hardpoint_02",
                                 "usage_type": "multiplication"
                             }
                         ]
@@ -1340,7 +1345,7 @@
                     {
                         "reference": "range_weapon_modifier",
                         "value": "0.8000000119",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -1448,7 +1453,7 @@
                     {
                         "reference": "range_weapon_modifier",
                         "value": "0.8000000119",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -1488,68 +1493,7 @@
     {
         "reference": "upgrade/omg/allies_cw/items/commonwealth_tank_commander",
         "constname": "TANK_COMMANDER",
-        "faction": "CMW",
-        "actions": [
-            {
-                "reference": "add_crew_action",
-                "crew_name": "Commander"
-            },
-            {
-                "reference": "apply_modifiers_action",
-                "modifiers": [
-                    {
-                        "reference": "sight_radius_modifier",
-                        "value": "10",
-                        "usage_type": "addition"
-                    }
-                ]
-            },
-            {
-                "reference": "requirement_action",
-                "requirements": [
-                    {
-                        "reference": "required_player_upgrade",
-                        "upgrade_name": "upgrade/omg/allies_cw/docmarkers/engineers/tr2/b1/t1"
-                    }
-                ],
-                "ability_actions": [
-                    {
-                        "reference": "apply_modifiers_action",
-                        "modifiers": [
-                            {
-                                "reference": "received_experience_squad_modifier",
-                                "value": "1.149999976"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "reference": "requirement_action",
-                "requirements": [
-                    {
-                        "reference": "required_player_upgrade",
-                        "upgrade_name": "upgrade/omg/allies_cw/docmarkers/rca/tr3/b1/t2"
-                    }
-                ],
-                "ability_actions": [
-                    {
-                        "reference": "apply_modifiers_action",
-                        "modifiers": [
-                            {
-                                "reference": "accuracy_weapon_modifier",
-                                "value": "1.100000024"
-                            },
-                            {
-                                "reference": "accuracy_weapon_modifier",
-                                "value": "1.100000024",
-                                "target_type_name": "[[hardpoint_02]]"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
+        "faction": "CMW"
     },
     {
         "reference": "upgrade/omg/allies_cw/items/commonwealth_tetrarch_littlejohn_adapter",
@@ -1570,7 +1514,7 @@
                     {
                         "reference": "weapon_penetration_modifier",
                         "value": "3.599999905",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -1827,7 +1771,8 @@
                             {
                                 "reference": "burst_weapon_modifier",
                                 "value": "1.100000024",
-                                "target_type_name": "[[hardpoint_01]]",
+                                "target_type_name": "hardpoint_01",
+                                "usage_type": "multiplication",
                                 "exclusive": "true"
                             }
                         ]
@@ -1939,14 +1884,15 @@
                             {
                                 "reference": "range_weapon_modifier",
                                 "value": "0.9750000238",
-                                "target_type_name": "[[hardpoint_01]]",
+                                "target_type_name": "hardpoint_01",
                                 "usage_type": "multiplication",
-                                "modifier_id": "[[wire]]"
+                                "modifier_id": "wire"
                             },
                             {
                                 "reference": "accuracy_weapon_modifier",
                                 "value": "0.9499999881",
-                                "modifier_id": "[[wire]]"
+                                "usage_type": "multiplication",
+                                "modifier_id": "wire"
                             }
                         ]
                     },
@@ -1969,13 +1915,14 @@
                                             {
                                                 "reference": "range_weapon_modifier",
                                                 "value": "1.029999971",
-                                                "target_type_name": "[[hardpoint_01]]",
+                                                "target_type_name": "hardpoint_01",
                                                 "usage_type": "multiplication",
-                                                "modifier_id": "[[wire]]"
+                                                "modifier_id": "wire"
                                             },
                                             {
                                                 "reference": "accuracy_weapon_modifier",
-                                                "value": "1.049999952"
+                                                "value": "1.049999952",
+                                                "usage_type": "multiplication"
                                             }
                                         ]
                                     }
@@ -2027,14 +1974,15 @@
                             {
                                 "reference": "range_weapon_modifier",
                                 "value": "0.9750000238",
-                                "target_type_name": "[[hardpoint_01]]",
+                                "target_type_name": "hardpoint_01",
                                 "usage_type": "multiplication",
-                                "modifier_id": "[[wire]]"
+                                "modifier_id": "wire"
                             },
                             {
                                 "reference": "accuracy_weapon_modifier",
                                 "value": "0.9499999881",
-                                "modifier_id": "[[wire]]"
+                                "usage_type": "multiplication",
+                                "modifier_id": "wire"
                             }
                         ]
                     },
@@ -2057,13 +2005,14 @@
                                             {
                                                 "reference": "range_weapon_modifier",
                                                 "value": "1.029999971",
-                                                "target_type_name": "[[hardpoint_01]]",
+                                                "target_type_name": "hardpoint_01",
                                                 "usage_type": "multiplication",
-                                                "modifier_id": "[[wire]]"
+                                                "modifier_id": "wire"
                                             },
                                             {
                                                 "reference": "accuracy_weapon_modifier",
-                                                "value": "1.049999952"
+                                                "value": "1.049999952",
+                                                "usage_type": "multiplication"
                                             }
                                         ]
                                     }
@@ -2131,7 +2080,8 @@
                             {
                                 "reference": "burst_weapon_modifier",
                                 "value": "1.25",
-                                "target_type_name": "[[hardpoint_01]]"
+                                "target_type_name": "hardpoint_01",
+                                "usage_type": "multiplication"
                             }
                         ]
                     }
@@ -2155,7 +2105,7 @@
     },
     {
         "reference": "upgrade/omg/axis/items/axis_tank_item_mg42",
-        "constname": "PANTHER_MG42",
+        "constname": "P4_MG42",
         "faction": "AXIS",
         "actions": [
             {
@@ -2166,7 +2116,7 @@
     },
     {
         "reference": "upgrade/omg/axis/items/axis_tank_item_mg42",
-        "constname": "P4_MG42",
+        "constname": "PANTHER_MG42",
         "faction": "AXIS",
         "actions": [
             {
@@ -2648,7 +2598,7 @@
                     {
                         "reference": "range_weapon_modifier",
                         "value": "10",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "addition"
                     }
                 ]
@@ -3059,19 +3009,20 @@
                 "modifiers": [
                     {
                         "reference": "received_suppression_squad_modifier",
-                        "value": "0.75"
+                        "value": "0.75",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "ability_recharge_time_modifier",
                         "value": "-10",
-                        "target_type_name": "[[abilities/omg/doctrine/t1_panzer_elite_luft_sprint.rgd]]",
+                        "target_type_name": "abilities/omg/doctrine/t1_panzer_elite_luft_sprint.rgd",
                         "application_type": "apply_to_ability",
                         "usage_type": "addition"
                     },
                     {
                         "reference": "ability_recharge_time_modifier",
                         "value": "0.8999999762",
-                        "target_type_name": "[[abilities/panzer_elite_sprint_ability.rgd]]",
+                        "target_type_name": "abilities/panzer_elite_sprint_ability.rgd",
                         "application_type": "apply_to_ability",
                         "usage_type": "multiplication"
                     }
@@ -3419,7 +3370,8 @@
                 "modifiers": [
                     {
                         "reference": "received_suppression_squad_modifier",
-                        "value": "1.5"
+                        "value": "1.5",
+                        "usage_type": "multiplication"
                     }
                 ]
             }
@@ -3449,7 +3401,8 @@
                 "modifiers": [
                     {
                         "reference": "received_suppression_squad_modifier",
-                        "value": "1.5"
+                        "value": "1.5",
+                        "usage_type": "multiplication"
                     }
                 ]
             }
@@ -3561,32 +3514,6 @@
         "reference": "upgrade/allies/items/allies_quad_50cal_maxson_local",
         "constname": "",
         "faction": "ALLY",
-        "actions": [
-            {
-                "reference": "remove_crew_action",
-                "crew_name": "Gunner"
-            },
-            {
-                "reference": "apply_modifiers_action",
-                "modifiers": [
-                    {
-                        "reference": "enable_weapon_modifier",
-                        "target_type_name": "[[hardpoint_01]]"
-                    },
-                    {
-                        "reference": "health_maximum_modifier",
-                        "value": "60",
-                        "application_type": "apply_to_entity",
-                        "usage_type": "addition"
-                    }
-                ]
-            },
-            {
-                "reference": "slot_item_replace",
-                "old_slot_item": "slot_item/allies_50cal_generic_vehicle_item",
-                "new_slot_item": "slot_item/allies_quad_50_cal_item"
-            }
-        ],
         "requirements": [
             {
                 "reference": "required_in_territory"
@@ -4080,7 +4007,8 @@
                 "modifiers": [
                     {
                         "reference": "received_accuracy_modifier",
-                        "value": "0"
+                        "value": "0",
+                        "usage_type": "multiplication"
                     }
                 ]
             }
@@ -4152,45 +4080,6 @@
                             }
                         ]
                     }
-                ],
-                "upgrade_actions": [
-                    {
-                        "reference": "change_weapon_target_type",
-                        "new_type": "type_target_weapon/tp_cw_hqs_mobile",
-                        "original_type": "type_target_weapon/tp_cw_hqs_emplaced"
-                    },
-                    {
-                        "reference": "delay_action",
-                        "delay": "10",
-                        "clean_delayed_actions": [
-                            {
-                                "reference": "apply_modifiers_action",
-                                "modifiers": [
-                                    {
-                                        "reference": "enable_secure_modifier",
-                                        "value": "-1",
-                                        "exclusive": "true"
-                                    },
-                                    {
-                                        "reference": "move_enable_modifier",
-                                        "exclusive": "true"
-                                    }
-                                ]
-                            },
-                            {
-                                "reference": "reference",
-                                "upgrade": "upgrade/allies_cw/commonwealth_building_enable_mobile_dummy"
-                            },
-                            {
-                                "reference": "reference",
-                                "upgrade": "upgrade/allies_cw/commonwealth_building_enable_mobile_inprogress"
-                            }
-                        ]
-                    },
-                    {
-                        "reference": "upgrade_add",
-                        "upgrade": "upgrade/allies_cw/commonwealth_building_enable_mobile_inprogress"
-                    }
                 ]
             }
         ],
@@ -4227,51 +4116,6 @@
         "reference": "upgrade/allies_cw/commonwealth_building_enable_spawning",
         "constname": "",
         "faction": "CMW",
-        "actions": [
-            {
-                "reference": "requirement_action",
-                "requirements": [
-                    {
-                        "reference": "required_entity_upgrade",
-                        "upgrade_name": "upgrade/allies_cw/commonwealth_building_enable_spawning"
-                    }
-                ],
-                "ability_actions": [
-                    {
-                        "reference": "apply_modifiers_action",
-                        "modifiers": [
-                            {
-                                "reference": "enable_secure_modifier",
-                                "exclusive": "true"
-                            }
-                        ],
-                        "permanent": "true"
-                    },
-                    {
-                        "reference": "upgrade_remove",
-                        "apply_to_entities_in_squad": "true",
-                        "upgrade": "upgrade/allies_cw/commonwealth_building_enable_mobile_dummy"
-                    },
-                    {
-                        "reference": "apply_modifiers_action",
-                        "modifiers": [
-                            {
-                                "reference": "reinforce_radius_modifier",
-                                "value": "0",
-                                "usage_type": "addition"
-                            }
-                        ]
-                    }
-                ],
-                "upgrade_actions": [
-                    {
-                        "reference": "change_weapon_target_type",
-                        "new_type": "type_target_weapon/tp_cw_hqs_emplaced",
-                        "original_type": "type_target_weapon/tp_cw_hqs_mobile"
-                    }
-                ]
-            }
-        ],
         "requirements": [
             {
                 "reference": "required_in_territory",
@@ -4298,7 +4142,8 @@
                 "modifiers": [
                     {
                         "reference": "speed_maximum_modifier",
-                        "value": "2.5"
+                        "value": "2.5",
+                        "usage_type": "multiplication"
                     }
                 ]
             },
@@ -4393,13 +4238,7 @@
                             {
                                 "reference": "required_in_state",
                                 "garrisoned": "true"
-                            },
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null
+                            }
                         ]
                     }
                 ],
@@ -4536,7 +4375,7 @@
                     {
                         "reference": "range_weapon_modifier",
                         "value": "0.8000000119",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -4653,13 +4492,7 @@
                         "nested_requirements": [
                             {
                                 "reference": "required_in_territory"
-                            },
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null
+                            }
                         ]
                     }
                 ],
@@ -4669,8 +4502,9 @@
                         "modifiers": [
                             {
                                 "reference": "posture_speed_modifier",
+                                "usage_type": "addition",
                                 "exclusive": "true",
-                                "modifier_id": "[[ltspeed]]"
+                                "modifier_id": "ltspeed"
                             }
                         ]
                     }
@@ -4735,7 +4569,7 @@
                     {
                         "reference": "range_weapon_modifier",
                         "value": "0.8000000119",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -4780,12 +4614,13 @@
                     {
                         "reference": "reload_weapon_modifier",
                         "value": "1.25",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     },
                     {
                         "reference": "accuracy_weapon_modifier",
-                        "value": "0.8500000238"
+                        "value": "0.8500000238",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "sight_radius_modifier",
@@ -4818,13 +4653,7 @@
                             {
                                 "reference": "required_in_state",
                                 "garrisoned": "true"
-                            },
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null
+                            }
                         ]
                     }
                 ],
@@ -4933,7 +4762,7 @@
                     {
                         "reference": "weapon_penetration_modifier",
                         "value": "3.599999905",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -4975,7 +4804,7 @@
                     {
                         "reference": "range_weapon_modifier",
                         "value": "0.8000000119",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -5232,29 +5061,6 @@
         "reference": "upgrade/axis/items/axis_halftrack_flammenwerfer",
         "constname": "",
         "faction": "AXIS",
-        "actions": [
-            {
-                "reference": "slot_item_add",
-                "slot_item": "slot_item/axis_halftrack_flammenwerfer_right"
-            },
-            {
-                "reference": "slot_item_add",
-                "slot_item": "slot_item/axis_halftrack_flammenwerfer"
-            },
-            {
-                "reference": "apply_modifiers_action",
-                "modifiers": [
-                    {
-                        "reference": "enable_weapon_modifier",
-                        "target_type_name": "[[hardpoint_01]]"
-                    },
-                    {
-                        "reference": "enable_weapon_modifier",
-                        "target_type_name": "[[hardpoint_04]]"
-                    }
-                ]
-            }
-        ],
         "requirements": [
             {
                 "reference": "required_in_territory"
@@ -5504,7 +5310,8 @@
                 "modifiers": [
                     {
                         "reference": "received_damage_modifier",
-                        "value": "0.5"
+                        "value": "0.5",
+                        "usage_type": "multiplication"
                     }
                 ]
             }
@@ -5534,7 +5341,8 @@
                 "modifiers": [
                     {
                         "reference": "received_penetration_modifier",
-                        "value": "0.75"
+                        "value": "0.75",
+                        "usage_type": "multiplication"
                     }
                 ]
             },
@@ -5559,7 +5367,8 @@
                 "modifiers": [
                     {
                         "reference": "received_penetration_modifier",
-                        "value": "0.75"
+                        "value": "0.75",
+                        "usage_type": "multiplication"
                     }
                 ]
             },
@@ -5695,7 +5504,8 @@
                 "modifiers": [
                     {
                         "reference": "received_penetration_modifier",
-                        "value": "0.75"
+                        "value": "0.75",
+                        "usage_type": "multiplication"
                     }
                 ]
             },
@@ -6109,34 +5919,7 @@
     {
         "reference": "upgrade/axis_pe/axis_pe_vehicle_223_upgrade_setup",
         "constname": "",
-        "faction": "PE",
-        "actions": [
-            {
-                "reference": "apply_modifiers_action",
-                "modifiers": [
-                    {
-                        "reference": "move_enable_modifier",
-                        "value": "-1"
-                    },
-                    {
-                        "reference": "enable_secure_modifier"
-                    },
-                    {
-                        "reference": "health_maximum_modifier",
-                        "value": "1.5",
-                        "application_type": "apply_to_entity",
-                        "usage_type": "multiplication"
-                    },
-                    {
-                        "reference": "weapon_suppression_modifier",
-                        "value": "15",
-                        "target_type_name": "[[hardpoint_01]]",
-                        "usage_type": "multiplication"
-                    }
-                ],
-                "permanent": "true"
-            }
-        ]
+        "faction": "PE"
     },
     {
         "reference": "upgrade/axis_pe/axis_pe_vehicle_223_upgrade_unsetup",
@@ -6295,7 +6078,7 @@
                     {
                         "reference": "range_weapon_modifier",
                         "value": "10",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "addition"
                     }
                 ]
@@ -6906,21 +6689,21 @@
                     {
                         "reference": "capture_rate_squad_modifier",
                         "value": "1.670000076",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/panzer_grenadier_squad.lua]]",
+                        "target_type_name": "sbps/races/axis_panzer_elite/soldiers/panzer_grenadier_squad.lua",
                         "application_type": "apply_to_squad_type",
                         "usage_type": "multiplication"
                     },
                     {
                         "reference": "capture_rate_squad_modifier",
                         "value": "1.670000076",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/tankbuster_anti_infantry_squad.lua]]",
+                        "target_type_name": "sbps/races/axis_panzer_elite/soldiers/tankbuster_anti_infantry_squad.lua",
                         "application_type": "apply_to_squad_type",
                         "usage_type": "multiplication"
                     },
                     {
                         "reference": "capture_rate_squad_modifier",
                         "value": "1.670000076",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/tankbuster_anti_tank_squad.lua]]",
+                        "target_type_name": "sbps/races/axis_panzer_elite/soldiers/tankbuster_anti_tank_squad.lua",
                         "application_type": "apply_to_squad_type",
                         "usage_type": "multiplication"
                     }
@@ -6974,66 +6757,7 @@
     {
         "reference": "upgrade/axis_pe/upgrade_squad_size",
         "constname": "",
-        "faction": "PE",
-        "actions": [
-            {
-                "reference": "apply_modifiers_action",
-                "modifiers": [
-                    {
-                        "reference": "max_squad_size_modifier",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/panzer_grenadier_squad.lua]]",
-                        "application_type": "apply_to_squad_type",
-                        "usage_type": "addition"
-                    },
-                    {
-                        "reference": "squad_cost_manpower_modifier",
-                        "value": "0.75",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/panzer_grenadier_squad.lua]]"
-                    },
-                    {
-                        "reference": "default_squad_size_modifier",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/panzer_grenadier_squad.lua]]",
-                        "application_type": "apply_to_squad_type",
-                        "usage_type": "addition"
-                    },
-                    {
-                        "reference": "max_squad_size_modifier",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/tankbuster_anti_tank_squad.lua]]",
-                        "application_type": "apply_to_squad_type",
-                        "usage_type": "addition"
-                    },
-                    {
-                        "reference": "squad_cost_manpower_modifier",
-                        "value": "0.75",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/tankbuster_anti_tank_squad.lua]]"
-                    },
-                    {
-                        "reference": "default_squad_size_modifier",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/tankbuster_anti_tank_squad.lua]]",
-                        "application_type": "apply_to_squad_type",
-                        "usage_type": "addition"
-                    },
-                    {
-                        "reference": "max_squad_size_modifier",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/tankbuster_anti_infantry_squad.lua]]",
-                        "application_type": "apply_to_squad_type",
-                        "usage_type": "addition"
-                    },
-                    {
-                        "reference": "default_squad_size_modifier",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/tankbuster_anti_infantry_squad.lua]]",
-                        "application_type": "apply_to_squad_type",
-                        "usage_type": "addition"
-                    },
-                    {
-                        "reference": "squad_cost_manpower_modifier",
-                        "value": "0.75",
-                        "target_type_name": "[[sbps/races/axis_panzer_elite/soldiers/tankbuster_anti_infantry_squad.lua]]"
-                    }
-                ],
-                "permanent": "true"
-            }
-        ]
+        "faction": "PE"
     },
     {
         "reference": "upgrade/axis_pe/upgrade_vet_sgt",
@@ -7050,7 +6774,8 @@
                 "modifiers": [
                     {
                         "reference": "received_suppression_squad_modifier",
-                        "value": "0.8500000238"
+                        "value": "0.8500000238",
+                        "usage_type": "multiplication"
                     }
                 ]
             }
@@ -7082,7 +6807,8 @@
                 "modifiers": [
                     {
                         "reference": "received_suppression_squad_modifier",
-                        "value": "0.8500000238"
+                        "value": "0.8500000238",
+                        "usage_type": "multiplication"
                     }
                 ]
             }
@@ -7118,7 +6844,8 @@
                 "modifiers": [
                     {
                         "reference": "received_suppression_squad_modifier",
-                        "value": "0.8500000238"
+                        "value": "0.8500000238",
+                        "usage_type": "multiplication"
                     }
                 ]
             }
@@ -7154,12 +6881,13 @@
                 "modifiers": [
                     {
                         "reference": "accuracy_weapon_modifier",
-                        "value": "1.149999976"
+                        "value": "1.149999976",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "reload_weapon_modifier",
                         "value": "0.8999999762",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     },
                     {
@@ -7170,7 +6898,7 @@
                     {
                         "reference": "weapon_penetration_modifier",
                         "value": "1.149999976",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -7203,12 +6931,13 @@
                 "modifiers": [
                     {
                         "reference": "accuracy_weapon_modifier",
-                        "value": "1.149999976"
+                        "value": "1.149999976",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "reload_weapon_modifier",
                         "value": "0.8999999762",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     },
                     {
@@ -7219,7 +6948,7 @@
                     {
                         "reference": "weapon_penetration_modifier",
                         "value": "1.149999976",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -7256,12 +6985,13 @@
                 "modifiers": [
                     {
                         "reference": "accuracy_weapon_modifier",
-                        "value": "1.149999976"
+                        "value": "1.149999976",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "reload_weapon_modifier",
                         "value": "0.8999999762",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     },
                     {
@@ -7272,7 +7002,7 @@
                     {
                         "reference": "weapon_penetration_modifier",
                         "value": "1.149999976",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -7309,11 +7039,13 @@
                 "modifiers": [
                     {
                         "reference": "received_accuracy_modifier",
-                        "value": "0.8999999762"
+                        "value": "0.8999999762",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "received_damage_modifier",
-                        "value": "0.8999999762"
+                        "value": "0.8999999762",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "health_maximum_modifier",
@@ -7323,7 +7055,8 @@
                     },
                     {
                         "reference": "speed_maximum_modifier",
-                        "value": "1.149999976"
+                        "value": "1.149999976",
+                        "usage_type": "multiplication"
                     }
                 ]
             },
@@ -7333,7 +7066,7 @@
                     {
                         "reference": "ability_recharge_time_modifier",
                         "value": "-10",
-                        "target_type_name": "[[abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua]]",
+                        "target_type_name": "abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua",
                         "application_type": "apply_to_ability",
                         "usage_type": "addition"
                     }
@@ -7367,11 +7100,13 @@
                 "modifiers": [
                     {
                         "reference": "received_accuracy_modifier",
-                        "value": "0.9499999881"
+                        "value": "0.9499999881",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "received_damage_modifier",
-                        "value": "0.9499999881"
+                        "value": "0.9499999881",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "health_maximum_modifier",
@@ -7381,7 +7116,8 @@
                     },
                     {
                         "reference": "speed_maximum_modifier",
-                        "value": "1.149999976"
+                        "value": "1.149999976",
+                        "usage_type": "multiplication"
                     }
                 ]
             },
@@ -7391,7 +7127,7 @@
                     {
                         "reference": "ability_recharge_time_modifier",
                         "value": "-10",
-                        "target_type_name": "[[abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua]]",
+                        "target_type_name": "abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua",
                         "application_type": "apply_to_ability",
                         "usage_type": "addition"
                     }
@@ -7429,11 +7165,13 @@
                 "modifiers": [
                     {
                         "reference": "received_accuracy_modifier",
-                        "value": "0.9499999881"
+                        "value": "0.9499999881",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "received_damage_modifier",
-                        "value": "0.9499999881"
+                        "value": "0.9499999881",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "health_maximum_modifier",
@@ -7443,7 +7181,8 @@
                     },
                     {
                         "reference": "speed_maximum_modifier",
-                        "value": "1.149999976"
+                        "value": "1.149999976",
+                        "usage_type": "multiplication"
                     }
                 ]
             },
@@ -7453,7 +7192,7 @@
                     {
                         "reference": "ability_recharge_time_modifier",
                         "value": "-10",
-                        "target_type_name": "[[abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua]]",
+                        "target_type_name": "abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua",
                         "application_type": "apply_to_ability",
                         "usage_type": "addition"
                     }
@@ -7491,12 +7230,13 @@
                 "modifiers": [
                     {
                         "reference": "accuracy_weapon_modifier",
-                        "value": "1.149999976"
+                        "value": "1.149999976",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "weapon_penetration_modifier",
                         "value": "1.149999976",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     },
                     {
@@ -7507,7 +7247,7 @@
                     {
                         "reference": "reload_weapon_modifier",
                         "value": "0.8999999762",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -7518,7 +7258,7 @@
                     {
                         "reference": "ability_recharge_time_modifier",
                         "value": "-10",
-                        "target_type_name": "[[abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua]]",
+                        "target_type_name": "abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua",
                         "application_type": "apply_to_ability",
                         "usage_type": "addition"
                     }
@@ -7552,12 +7292,13 @@
                 "modifiers": [
                     {
                         "reference": "accuracy_weapon_modifier",
-                        "value": "1.149999976"
+                        "value": "1.149999976",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "weapon_penetration_modifier",
                         "value": "1.149999976",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     },
                     {
@@ -7568,7 +7309,7 @@
                     {
                         "reference": "reload_weapon_modifier",
                         "value": "0.8999999762",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -7579,7 +7320,7 @@
                     {
                         "reference": "ability_recharge_time_modifier",
                         "value": "-10",
-                        "target_type_name": "[[abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua]]",
+                        "target_type_name": "abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua",
                         "application_type": "apply_to_ability",
                         "usage_type": "addition"
                     }
@@ -7617,12 +7358,13 @@
                 "modifiers": [
                     {
                         "reference": "accuracy_weapon_modifier",
-                        "value": "1.149999976"
+                        "value": "1.149999976",
+                        "usage_type": "multiplication"
                     },
                     {
                         "reference": "weapon_penetration_modifier",
                         "value": "1.149999976",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     },
                     {
@@ -7633,7 +7375,7 @@
                     {
                         "reference": "reload_weapon_modifier",
                         "value": "0.8999999762",
-                        "target_type_name": "[[hardpoint_01]]",
+                        "target_type_name": "hardpoint_01",
                         "usage_type": "multiplication"
                     }
                 ]
@@ -7644,7 +7386,7 @@
                     {
                         "reference": "ability_recharge_time_modifier",
                         "value": "-10",
-                        "target_type_name": "[[abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua]]",
+                        "target_type_name": "abilities/panzer_elite_stuka_zu_fuss_rocket_halftrack.lua",
                         "application_type": "apply_to_ability",
                         "usage_type": "addition"
                     }
