@@ -1,6 +1,8 @@
 class StatsUnitsService < ApplicationService
   def self.fetch_for_const_name(const_name, ruleset_id)
     su = StatsUnit.find_by(const_name: const_name, ruleset_id: ruleset_id)
+    return nil if su.blank?
+
     loadout = su.data.with_indifferent_access[:loadout]
     if loadout.present?
       stats_entities = StatsEntity.where(reference: loadout.keys, ruleset_id: ruleset_id)
