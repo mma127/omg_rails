@@ -20,21 +20,21 @@ satchel_charge,ALLY.SATCHEL,Satchel Charges,Large packages of thrown explosives 
 satchel_charge,ALLY.SATCHEL,Satchel Charges,Large packages of thrown explosives on a five-second timer,consumable,,airborne,,0,60,0,0,2,0,0,1,,,assault_airborne
 four_thompsons,ALLY.FOUR_THOMPSONS,Thompsons,Four Thompson submachine guns,single_weapon,,airborne,,0,110,0,0,0,0,1,1,,,assault_airborne
 four_thompsons,ALLY.FOUR_THOMPSONS,Thompsons,Four Thompson submachine guns,single_weapon,,infantry,,0,110,0,0,0,0,1,1,,,rangers
-recoilless_rifles,ALLY.RECOILLES_RIFLE,Recoilless Rifles,Two long range hand-held anti-tank weapons,single_weapon,,airborne,,0,165,0,0,0,4,0,1,,,airborne
+recoilless_rifles,ALLY.RECOILLES_RIFLE,Recoilless Rifles,Two long range hand-held anti-tank weapons,single_weapon,,airborne,,0,180,0,0,0,4,0,1,,,airborne
 ally_flamethrower,ALLY.FLAME_THROWER,Flamethrower,A single anti-infantry flamethrower,single_weapon,americans,,,0,60,0,0,0,0,0,1,,,engineers
-ally_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,americans,,,0,10,0,0,0,0,0,1,,,engineers
-ally_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,,armor,,0,10,0,0,0,0,0,1,,,mech_inf
+ally_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,americans,,,0,0,0,0,0,0,0,1,,,engineers
+ally_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,,armor,,0,0,0,0,0,0,0,1,,,mech_inf
 ally_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,americans,,,0,30,0,0,2,0,0,1,,,engineers
 ally_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,,armor,,0,30,0,0,2,0,0,1,,,mech_inf
 mg_nest,ALLY.MG_NEST,HMG Nest,.30 cal machine gun emplacement,building,americans,,,0,60,0,0,1,1,0,,,,engineers
 medic_station,ALLY.MEDIC_STATION,Medic Station,"Tent that spawns medics to collect injured soldiers. Once six have been collected, spawns a new Riflemen squad",building,americans,,,0,60,0,0,1,0,0,,,,engineers
 triage_center,ALLY.TRIAGE_CENTER,Triage Center,Building that heals nearby infantry,building,americans,,,0,160,0,0,1,0,0,,,,engineers
-ally_mines,ALLY.MINES,Mines,Camouflaged explosives that detonate on enemy contact. ,consumable,americans,,,0,35,0,0,2,0,0,1,,,engineers
+ally_mines,ALLY.MINES,Mines,"Camouflaged explosives that detonate on enemy contact. ",consumable,americans,,,0,40,0,0,2,0,0,1,,,engineers
 57mm_ap_rounds,ALLY.AT_AP_ROUNDS,AP Rounds,Increases armor penetration and damage for 10 seconds,ability,americans,,,0,60,0,0,0,1,0,1,,,57mm_atg
 57mm_ap_rounds,ALLY.AT_AP_ROUNDS,AP Rounds,Increases armor penetration and damage for 10 seconds,ability,,airborne,,0,60,0,0,0,1,0,1,,,airborne_atg
 m8_side_skirts,ALLY.M8_SIDE_SKIRTS,Side Skirts,Side skirts that double the M8's health,passive,americans,,,100,0,20,0,0,0,0,1,,,greyhound
 m8_50_cal,ALLY.M8_50_CAL,.50 Cal HMG,Top-mounted .50 cal machine gun,single_weapon,americans,,,0,50,0,0,0,0,0,1,,,greyhound
-m8_mines,ALLY.M8_MINES,Greyhound Mines,"Camouflaged explosives that detonate on enemy contact, more powerful than engineer-laid mines",consumable,americans,,,0,40,0,0,1,1,0,2,,,greyhound
+m8_mines,ALLY.M8_MINES,Greyhound Mines,"Camouflaged explosives that detonate on enemy contact, more powerful than engineer-laid mines",consumable,americans,,,0,50,0,0,1,1,0,2,,,greyhound
 t17_wp,ALLY.T17WHITE,White Phosphorus Round,"Fire a white phosphorus round at a target vehicle, blinding and slowing it",ability,americans,,,0,40,0,0,0,2,0,1,,,t17
 t17_sandbags,ALLY.T17SAND,Sandbags,Increases T17 health,passive,americans,,,60,0,10,0,0,0,0,1,,,t17
 bulldozer,ALLY.BULLDOZER,Bulldozer,Bulldozer that can plow through tank traps and hedge rows. Increases tank health,ability,americans,,,0,35,0,0,0,2,0,1,,,sherman_croc
