@@ -54,7 +54,7 @@ AXIS.KINGTIGER,64;10% accuracy increase,"192;10% speed/acceleration increase, 15
 CMW.TOMMIES,11;10% received accuracy reduction,44;12% accuracy increase (18% without Lt),"132;15% received damage reduction,  25% received suppression reduction",330;Known Squad,495;Feared Squad
 CMW.RECON_TOMMIES,10;10% received accuracy reduction,"40;10% received damage reduction, +5 LoS","120;+5 detection radius,25% received suppression reduction",300;Known Squad,450;Feared Squad
 CMW.SAPPERS,10;10% received accuracy reduction,40;15% reload reduction,"120;Unit repair 33% faster, 15% received damage reduction",300;Known Squad,450;Feared Squad
-CMW.LT,"14;+20hp, +5% accuracy to aura","56;+25% burst duration, -20% cooldown, +10% accuracy (to LT), -10% reload to aura","168;health regen (46% WM officer rate), 10% accuracy increase on Aura",420;Known Officer,630;Feared Officer
+CMW.LT,"14;+20hp, +5% accuracy to aura","56;+25% burst duration, -20% cooldown, +10% accuracy (to LT), -10% reload to aura",168;health regen (46% WM officer rate),420;Known Officer,630;Feared Officer
 CMW.CAPTAIN,"14;+15 health to Cpt, unlocks sprint","56;+10 los, +15% maximum infantry health in Aura","168;25% Reduction to victor target cooldown, 1.92 hp/s health regen in Aura, Health regeneration (46% of WM Officer)",420;Known Officer,630;Feared Officer
 CMW.COMMANDOS,16;10% received accuracy reduction,64;15% accuracy increase,"192;15% reload decrease, 10% received damage reduction",480;Known Squad,720;Feared Squad
 CMW.MORTAR,14;10% received accuracy reduction,56;15% cooldown reduction,"168;30% less scatter, 10% damage increase",420;Known Team,630;Feared Team
