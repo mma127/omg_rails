@@ -6,6 +6,7 @@ class AvailableOffmapService
     @player = company.player
     @faction = company.faction
     @doctrine = company.doctrine
+    @ruleset = company.ruleset
   end
 
   # Given a new company, determine the available offmaps for that company
@@ -50,7 +51,7 @@ class AvailableOffmapService
   end
 
   def get_enabled_offmap_hash(restriction)
-    EnabledOffmap.where(restriction: restriction).index_by(&:offmap_id)
+    EnabledOffmap.where(restriction: restriction, ruleset: @ruleset).index_by(&:offmap_id)
   end
 
   def merge_allowed_offmaps(existing_offmaps_hash, restricted_offmaps_hash)
