@@ -44,7 +44,7 @@ assault_grenades,AXIS.ASSAULT_NADES,Assault Grenades,"Grants the Assault ability
 axis_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,wehrmacht,,,0,30,0,0,2,0,0,1,,,pioneers
 axis_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,,terror,,0,30,0,0,2,0,0,1,,,saboteurs
 axis_flamethrower,AXIS.FLAMETHROWER,Flamethrower,A single anti-infantry flamethrower,single_weapon,wehrmacht,,,0,50,0,0,0,4,0,1,,,pioneers
-axis_mine_detector,AXIS.MINEDETECTOR,Mine Detector,Hand-held mine detector,single_weapon,wehrmacht,,,0,10,0,0,0,0,0,1,,,pioneers
+axis_mine_detector,AXIS.MINEDETECTOR,Mine Detector,Hand-held mine detector,single_weapon,wehrmacht,,,0,0,0,0,0,0,0,1,,,pioneers
 axis_goliath,AXIS.GOLIATH,Goliath,Deploy a remote controlled explosive Goliath,consumable,wehrmacht,,,0,100,0,0,1,5,0,1,,,pioneers
 bunker,AXIS.BUNKER,Bunker,"Bunker emplacement, can be garrisoned by infantry",building,wehrmacht,,,0,30,0,0,1,1,0,,,,pioneers
 bunker,AXIS.BUNKER,Bunker,"Bunker emplacement, can be garrisoned by infantry",building,,defensive,,0,30,0,0,1,1,0,,,,fortress_pioneers
@@ -54,7 +54,7 @@ repair_bunker,AXIS.REPAIR_BUNKER,Repair Bunker,"Vehicle repair bunker, can be ga
 repair_bunker,AXIS.REPAIR_BUNKER,Repair Bunker,"Vehicle repair bunker, can be garrisoned by infantry",building,,defensive,,0,140,0,0,1,1,0,,,,fortress_pioneers
 medic_bunker,AXIS.MEDIC_BUNKER,Medic Bunker,"Bunker that spawns medics to collect injured soldiers. Can be garrisoned by infantry",building,wehrmacht,,,0,60,0,0,1,1,0,,,,pioneers
 medic_bunker,AXIS.MEDIC_BUNKER,Medic Bunker,"Bunker that spawns medics to collect injured soldiers. Can be garrisoned by infantry",building,,defensive,,0,60,0,0,1,1,0,,,,fortress_pioneers
-axis_mines,AXIS.MINES,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,wehrmacht,,,0,35,0,0,2,0,0,1,,,pioneers
+axis_mines,AXIS.MINES,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,wehrmacht,,,0,40,0,0,2,0,0,1,,,pioneers
 mortar_bunker,AXIS.MORTAR_BUNKER,Mortar Bunker,"Mortar-equipped bunker, can be garrisoned by infantry",building,,defensive,,400,100,0,0,1,2,0,,,,pioneers
 mortar_bunker,AXIS.MORTAR_BUNKER,Mortar Bunker,"Mortar-equipped bunker, can be garrisoned by infantry",building,,defensive,,400,100,0,0,1,2,0,,,,fortress_pioneers
 pantherturm,AXIS.PANTHERTURM,Pantherturm,"Bunker with a Panther turret, can be garrisoned by infantry",building,,defensive,,0,40,175,0,1,2,0,,,,pioneers
@@ -75,8 +75,8 @@ p4_skirts,AXIS.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage an
 p4_skirts,AXIS.P4_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,130,0,0,0,0,1,,,p4_blitz
 panther_mg42,AXIS.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,wehrmacht,,,0,45,0,0,0,0,0,1,,,panther_axis
 panther_mg42,AXIS.PANTHER_MG42,MG42 Gunner,Top-mounted MG42,single_weapon,,blitz,,0,45,0,0,0,0,0,1,,,panther_blitz
-panther_skirts,AXIS.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,110,0,0,0,0,1,,,panther_axis
-panther_skirts,AXIS.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,110,0,0,0,0,1,,,panther_blitz
+panther_skirts,AXIS.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,wehrmacht,,,0,0,100,0,0,0,0,1,,,panther_axis
+panther_skirts,AXIS.PANTHER_SKIRTS,Sideskirts,Additional side armor that reduces damage and penetration of anti-tank weapons,passive,,blitz,,0,0,100,0,0,0,0,1,,,panther_blitz
 support_karbines_pio,AXIS.SUPPORT_KARBINES,Karbines,Equip the squad with Grenadier Rifles,squad_weapon,,defensive,karbines,0,5,0,0,0,3,0,1,,,pioneers
 support_karbines,AXIS.SUPPORT_KARBINES,Karbines,Equip the squad with Grenadier Rifles,squad_weapon,,defensive,karbines,0,5,0,0,0,0,0,1,,,mg42
 support_karbines,AXIS.SUPPORT_KARBINES,Karbines,Equip the squad with Grenadier Rifles,squad_weapon,,defensive,karbines,0,5,0,0,0,0,0,1,,,mortar_axis

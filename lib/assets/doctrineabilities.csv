@@ -110,7 +110,7 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 46,Release the Hounds,OMGDOCUPG.CMW.COMMANDO.TR1.B1.T1,34,1,1,Bren Gun Carriers now have an ability which adds +10 sight range and grants +18 stealth detection. SAS Jeeps receive half the bonus.,3
 151,Disappearing Act,OMGDOCUPG.CMW.COMMANDO.TR1.B1.T2,34,1,2,"Concealing Smoke cloaks units 30% longer, but has 25% longer cooldown.",5
 225,Commando Officers,OMGDOCUPG.CMW.COMMANDO.TR1.B1.T3,34,1,3,LTs and Captains gain Commando smoke on a 5 minute cooldown.,3
-47,Packing Heat,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T1,34,2,1,"Lieutenants and Captains may now purchase Commando Grenades for 40 Munitions, a PIAT for 30 Munitions, a Bren Gun for 20 Munitions, or a Boys AT Rifle for free.",3
+47,Packing Heat,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T1,34,2,1,"Lieutenants and Captains may now purchase a PIAT for 50 Munitions, Commando Grenades for 40 Munitions, a Bren Gun for 20 Munitions, or a Boys AT Rifle for free.",3
 152,Commando Fire Teams,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T2,34,2,2,"PIAT Commandos may purchase a 4th squad member. They may also choose to swap their PIATs for 3 Bren Guns with a 20 MU refund, or 3 Boys AT Rifles and a 60 MU refund.",4
 226,Commando Hospitals,OMGDOCUPG.CMW.COMMANDO.TR1.B2.T3,34,2,3,Gilder CCS is available for deployment.,4
 49,Quick Reaction Force,OMGDOCUPG.CMW.COMMANDO.TR2.B1.T1,35,1,1,Pure Commando platoons now deploy 75% faster (including Polish Paras and gliders).,2
@@ -122,8 +122,8 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 52,Priority Targets,OMGDOCUPG.CMW.COMMANDO.TR3.B1.T1,36,1,1,Lieutenants and Captains are granted an ability which tracks enemy units in the fog of war.,2
 155,Triangulation,OMGDOCUPG.CMW.COMMANDO.TR3.B1.T2,36,1,2,Radio Triangulation Devices now available for purchase. Can be placed by Sappers and Commandos. 120 mu. [Bugged],100
 229,Tier 3 alpha,OMGDOCUPG.CMW.COMMANDO.TR3.B1.T3,36,1,3,,1000
-53,Radio Disruption,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T1,36,2,1,"Units within 7.5 unit radius of Radio Disruption offmap ability gain camouflage temporarily for 5 seconds, but weapons are disabled. Applies only to your own units. Recharging cooldown, 100 mu.",1
-156,Proper Encryption,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T2,36,2,2,"Proper Encryption ability now available for purchase. Blurs enemy minimap and tactical map and reduces enemy units' sight by five meters while active. Recharging cooldown, 80 mu.",3
+53,Radio Disruption,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T1,36,2,1,"Units within 7.5 unit radius of Radio Disruption offmap ability gain camouflage temporarily for 5 seconds, but weapons are disabled. Applies only to your own units. Recharging cooldown, 100 mu.",5
+156,Proper Encryption,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T2,36,2,2,"Proper Encryption ability now available for purchase. Blurs enemy minimap and tactical map and reduces enemy units' sight by five meters while active. Recharging cooldown, 80 mu.",4
 230,Tier 3 alpha,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T3,36,2,3,,1000
 28,Mechanized Escorts,OMGDOCUPG.CMW.ENGINEERS.TR1.B1.T1,28,1,1,"Emplacement trucks have 50% higher speed, acceleration, and deceleration along with 20% more hitpoints. In addition, 25 Pounders and Bofors now have 35% more hitpoints and gain the Hunker Down ability.",1
 139,Prepared Fighting Positions,OMGDOCUPG.CMW.ENGINEERS.TR1.B1.T2,28,1,2,"When in proper emplacements, Vickers Machine Gun and 3 Inch Mortars receive Lieutenant buff[BUGGED]. 17 Pounder Nests will provide Captain aura buff to the sector(working)",3
