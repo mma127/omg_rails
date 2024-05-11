@@ -85,6 +85,63 @@ RSpec.describe AvailableUnitService do
         expect { subject.build_new_company_available_units }.to raise_error "Company #{company.id} has existing AvailableUnits"
       end
     end
+
+    context "when there is a previous ruleset" do
+      before do
+        old_ruleset = create :ruleset, is_active: false
+        create :enabled_unit, unit: unit1, man: 200, pop: 4, resupply: 4, resupply_max: 6, company_max: 10, restriction: restriction_faction, ruleset: old_ruleset
+        create :enabled_unit, unit: unit1, man: 300, pop: 5, resupply: 2, resupply_max: 4, company_max: 8, restriction: restriction_doctrine, ruleset: old_ruleset
+        create :enabled_unit, unit: unit2, pop: 7, resupply: 2, resupply_max: 5, company_max: 5, restriction: restriction_faction, ruleset: old_ruleset
+        create :enabled_unit, unit: unit3, pop: 13, fuel: 700, resupply: 1, resupply_max: 1, company_max: 2, restriction: restriction_doctrine, ruleset: old_ruleset
+        create :enabled_unit, unit: unit4, pop: 16, mun: 225, resupply: 1, resupply_max: 1, company_max: 1, restriction: restriction_faction, ruleset: old_ruleset
+        create :enabled_unit, unit: unit5, pop: 5, resupply: 10, resupply_max: 15, company_max: 15, restriction: restriction_doctrine, ruleset: old_ruleset
+        create :enabled_unit, unit: unit6, pop: 5, resupply: 99, resupply_max: 99, company_max: 100, restriction: restriction_faction2, ruleset: old_ruleset
+        create :disabled_unit, unit: unit2, restriction: restriction_doctrine, ruleset: old_ruleset
+      end
+
+      it "creates the correct number of AvailableUnits" do
+        subject.build_new_company_available_units
+
+        available_units = company.reload.available_units
+        expect(available_units.size).to eq 4
+        expect(available_units.pluck(:unit_id)).to match_array [unit1.id, unit3.id, unit4.id, unit5.id]
+      end
+
+      it "creates the AvailableUnit for unit1" do
+        subject.build_new_company_available_units
+        au = AvailableUnit.find_by(company: company, unit: unit1)
+        expect(au.pop).to eq 5
+        expect(au.man).to eq 300
+        expect(au.resupply).to eq 2
+        expect(au.company_max).to eq 8
+      end
+
+      it "creates the AvailableUnit for unit3" do
+        subject.build_new_company_available_units
+        au = AvailableUnit.find_by(company: company, unit: unit3)
+        expect(au.pop).to eq 13
+        expect(au.fuel).to eq 700
+        expect(au.resupply).to eq 1
+        expect(au.company_max).to eq 2
+      end
+
+      it "creates the AvailableUnit for unit4" do
+        subject.build_new_company_available_units
+        au = AvailableUnit.find_by(company: company, unit: unit4)
+        expect(au.pop).to eq 16
+        expect(au.mun).to eq 225
+        expect(au.resupply).to eq 1
+        expect(au.company_max).to eq 1
+      end
+
+      it "creates the AvailableUnit for unit5" do
+        subject.build_new_company_available_units
+        au = AvailableUnit.find_by(company: company, unit: unit5)
+        expect(au.pop).to eq 5
+        expect(au.resupply).to eq 10
+        expect(au.company_max).to eq 15
+      end
+    end
   end
 
   context "#get_enabled_unit_hash" do

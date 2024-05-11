@@ -103,7 +103,76 @@ RSpec.describe AvailableUpgradeService do
       expect(au1.fuel).to eq 50
       expect(au1.uses).to eq 0
     end
+    
+    context "when there is a previous ruleset" do
+      before do
+        old_ruleset = create :ruleset, is_active: false
+        old_enabled_upgrade1 = create :enabled_upgrade, upgrade: upgrade1, man: 0, mun: 35, fuel: 0, pop: 0, uses: 2, restriction: restriction_faction, ruleset: old_ruleset
+        old_enabled_upgrade1_doctrine = create :enabled_upgrade, upgrade: upgrade1, man: 0, mun: 40, fuel: 0, pop: 0, uses: 3, restriction: restriction_doctrine1, ruleset: old_ruleset
+        old_enabled_upgrade2 = create :enabled_upgrade, upgrade: upgrade2, man: 100, mun: 35, fuel: 0, pop: 2, uses: 0, restriction: restriction_faction, ruleset: old_ruleset
+        old_enabled_upgrade3 = create :enabled_upgrade, upgrade: upgrade3, man: 0, mun: 0, fuel: 50, pop: 0, uses: 0, restriction: restriction_doctrine1, ruleset: old_ruleset
+        old_enabled_upgrade4 = create :enabled_upgrade, upgrade: upgrade4, restriction: restriction_faction2, ruleset: old_ruleset
+        old_disabled_upgrade2 = create :disabled_upgrade, upgrade: upgrade2, restriction: restriction_doctrine2, ruleset: old_ruleset
+        create :restriction_upgrade_unit, restriction_upgrade: old_enabled_upgrade1, unit: unit1
+        create :restriction_upgrade_unit, restriction_upgrade: old_enabled_upgrade1, unit: unit2
+        create :restriction_upgrade_unit, restriction_upgrade: old_enabled_upgrade1_doctrine, unit: unit1
+        create :restriction_upgrade_unit, restriction_upgrade: old_enabled_upgrade2, unit: unit2
+        create :restriction_upgrade_unit, restriction_upgrade: old_enabled_upgrade2, unit: unit3
+        create :restriction_upgrade_unit, restriction_upgrade: old_enabled_upgrade3, unit: unit3
+        create :restriction_upgrade_unit, restriction_upgrade: old_enabled_upgrade4, unit: unit4
+        create :restriction_upgrade_unit, restriction_upgrade: old_disabled_upgrade2, unit: unit2
+      end
+      it "creates the correct number of AvailableUpgrades" do
+        expect { subject }.to change { AvailableUpgrade.count }.by 5
 
+        available_upgrades = AvailableUpgrade.where(company: company)
+        expect(available_upgrades.count).to eq 5
+        expect(available_upgrades.pluck(:upgrade_id))
+          .to match_array [upgrade1.id, upgrade1.id, upgrade2.id, upgrade2.id, upgrade3.id]
+      end
+
+      it "creates the correct AvailableUpgrades for upgrade1" do
+        subject
+        au1 = AvailableUpgrade.find_by(company: company, upgrade: upgrade1, unit: unit1)
+        expect(au1.pop).to eq 0
+        expect(au1.man).to eq 0
+        expect(au1.mun).to eq 40
+        expect(au1.fuel).to eq 0
+        expect(au1.uses).to eq 3
+        au2 = AvailableUpgrade.find_by(company: company, upgrade: upgrade1, unit: unit2)
+        expect(au2.pop).to eq 0
+        expect(au2.man).to eq 0
+        expect(au2.mun).to eq 35
+        expect(au2.fuel).to eq 0
+        expect(au2.uses).to eq 2
+      end
+
+      it "creates the correct AvailableUpgrades for upgrade2" do
+        subject
+        au1 = AvailableUpgrade.find_by(company: company, upgrade: upgrade2, unit: unit2)
+        expect(au1.pop).to eq 2
+        expect(au1.man).to eq 100
+        expect(au1.mun).to eq 35
+        expect(au1.fuel).to eq 0
+        expect(au1.uses).to eq 0
+        au2 = AvailableUpgrade.find_by(company: company, upgrade: upgrade2, unit: unit3)
+        expect(au2.pop).to eq 2
+        expect(au2.man).to eq 100
+        expect(au2.mun).to eq 35
+        expect(au2.fuel).to eq 0
+        expect(au2.uses).to eq 0
+      end
+
+      it "creates the correct AvailableUpgrades for upgrade3" do
+        subject
+        au1 = AvailableUpgrade.find_by(company: company, upgrade: upgrade3, unit: unit3)
+        expect(au1.pop).to eq 0
+        expect(au1.man).to eq 0
+        expect(au1.mun).to eq 0
+        expect(au1.fuel).to eq 50
+        expect(au1.uses).to eq 0
+      end
+    end
   end
 
   describe "#add_enabled_available_upgrades" do

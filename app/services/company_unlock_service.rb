@@ -3,6 +3,7 @@ class CompanyUnlockService
 
   def initialize(company)
     @company = company
+    @ruleset = company.ruleset
   end
 
   def purchase_doctrine_unlock(doctrine_unlock)
@@ -20,7 +21,7 @@ class CompanyUnlockService
     # Get Restrictions for the doctrineUnlock and associated unlock
     du_restriction = doctrine_unlock.restriction
     u_restriction = unlock.restriction
-    restriction_params = { restriction: [du_restriction, u_restriction] }
+    restriction_params = { restriction: [du_restriction, u_restriction], ruleset: @ruleset }
 
     # Get EnabledUnits for those restrictions
     enabled_units = EnabledUnit.includes(:unit).where(restriction_params)
@@ -125,7 +126,7 @@ class CompanyUnlockService
     # Get Restrictions for the DoctrineUnlock and Unlock
     du_restriction = doctrine_unlock.restriction
     u_restriction = unlock.restriction
-    restriction_params = { restriction: [du_restriction, u_restriction] }
+    restriction_params = { restriction: [du_restriction, u_restriction], ruleset: @ruleset }
 
     # Get EnabledUnits for those restrictions
     previously_enabled_units = EnabledUnit.includes(:unit).where(restriction_params)

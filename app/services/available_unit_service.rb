@@ -8,6 +8,7 @@ class AvailableUnitService
     @player = company.player
     @faction = company.faction
     @doctrine = company.doctrine
+    @ruleset = company.ruleset
   end
 
   # Given a new company, determine the available units for that company
@@ -128,11 +129,11 @@ class AvailableUnitService
   end
 
   def get_enabled_unit_hash(restriction)
-    EnabledUnit.where(restriction: restriction, ruleset: @company.ruleset).index_by(&:unit_id)
+    EnabledUnit.where(restriction: restriction, ruleset: @ruleset).index_by(&:unit_id)
   end
 
   def get_disabled_unit_hash(restriction)
-    DisabledUnit.where(restriction: restriction, ruleset: @company.ruleset).index_by(&:unit_id)
+    DisabledUnit.where(restriction: restriction, ruleset: @ruleset).index_by(&:unit_id)
   end
 
   def merge_allowed_units(existing_units_hash, restricted_units_hash)
@@ -185,13 +186,13 @@ class AvailableUnitService
   end
 
   def get_unmodified_base_available_unit(unit, du_u_restrictions)
-    du_u_enabled_unit = EnabledUnit.find_by(restriction: du_u_restrictions, unit: unit, ruleset: @company.ruleset)
+    du_u_enabled_unit = EnabledUnit.find_by(restriction: du_u_restrictions, unit: unit, ruleset: @ruleset)
     return instantiate_base_available_unit(du_u_enabled_unit) if du_u_enabled_unit.present?
 
-    doctrine_enabled_unit = EnabledUnit.find_by(restriction: @doctrine.restriction, unit: unit, ruleset: @company.ruleset)
+    doctrine_enabled_unit = EnabledUnit.find_by(restriction: @doctrine.restriction, unit: unit, ruleset: @ruleset)
     return instantiate_base_available_unit(doctrine_enabled_unit) if doctrine_enabled_unit.present?
 
-    faction_enabled_unit = EnabledUnit.find_by(restriction: @faction.restriction, unit: unit, ruleset: @company.ruleset)
+    faction_enabled_unit = EnabledUnit.find_by(restriction: @faction.restriction, unit: unit, ruleset: @ruleset)
     return instantiate_base_available_unit(faction_enabled_unit) if faction_enabled_unit.present?
 
     raise EnabledUnitNotFoundError.new("Could not determine an unmodified EnabledUnit for unit #{unit.id} in company #{@company.id}")
