@@ -115,8 +115,8 @@ geschutzwagen,DisabledUnit,,blitz,,,,,,,,,,1,,
 stug,DisabledUnit,,blitz,,,,,,,,,,1,,
 p4,DisabledUnit,,blitz,,,,,,,,,,1,,
 panther_axis,DisabledUnit,,blitz,,,,,,,,,,1,,
-puma_blitz,EnabledUnit,,blitz,,7,250,0,70,4,8,8,1,1,2,0
-ostwind_blitz,EnabledUnit,,blitz,,10,320,0,230,3,6,8,1,1,0,0
+puma_blitz,EnabledUnit,,blitz,,6,250,0,70,4,8,8,1,1,2,0
+ostwind_blitz,EnabledUnit,,blitz,,10,320,0,210,3,6,8,1,1,0,0
 geschutzwagen_blitz,EnabledUnit,,blitz,,7,270,0,180,3,6,10,1,1,0,0
 stug_blitz,EnabledUnit,,blitz,,8,280,0,150,3,6,10,1,1,1,0
 p4_blitz,EnabledUnit,,blitz,,12,350,0,250,4,8,8,1,1,2,0
