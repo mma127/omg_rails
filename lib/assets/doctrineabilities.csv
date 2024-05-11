@@ -122,8 +122,8 @@ da_id,internal_name,const,tree,branch,tier,description,vp
 52,Priority Targets,OMGDOCUPG.CMW.COMMANDO.TR3.B1.T1,36,1,1,Lieutenants and Captains are granted an ability which tracks enemy units in the fog of war.,2
 155,Triangulation,OMGDOCUPG.CMW.COMMANDO.TR3.B1.T2,36,1,2,Radio Triangulation Devices now available for purchase. Can be placed by Sappers and Commandos. 120 mu. [Bugged],100
 229,Tier 3 alpha,OMGDOCUPG.CMW.COMMANDO.TR3.B1.T3,36,1,3,,1000
-53,Radio Disruption,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T1,36,2,1,"Units within 7.5 unit radius of Radio Disruption offmap ability gain camouflage temporarily for 5 seconds, but weapons are disabled. Applies only to your own units. Recharging cooldown, 100 mu.",5
-156,Proper Encryption,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T2,36,2,2,"Proper Encryption ability now available for purchase. Blurs enemy minimap and tactical map and reduces enemy units' sight by five meters while active. Recharging cooldown, 80 mu.",4
+53,Radio Disruption,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T1,36,2,1,"Units within 7.5 unit radius of Radio Disruption offmap ability gain camouflage temporarily for 5 seconds, but weapons are disabled. Applies only to your own units. Recharging cooldown, 140 mu.",5
+156,Proper Encryption,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T2,36,2,2,"Proper Encryption ability now available for purchase. Blurs enemy minimap and tactical map and reduces enemy units' sight by five meters while active. Recharging cooldown, 100 mu.",4
 230,Tier 3 alpha,OMGDOCUPG.CMW.COMMANDO.TR3.B2.T3,36,2,3,,1000
 28,Mechanized Escorts,OMGDOCUPG.CMW.ENGINEERS.TR1.B1.T1,28,1,1,"Emplacement trucks have 50% higher speed, acceleration, and deceleration along with 20% more hitpoints. In addition, 25 Pounders and Bofors now have 35% more hitpoints and gain the Hunker Down ability.",1
 139,Prepared Fighting Positions,OMGDOCUPG.CMW.ENGINEERS.TR1.B1.T2,28,1,2,"When in proper emplacements, Vickers Machine Gun and 3 Inch Mortars receive Lieutenant buff[BUGGED]. 17 Pounder Nests will provide Captain aura buff to the sector(working)",3
