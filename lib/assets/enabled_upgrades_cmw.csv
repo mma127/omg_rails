@@ -22,15 +22,15 @@ empty_mortar_pit,CMW.EMPTY_MORTAR_PIT,Mortar Pit,"Empty mortar pit",building,bri
 empty_mortar_pit,CMW.EMPTY_MORTAR_PIT,Mortar Pit,"Empty mortar pit",building,,canadians,,0,30,0,0,0,0,0,1,,,canadian_section
 empty_mg_nest,CMW.EMPTY_MG_NEST,MG Nest,"Empty MG nest",building,british,,,0,30,0,0,0,0,0,1,,,infantry_section
 empty_mg_nest,CMW.EMPTY_MG_NEST,MG Nest,"Empty MG nest",building,,canadians,,0,30,0,0,0,0,0,1,,,canadian_section
-cmw_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,british,,,0,10,0,0,0,0,0,1,,,sappers
+cmw_mine_detector,ALLY.MINE_DETECTOR,Mine Detector,Hand-held mine detector,single_weapon,british,,,0,0,0,0,0,0,0,1,,,sappers
 cmw_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,british,,,0,30,0,0,2,0,0,1,,,sappers
 cmw_timed_demo,ALLY.DEMOLITIONS,Timed Demolition Charges,Powerful explosives that must be placed and explode on a timer,consumable,,canadians,,0,30,0,0,2,0,0,1,,,ssf
 casualty_clearing_station,CMW.CASUALTY_STATION,Casualty Clearing Station,"Building with the ability to heal infantry on a cooldown. Also spawns medics to collect wounded.",building,british,,,0,90,0,0,1,0,0,,,,sappers
 casualty_clearing_station,CMW.CASUALTY_STATION,Casualty Clearing Station,"Building with the ability to heal infantry on a cooldown. Also spawns medics to collect wounded.",building,british,,,0,90,0,0,1,0,0,,,,expert_sappers
 two_piats,CMW.PIATS,PIATs,"Handheld anti tank weapons that fire in an arc. Can shoot behind cover.",single_weapon,british,,,0,110,0,0,0,1,0,1,,,sappers
 two_piats,CMW.PIATS,PIATs,"Handheld anti tank weapons that fire in an arc. Can shoot behind cover.",single_weapon,british,,,0,110,0,0,0,1,0,1,,,expert_sappers
-cmw_mines,CMW.MINES,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,british,,,0,35,0,0,2,0,0,1,,,sappers
-cmw_mines,CMW.MINES,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,british,,,0,35,0,0,2,0,0,1,,,expert_sappers
+cmw_mines,CMW.MINES,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,british,,,0,40,0,0,2,0,0,1,,,sappers
+cmw_mines,CMW.MINES,Mines,Camouflaged explosives that detonate on enemy contact.,consumable,british,,,0,40,0,0,2,0,0,1,,,expert_sappers
 two_boys_at,CMW.BOYSAT,Boys AT Rifles,"Handheld anti tank rifles effective against light vehicles",single_weapon,british,,,0,50,0,0,0,1,0,1,,,sappers
 two_boys_at,CMW.BOYSAT,Boys AT Rifles,"Handheld anti tank rifles effective against light vehicles",single_weapon,british,,,0,50,0,0,0,1,0,1,,,expert_sappers
 17pdr_nest,AXIS.PANTHERTURM,17pdr AT Nest,"Anti tank emplacement with a 17pdr AT gun.",building,british,,,200,0,100,0,1,0,0,1,,,sappers
@@ -77,8 +77,8 @@ boys_at,CMW.SINGLE_BOYSAT,Boys AT Rifle,"A single Boys AT rifle",single_weapon,,
 boys_at,CMW.SINGLE_BOYSAT,Boys AT Rifle,"A single Boys AT rifle",single_weapon,,commandos,packing_heat,0,0,0,0,0,1,0,1,,,captain
 bren_gun,CMW.SINGLE_BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,,commandos,packing_heat,0,20,0,0,0,1,0,1,,,lt
 bren_gun,CMW.SINGLE_BREN_GUN,Bren Gun,A single Bren Gun,single_weapon,,commandos,packing_heat,0,20,0,0,0,1,0,1,,,captain
-piat,CMW.SINGLE_PIAT,PIAT,A single PIAT,single_weapon,,commandos,packing_heat,0,30,0,0,0,1,0,1,,,lt
-piat,CMW.SINGLE_PIAT,PIAT,A single PIAT,single_weapon,,commandos,packing_heat,0,30,0,0,0,1,0,1,,,captain
+piat,CMW.SINGLE_PIAT,PIAT,A single PIAT,single_weapon,,commandos,packing_heat,0,50,0,0,0,1,0,1,,,lt
+piat,CMW.SINGLE_PIAT,PIAT,A single PIAT,single_weapon,,commandos,packing_heat,0,50,0,0,0,1,0,1,,,captain
 piat_commando_four,CMW.PIAT_COMMANDO_FOUR,Additional PIAT Commando,Adds another member to the squad,unit_replacement,,commandos,commando_fire_teams,60,10,0,1,0,0,0,1,4,1,piat_commandos
 piat_commando_brens,CMW.BREN_GUN,Bren Guns,Replace PIATs with Bren Guns,single_weapon,,commandos,commando_fire_teams,0,-20,0,0,0,1,0,1,,,piat_commandos
 piat_commando_boys_at,CMW.BOYSAT,Boys AT Rifles,Replace PIATs with Boys AT Rifles,single_weapon,,commandos,commando_fire_teams,0,-60,0,0,0,1,0,1,,,piat_commandos
