@@ -291,17 +291,24 @@ const squadsSlice = createSlice({
       const platoon = state[tab][index]
       if (_.has(platoon, transportUuid)) {
         const transport = platoon[transportUuid]
-        let transportedSquads = transport.transportedSquads
         if (!_.isPlainObject(transport.transportedSquads)) {
-          transportedSquads = {}
+          transport.transportedSquads = {}
         }
+        if (!_.isArray(transport.transportedSquadUuids)) {
+          transport.transportedSquadUuids = []
+        }
+        const transportedSquads = transport.transportedSquads,
+          transportedSquadUuids = transport.transportedSquadUuids
+
         if (!_.has(transportedSquads, uuid)) {
           const usedSquadSlots = (transport.usedSquadSlots || 0)
           const usedModelSlots = (transport.usedModelSlots || 0)
           // If the transporting squad has both squad and model slots left, add the squad to the transport
           if (usedSquadSlots + 1 <= transport.transportSquadSlots && usedModelSlots + totalModelCount <= transport.transportModelSlots) {
             transportedSquads[uuid] = newSquad
+            transportedSquadUuids.push(uuid)
             transport.transportedSquads = transportedSquads
+            transport.transportedSquadUuids = transportedSquadUuids
             transport.usedSquadSlots = usedSquadSlots + 1
             transport.usedModelSlots = usedModelSlots + totalModelCount
             transport.popWithTransported = parseFloat(transport.popWithTransported) + parseFloat(pop)
@@ -413,13 +420,20 @@ const squadsSlice = createSlice({
       } else {
         // Moving into transport
         const targetTransport = newPlatoon[targetTransportUuid]
-        let transportedSquads = targetTransport.transportedSquads
         if (!_.isPlainObject(targetTransport.transportedSquads)) {
-          transportedSquads = {}
+          targetTransport.transportedSquads = {}
         }
+        if (!_.isArray(targetTransport.transportedSquadUuids)) {
+          targetTransport.transportedSquadUuids = []
+        }
+        const transportedSquads = targetTransport.transportedSquads,
+          transportedSquadUuids = targetTransport.transportedSquadUuids
+
         transportedSquads[uuid] = workingSquad
+        transportedSquadUuids.push(uuid)
         workingSquad.transportUuid = targetTransportUuid
         targetTransport.transportedSquads = transportedSquads
+        targetTransport.transportedSquadUuids = transportedSquadUuids
         targetTransport.usedSquadSlots = (targetTransport.usedSquadSlots || 0) + 1
         targetTransport.usedModelSlots = (targetTransport.usedModelSlots || 0) + workingSquad.totalModelCount
         targetTransport.popWithTransported = parseFloat(targetTransport.popWithTransported) + parseFloat(workingSquad.pop)
@@ -448,10 +462,14 @@ const squadsSlice = createSlice({
       const platoon = state[tab][index]
       if (_.has(platoon, transportUuid)) {
         const transport = platoon[transportUuid]
-        let transportedSquads = transport.transportedSquads
         if (!_.isPlainObject(transport.transportedSquads)) {
-          transportedSquads = {}
+          transport.transportedSquads = {}
         }
+        if (!_.isArray(transport.transportedSquadUuids)) {
+          targetTransport.transportedSquadUuids = []
+        }
+        const transportedSquads = transport.transportedSquads,
+          transportedSquadUuids = transport.transportedSquadUuids
 
         if (!_.has(transportedSquads, uuid)) {
           const usedSquadSlots = (transport.usedSquadSlots || 0)
@@ -459,7 +477,9 @@ const squadsSlice = createSlice({
           // If the transporting squad has both squad and model slots left, add the squad to the transport
           if (usedSquadSlots + 1 <= transport.transportSquadSlots && usedModelSlots + totalModelCount <= transport.transportModelSlots) {
             transportedSquads[uuid] = squad
+            transportedSquadUuids.push(uuid)
             transport.transportedSquads = transportedSquads
+            transport.transportedSquadUuids = transportedSquadUuids
             transport.usedSquadSlots = usedSquadSlots + 1
             transport.usedModelSlots = usedModelSlots + totalModelCount
             transport.popWithTransported = parseFloat(transport.popWithTransported) + parseFloat(pop)
