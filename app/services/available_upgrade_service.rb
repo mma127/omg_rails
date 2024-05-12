@@ -99,10 +99,10 @@ class AvailableUpgradeService
     enabled_upgrades_by_upgrade_unit_id = remove_disabled_upgrades(enabled_upgrades_by_upgrade_unit_id, disabled_upgrade_id_to_unit_ids)
 
     if enabled_upgrades_by_upgrade_unit_id.blank?
-      Rails.logger.info("No enabled upgrades found to recreate that were disabled by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
+      # Rails.logger.info("No enabled upgrades found to recreate that were disabled by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
     else
-      Rails.logger.info("Found #{enabled_upgrades_by_upgrade_unit_id.size} upgrades, creating available upgrades that were disabled "\
-        "by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
+      # Rails.logger.info("Found #{enabled_upgrades_by_upgrade_unit_id.size} upgrades, creating available upgrades that were disabled "\
+      #   "by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
       create_enabled_available_upgrades(enabled_upgrades_by_upgrade_unit_id)
     end
   end

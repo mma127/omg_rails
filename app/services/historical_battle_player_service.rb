@@ -11,12 +11,12 @@ class HistoricalBattlePlayerService
 
     date_played = DateTime.now.to_date
 
-    info_logger("Populating HistoricalBattlePlayers")
+    # info_logger("Populating HistoricalBattlePlayers")
     hbp = @battle.battle_players.map do |bp|
       populate_new_historical_battle_player(bp, date_played)
     end
 
-    info_logger("Importing HistoricalBattlePlayers")
+    # info_logger("Importing HistoricalBattlePlayers")
     HistoricalBattlePlayer.import!(hbp)
 
     info_logger("[#{self.class.name}] Finished creating HistoricalBattlePlayers for battle #{@battle.id}")

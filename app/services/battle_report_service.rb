@@ -15,9 +15,9 @@ class BattleReportService < ApplicationService
 
   def self.enqueue_report(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,
                           dead_squads, surviving_squads, dropped_players, battle_stats)
-    Rails.logger.info("[#{self.class.name}] Enqueuing BattleReportJob for battle #{battle_id} with params:")
-    Rails.logger.info("[#{self.class.name}] is_final #{is_final}, reporting player #{reporting_player_name}, time_elapsed #{time_elapsed}, winner #{race_winner}")
-    Rails.logger.info("[#{self.class.name}] dead_squads #{dead_squads}, surviving_squads #{surviving_squads}")
+    # Rails.logger.info("[#{self.class.name}] Enqueuing BattleReportJob for battle #{battle_id} with params:")
+    # Rails.logger.info("[#{self.class.name}] is_final #{is_final}, reporting player #{reporting_player_name}, time_elapsed #{time_elapsed}, winner #{race_winner}")
+    # Rails.logger.info("[#{self.class.name}] dead_squads #{dead_squads}, surviving_squads #{surviving_squads}")
     BattleReportJob.perform_async(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,
                                   dead_squads, surviving_squads, dropped_players, battle_stats)
   end
