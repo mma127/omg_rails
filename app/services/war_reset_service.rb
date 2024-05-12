@@ -29,7 +29,7 @@ class WarResetService < ApplicationService
 
   # Remove ruleset specific models that don't need to carry over
   def self.delete_ruleset_specific_records(old_ruleset)
-    Company.where(ruleset_id: old_ruleset.id).destroy_all
+    ActiveCompany.where(ruleset_id: old_ruleset.id).destroy_all
     Battle.where(ruleset_id: old_ruleset.id).destroy_all
     ChatMessage.destroy_all
   end
