@@ -137,9 +137,9 @@ module OMG
             "[player name],CompanyId:[company id],Inf Lost:[int] ,Vehicles Lost:[int] ,Inf Killed[int] ,Vehicles Killed:[int];..."
         end
         post do
-          Rails.logger.info("Received battle report for battle #{declared_params[:battleID]} with params:")
-          Rails.logger.info("is_final #{declared_params[:final]}, reporting player #{declared_params[:battleReport]}, time_elapsed #{declared_params[:timeElapsed]}, winner #{declared_params[:raceWinner]}")
-          Rails.logger.info("dead_squads #{declared_params[:deadSGroups]}, surviving_squads #{declared_params[:surviveSGroups]}")
+          # Rails.logger.info("Received battle report for battle #{declared_params[:battleID]} with params:")
+          # Rails.logger.info("is_final #{declared_params[:final]}, reporting player #{declared_params[:battleReport]}, time_elapsed #{declared_params[:timeElapsed]}, winner #{declared_params[:raceWinner]}")
+          # Rails.logger.info("dead_squads #{declared_params[:deadSGroups]}, surviving_squads #{declared_params[:surviveSGroups]}")
           BattleReportService.enqueue_report(declared_params[:battleID],
                                              declared_params[:final],
                                              declared_params[:battleReport],

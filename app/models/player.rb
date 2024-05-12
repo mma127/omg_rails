@@ -33,14 +33,14 @@ class Player < ApplicationRecord
   def self.from_omniauth(auth)
     player = find_by(provider: auth.provider, uid: auth.uid)
     if player.present?
-      Rails.logger.info("Player found from omniauth: #{player.name}")
+      # Rails.logger.info("Player found from omniauth: #{player.name}")
       player.name = auth.info.nickname
       player.avatar = auth.info.image
       player.save!
     else
       pdt = PlayerDiscordTemp.find_by(player_name: auth.info.nickname)
       player = create!(provider: auth.provider, uid: auth.uid, name: auth.info.nickname, avatar: auth.info.image, discord_id: pdt&.discord_id, role: roles[:player])
-      Rails.logger.info("Player created from omniauth: #{player.name}")
+      # Rails.logger.info("Player created from omniauth: #{player.name}")
 
       # try to match nickname to historical player rating with nil player_id
       hpr = HistoricalPlayerRating.find_by(player_name: player.name.upcase, player_id: nil)

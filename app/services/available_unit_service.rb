@@ -70,9 +70,9 @@ class AvailableUnitService
     enabled_units_by_unit_id = remove_disabled_units(enabled_units_by_unit_id, disabled_units_by_unit_id)
 
     if enabled_units_by_unit_id.blank?
-      Rails.logger.info("No enabled_units found to recreate that were disabled by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
+      # Rails.logger.info("No enabled_units found to recreate that were disabled by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
     else
-      Rails.logger.info("Found #{enabled_units_by_unit_id.size} enabled_units, creating available units that were disabled by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
+      # Rails.logger.info("Found #{enabled_units_by_unit_id.size} enabled_units, creating available units that were disabled by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
       create_enabled_available_units(enabled_units_by_unit_id.values)
     end
   end

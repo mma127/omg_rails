@@ -5,7 +5,7 @@ class ActiveUsersChannel < ApplicationCable::Channel
   periodically :transmit_active, every: 60.seconds
 
   def subscribed
-    Rails.logger.info("#{@connection.current_player&.name} subscribed to #{CHANNEL}")
+    # Rails.logger.info("#{@connection.current_player&.name} subscribed to #{CHANNEL}")
     stream_from CHANNEL
     transmit_active
   end
@@ -15,7 +15,7 @@ class ActiveUsersChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    Rails.logger.info("#{@connection.current_player&.name} unsubscribed from #{CHANNEL}")
+    # Rails.logger.info("#{@connection.current_player&.name} unsubscribed from #{CHANNEL}")
     # Any cleanup needed when channel is unsubscribed
   end
 
@@ -28,7 +28,7 @@ class ActiveUsersChannel < ApplicationCable::Channel
 
   def active_users_list
     Rails.cache.fetch("active_users", expires_in: 60.seconds) do
-      Rails.logger.info("Fetching active players list")
+      # Rails.logger.info("Fetching active players list")
       active_players = Player.online
       active_players.pluck(:name).sort
     end
