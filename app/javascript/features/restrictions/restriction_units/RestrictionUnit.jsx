@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
-import { Box, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
+import { Box, TableCell, TableRow, Tooltip, Typography, Link } from "@mui/material";
 import { selectFactionById } from "../../factions/factionsSlice";
 import { selectDoctrineById } from "../../doctrines/doctrinesSlice";
 import { FactionIcon } from "../../factions/FactionIcon";
@@ -12,6 +12,7 @@ import { StaticUnitIcon } from "../../companies/manage/unlocks/StaticUnitIcon";
 import { BorderlessCell } from "../../../components/BorderlessCell";
 import { nanoid } from "@reduxjs/toolkit";
 import { UnitVet } from "./UnitVet";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -94,7 +95,12 @@ const EnabledUnit = ({ enabledUnit, isActive, currentFactionId }) => {
         {isActive ? <StaticUnitIcon name={unit.name} height={36}/> : null}
       </TableCell>
       <BorderlessCell>
-        {isActive ? <Typography>{unit.displayName}</Typography> : null}
+        {isActive ?
+          <Link component={RouterLink} to={`/restrictions/stats/unit/${unit.id}`}
+                underline="none" color="inherit" target="_blank">
+            <Typography variant="h6">{unit.displayName}</Typography>
+          </Link>
+          : null}
       </BorderlessCell>
       <BorderlessCell>
         <Restriction restrictionName={restriction.name} type={enabledUnit.type}

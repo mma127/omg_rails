@@ -20,6 +20,8 @@ import snapshotCompanySlice from "../features/companies/snapshotCompaniesSlice";
 import warLogSlice from "../features/leaderboards/war_log/warLogSlice";
 import warStatsSlice from "../features/leaderboards/war_stats/warStatsSlice";
 import rulesetsSlice from "../features/rulesets/rulesetsSlice";
+import statsUnitsSlice from "../features/stats/units/statsUnitsSlice";
+import statsEntitiesSlice from "../features/stats/entities/statsEntitiesSlice";
 
 export default configureStore({
   reducer: {
@@ -43,6 +45,8 @@ export default configureStore({
     snapshotCompanies: snapshotCompanySlice,
     warLog: warLogSlice,
     warStats: warStatsSlice,
-    rulesets: rulesetsSlice
+    rulesets: rulesetsSlice,
+    statsUnits: statsUnitsSlice,
+    statsEntities: statsEntitiesSlice,
   },
 })
