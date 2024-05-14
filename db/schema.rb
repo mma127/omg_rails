@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_28_234354) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_14_035535) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -373,6 +373,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_28_234354) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "ruleset_id", null: false
+    t.index ["name", "ruleset_id"], name: "index_offmaps_on_name_and_ruleset_id", unique: true
     t.index ["ruleset_id"], name: "index_offmaps_on_ruleset_id"
   end
 
