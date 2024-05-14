@@ -9,8 +9,9 @@ import { fetchStatsUnit, selectStatsUnitByConstName } from "./statsUnitsSlice";
 import { selectActiveRuleset } from "../../rulesets/rulesetsSlice";
 import { Link, useParams } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
-import { UnitStatsTables } from "./UnitStatsTables";
+import { UnitStatsCard } from "./UnitStatsCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { EntityStatsList } from "../entities/EntityStatsList";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -38,7 +39,11 @@ const useStyles = makeStyles(theme => ({
   },
   contentContainer: {
     display: 'flex',
-    width: '100%'
+    flexDirection: "column",
+    rowGap: "1rem",
+    width: '100%',
+    marginLeft: '0.5rem',
+    marginRight: '0.5rem'
   },
   tabs: {
     minWidth: 'fit-content'
@@ -80,15 +85,14 @@ export const UnitStats = ({}) => {
   }, [unitId])
 
   useEffect(() => {
-    if (unit && !statsUnit) {
+    if (unit && ruleset && !statsUnit) {
       dispatch(fetchStatsUnit({ rulesetId: ruleset.id, constName: unit.constName }))
     }
-  }, [unit])
+  }, [unit, ruleset])
 
   if (!unit || !statsUnit) {
     return null
   }
-
 
   return (
     <PageContainer maxWidth="lg" sx={{ paddingTop: '1rem' }}>
@@ -116,7 +120,8 @@ export const UnitStats = ({}) => {
                component={Link}/>
         </Tabs>
         <Box className={classes.contentContainer} hidden={currentTab !== STATS}>
-          <UnitStatsTables constName={unit.constName}/>
+          <UnitStatsCard constName={unit.constName}/>
+          <EntityStatsList constName={unit.constName}/>
         </Box>
       </Box>
     </PageContainer>

@@ -6,6 +6,7 @@ import { makeStyles } from "@mui/styles";
 import { LabelTypography } from "../../../components/LabelTypography";
 import { selectStatsEntitiesByReference } from "../entities/statsEntitiesSlice";
 import { getStatsValueWithFallback } from "./values_helper";
+import { getLoadoutModelCounts, TOTAL_COUNT } from "./loadout_helper";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -16,39 +17,31 @@ const useStyles = makeStyles(theme => ({
   columns: {
     display: "flex",
   },
-  labelCol1: {
-    width: '11rem'
+  table: {
+    minWidth: "33%"
   },
-  valueCol1: {
-    width: '5rem'
-  },
-  labelCol2: {
-    width: '11rem'
-  },
-  valueCol2: {
-    width: '5rem'
-  },
-  labelCol3: {
-    width: '8rem'
-  },
-  valueCol3: {
-    width: '5rem'
+  spacerRow: {
+    height: "1rem"
   }
+  // labelCol1: {
+  //   width: '11rem'
+  // },
+  // valueCol1: {
+  //   width: '5rem'
+  // },
+  // labelCol2: {
+  //   width: '11rem'
+  // },
+  // valueCol2: {
+  //   width: '5rem'
+  // },
+  // labelCol3: {
+  //   width: '8rem'
+  // },
+  // valueCol3: {
+  //   width: '5rem'
+  // }
 }))
-
-const TOTAL_COUNT = "totalCount"
-
-const getLoadoutModelCounts = (loadout) => {
-  const result = {}
-  let totalCount = 0
-  for (const [key, value] of Object.entries(loadout)) {
-    const modelCount = parseInt(value)
-    result[key] = modelCount
-    totalCount += modelCount
-  }
-  result[TOTAL_COUNT] = totalCount
-  return result
-}
 
 const calcTotalHealth = (loadoutModelCounts, entitiesByReference) => {
   let totalHealth = 0
@@ -74,10 +67,13 @@ const SuppressionCol1 = ({ reference, statsData }) => {
     const suppression = statsData[COMBAT_BEHAVIOR_SUPPRESSION]
     return (
       <>
+        <tr className={styles.spacerRow}>
+          <td></td>
+        </tr>
         <tr>
           <td>
             <Tooltip title="Suppression required to suppress the squad" placement="bottom-start" arrow>
-              <LabelTypography className={styles.labelCol1}>suppressed activation threshold</LabelTypography>
+              <LabelTypography className={styles.labelCol1}>suppressed activation</LabelTypography>
             </Tooltip>
           </td>
           <td>
@@ -89,7 +85,7 @@ const SuppressionCol1 = ({ reference, statsData }) => {
           <td>
             <Tooltip title="Squad must have suppression below this number to recover from suppressed state"
                      placement="bottom-start" arrow>
-              <LabelTypography className={styles.labelCol1}>suppressed recovery threshold</LabelTypography>
+              <LabelTypography className={styles.labelCol1}>suppressed recovery</LabelTypography>
             </Tooltip>
           </td>
           <td>
@@ -114,10 +110,13 @@ const SuppressionCol2 = ({ reference, statsData }) => {
     const suppression = statsData[COMBAT_BEHAVIOR_SUPPRESSION]
     return (
       <>
+        <tr className={styles.spacerRow}>
+          <td></td>
+        </tr>
         <tr>
-          <td>
+        <td>
             <Tooltip title="Suppression required to pin the squad" placement="bottom-start" arrow>
-              <LabelTypography className={styles.labelCol2}>pinned activation threshold</LabelTypography>
+              <LabelTypography className={styles.labelCol2}>pinned activation</LabelTypography>
             </Tooltip>
           </td>
           <td>
@@ -129,7 +128,7 @@ const SuppressionCol2 = ({ reference, statsData }) => {
           <td>
             <Tooltip title="Squad must have suppression below this number to recover from pinned state"
                      placement="bottom-start" arrow>
-              <LabelTypography className={styles.labelCol2}>pinned recovery threshold</LabelTypography>
+              <LabelTypography className={styles.labelCol2}>pinned recovery</LabelTypography>
             </Tooltip>
           </td>
           <td>
@@ -154,6 +153,9 @@ const SuppressionCol3 = ({ reference, statsData }) => {
     const suppression = statsData[COMBAT_BEHAVIOR_SUPPRESSION]
     return (
       <>
+        <tr className={styles.spacerRow}>
+          <td></td>
+        </tr>
         <tr>
           <td>
             <Tooltip title="Suppression recovery per second" placement="bottom-start" arrow>
@@ -167,7 +169,8 @@ const SuppressionCol3 = ({ reference, statsData }) => {
         </tr>
         <tr>
           <td>
-            <Tooltip title="Delay in seconds before out of combat suppression recovery multiplier x50 is applied" placement="bottom-start" arrow>
+            <Tooltip title="Delay in seconds before out of combat suppression recovery multiplier x50 is applied"
+                     placement="bottom-start" arrow>
               <LabelTypography className={styles.labelCol3}>noncombat delay</LabelTypography>
             </Tooltip>
           </td>
@@ -183,8 +186,11 @@ const SuppressionCol3 = ({ reference, statsData }) => {
   }
 }
 
-const UnitStatsCard = ({ statsUnit, statsEntitiesByReference }) => {
+export const UnitStatsCard = ({constName}) => {
   const styles = useStyles()
+  const statsUnit = useSelector(state => selectStatsUnitByConstName(state, constName))
+  const statsEntitiesByReference = useSelector((state) => selectStatsEntitiesByReference(state, statsUnit?.data?.entities))
+
   const reference = statsUnit.reference
   const statsData = statsUnit.data
   console.log(statsData)
@@ -193,13 +199,12 @@ const UnitStatsCard = ({ statsUnit, statsEntitiesByReference }) => {
   const loadoutModelCounts = getLoadoutModelCounts(statsData.loadout)
   const totalHealth = calcTotalHealth(loadoutModelCounts, statsEntitiesByReference)
 
-
   return (
     <Paper sx={{ width: '100%', padding: '1rem' }}>
       <Typography variant="h6">Unit stats</Typography>
       <Box className={styles.columns}>
         {/*Don't need material ui table styling*/}
-        <table>
+        <table className={styles.table}>
           <tbody>
           <tr>
             <td>
@@ -212,7 +217,7 @@ const UnitStatsCard = ({ statsUnit, statsEntitiesByReference }) => {
           <SuppressionCol1 reference={reference} statsData={statsData}/>
           </tbody>
         </table>
-        <table>
+        <table className={styles.table}>
           <tbody>
           <tr>
             <td>
@@ -225,7 +230,7 @@ const UnitStatsCard = ({ statsUnit, statsEntitiesByReference }) => {
           <SuppressionCol2 reference={reference} statsData={statsData}/>
           </tbody>
         </table>
-        <table>
+        <table className={styles.table}>
           <tbody>
           <tr>
             <td>
@@ -240,15 +245,5 @@ const UnitStatsCard = ({ statsUnit, statsEntitiesByReference }) => {
         </table>
       </Box>
     </Paper>
-  )
-}
-
-export const UnitStatsTables = ({ constName }) => {
-  const statsUnit = useSelector(state => selectStatsUnitByConstName(state, constName))
-  const statsEntitiesByReference = useSelector((state) => selectStatsEntitiesByReference(state, statsUnit?.data?.entities))
-  return (
-    <Box pl={1} pr={1}>
-      <UnitStatsCard statsUnit={statsUnit} statsEntitiesByReference={statsEntitiesByReference}/>
-    </Box>
   )
 }
