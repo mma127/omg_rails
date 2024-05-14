@@ -22,7 +22,8 @@
 #
 # Indexes
 #
-#  index_offmaps_on_ruleset_id  (ruleset_id)
+#  index_offmaps_on_name_and_ruleset_id  (name,ruleset_id) UNIQUE
+#  index_offmaps_on_ruleset_id           (ruleset_id)
 #
 # Foreign Keys
 #
@@ -31,6 +32,8 @@
 class Offmap < ApplicationRecord
   belongs_to :ruleset
   has_many :available_offmaps
+
+  validates :name, uniqueness: { scope: :ruleset_id }
 
   def entity
     Entity.new(self)
