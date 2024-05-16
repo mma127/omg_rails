@@ -88,6 +88,7 @@ export const BattleCardPlayer = ({
   const isAuthed = useSelector(selectIsAuthed)
   const player = useSelector(selectPlayer)
   const currentBattleId = useSelector(selectPlayerCurrentBattleId)
+  console.log(`Current Battle ID: ${currentBattleId}`)
   const isPending = useSelector(selectIsPending)
 
   const isCurrentPlayer = player ? player.id === playerId : false

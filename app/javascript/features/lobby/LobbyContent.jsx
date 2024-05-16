@@ -8,14 +8,18 @@ import { selectIsAuthed, selectPlayer } from "../player/playerSlice";
 import { LOBBY_CHAT } from "../../constants/chat";
 import { ChatContainer } from "./chat/ChatContainer";
 import { ActiveUsersList } from "./chat/ActiveUsersList";
-import { selectActiveRuleset } from "../rulesets/rulesetsSlice";
 
 export const LobbyContent = () => {
   const dispatch = useDispatch()
+  const player = useSelector(selectPlayer)
   useEffect(() => {
-    dispatch(fetchActiveBattles())
     dispatch(fetchChatMessages({ chatName: LOBBY_CHAT }))
   }, [])
+  useEffect(() => {
+    if (player) {
+      dispatch(fetchActiveBattles())
+    }
+  }, [player])
   const battles = useSelector(selectAllActiveBattles)
   const isAuthed = useSelector(selectIsAuthed)
 
