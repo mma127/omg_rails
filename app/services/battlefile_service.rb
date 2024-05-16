@@ -185,9 +185,6 @@ end
     result
   end
 
-  # TODO FIXME Remove when we handle upgrades for transports in omg_spawner.scar
-  TEMP_BLITZ_ACE_TRANSPORTS = %w[puma_blitz ostwind_blitz geschutzwagen_blitz stug_blitz p4_blitz panther_blitz stuh tiger]
-
   # HalfTrack - list of transport squads
   # squad blocks - list of non-transport squads
   def build_platoon_block(platoon, team_index, player_index, callin_modifiers)
@@ -202,7 +199,7 @@ end
     platoon.squads.each do |squad|
       if squad.unit.is_a? Glider
         glider = build_glider_squad_block(squad) # Should only have 1 glider per platoon
-      elsif squad.transporting_transported_squads.present? && !TEMP_BLITZ_ACE_TRANSPORTS.include?(squad.unit.name)
+      elsif squad.transporting_transported_squads.present?
         halftrack << build_squad_block(squad)
       else
         squad_blocks << build_squad_block(squad)
