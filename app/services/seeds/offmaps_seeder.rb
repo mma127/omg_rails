@@ -51,6 +51,26 @@ module Seeds
         end
       end
 
+      def update_offmap_values_for_ruleset(ruleset)
+        offmaps_csv.each do |row|
+          name = snake_case(row["internal_name"])
+          display_name = title_case(name)
+          current_offmap = Offmap.find_by(name: name, ruleset_id: ruleset.id)
+          current_offmap.update!(display_name: display_name,
+                                 const_name: row["const_name"],
+                                 description: row["description"],
+                                 upgrade_rgd: row["upgrade_path"],
+                                 ability_rgd: row["ability_path"],
+                                 cooldown: row["cooldown"],
+                                 duration: row["duration"],
+                                 unlimited_uses: ActiveModel::Type::Boolean.new.cast(row["unlimited_uses"]),
+                                 buffs: row["buffs"],
+                                 debuffs: row["debuffs"],
+                                 weapon_rgd: row["weapon"],
+                                 shells_fired: row["shells_fired"])
+        end
+      end
+
       private
 
       def offmaps_csv
