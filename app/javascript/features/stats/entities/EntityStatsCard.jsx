@@ -2,7 +2,7 @@ import React from 'react'
 import { makeStyles } from "@mui/styles";
 import { Box, Paper, Typography } from "@mui/material";
 import { LabelTypography } from "../../../components/LabelTypography";
-import { getKey, getNameFromReference, getPreciseKey, getTypeName } from "./entity_helper";
+import { getNameFromReference, getPreciseKey, getTypeName } from "./entity_helper";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -84,6 +84,34 @@ export const EntityStatsCard = ({statsEntity, count}) => {
               <Typography className={styles.valueCol1}>{getTypeName(data, 'type_target_critical')}</Typography>
             </td>
           </tr>
+          </tbody>
+        </table>
+        <table className={styles.table}>
+          <tbody>
+          <tr>
+            <td>
+              <LabelTypography className={styles.labelCol1}>sight radius</LabelTypography>
+            </td>
+            <td>
+              <Typography className={styles.valueCol1}>{getTypeName(data, 'outer_radius')}</Typography>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <LabelTypography className={styles.labelCol1}>detect radius</LabelTypography>
+            </td>
+            <td>
+              <Typography className={styles.valueCol1}>{getTypeName(data, 'detect_radius')}</Typography>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <LabelTypography className={styles.labelCol1}>population</LabelTypography>
+            </td>
+            <td>
+              <Typography className={styles.valueCol1}>{getTypeName(data, 'personnel_pop')}</Typography>
+            </td>
+          </tr>
           <tr>
             <td>
               <LabelTypography className={styles.labelCol1}>rear critical type</LabelTypography>
@@ -92,20 +120,6 @@ export const EntityStatsCard = ({statsEntity, count}) => {
               <Typography className={styles.valueCol1}>{getTypeName(data, 'rear_damage_critical_type')}</Typography>
             </td>
           </tr>
-          {/*<SuppressionCol1 reference={reference} statsData={statsData}/>*/}
-          </tbody>
-        </table>
-        <table className={styles.table}>
-          <tbody>
-          <tr>
-            <td>
-              <LabelTypography className={styles.labelCol1}>target type</LabelTypography>
-            </td>
-            <td>
-              <Typography className={styles.valueCol1}>{getTypeName(data, 'type_target_weapon')}</Typography>
-            </td>
-          </tr>
-          {/*<SuppressionCol2 reference={reference} statsData={statsData}/>*/}
           </tbody>
         </table>
         <table className={styles.table}>
@@ -142,7 +156,6 @@ export const EntityStatsCard = ({statsEntity, count}) => {
               <Typography className={styles.valueCol1}>{getPreciseKey(moving, 'deceleration')}</Typography>
             </td>
           </tr>
-          {/*<SuppressionCol3 reference={reference} statsData={statsData}/>*/}
           </tbody>
         </table>
       </Box>
