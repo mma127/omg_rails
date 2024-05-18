@@ -5,6 +5,7 @@
 #  id                                                 :bigint           not null, primary key
 #  const_name(SCAR const string, a unique identifier) :string           not null
 #  data                                               :jsonb            not null
+#  display_name                                       :string
 #  reference(Attrib reference string)                 :string           not null
 #  created_at                                         :datetime         not null
 #  updated_at                                         :datetime         not null
@@ -37,6 +38,7 @@ class StatsUnit < ApplicationRecord
   class Entity < Grape::Entity
     expose :id
     expose :const_name, as: :constName
+    expose :display_name, as: :displayName
     expose :ruleset_id, as: :rulesetId
     expose :reference
     expose :data

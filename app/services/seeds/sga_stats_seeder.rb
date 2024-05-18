@@ -2,6 +2,8 @@ require 'json'
 
 module Seeds
   class SgaStatsSeeder < ApplicationService
+    include StatsHelper
+
     UNITS_JSON_FILENAME = 'lib/assets/stats/units.json'.freeze
     ENTITIES_JSON_FILENAME = 'lib/assets/stats/entities.json'.freeze
     WEAPONS_JSON_FILENAME = 'lib/assets/stats/weapons.json'.freeze
@@ -49,6 +51,7 @@ module Seeds
         stats_units << StatsUnit.new(
           ruleset_id: @ruleset.id,
           reference: value['reference'],
+          display_name: format_reference_as_name(value['reference']),
           const_name: "#{value['faction']}.#{value['constname']}",
           data: value
         )
@@ -66,6 +69,7 @@ module Seeds
         stats_entities << StatsEntity.new(
           ruleset_id: @ruleset.id,
           reference: value['reference'],
+          display_name: format_reference_as_name(value['reference']),
           data: value
         )
       end
@@ -82,6 +86,7 @@ module Seeds
         stats_weapons << StatsWeapon.new(
           ruleset_id: @ruleset.id,
           reference: value['reference'],
+          display_name: format_reference_as_name(value['reference']),
           data: value
         )
       end
@@ -98,6 +103,7 @@ module Seeds
         stats_upgrades << StatsUpgrade.new(
           ruleset_id: @ruleset.id,
           reference: value['reference'],
+          display_name: format_reference_as_name(value['reference']),
           const_name: upgrade_const_name(value),
           data: value
         )
@@ -115,6 +121,7 @@ module Seeds
         stats_slot_items << StatsSlotItem.new(
           ruleset_id: @ruleset.id,
           reference: value['reference'],
+          display_name: format_reference_as_name(value['reference']),
           data: value
         )
       end
@@ -148,20 +155,13 @@ module Seeds
         stats_abilities << StatsAbility.new(
           ruleset_id: @ruleset.id,
           reference: value['reference'],
+          display_name: format_reference_as_name(value['reference']),
           data: value
         )
       end
       StatsAbility.import! stats_abilities
       Rails.logger.info("Loaded #{stats_abilities.size} StatsAbilities for ruleset #{@ruleset.id}")
       puts "Loaded #{stats_abilities.size} StatsAbilities for ruleset #{@ruleset.id}"
-    end
-
-    def upgrade_const_name(upgrade)
-      if upgrade['constname'].present? && upgrade['faction'].present?
-        "#{upgrade['faction']}.#{upgrade['constname']}"
-      else
-        nil
-      end
     end
   end
 end

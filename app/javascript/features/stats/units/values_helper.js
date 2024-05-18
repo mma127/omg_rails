@@ -1,3 +1,5 @@
+import { precise } from "../../../utils/numbers";
+
 /** Some sbps files are not dumped to LUA correctly by Corsix and so can contain missing values that exist in the
  * original RGD */
 const SUPPRESSED_RECOVER_THRESHOLD = {
@@ -78,8 +80,4 @@ export const getStatsValueWithFallback = (reference, type, data, precision = 2) 
   } else {
     return "UNKNOWN VALUE - REPORT BUG"
   }
-}
-
-export const precise = (value, precision) => {
-  return Number(parseFloat(value).toFixed(precision))
 }

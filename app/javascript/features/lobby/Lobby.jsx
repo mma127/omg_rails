@@ -1,31 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Alert } from "@mui/material";
+import { Alert } from "@mui/material";
 
 import { ActionCableConsumer } from '@thrash-industries/react-actioncable-provider';
 import {
-  addNewBattle,
-  updateBattle,
-  removeBattle,
-  fetchActiveBattles,
   addChatMessage,
-  updateActiveUsers
+  addNewBattle,
+  fetchActiveBattles,
+  removeBattle,
+  updateActiveUsers,
+  updateBattle
 } from "./lobbySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId, setCurrentBattle } from "../player/playerSlice";
 import { isPlayerInBattle } from "../../utils/battle";
 import { LobbyContent } from "./LobbyContent";
 import {
+  BATTLE_FINALIZED,
   BATTLEFILE_GENERATED,
   CREATED_BATTLE,
-  PLAYERS_ALL_READY,
+  ELO_UPDATED,
+  PLAYER_ABANDONED,
   PLAYER_JOINED,
   PLAYER_JOINED_FULL,
   PLAYER_LEFT,
   PLAYER_READY,
   PLAYER_UNREADY,
-  REMOVE_BATTLE,
-  ELO_UPDATED,
-  BATTLE_FINALIZED, PLAYER_ABANDONED, PLAYERS_ALL_ABANDONED
+  PLAYERS_ALL_ABANDONED,
+  PLAYERS_ALL_READY,
+  REMOVE_BATTLE
 } from "../../constants/battles/events";
 import { AlertSnackbar } from "../companies/AlertSnackbar";
 import { PageContainer } from "../../components/PageContainer";

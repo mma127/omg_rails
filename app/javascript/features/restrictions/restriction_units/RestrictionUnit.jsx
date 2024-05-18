@@ -96,7 +96,7 @@ const EnabledUnit = ({ enabledUnit, isActive, currentFactionId }) => {
       </TableCell>
       <BorderlessCell>
         {isActive ?
-          <Link component={RouterLink} to={`/restrictions/stats/unit/${unit.id}`}
+          <Link component={RouterLink} to={`/restrictions/unit/${unit.id}`}
                 underline="none" color="inherit" target="_blank">
             <Typography variant="h6">{unit.displayName}</Typography>
           </Link>

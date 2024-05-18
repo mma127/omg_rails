@@ -1,6 +1,5 @@
 import { createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit";
 import { fetchStatsUnit } from "../units/statsUnitsSlice";
-import { selectUnitById } from "../../companies/manage/units/unitsSlice";
 
 const statsEntitiesAdapter = createEntityAdapter({
   selectId: entity => entity.reference
@@ -49,6 +48,27 @@ export const selectStatsEntitiesByReference = createSelector(
     if (references) {
       references.forEach(r => {
         result[r] = state.entities[r]
+      })
+    }
+    return result
+  }
+)
+
+// Since this returns a new Array, memoize it to avoid unnecessary re-renders
+export const selectWeaponsForStatsEntitiesByReference = createSelector(
+  [
+    (state) => state.statsEntities,
+    (state, references) => references
+  ],
+  (state, references) => {
+    const result = new Set()
+    if (references) {
+      references.forEach(r => {
+        const entity = state.entities[r].data
+        if (Object.keys(entity).includes("weapons")) {
+          const weapons = entity.weapons
+          weapons.forEach(w => result.add(w))
+        }
       })
     }
     return result

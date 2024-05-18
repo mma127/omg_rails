@@ -5,6 +5,7 @@
 #  id                                                      :bigint           not null, primary key
 #  const_name(SCAR const string, optional)                 :string
 #  data                                                    :jsonb            not null
+#  display_name                                            :string
 #  reference(Attrib reference string, a unique identifier) :string           not null
 #  created_at                                              :datetime         not null
 #  updated_at                                              :datetime         not null

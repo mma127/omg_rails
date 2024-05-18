@@ -114,7 +114,7 @@ const SuppressionCol2 = ({ reference, statsData }) => {
           <td></td>
         </tr>
         <tr>
-        <td>
+          <td>
             <Tooltip title="Suppression required to pin the squad" placement="bottom-start" arrow>
               <LabelTypography className={styles.labelCol2}>pinned activation</LabelTypography>
             </Tooltip>
@@ -186,15 +186,13 @@ const SuppressionCol3 = ({ reference, statsData }) => {
   }
 }
 
-export const UnitStatsCard = ({constName}) => {
+export const UnitStatsCard = ({ constName }) => {
   const styles = useStyles()
   const statsUnit = useSelector(state => selectStatsUnitByConstName(state, constName))
   const statsEntitiesByReference = useSelector((state) => selectStatsEntitiesByReference(state, statsUnit?.data?.entities))
 
   const reference = statsUnit.reference
   const statsData = statsUnit.data
-  console.log(statsData)
-  console.log(reference)
 
   const loadoutModelCounts = getLoadoutModelCounts(statsData.loadout)
   const totalHealth = calcTotalHealth(loadoutModelCounts, statsEntitiesByReference)
