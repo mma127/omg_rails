@@ -12,6 +12,7 @@ import { Cooldown } from "./components/Cooldown";
 import { Penetration } from "./components/Penetration";
 import { Burst } from "./components/Burst";
 import { Moving } from "./components/Moving";
+import { Suppression } from "./components/Suppression";
 
 const useStyles = makeStyles(theme => ({
   contentContainer: {
@@ -70,6 +71,7 @@ export const WeaponStats = ({ reference }) => {
           <table className={classes.table}>
             <tbody>
             <Penetration data={data}/>
+            <Suppression data={data}/>
             </tbody>
           </table>
         </Box>

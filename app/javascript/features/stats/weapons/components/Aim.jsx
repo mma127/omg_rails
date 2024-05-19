@@ -3,6 +3,8 @@ import { MinMaxElement } from "../elements/MinMaxElement";
 import { DLMSElement } from "../elements/DLMSElement";
 import { SingleElement } from "../elements/SingleElement";
 import { EmptyElement } from "../elements/EmptyElement";
+import _ from "lodash";
+import { SinglePreciseElement } from "../elements/SinglePreciseElement";
 
 
 const READY_AIM_TIME = 'ready_aim_time'

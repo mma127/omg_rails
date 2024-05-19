@@ -4,6 +4,6 @@ import { withStyles } from "@mui/styles";
 export const StatsLabelTypography = withStyles(theme => ({
   root: {
     color: theme.palette.text.label,
-    maxWidth: "8rem"
+    maxWidth: "9rem"
   }
 }))(Typography)
