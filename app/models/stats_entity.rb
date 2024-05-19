@@ -4,6 +4,7 @@
 #
 #  id                                                      :bigint           not null, primary key
 #  data                                                    :jsonb            not null
+#  display_name                                            :string
 #  reference(Attrib reference string, a unique identifier) :string           not null
 #  created_at                                              :datetime         not null
 #  updated_at                                              :datetime         not null
@@ -30,6 +31,7 @@ class StatsEntity < ApplicationRecord
 
   class Entity < Grape::Entity
     expose :id
+    expose :display_name, as: :displayName
     expose :ruleset_id, as: :rulesetId
     expose :reference
     expose :data

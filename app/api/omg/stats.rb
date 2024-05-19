@@ -17,6 +17,19 @@ module OMG
           present response, with: Entities::StatsUnitResponse
         end
       end
+
+      namespace :weapons do
+        desc "Retrieve stats_weapon for given weapon reference and ruleset"
+        params do
+          requires :reference, type: String, desc: "Weapon reference"
+          requires :ruleset_id, type: Integer, desc: "Rule set ID"
+        end
+        get do
+          declared_params = declared(params)
+          present StatsWeaponsService.fetch_for_reference(declared_params[:reference],
+                                                          declared_params[:ruleset_id])
+        end
+      end
     end
   end
 end

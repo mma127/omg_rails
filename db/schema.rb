@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_14_035535) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_18_003558) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -589,6 +589,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_035535) do
     t.jsonb "data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "display_name"
     t.index ["ruleset_id", "reference"], name: "index_stats_abilities_on_ruleset_id_and_reference", unique: true
     t.index ["ruleset_id"], name: "index_stats_abilities_on_ruleset_id"
   end
@@ -610,6 +611,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_035535) do
     t.jsonb "data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "display_name"
     t.index ["ruleset_id", "reference"], name: "index_stats_entities_on_ruleset_id_and_reference", unique: true
     t.index ["ruleset_id"], name: "index_stats_entities_on_ruleset_id"
   end
@@ -620,6 +622,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_035535) do
     t.jsonb "data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "display_name"
     t.index ["ruleset_id", "reference"], name: "index_stats_slot_items_on_ruleset_id_and_reference", unique: true
     t.index ["ruleset_id"], name: "index_stats_slot_items_on_ruleset_id"
   end
@@ -631,6 +634,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_035535) do
     t.jsonb "data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "display_name"
     t.index ["ruleset_id", "const_name"], name: "index_stats_units_on_ruleset_id_and_const_name", unique: true
     t.index ["ruleset_id", "reference"], name: "index_stats_units_on_ruleset_id_and_reference"
     t.index ["ruleset_id"], name: "index_stats_units_on_ruleset_id"
@@ -643,6 +647,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_035535) do
     t.jsonb "data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "display_name"
     t.index ["ruleset_id", "const_name"], name: "index_stats_upgrades_on_ruleset_id_and_const_name", unique: true, where: "(const_name IS NOT NULL)"
     t.index ["ruleset_id", "reference", "const_name"], name: "index_stats_upgrades_on_ruleset_id_and_reference_and_const_name", unique: true
     t.index ["ruleset_id"], name: "index_stats_upgrades_on_ruleset_id"
@@ -654,6 +659,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_14_035535) do
     t.jsonb "data", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "display_name"
     t.index ["ruleset_id", "reference"], name: "index_stats_weapons_on_ruleset_id_and_reference", unique: true
     t.index ["ruleset_id"], name: "index_stats_weapons_on_ruleset_id"
   end

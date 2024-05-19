@@ -46,6 +46,7 @@ class Unit < ApplicationRecord
   class Entity < Grape::Entity
     expose :id
     expose :name
+    expose :const_name, as: :constName
     expose :display_name, as: :displayName
     expose :description
     expose :type

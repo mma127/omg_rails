@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { lobbyChatMessages, sendChatMessage } from "../lobbySlice";
 import { makeStyles } from "@mui/styles";

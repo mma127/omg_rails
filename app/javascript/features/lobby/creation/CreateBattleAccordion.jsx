@@ -1,14 +1,9 @@
-import React, { useEffect } from 'react'
-import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Button } from "@mui/material";
+import React from 'react'
+import { Accordion, AccordionDetails, AccordionSummary, Button } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-import { ActionCableConsumer, ActionCableProvider } from '@thrash-industries/react-actioncable-provider';
 import { CreateBattleForm } from "./CreateBattleForm";
-import { fetchActiveBattles } from "../lobbySlice";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchActiveCompanies } from "../../companies/companiesSlice";
-import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
-import { selectActiveRuleset } from "../../rulesets/rulesetsSlice";
+import { useSelector } from "react-redux";
+import { selectIsAuthed, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 
 export const CreateBattleAccordion = ({}) => {
   // Create battle accordion expansion control
