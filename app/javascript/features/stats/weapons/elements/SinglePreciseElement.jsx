@@ -1,11 +1,11 @@
 import React from 'react'
 import { Tooltip, Typography } from "@mui/material";
+import { precise } from "../../../../utils/numbers";
 import { StatsLabelTypography } from "./StatsLabelTypography";
 import { EmptyElement } from "./EmptyElement";
 import _ from "lodash";
 
-export const SingleElement = ({ data, label, tooltip }) => {
-
+export const SinglePreciseElement = ({ data, label, tooltip }) => {
   if (!_.isNil(data)) {
     return (
       <tr>
@@ -15,7 +15,7 @@ export const SingleElement = ({ data, label, tooltip }) => {
           </Tooltip>
         </td>
         <td>
-          <Typography>{data}</Typography>
+          <Typography>{precise(data)}</Typography>
         </td>
       </tr>
     )

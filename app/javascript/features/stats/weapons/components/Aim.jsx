@@ -2,6 +2,7 @@ import React from 'react'
 import { MinMaxElement } from "../elements/MinMaxElement";
 import { DLMSElement } from "../elements/DLMSElement";
 import { SingleElement } from "../elements/SingleElement";
+import { EmptyElement } from "../elements/EmptyElement";
 
 
 const READY_AIM_TIME = 'ready_aim_time'
@@ -12,7 +13,7 @@ const ReadyAimTimeElement = ({ data }) => {
                      tooltip="Delay before the first shot at a new target. Applied every time the weapon changes targets."/>
     )
   } else {
-    return null
+    return <EmptyElement />
   }
 }
 
@@ -24,7 +25,7 @@ const FireAimTimeElement = ({ data }) => {
                      tooltip="Delay before each shot, excluding the first shot."/>
     )
   } else {
-    return null
+    return <EmptyElement />
   }
 }
 
@@ -36,7 +37,7 @@ const FireAimTimeMultiplierElement = ({ data }) => {
                    tooltip="Delay before each shot, excluding the first shot."/>
     )
   } else {
-    return null
+    return <EmptyElement />
   }
 }
 
@@ -44,11 +45,11 @@ const POST_FIRING_AIM_TIME = 'post_firing_aim_time'
 const PostFiringAimTimeElement = ({ data }) => {
   if (_.has(data, POST_FIRING_AIM_TIME)) {
     return (
-      <SingleElement data={data[POST_FIRING_AIM_TIME]} label="post firing aim time"
+      <SinglePreciseElement data={data[POST_FIRING_AIM_TIME]} label="post firing aim time"
                      tooltip="Duration that the weapon remains aimed after firing."/>
     )
   } else {
-    return null
+    return <EmptyElement />
   }
 }
 

@@ -1,8 +1,6 @@
 import React from 'react'
-import { LabelTypography } from "../../../../components/LabelTypography";
-import { Box, Grid, Tooltip, Typography } from "@mui/material";
+import { Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { precise } from "../../../../utils/numbers";
 import { DLMSValue } from "./DLMSValue";
 import { StatsLabelTypography } from "./StatsLabelTypography";
 

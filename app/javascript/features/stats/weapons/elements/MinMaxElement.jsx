@@ -1,5 +1,4 @@
 import React from 'react'
-import { LabelTypography } from "../../../../components/LabelTypography";
 import { Tooltip, Typography } from "@mui/material";
 import { precise } from "../../../../utils/numbers";
 import { StatsLabelTypography } from "./StatsLabelTypography";

@@ -7,6 +7,11 @@ import { Accuracy } from "./components/Accuracy";
 import { Range } from "./components/Range";
 import { Aim } from "./components/Aim";
 import { Damage } from "./components/Damage";
+import { Reload } from "./components/Reload";
+import { Cooldown } from "./components/Cooldown";
+import { Penetration } from "./components/Penetration";
+import { Burst } from "./components/Burst";
+import { Moving } from "./components/Moving";
 
 const useStyles = makeStyles(theme => ({
   contentContainer: {
@@ -26,6 +31,7 @@ const useStyles = makeStyles(theme => ({
   },
   table: {
     minWidth: "33%",
+    height: "fit-content",
     "& td": {
       verticalAlign: "top"
     }
@@ -51,6 +57,19 @@ export const WeaponStats = ({ reference }) => {
             <Accuracy data={data}/>
             <Range data={data}/>
             <Aim data={data}/>
+            <Moving data={data}/>
+            </tbody>
+          </table>
+          <table className={classes.table}>
+            <tbody>
+            <Reload data={data}/>
+            <Burst data={data}/>
+            <Cooldown data={data}/>
+            </tbody>
+          </table>
+          <table className={classes.table}>
+            <tbody>
+            <Penetration data={data}/>
             </tbody>
           </table>
         </Box>
