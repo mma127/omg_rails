@@ -1,9 +1,7 @@
 import React from 'react'
-import { MinMaxElement } from "../elements/MinMaxElement";
-import { DLMSElement } from "../elements/DLMSElement";
-import { SingleElement } from "../elements/SingleElement";
-import { EmptyElement } from "../elements/EmptyElement";
 import _ from "lodash";
+import { DLMSElement } from "../elements/DLMSElement";
+import { EmptyElement } from "../elements/EmptyElement";
 import { SinglePreciseElement } from "../elements/SinglePreciseElement";
 import { TargetSuppressedMultipliers } from "./TargetSuppressedMultipliers";
 import { TargetPinnedMultipliers } from "./TargetPinnedMultipliers";

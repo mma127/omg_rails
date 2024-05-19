@@ -40,14 +40,13 @@ export const EntityStatsCard = ({statsEntity, count}) => {
   const styles = useStyles()
   console.log(statsEntity)
 
-  const reference = statsEntity.reference
   const data = statsEntity.data
-  const moving = data.moving
+  const moving = data?.moving
 
 
   return (
     <Paper sx={{ width: '100%', padding: '1rem' }}>
-      <Typography variant="h6">Entity stats - {getNameFromReference(reference)}</Typography>
+      <Typography variant="h6">Entity stats - {statsEntity.displayName}</Typography>
       <Box className={styles.columns}>
         {/*Don't need material ui table styling*/}
         <table className={styles.table}>

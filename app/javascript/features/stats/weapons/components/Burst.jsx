@@ -10,7 +10,7 @@ import _ from "lodash";
 const DisabledBurst = () => {
   return (
     <SingleElement data="disabled" label="burst firing"
-                          tooltip="If burst firing is disabled, the weapon only fires single shots."/>
+                   tooltip="If burst firing is disabled, the weapon only fires single shots."/>
   )
 }
 
@@ -42,8 +42,8 @@ const INCREMENTAL_ACCURACY_MULTIPLIER = 'incremental_accuracy_multiplier'
 const IncrementalAccuracyMultiplierElement = ({ data }) => {
   if (_.has(data, INCREMENTAL_ACCURACY_MULTIPLIER)) {
     return (
-      <DLMSElement data={data[INCREMENTAL_ACCURACY_MULTIPLIER]} defaultValue={1} label="incremental accuracy multiplier"
-                   tooltip="Multiplier on weapon accuracy for every model (not squad) the weapon is shooting at. A value > 1 means the weapon is more accurate the more models it shoots at in its burst."/>
+      <SinglePreciseElement data={data[INCREMENTAL_ACCURACY_MULTIPLIER]} label="incremental accuracy multiplier"
+                            tooltip="Multiplier on weapon accuracy for every model (not squad) the weapon is shooting at. A value > 1 means the weapon is more accurate the more models it shoots at in its burst."/>
     )
   } else {
     return <EmptyElement/>
@@ -54,8 +54,8 @@ const INCREMENTAL_SEARCH_RADIUS = 'incremental_search_radius'
 const IncrementalSearchRadiusElement = ({ data }) => {
   if (_.has(data, INCREMENTAL_SEARCH_RADIUS)) {
     return (
-      <SinglePreciseElement data={data[INCREMENTAL_SEARCH_RADIUS]} label="incremental search radius"
-                     tooltip="The radius around the target of the weapon where other models will apply the Incremental Accuracy Multiplier. A larger radius is better."/>
+      <DLMSElement data={data[INCREMENTAL_SEARCH_RADIUS]} defaultValue={0} label="incremental search radius"
+                   tooltip="The radius around the target of the weapon where other models will apply the Incremental Accuracy Multiplier. A larger radius is better."/>
     )
   } else {
     return <EmptyElement/>
@@ -66,7 +66,7 @@ export const Burst = ({ data }) => {
   const burst = data?.burst
   if (_.has(burst, "can_burst") && burst["can_burst"] === false) {
     return (
-      <DisabledBurst />
+      <DisabledBurst/>
     )
   } else {
     return (

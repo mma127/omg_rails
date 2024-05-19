@@ -16,6 +16,8 @@ import { Suppression } from "./components/Suppression";
 import { Suppressed } from "./components/Suppressed";
 import { AreaOfEffect } from "./components/AreaOfEffect";
 import { Scatter } from "./components/Scatter";
+import { Setup } from "./components/Setup";
+import { Tracking } from "./components/Tracking";
 
 const useStyles = makeStyles(theme => ({
   contentContainer: {
@@ -62,6 +64,7 @@ export const WeaponStats = ({ reference }) => {
             <Range data={data}/>
             <Aim data={data}/>
             <Moving data={data}/>
+            <Setup data={data}/>
             </tbody>
           </table>
           <table className={classes.table}>
@@ -78,6 +81,7 @@ export const WeaponStats = ({ reference }) => {
             <Suppressed data={data}/>
             <AreaOfEffect data={data}/>
             <Scatter data={data}/>
+            <Tracking data={data}/>
             </tbody>
           </table>
         </Box>
