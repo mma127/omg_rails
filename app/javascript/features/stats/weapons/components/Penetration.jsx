@@ -16,9 +16,10 @@ const DeflectionDamageMultiplier = ({ data }) => {
   }
 }
 
+const PENETRATION = "penetration"
 const PenetrationElement = ({ data }) => {
-  if (_.has(data, "penetration")) {
-    const penetration = data.penetration
+  if (_.has(data, PENETRATION) && _.has(data[PENETRATION], PENETRATION)) {
+    const penetration = data[PENETRATION][PENETRATION]
 
     return (
       <DLMSElement data={penetration} defaultValue={1} label="penetration" tooltip="The base chance to penetrate and do full damage, before modification by target type. A value of 1 means 100% chance of penetrating." />

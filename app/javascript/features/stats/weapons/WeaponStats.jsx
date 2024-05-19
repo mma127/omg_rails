@@ -14,6 +14,7 @@ import { Burst } from "./components/Burst";
 import { Moving } from "./components/Moving";
 import { Suppression } from "./components/Suppression";
 import { Suppressed } from "./components/Suppressed";
+import { AreaOfEffect } from "./components/AreaOfEffect";
 
 const useStyles = makeStyles(theme => ({
   contentContainer: {
@@ -74,6 +75,7 @@ export const WeaponStats = ({ reference }) => {
             <tbody>
             <Penetration data={data}/>
             <Suppressed data={data}/>
+            <AreaOfEffect data={data}/>
             </tbody>
           </table>
         </Box>
