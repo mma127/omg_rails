@@ -14,13 +14,8 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import {
-  BUNKER_COVER, COVER_TO_DISPLAY_NAME,
-  DEFAULT_COVER, EMPLACEMENT_COVER,
-  GARRISON_COVER,
-  HALFTRACK_COVER,
-  HEAVY_COVER,
-  LIGHT_COVER, OPEN_COVER,
-  SMOKE_COVER, TRENCH_COVER, WATER_COVER
+  COVER_TO_DISPLAY_NAME,
+  COVER_ORDER
 } from "../../../constants/stats/cover";
 import { precise } from "../../../utils/numbers";
 import InfoIcon from '@mui/icons-material/Info';
@@ -47,18 +42,6 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const COVER_ORDER = [
-  DEFAULT_COVER,
-  LIGHT_COVER,
-  HEAVY_COVER,
-  SMOKE_COVER,
-  GARRISON_COVER,
-  HALFTRACK_COVER,
-  TRENCH_COVER,
-  WATER_COVER,
-  BUNKER_COVER,
-  EMPLACEMENT_COVER,
-  OPEN_COVER]
 
 const CoverRow = ({ data, type }) => {
   const classes = useStyles()
@@ -102,7 +85,7 @@ export const CoverTable = ({ reference }) => {
       <Paper className={classes.paper}>
         <Box className={classes.infoRow}>
           <Tooltip title="Multipliers applied when the target is in cover." placement={"top"} arrow followCursor>
-            <InfoIcon />
+            <InfoIcon/>
           </Tooltip>
         </Box>
         <TableContainer>
