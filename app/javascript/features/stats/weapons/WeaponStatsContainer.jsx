@@ -10,6 +10,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { WeaponStats } from "./WeaponStats";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { CoverTable } from "./CoverTable";
+import { TargetTable } from "./TargetTable";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -146,8 +147,8 @@ export const WeaponStatsContainer = ({}) => {
         <Routes>
           <Route path={STATS} element={<WeaponStats reference={reference}/>}/>
           <Route path={COVER} element={<CoverTable reference={reference}/>}/>
+          <Route path={TARGETS} element={<TargetTable reference={reference}/>}/>
           {/*TODO*/}
-          {/*<Route path={TARGETS} element={<WeaponStats constName={unit.constName}/>}/>*/}
           {/*<Route path={CRITICALS} element={<WeaponStats constName={unit.constName}/>}/>*/}
           <Route index element={<WeaponStats reference={reference}/>}/>
         </Routes>

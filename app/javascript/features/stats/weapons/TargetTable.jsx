@@ -9,21 +9,14 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow, Tooltip,
+  TableRow,
+  Tooltip,
   Typography
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import {
-  BUNKER_COVER, COVER_TO_DISPLAY_NAME,
-  DEFAULT_COVER, EMPLACEMENT_COVER,
-  GARRISON_COVER,
-  HALFTRACK_COVER,
-  HEAVY_COVER,
-  LIGHT_COVER, OPEN_COVER,
-  SMOKE_COVER, TRENCH_COVER, WATER_COVER
-} from "../../../constants/stats/cover";
 import { precise } from "../../../utils/numbers";
 import InfoIcon from '@mui/icons-material/Info';
+import { TARGET_ORDER, TARGET_TO_DISPLAY_NAME } from "../../../constants/stats/targets";
 
 const useStyles = makeStyles(theme => ({
   contentContainer: {
@@ -38,7 +31,7 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     padding: '1rem'
   },
-  coverType: {
+  type: {
     fontWeight: "bold"
   },
   infoRow: {
@@ -47,62 +40,61 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const COVER_ORDER = [
-  DEFAULT_COVER,
-  LIGHT_COVER,
-  HEAVY_COVER,
-  SMOKE_COVER,
-  GARRISON_COVER,
-  HALFTRACK_COVER,
-  TRENCH_COVER,
-  WATER_COVER,
-  BUNKER_COVER,
-  EMPLACEMENT_COVER,
-  OPEN_COVER]
-
-const CoverRow = ({ data, type }) => {
+const TargetRow = ({ data, type }) => {
   const classes = useStyles()
-  const displayName = COVER_TO_DISPLAY_NAME[type]
+  const displayName = TARGET_TO_DISPLAY_NAME[type]
 
   const coverData = data?.[type]
   const accuracy = precise(coverData?.['accuracy_multiplier']) || 1
+  const moving_accuracy = precise(coverData?.['moving_accuracy_multiplier']) || 1
   const damage = precise(coverData?.['damage_multiplier']) || 1
-  const suppression = precise(coverData?.['suppression_multiplier']) || 1
   const penetration = precise(coverData?.['penetration_multiplier']) || 1
+  const rear_penetration = precise(coverData?.['rear_penetration_multiplier']) || 1
+  const suppression = precise(coverData?.['suppression_multiplier']) || 1
+  const priority = precise(coverData?.['priority']) || 0
 
   return (
     <TableRow>
       <TableCell>
-        <Typography color="secondary.dark" className={classes.coverType}>{displayName}</Typography>
+        <Typography color="secondary.dark" className={classes.type}>{displayName}</Typography>
       </TableCell>
       <TableCell>
         <Typography>{accuracy}</Typography>
       </TableCell>
       <TableCell>
+        <Typography>{moving_accuracy}</Typography>
+      </TableCell>
+      <TableCell>
         <Typography>{damage}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{penetration}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{rear_penetration}</Typography>
       </TableCell>
       <TableCell>
         <Typography>{suppression}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{penetration}</Typography>
+        <Typography>{priority}</Typography>
       </TableCell>
     </TableRow>
   )
 }
 
-export const CoverTable = ({ reference }) => {
+export const TargetTable = ({ reference }) => {
   const classes = useStyles()
   const weapon = useSelector(state => selectStatsWeaponByReference(state, reference))
   const data = weapon.data
-  const cover = data.cover_table
+  const target = data.target_table
 
   return (
     <Box className={classes.contentContainer}>
       <Paper className={classes.paper}>
         <Box className={classes.infoRow}>
-          <Tooltip title="Multipliers applied when the target is in cover." placement={"top"} arrow followCursor>
-            <InfoIcon />
+          <Tooltip title="Multipliers applied based on target type." placement={"top"} arrow followCursor>
+            <InfoIcon/>
           </Tooltip>
         </Box>
         <TableContainer>
@@ -110,24 +102,33 @@ export const CoverTable = ({ reference }) => {
             <TableHead>
               <TableRow>
                 <TableCell>
-                  <Typography color="secondary.dark">Cover Type</Typography>
+                  <Typography color="secondary.dark">Target Type</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="secondary.dark">Accuracy</Typography>
                 </TableCell>
                 <TableCell>
+                  <Typography color="secondary.dark">Moving Acc</Typography>
+                </TableCell>
+                <TableCell>
                   <Typography color="secondary.dark">Damage</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="secondary.dark">Penetration</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography color="secondary.dark">Rear Pen</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography color="secondary.dark">Suppression</Typography>
                 </TableCell>
                 <TableCell>
-                  <Typography color="secondary.dark">Penetration</Typography>
+                  <Typography color="secondary.dark">Priority</Typography>
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {COVER_ORDER.map(c => <CoverRow data={cover} type={c} key={c}/>)}
+              {TARGET_ORDER.map(t => <TargetRow data={target} type={t} key={t}/>)}
             </TableBody>
           </Table>
         </TableContainer>
