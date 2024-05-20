@@ -9,6 +9,7 @@ import { makeStyles, useTheme } from "@mui/styles";
 import PersonIcon from "@mui/icons-material/Person";
 import { WeaponStats } from "./WeaponStats";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { CoverTable } from "./CoverTable";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -144,8 +145,8 @@ export const WeaponStatsContainer = ({}) => {
         </Tabs>
         <Routes>
           <Route path={STATS} element={<WeaponStats reference={reference}/>}/>
+          <Route path={COVER} element={<CoverTable reference={reference}/>}/>
           {/*TODO*/}
-          {/*<Route path={COVER} element={<WeaponStats constName={unit.constName}/>}/> */}
           {/*<Route path={TARGETS} element={<WeaponStats constName={unit.constName}/>}/>*/}
           {/*<Route path={CRITICALS} element={<WeaponStats constName={unit.constName}/>}/>*/}
           <Route index element={<WeaponStats reference={reference}/>}/>
