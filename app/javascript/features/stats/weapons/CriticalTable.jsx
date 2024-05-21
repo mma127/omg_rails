@@ -10,15 +10,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
   Typography
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { precise } from "../../../utils/numbers";
-import InfoIcon from '@mui/icons-material/Info';
-import { TARGET_ORDER, TARGET_TO_DISPLAY_NAME } from "../../../constants/stats/targets";
 import {
-  CRITICAL_ORDER, CRITICAL_TABLE_01, CRITICAL_TABLE_02, CRITICAL_TABLE_03,
+  CRITICAL_ORDER,
+  CRITICAL_TABLE_01,
+  CRITICAL_TABLE_02,
+  CRITICAL_TABLE_03,
   CRITICAL_TABLE_TO_DAMAGE_RANGE,
   CRITICAL_TO_DISPLAY_NAME
 } from "../../../constants/stats/criticals";
