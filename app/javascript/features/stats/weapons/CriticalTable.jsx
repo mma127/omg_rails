@@ -87,7 +87,7 @@ const CriticalRange = ({ criticalData, tableKey, rowCount, totalRows, criticalTy
       <>
         {_.entries(criticalData[tableKey]).map(([k, v], idx) =>
           <CriticalValue critical={k} weight={v} idx={idx} rowCount={rowCount} rangeDisplayName={rangeDisplayName}
-                         typeFirstRowContent={firstRowContent}/>)}
+                         typeFirstRowContent={firstRowContent} key={idx}/>)}
       </>
     )
   } else {
@@ -127,11 +127,11 @@ const CriticalTypeRow = ({ data, type }) => {
   return (
     <>
       <CriticalRange criticalData={criticalData} tableKey={CRITICAL_TABLE_01} rowCount={greenRowCount}
-                     totalRows={totalRows} criticalType={type}/>
+                     totalRows={totalRows} criticalType={type} key={CRITICAL_TABLE_01}/>
       <CriticalRange criticalData={criticalData} tableKey={CRITICAL_TABLE_02} rowCount={yellowRowCount}
-                     totalRows={totalRows}/>
+                     totalRows={totalRows} key={CRITICAL_TABLE_02}/>
       <CriticalRange criticalData={criticalData} tableKey={CRITICAL_TABLE_03} rowCount={redRowCount}
-                     totalRows={totalRows}/>
+                     totalRows={totalRows} key={CRITICAL_TABLE_03}/>
     </>
   )
 }
