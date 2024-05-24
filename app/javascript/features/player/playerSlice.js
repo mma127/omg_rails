@@ -38,7 +38,7 @@ const playerSlice = createSlice({
 
       .addCase(fetchActiveBattles.fulfilled, (state, action) => {
         // TODO this is a bit questionable, might have issues if out of order
-        if (action.payload) {
+        if (action.payload && state.data?.id) {
           const currentBattle = action.payload.find(battle => battle.battlePlayers.find(bp => bp.playerId === state.data.id))
           state.currentBattleId = currentBattle ? currentBattle.id : null
         }

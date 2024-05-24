@@ -16,9 +16,7 @@ export const LobbyContent = () => {
     dispatch(fetchChatMessages({ chatName: LOBBY_CHAT }))
   }, [])
   useEffect(() => {
-    if (player) {
-      dispatch(fetchActiveBattles())
-    }
+    dispatch(fetchActiveBattles())
   }, [player])
   const battles = useSelector(selectAllActiveBattles)
   const isAuthed = useSelector(selectIsAuthed)
