@@ -12,6 +12,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { CoverTable } from "./CoverTable";
 import { TargetTable } from "./TargetTable";
 import { CriticalTable } from "./CriticalTable";
+import { DpsView } from "./DpsView";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -67,6 +68,7 @@ const STATS = "stats"
 const COVER = "cover"
 const TARGETS = "targets"
 const CRITICALS = "criticals"
+const DPS = "dps"
 const DEFAULT_TAB = STATS
 
 export const WeaponStatsContainer = ({}) => {
@@ -144,12 +146,20 @@ export const WeaponStatsContainer = ({}) => {
                to={CRITICALS}
                className={classes.tab}
                component={Link}/>
+          <Tab key={`stats-tab-${DPS}`}
+               icon={matches ? <PersonIcon/> : null}
+               label={matches ? null : DPS}
+               value={DPS}
+               to={DPS}
+               className={classes.tab}
+               component={Link}/>
         </Tabs>
         <Routes>
           <Route path={STATS} element={<WeaponStats reference={reference}/>}/>
           <Route path={COVER} element={<CoverTable reference={reference}/>}/>
           <Route path={TARGETS} element={<TargetTable reference={reference}/>}/>
           <Route path={CRITICALS} element={<CriticalTable reference={reference}/>}/>
+          <Route path={DPS} element={<DpsView reference={reference}/>}/>
           <Route index element={<WeaponStats reference={reference}/>}/>
         </Routes>
       </Box>
