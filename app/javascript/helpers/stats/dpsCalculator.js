@@ -1,7 +1,7 @@
 import { DISTANT, LONG, MEDIUM, SHORT } from "../../constants/stats/ranges";
 import { precise } from "../../utils/numbers";
 
-export const calculateRawDps = (weapon) => {
+export const calculateRawDps = (weapon, isMoving = false) => {
   const windUpWindDown = weapon.windUpWindDown
 
   const damage = weapon.damage
@@ -18,27 +18,31 @@ export const calculateRawDps = (weapon) => {
 
   const readyAimTime = weapon.readyAimTime
 
+  const accuracyShort = isMoving ? weapon.accuracyShort * weapon.movingAccuracyMultiplier : weapon.accuracyShort
+  const accuracyMedium = isMoving ? weapon.accuracyMedium * weapon.movingAccuracyMultiplier : weapon.accuracyMedium
+  const accuracyLong = isMoving ? weapon.accuracyLong * weapon.movingAccuracyMultiplier : weapon.accuracyLong
+
   let dpsShort, dpsMedium, dpsLong
   if (weapon.canBurst) {
     const burstDuration = weapon.burstDuration
     const rateOfFire = weapon.rateOfFire
 
-    dpsShort = (rateOfFire * burstDuration * (reloadFrequency + 1) * weapon.accuracyShort * damage) /
+    dpsShort = (rateOfFire * burstDuration * (reloadFrequency + 1) * accuracyShort * damage) /
       (readyAimTime + (fireAimTimeShort + cooldownShort + windUpWindDown) * reloadFrequency + reloadDurationWithWindUpDown + burstDuration * (reloadFrequency + 1))
 
-    dpsMedium = (rateOfFire * burstDuration * (reloadFrequency + 1) * weapon.accuracyMedium * damage) /
+    dpsMedium = (rateOfFire * burstDuration * (reloadFrequency + 1) * accuracyMedium * damage) /
       (readyAimTime + (fireAimTimeMedium + cooldownMedium + windUpWindDown) * reloadFrequency + reloadDurationWithWindUpDown + burstDuration * (reloadFrequency + 1))
 
-    dpsLong = (rateOfFire * burstDuration * (reloadFrequency + 1) * weapon.accuracyLong * damage) /
+    dpsLong = (rateOfFire * burstDuration * (reloadFrequency + 1) * accuracyLong * damage) /
       (readyAimTime + (fireAimTimeLong + cooldownLong + windUpWindDown) * reloadFrequency + reloadDurationWithWindUpDown + burstDuration * (reloadFrequency + 1))
   } else {
-    dpsShort = ((reloadFrequency + 1) * weapon.accuracyShort * damage) /
+    dpsShort = ((reloadFrequency + 1) * accuracyShort * damage) /
       (readyAimTime + (fireAimTimeShort + cooldownShort + windUpWindDown) * reloadFrequency + reloadDurationWithWindUpDown)
 
-    dpsMedium = ((reloadFrequency + 1) * weapon.accuracyMedium * damage) /
+    dpsMedium = ((reloadFrequency + 1) * accuracyMedium * damage) /
       (readyAimTime + (fireAimTimeMedium + cooldownMedium + windUpWindDown) * reloadFrequency + reloadDurationWithWindUpDown)
 
-    dpsLong = ((reloadFrequency + 1) * weapon.accuracyLong * damage) /
+    dpsLong = ((reloadFrequency + 1) * accuracyLong * damage) /
       (readyAimTime + (fireAimTimeLong + cooldownLong + windUpWindDown) * reloadFrequency + reloadDurationWithWindUpDown)
   }
   return {

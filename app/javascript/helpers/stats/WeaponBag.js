@@ -187,7 +187,12 @@ export class WeaponBag {
   }
   get rangeMin() {
     return parseFloat(_.get(this.data, "range.min", "0"))
-  }get rangeMax() {
+  }
+  get rangeMax() {
     return parseFloat(_.get(this.data, "range.max", "0"))
+  }
+
+  get movingAccuracyMultiplier() {
+    return parseFloat(_.get(this.data, "moving.accuracy_multiplier", "0"))
   }
 }
