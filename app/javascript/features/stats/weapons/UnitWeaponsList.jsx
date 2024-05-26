@@ -27,7 +27,7 @@ export const UnitWeaponsList = ({}) => {
   const unit = useSelector(state => selectUnitById(state, unitId))
   const statsUnit = useSelector(state => selectStatsUnitByConstName(state, unit?.constName))
   const weaponReferencesSet = useSelector((state) => selectWeaponsForStatsEntitiesByReference(state, statsUnit.data.entities))
-  const weaponReferences = Array.from(weaponReferencesSet)
+  const weaponReferences = Array.from(weaponReferencesSet).concat(statsUnit.data.squad_upgrade_apply_weapons)
 
   return (
     <Box className={classes.contentContainer}>
