@@ -36,7 +36,7 @@ export const ChartJsDpsChart = ({ weaponBag }) => {
     },
     elements: {
       line: {
-        stepped: true
+        stepped: "middle"
       }
     }
   };
