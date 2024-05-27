@@ -27,7 +27,8 @@ import {
   PLAYER_UNREADY,
   PLAYERS_ALL_ABANDONED,
   PLAYERS_ALL_READY,
-  REMOVE_BATTLE
+  REMOVE_BATTLE,
+  SIZE_UPDATED
 } from "../../constants/battles/events";
 import { AlertSnackbar } from "../companies/AlertSnackbar";
 import { PageContainer } from "../../components/PageContainer";
@@ -136,6 +137,10 @@ export const Lobby = () => {
       }
       case PLAYERS_ALL_ABANDONED: {
         dispatch(removeBattle({ battle: message.battle }))
+        dispatch(fetchActiveBattles())
+        break
+      }
+      case SIZE_UPDATED: {
         dispatch(fetchActiveBattles())
         break
       }

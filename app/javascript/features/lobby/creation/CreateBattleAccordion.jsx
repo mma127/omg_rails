@@ -15,7 +15,6 @@ export const CreateBattleAccordion = ({}) => {
 
   const handleAccordionChange = (event, isExpanded) => {
     setIsExpanded(isExpanded)
-    console.log(`Toggled accordion ${isExpanded ? 'open' : 'closed'}`)
   }
 
   const onCreateCallback = () => {
