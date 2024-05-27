@@ -15,6 +15,7 @@ class BattleService
   PLAYER_ABANDONED = "player_abandoned".freeze
   PLAYERS_ALL_ABANDONED = "players_all_abandoned".freeze
   ELO_UPDATED = "elo_updated".freeze
+  SIZE_UPDATED = "size_updated".freeze
 
   def initialize(player)
     @player = player
@@ -298,6 +299,39 @@ class BattleService
     # Broadcast battle update
     battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
     broadcast_cable(battle_message)
+  end
+
+  def change_battle_size(battle_id, new_size)
+    return unless @player.admin?
+
+    raise BattleValidationError.new "Invalid new battle size #{new_size}" unless Battle::BATTLE_SIZES.include? new_size
+
+    battle = validate_battle(battle_id)
+
+    # If there are more players than new size, remove players in order from most recently joined (BattlePlayer created)
+    ActiveRecord::Base.transaction do
+      current_allied_count = battle.allied_battle_players.count
+      current_axis_count = battle.axis_battle_players.count
+      if current_allied_count > new_size
+        allied_count_to_remove = current_allied_count - new_size
+        remove_n_players_from_battle(battle, BattlePlayer.sides[:allied], allied_count_to_remove)
+      end
+      if current_axis_count > new_size
+        axis_count_to_remove = current_axis_count - new_size
+        remove_n_players_from_battle(battle, BattlePlayer.sides[:axis], axis_count_to_remove)
+      end
+      battle.update!(size: new_size)
+      update_battle_elo(battle.reload)
+    end
+
+    message_hash = { type: SIZE_UPDATED, battle: battle }
+    # Broadcast battle update
+    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+    broadcast_cable(battle_message)
+  end
+
+  def remove_n_players_from_battle(battle, side, number)
+    battle.battle_players.where(side: side).order(created_at: :desc).limit(number).destroy_all
   end
 
   private

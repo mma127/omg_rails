@@ -10,6 +10,8 @@ import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
 import { GENERATING, INGAME } from "../../../constants/battles/states";
 import { Link } from "react-router-dom";
 import { DateTime } from "luxon";
+import { ChangeBattleSize } from "./ChangeBattleSize";
+import { AdminActions } from "./AdminActions";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
@@ -84,6 +86,10 @@ const useStyles = makeStyles(theme => ({
     borderColor: theme.palette.secondary.dark,
     borderWidth: '4px',
     borderStyle: 'solid'
+  },
+  adminWrapper: {
+    marginTop: "0.5rem",
+    maxWidth: "20rem"
   }
 }))
 
@@ -212,14 +218,14 @@ export const BattleCard = ({ id }) => {
       <Box className={classes.row} sx={{ paddingBottom: "1rem" }}>
         <Box className={classes.battleTimes}>
           <Box>
-            <Typography variant="caption" color="text.secondary">Last Update: </Typography>
-            <Typography variant="caption" className={classes.time}
-                        color="text.secondary">{updatedAtTime.toLocaleString(DateTime.DATETIME_MED)}</Typography>
-          </Box>
-          <Box>
             <Typography variant="caption" color="text.secondary">Created: </Typography>
             <Typography variant="caption" className={classes.time}
                         color="text.secondary">{createdAtTime.toLocaleString(DateTime.DATETIME_MED)}</Typography>
+          </Box>
+          <Box>
+            <Typography variant="caption" color="text.secondary">Last Update: </Typography>
+            <Typography variant="caption" className={classes.time}
+                        color="text.secondary">{updatedAtTime.toLocaleString(DateTime.DATETIME_MED)}</Typography>
           </Box>
         </Box>
         <Box className={classes.balanceAlertWrapper}>
@@ -263,6 +269,9 @@ export const BattleCard = ({ id }) => {
                                                   isFull={isFull}
           />)}
         </Box>
+      </Box>
+      <Box className={classes.adminWrapper}>
+        <AdminActions battleId={id} />
       </Box>
     </Card>
   )

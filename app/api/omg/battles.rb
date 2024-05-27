@@ -118,6 +118,17 @@ module OMG
           service = BattleService.new(current_player)
           service.abandon_battle(declared_params[:battleId])
         end
+
+        # Resize battle
+        desc "Admin change battle size"
+        params do
+          requires :battleId, type: Integer, desc: "Battle id to change"
+          requires :newSize, type: Integer, values: Battle::BATTLE_SIZES, desc: "new battle size"
+        end
+        post "change_battle_size" do
+          service = BattleService.new(current_player)
+          service.change_battle_size(declared_params[:battleId], declared_params[:newSize])
+        end
       end
 
       namespace :report do
