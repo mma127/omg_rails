@@ -17,6 +17,6 @@ class StatsUnitsService < ApplicationService
   end
 
   def self.squad_upgrade_apply_weapons(stats_unit)
-    stats_unit.data.with_indifferent_access[:squad_upgrade_apply_weapons]
+    stats_unit.data.with_indifferent_access[:squad_upgrade_apply_weapons].keys
   end
 end
