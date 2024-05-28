@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeBattleSize, selectBattleById } from "../lobbySlice";
 import { makeStyles } from "@mui/styles";
 import { selectPlayer } from "../../player/playerSlice";
+import { FULL, OPEN } from "../../../constants/battles/states";
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -25,6 +26,7 @@ export const ChangeBattleSize = ({ battleId }) => {
   const battle = useSelector(state => selectBattleById(state, battleId))
   const player = useSelector(selectPlayer)
   const isAdmin = player ? player.role === "admin" : false
+  const battleEditable = battle.state === OPEN || battle.state === FULL
 
   const handleReduceClick = () => {
     dispatch(changeBattleSize({ battleId, newSize: battle.size - 1 }))
@@ -40,11 +42,11 @@ export const ChangeBattleSize = ({ battleId }) => {
   return (
     <Box className={classes.wrapper}>
       <Button variant="contained" type="submit" color="secondary" size="small"
-              className={classes.readyBtn} disabled={battle.size === MIN_SIZE} onClick={handleReduceClick}>
+              className={classes.readyBtn} disabled={battle.size === MIN_SIZE || !battleEditable} onClick={handleReduceClick}>
         Reduce Size
       </Button>
       <Button variant="contained" type="submit" color="secondary" size="small"
-              className={classes.readyBtn} disabled={battle.size === MAX_SIZE} onClick={handleIncreaseClick}>
+              className={classes.readyBtn} disabled={battle.size === MAX_SIZE || !battleEditable} onClick={handleIncreaseClick}>
         Increase Size
       </Button>
     </Box>
