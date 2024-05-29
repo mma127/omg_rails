@@ -29,12 +29,14 @@ export const UnitWeaponsList = ({}) => {
   const weaponReferencesSet = useSelector((state) => selectWeaponsForStatsEntitiesByReference(state, statsUnit.data.entities))
   const weaponReferences = Array.from(weaponReferencesSet).concat(Object.keys(statsUnit.data.squad_upgrade_apply_weapons))
 
+  const weaponUpgradeReferences = statsUnit.weaponUpgradeReferences
+
   return (
     <Box className={classes.contentContainer}>
       <Typography variant="h6">Default</Typography>
       {weaponReferences.map(wr => <WeaponStatsSummary reference={wr} key={wr} />)}
       <Typography variant="h6">Upgrades</Typography>
-      TODO
+      {weaponUpgradeReferences.map(wr => <WeaponStatsSummary reference={wr} key={wr} />)}
     </Box>
     )
 }

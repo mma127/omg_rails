@@ -27,4 +27,12 @@ class StatsUpgrade < ApplicationRecord
   validates :reference, presence: true
   validates :const_name, presence: false, uniqueness: { scope: :ruleset_id }
   validates :data, presence: true
+
+  def added_weapon_refs
+    data["actions"].filter { |a| %w[add_weapon change_weapon].include? a["reference"] }.map { |a| a["weapon"] }.compact.uniq
+  end
+
+  def added_slot_items_refs
+    data["actions"].filter { |a| a["reference"] == "slot_item_add" }.map { |a| a["slot_item"] }.compact.uniq
+  end
 end

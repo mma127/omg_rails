@@ -11,9 +11,9 @@ const initialState = statsUnitsAdapter.getInitialState({
 
 export const fetchStatsUnit = createAsyncThunk(
   "statsUnits/fetchStatsUnit",
-  async ({rulesetId, constName}, {_, rejectWithValue}) => {
+  async ({rulesetId, name, constName}, {_, rejectWithValue}) => {
     try {
-      const response = await axios.get("/stats/units", { params: { ruleset_id: rulesetId, const_name: constName } })
+      const response = await axios.get("/stats/units", { params: { ruleset_id: rulesetId, name: name, const_name: constName } })
       return response.data
     } catch(err) {
       return rejectWithValue(err.response.data)
@@ -31,7 +31,9 @@ const statsUnitsSlice = createSlice({
       })
       .addCase(fetchStatsUnit.fulfilled, (state, action) => {
         state.errorMessage = null
-        statsUnitsAdapter.addOne(state, action.payload.statsUnit);
+        const statsUnit =action.payload.statsUnit
+        statsUnit.weaponUpgradeReferences = action.payload.statsWeaponsUpgrades.map(wu => wu.reference)
+        statsUnitsAdapter.addOne(state, statsUnit);
       })
       .addCase(fetchStatsUnit.rejected, (state, action) => {
         state.errorMessage = action.payload.error
