@@ -87,7 +87,7 @@ export const UnitStatsContainer = ({}) => {
 
   useEffect(() => {
     if (unit && ruleset && !statsUnit) {
-      dispatch(fetchStatsUnit({ rulesetId: ruleset.id, constName: unit.constName }))
+      dispatch(fetchStatsUnit({ rulesetId: ruleset.id, name: unit.name, constName: unit.constName }))
     }
   }, [unit, ruleset])
 

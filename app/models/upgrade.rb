@@ -24,6 +24,10 @@ class Upgrade < ApplicationRecord
 
   validates :model_count, presence: false
 
+  def weapon_related?
+    %w[Upgrades::Consumable Upgrades::SingleWeapon Upgrades::SquadWeapon].include? self.type
+  end
+
   # Used for battle file
   def formatted_const_name
     "#{CONST_PREFIX}.#{const_name}"

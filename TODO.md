@@ -27,6 +27,8 @@
 
 ### Stats
 1. Further reduce unnecessary stats json records by keeping only weapons, upgrades, abilities, etc that are associated with units or entities
+2. Associate StatsWeaponsUpgrade with Upgrade for display in Unit weapons tab (so users know what Upgrade grants the weapon)
+3. Slot items that don't have a weapon associated (like grenades) won't appear right now in the weapons tab
 
 ### Performance
 1. doctrine_unlock.rb associations for Grape entities are sequential
