@@ -6,9 +6,12 @@ import { selectStatsWeaponByReference } from "./statsWeaponsSlice";
 import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
+  row: {
+    display: "flex"
+  }
 }))
 
-export const WeaponStatsSummary = ({ reference }) => {
+export const WeaponStatsSummary = ({ reference, count }) => {
   const classes = useStyles()
   const weapon = useSelector(state => selectStatsWeaponByReference(state, reference))
 
@@ -18,7 +21,10 @@ export const WeaponStatsSummary = ({ reference }) => {
     <Box>
       <Link component={RouterLink} to={`/restrictions/weapon/${weapon.id}/${encodedReference}`}
             underline="none" color="inherit" target="_blank">
-        <Typography color="secondary">{displayName}</Typography>
+        <Box className={classes.row}>
+          <Typography color="secondary">{displayName}</Typography>
+          <Typography pl={1}>x{count}</Typography>
+        </Box>
       </Link>
     </Box>
   )

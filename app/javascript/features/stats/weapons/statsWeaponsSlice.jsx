@@ -44,7 +44,6 @@ const statsWeaponsSlice = createSlice({
       .addCase(fetchStatsUnit.fulfilled, (state, action) => {
         state.errorMessage = null
         statsWeaponsAdapter.addMany(state, action.payload.statsWeapons);
-        statsWeaponsAdapter.addMany(state, action.payload.statsWeaponsUpgrades);
       })
       .addCase(fetchStatsUnit.rejected, (state, action) => {
         state.errorMessage = action.payload.error

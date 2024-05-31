@@ -41,6 +41,7 @@ class Upgrade < ApplicationRecord
     expose :id
     expose :name
     expose :display_name, as: :displayName
+    expose :const_name, as: :constName
     expose :description
     expose :type
     expose :model_count, as: :modelCount
