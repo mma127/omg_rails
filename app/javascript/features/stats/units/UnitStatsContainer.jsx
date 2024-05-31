@@ -7,11 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUnitById, selectUnitById } from "../../companies/manage/units/unitsSlice";
 import { fetchStatsUnit, selectStatsUnitByConstName } from "./statsUnitsSlice";
 import { selectActiveRuleset } from "../../rulesets/rulesetsSlice";
-import { Link, Route, Routes, useParams } from "react-router-dom";
+import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { UnitStats } from "./UnitStats";
-import { UnitWeaponsList } from "../weapons/UnitWeaponsList";
+import { UnitWeaponsList } from "./weapons/UnitWeaponsList";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -60,7 +60,6 @@ const useStyles = makeStyles(theme => ({
 
 const STATS = "stats"
 const WEAPONS = "weapons"
-const DEFAULT_TAB = STATS
 
 export const UnitStatsContainer = ({}) => {
   const classes = useStyles()
@@ -73,7 +72,16 @@ export const UnitStatsContainer = ({}) => {
   const statsUnit = useSelector(state => selectStatsUnitByConstName(state, unit?.constName))
   const ruleset = useSelector(selectActiveRuleset)
 
-  const [currentTab, setCurrentTab] = useState(DEFAULT_TAB)
+  const location = useLocation()
+  const pathEnd = location.pathname.slice(location.pathname.lastIndexOf("/") + 1, location.pathname.length) // +1 to skip "/"
+  let tab
+  if (pathEnd === WEAPONS) {
+    tab = WEAPONS
+  } else {
+    tab = STATS
+  }
+
+  const [currentTab, setCurrentTab] = useState(tab)
   const onTabChange = (event, newTab) => {
     setCurrentTab(newTab)
   }

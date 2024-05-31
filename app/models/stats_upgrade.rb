@@ -33,6 +33,19 @@ class StatsUpgrade < ApplicationRecord
   end
 
   def added_slot_items_refs
-    data["actions"].filter { |a| a["reference"] == "slot_item_add" }.map { |a| a["slot_item"] }.compact.uniq
+    data["actions"].filter { |a| a["reference"] == "slot_item_add" }.map { |a| a["slot_item"] }.compact
+  end
+
+  def entity
+    Entity.new(self)
+  end
+
+  class Entity < Grape::Entity
+    expose :id
+    expose :const_name, as: :constName
+    expose :display_name, as: :displayName
+    expose :ruleset_id, as: :rulesetId
+    expose :reference
+    expose :data
   end
 end

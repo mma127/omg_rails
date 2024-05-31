@@ -1,4 +1,4 @@
-import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
 
 const statsUnitsAdapter = createEntityAdapter({
@@ -11,11 +11,17 @@ const initialState = statsUnitsAdapter.getInitialState({
 
 export const fetchStatsUnit = createAsyncThunk(
   "statsUnits/fetchStatsUnit",
-  async ({rulesetId, name, constName}, {_, rejectWithValue}) => {
+  async ({ rulesetId, name, constName }, { _, rejectWithValue }) => {
     try {
-      const response = await axios.get("/stats/units", { params: { ruleset_id: rulesetId, name: name, const_name: constName } })
+      const response = await axios.get("/stats/units", {
+        params: {
+          ruleset_id: rulesetId,
+          name: name,
+          const_name: constName
+        }
+      })
       return response.data
-    } catch(err) {
+    } catch (err) {
       return rejectWithValue(err.response.data)
     }
   })
@@ -31,8 +37,9 @@ const statsUnitsSlice = createSlice({
       })
       .addCase(fetchStatsUnit.fulfilled, (state, action) => {
         state.errorMessage = null
-        const statsUnit =action.payload.statsUnit
-        statsUnit.weaponUpgradeReferences = action.payload.statsWeaponsUpgrades.map(wu => wu.reference)
+        const statsUnit = action.payload.statsUnit
+        statsUnit.defaultWeapons = action.payload.defaultWeapons
+        statsUnit.upgradeWeapons = action.payload.upgradeWeapons
         statsUnitsAdapter.addOne(state, statsUnit);
       })
       .addCase(fetchStatsUnit.rejected, (state, action) => {
@@ -43,9 +50,21 @@ const statsUnitsSlice = createSlice({
 
 export default statsUnitsSlice.reducer
 
-export const { } = statsUnitsSlice.actions
+export const {} = statsUnitsSlice.actions
 
 export const {
   selectAll: selectAllStatsUnits,
   selectById: selectStatsUnitByConstName
 } = statsUnitsAdapter.getSelectors(state => state.statsUnits)
+
+export const selectSortedUpgradeWeaponsForStatsUnitConst = createSelector(
+  [
+    (state) => state.statsUnits,
+    (state, constName) => constName
+  ],
+  (state, constName) => {
+    const upgradeWeapons = [...state.entities[constName]?.upgradeWeapons]
+    upgradeWeapons.sort((a,b) => b.weaponCount.length - a.weaponCount.length)
+    return upgradeWeapons
+  }
+)
