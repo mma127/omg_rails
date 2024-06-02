@@ -10,6 +10,9 @@ import { ActionCableProvider } from "@thrash-industries/react-actioncable-provid
 import { Restrictions } from "../features/restrictions/Restrictions";
 import { Leaderboards } from "../features/leaderboards/Leaderboards";
 import { SnapshotCompanyView } from "../features/companies/snapshot/SnapshotCompanyView";
+import { UnitStatsContainer } from "../features/stats/units/UnitStatsContainer";
+import { WeaponStats } from "../features/stats/weapons/WeaponStats";
+import { WeaponStatsContainer } from "../features/stats/weapons/WeaponStatsContainer";
 
 const theme = createTheme({
   palette: {
@@ -19,6 +22,10 @@ const theme = createTheme({
       light: "#EFAD4DFF",
       dark: "#EE930FEC",
       contrastText: "#222222C8"
+    },
+    text: {
+      primary: "#CCC",
+      label: "#777"
     }
   },
   components: {
@@ -61,6 +68,8 @@ export const App = () => (
                 <Route path="companies/:companyId/*" element={<CompanyManager />} />
                 <Route path="companies/snapshots/:uuid/*" element={<SnapshotCompanyView />} />
                 <Route path="restrictions/*" element={<Restrictions />} />
+                <Route path="restrictions/unit/:unitId/*" element={<UnitStatsContainer />} />
+                <Route path="restrictions/weapon/:weaponId/:weaponRef/*" element={<WeaponStatsContainer />} />
                 <Route path="leaderboards/*" element={<Leaderboards />} />
               </Route>
             </Routes>

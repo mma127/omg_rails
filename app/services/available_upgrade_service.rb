@@ -10,6 +10,7 @@ class AvailableUpgradeService
     @player = company.player
     @faction = company.faction
     @doctrine = company.doctrine
+    @ruleset = company.ruleset
   end
 
   # Given a new company, determine the available upgrades for the company
@@ -98,10 +99,10 @@ class AvailableUpgradeService
     enabled_upgrades_by_upgrade_unit_id = remove_disabled_upgrades(enabled_upgrades_by_upgrade_unit_id, disabled_upgrade_id_to_unit_ids)
 
     if enabled_upgrades_by_upgrade_unit_id.blank?
-      Rails.logger.info("No enabled upgrades found to recreate that were disabled by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
+      # Rails.logger.info("No enabled upgrades found to recreate that were disabled by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
     else
-      Rails.logger.info("Found #{enabled_upgrades_by_upgrade_unit_id.size} upgrades, creating available upgrades that were disabled "\
-        "by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
+      # Rails.logger.info("Found #{enabled_upgrades_by_upgrade_unit_id.size} upgrades, creating available upgrades that were disabled "\
+      #   "by doctrineUnlock #{doctrine_unlock.id} for company #{@company.id}")
       create_enabled_available_upgrades(enabled_upgrades_by_upgrade_unit_id)
     end
   end
@@ -178,7 +179,7 @@ class AvailableUpgradeService
   #   -> unit_id
   #     -> enabled_upgrade (this can be replaced when merging a more specific upgrade hash ie, doctrine upgrade hash)
   def get_enabled_upgrade_hash(restriction)
-    enabled_upgrades = EnabledUpgrade.includes(:units).where(restriction: restriction, ruleset: @company.ruleset)
+    enabled_upgrades = EnabledUpgrade.includes(:units).where(restriction: restriction, ruleset: @ruleset)
     build_enabled_upgrades_hash(enabled_upgrades)
   end
 
@@ -196,7 +197,7 @@ class AvailableUpgradeService
   # Creates hash of
   # upgrade_id -> Set of unit_id
   def get_disabled_upgrade_hash(restriction)
-    disabled_upgrades = DisabledUpgrade.includes(:units).where(restriction: restriction, ruleset: @company.ruleset)
+    disabled_upgrades = DisabledUpgrade.includes(:units).where(restriction: restriction, ruleset: @ruleset)
     build_disabled_upgrades_hash(disabled_upgrades)
   end
 
@@ -348,7 +349,7 @@ class AvailableUpgradeService
 
   def find_enabled_upgrade(restrictions, upgrade, unit_id)
     EnabledUpgrade.joins(:restriction_upgrade_units)
-                  .find_by(restriction: restrictions, upgrade: upgrade, ruleset: @company.ruleset,
+                  .find_by(restriction: restrictions, upgrade: upgrade, ruleset: @ruleset,
                            restriction_upgrade_units: { unit_id: unit_id })
   end
 

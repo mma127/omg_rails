@@ -1,0 +1,32 @@
+modifier,modifier_type,priority,description,display_unlock_name,required_unit,allowed_unit,doctrine_name,unlock_name
+0.25,multiplicative,1,Callin Modifier x0.25 Volks & Grens,Organized Platoons,,grenadiers,blitz,organized_platoons
+0.25,multiplicative,1,Callin Modifier x0.25 Volks & Grens,Organized Platoons,,volksgrenadiers,blitz,organized_platoons
+0.5,multiplicative,1,Callin Modifier x0.5 Airborne units,Weighted Packs,,assault_airborne,airborne,weighted_packs
+0.5,multiplicative,1,Callin Modifier x0.5 Airborne units,Weighted Packs,,airborne_hmg,airborne,weighted_packs
+0.5,multiplicative,1,Callin Modifier x0.5 Airborne units,Weighted Packs,,airborne_mortar,airborne,weighted_packs
+0.5,multiplicative,1,Callin Modifier x0.5 Airborne units,Weighted Packs,,airborne_atg,airborne,weighted_packs
+0.5,multiplicative,1,Callin Modifier x0.5 Airborne units,Weighted Packs,,airborne_sniper,airborne,weighted_packs
+0.5,multiplicative,1,Callin Modifier x0.5 Airborne units,Weighted Packs,,airborne,airborne,weighted_packs
+0.25,multiplicative,1,"Callin Modifier x0.25, Commando units",Quick Reaction Force,,armor_glider,commandos,quick_reaction_force
+0.25,multiplicative,1,"Callin Modifier x0.25, Commando units",Quick Reaction Force,,commandos,commandos,quick_reaction_force
+0.25,multiplicative,1,"Callin Modifier x0.25, Commando units",Quick Reaction Force,,piat_commandos,commandos,quick_reaction_force
+0.25,multiplicative,1,"Callin Modifier x0.25, Commando units",Quick Reaction Force,,polish_commandos,commandos,quick_reaction_force
+0.25,multiplicative,1,"Callin Modifier x0.25, Commando units",Quick Reaction Force,,commando_2pdr,commandos,quick_reaction_force
+0.25,multiplicative,1,"Callin Modifier x0.25, Commando units",Quick Reaction Force,,commando_hmg,commandos,quick_reaction_force
+0.25,multiplicative,1,"Callin Modifier x0.25, Commando units",Quick Reaction Force,,commando_mortar,commandos,quick_reaction_force
+0.25,multiplicative,1,"Callin Modifier x0.25, Commando units",Quick Reaction Force,,infantry_glider,commandos,quick_reaction_force
+0.5,multiplicative,1,"Callin Modifier x0.5, Gliders + any",Glider Army,armor_glider,,commandos,glider_army
+0.5,multiplicative,1,"Callin Modifier x0.5, Gliders + any",Glider Army,infantry_glider,,commandos,glider_army
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,easy_eight,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,calliope,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,sherman_105,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,m18,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,m10,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,pershing,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,sherman,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,t17,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,greyhound,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,quad_halftrack,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,halftrack_allied,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,sherman_croc,,armor,patton_s_war
+0.1,multiplicative,1,"Callin Modifier x0.1, Vehicle/Tank + any",Patton's War,jackson,,armor,patton_s_war

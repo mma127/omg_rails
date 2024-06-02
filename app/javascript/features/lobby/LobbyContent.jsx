@@ -9,12 +9,15 @@ import { LOBBY_CHAT } from "../../constants/chat";
 import { ChatContainer } from "./chat/ChatContainer";
 import { ActiveUsersList } from "./chat/ActiveUsersList";
 
-export const LobbyContent = ({ rulesetId }) => {
+export const LobbyContent = () => {
   const dispatch = useDispatch()
+  const player = useSelector(selectPlayer)
   useEffect(() => {
-    dispatch(fetchActiveBattles())
     dispatch(fetchChatMessages({ chatName: LOBBY_CHAT }))
   }, [])
+  useEffect(() => {
+    dispatch(fetchActiveBattles())
+  }, [player])
   const battles = useSelector(selectAllActiveBattles)
   const isAuthed = useSelector(selectIsAuthed)
 
@@ -27,14 +30,14 @@ export const LobbyContent = ({ rulesetId }) => {
         <ActiveUsersList/>
       </Grid>
     </Grid>)
-  let accordionContent = isAuthed ? <Box pt={1} pb={1}><CreateBattleAccordion rulesetId={rulesetId}/></Box> : null
+  let accordionContent = isAuthed ? <Box pt={1} pb={1}><CreateBattleAccordion/></Box> : null
 
   return (
     <Box pt={1}>
       {chatContent}
       {accordionContent}
       {battles.map(b => (
-        <Box key={b.id} pt={1} pb={1}><BattleCard id={b.id} rulesetId={rulesetId} isAuthed={isAuthed}/></Box>))}
+        <Box key={b.id} pt={1} pb={1}><BattleCard id={b.id} isAuthed={isAuthed}/></Box>))}
     </Box>
   )
 }

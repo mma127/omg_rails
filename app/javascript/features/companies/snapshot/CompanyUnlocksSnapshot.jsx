@@ -8,6 +8,7 @@ import { DoctrineUnlock } from "../manage/unlocks/DoctrineUnlock";
 import { selectCompanyUnlocksByDoctrineUnlockId } from "../manage/unlocks/companyUnlocksSlice";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import _ from "lodash";
+import { selectActiveRuleset } from "../../rulesets/rulesetsSlice";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -58,9 +59,10 @@ export const CompanyUnlocksSnapshot = ({ }) => {
   const snapshot = useSelector(selectCurrentSnapshotCompany)
   const doctrineUnlockRows = useSelector(state => selectDoctrineUnlockRowsByDoctrineId(state, snapshot.doctrineId))
   const companyUnlocksByDoctrineUnlockId = useSelector(selectCompanyUnlocksByDoctrineUnlockId)
+  const activeRuleset = useSelector(selectActiveRuleset)
 
   useEffect(() => {
-    dispatch(fetchDoctrineUnlocksByDoctrineId({ doctrineId: snapshot.doctrineId }))
+    dispatch(fetchDoctrineUnlocksByDoctrineId({ doctrineId: snapshot.doctrineId, rulesetId: activeRuleset.id }))
   }, [snapshot.id])
 
   let content

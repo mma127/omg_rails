@@ -1,36 +1,38 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Alert } from "@mui/material";
+import { Alert } from "@mui/material";
 
 import { ActionCableConsumer } from '@thrash-industries/react-actioncable-provider';
 import {
-  addNewBattle,
-  updateBattle,
-  removeBattle,
-  fetchActiveBattles,
   addChatMessage,
-  updateActiveUsers
+  addNewBattle,
+  fetchActiveBattles,
+  removeBattle,
+  updateActiveUsers,
+  updateBattle
 } from "./lobbySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId, setCurrentBattle } from "../player/playerSlice";
 import { isPlayerInBattle } from "../../utils/battle";
 import { LobbyContent } from "./LobbyContent";
 import {
+  BATTLE_FINALIZED,
   BATTLEFILE_GENERATED,
   CREATED_BATTLE,
-  PLAYERS_ALL_READY,
+  ELO_UPDATED,
+  PLAYER_ABANDONED,
   PLAYER_JOINED,
   PLAYER_JOINED_FULL,
   PLAYER_LEFT,
   PLAYER_READY,
   PLAYER_UNREADY,
+  PLAYERS_ALL_ABANDONED,
+  PLAYERS_ALL_READY,
   REMOVE_BATTLE,
-  ELO_UPDATED,
-  BATTLE_FINALIZED, PLAYER_ABANDONED, PLAYERS_ALL_ABANDONED
+  SIZE_UPDATED
 } from "../../constants/battles/events";
 import { AlertSnackbar } from "../companies/AlertSnackbar";
 import { PageContainer } from "../../components/PageContainer";
-
-const rulesetId = 1
+import { selectActiveRuleset } from "../rulesets/rulesetsSlice";
 
 export const Lobby = () => {
   // Lobby page container
@@ -42,6 +44,7 @@ export const Lobby = () => {
   const isAuthed = useSelector(selectIsAuthed)
   const player = useSelector(selectPlayer)
   const currentBattleId = useSelector(selectPlayerCurrentBattleId)
+  const activeRuleset = useSelector(selectActiveRuleset)
 
   // Use stateRef to pass the current value of player to the handleReceivedBattlesCable callback. Otherwise the callback
   // method is created with the original null value for player and never updated
@@ -137,6 +140,10 @@ export const Lobby = () => {
         dispatch(fetchActiveBattles())
         break
       }
+      case SIZE_UPDATED: {
+        dispatch(fetchActiveBattles())
+        break
+      }
       default: {
         console.log(`Invalid message type ${message.type}`)
         break
@@ -169,7 +176,7 @@ export const Lobby = () => {
                      severity={snackbarSeverity}
                      content={snackbarContent}/>
       {errorAlert}
-      <LobbyContent rulesetId={rulesetId}/>
+      <LobbyContent/>
     </PageContainer>
   )
 }

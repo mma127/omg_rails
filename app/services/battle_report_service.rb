@@ -1,6 +1,8 @@
 class BattleReportService < ApplicationService
   class BattleReportValidationError < StandardError; end
+
   MINIMUM_ELAPSED = 300.freeze
+  MINIMUM_RANKED_ELAPSED = 1200.freeze
   RUBBERBAND_VET = 5.freeze
 
   FINAL = 1.freeze
@@ -13,9 +15,9 @@ class BattleReportService < ApplicationService
 
   def self.enqueue_report(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,
                           dead_squads, surviving_squads, dropped_players, battle_stats)
-    Rails.logger.info("[#{self.class.name}] Enqueuing BattleReportJob for battle #{battle_id} with params:")
-    Rails.logger.info("[#{self.class.name}] is_final #{is_final}, reporting player #{reporting_player_name}, time_elapsed #{time_elapsed}, winner #{race_winner}")
-    Rails.logger.info("[#{self.class.name}] dead_squads #{dead_squads}, surviving_squads #{surviving_squads}")
+    # Rails.logger.info("[#{self.class.name}] Enqueuing BattleReportJob for battle #{battle_id} with params:")
+    # Rails.logger.info("[#{self.class.name}] is_final #{is_final}, reporting player #{reporting_player_name}, time_elapsed #{time_elapsed}, winner #{race_winner}")
+    # Rails.logger.info("[#{self.class.name}] dead_squads #{dead_squads}, surviving_squads #{surviving_squads}")
     BattleReportJob.perform_async(battle_id, is_final, reporting_player_name, time_elapsed, race_winner, map_name,
                                   dead_squads, surviving_squads, dropped_players, battle_stats)
   end
@@ -80,7 +82,7 @@ class BattleReportService < ApplicationService
             finalize_battle(winner)
 
             # Update player ratings
-            maybe_update_player_ratings(winner)
+            maybe_update_player_ratings(winner, time_elapsed)
 
             # Update company stats
             process_battle_stats(battle_stats)
@@ -276,18 +278,23 @@ class BattleReportService < ApplicationService
   end
 
   # Skip updating ratings if battle is only 1v1
-  def maybe_update_player_ratings(winner)
+  # Skip updating ratings if battle time elapsed is less than MINIMUM_RANKED_ELAPSED
+  def maybe_update_player_ratings(winner, time_elapsed)
     if @battle.size == 1
       info_logger("Battle #{@battle.id} size is 1, skipping updating player ratings")
       return
     end
 
-    info_logger("Updating player ratings")
-    ## Update player skill ratings
-    update_player_ratings(winner)
+    if time_elapsed > MINIMUM_RANKED_ELAPSED
+      info_logger("Updating player ratings")
+      ## Update player skill ratings
+      update_player_ratings(winner)
 
-    # Save historical battle player records
-    save_historical_battle_players(@battle.id)
+      # Save historical battle player records
+      # NOTE: Since historical battle player records are intended to help recalculate player ratings, there's no
+      # point in saving if the battle does not qualify for player ratings to be updated
+      save_historical_battle_players(@battle.id)
+    end
   end
 
   def update_player_ratings(winner)

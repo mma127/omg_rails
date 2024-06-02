@@ -3,6 +3,7 @@ class CompanyUnlockService
 
   def initialize(company)
     @company = company
+    @ruleset = company.ruleset
   end
 
   def purchase_doctrine_unlock(doctrine_unlock)
@@ -20,7 +21,7 @@ class CompanyUnlockService
     # Get Restrictions for the doctrineUnlock and associated unlock
     du_restriction = doctrine_unlock.restriction
     u_restriction = unlock.restriction
-    restriction_params = { restriction: [du_restriction, u_restriction] }
+    restriction_params = { restriction: [du_restriction, u_restriction], ruleset: @ruleset }
 
     # Get EnabledUnits for those restrictions
     enabled_units = EnabledUnit.includes(:unit).where(restriction_params)
@@ -125,7 +126,7 @@ class CompanyUnlockService
     # Get Restrictions for the DoctrineUnlock and Unlock
     du_restriction = doctrine_unlock.restriction
     u_restriction = unlock.restriction
-    restriction_params = { restriction: [du_restriction, u_restriction] }
+    restriction_params = { restriction: [du_restriction, u_restriction], ruleset: @ruleset }
 
     # Get EnabledUnits for those restrictions
     previously_enabled_units = EnabledUnit.includes(:unit).where(restriction_params)
@@ -236,7 +237,7 @@ class CompanyUnlockService
     squads.each do |squad|
       if old_units.include? squad.unit
         # Found a squad with an old unit, replace with new unit
-        Rails.logger.info("Found old unit #{squad.unit_id} in squad #{squad.id}")
+        # Rails.logger.info("Found old unit #{squad.unit_id} in squad #{squad.id}")
         unit_swap = old_unit_to_unit_swap[squad.unit]
 
         if reverse
@@ -247,7 +248,7 @@ class CompanyUnlockService
         au = unit_id_to_available_unit[replacement_unit_id]
 
         if au.blank?
-          Rails.logger.info("AvailableUnit for new unit id #{replacement_unit_id} does not exist for the company, skipping swap")
+          # Rails.logger.info("AvailableUnit for new unit id #{replacement_unit_id} does not exist for the company, skipping swap")
           next
         end
 
@@ -282,7 +283,7 @@ class CompanyUnlockService
       next unless old_upgrades.include? squad_upgrade.upgrade
 
       # Found a squad upgrade with an old upgrade, replace with new upgrade
-      Rails.logger.info("Found old upgrade #{squad_upgrade.upgrade.id} in squad_upgrade #{squad_upgrade.id}")
+      # Rails.logger.info("Found old upgrade #{squad_upgrade.upgrade.id} in squad_upgrade #{squad_upgrade.id}")
       upgrade_swap = old_upgrade_to_upgrade_swap[squad_upgrade.upgrade]
       unit_ids = upgrade_swap.unit_ids
       squad_unit_id = squad_upgrade.squad.available_unit.unit_id
@@ -296,7 +297,7 @@ class CompanyUnlockService
       end
       au = upgrade_id_to_available_upgrade.dig(replacement_upgrade_id, squad_unit_id)
       if au.blank?
-        Rails.logger.info("AvailableUpgrade for new upgrade id #{replacement_upgrade_id} and unit id #{squad_unit_id} does not exist for the company, skipping swap")
+        # Rails.logger.info("AvailableUpgrade for new upgrade id #{replacement_upgrade_id} and unit id #{squad_unit_id} does not exist for the company, skipping swap")
         next
       end
 

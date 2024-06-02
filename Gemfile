@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.7.5'
+ruby '2.7.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 7.0.8.1', '>= 7.0.1'
@@ -85,6 +85,8 @@ gem 'rspec_junit_formatter'
 
 gem 'dalli'
 
+gem 'json'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -129,4 +131,5 @@ gem "sprockets-rails"
 gem "turbo-rails", "~> 2.0"
 gem "net-http", "~> 0.4.1"
 
+gem "rexml" # Seems needed for heroku to build
 gem "simple_form", "~> 5.3"

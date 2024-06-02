@@ -108,6 +108,7 @@ class Company < ApplicationRecord
     expose :active_battle_id, as: :activeBattleId, if: { type: :full }
     expose :active_battle_id, as: :activeBattleId, if: { type: :with_active_battle }
     expose :type
+    expose :ruleset_id, as: :rulesetId
 
     expose :available_units, as: :availableUnits, using: AvailableUnit::Entity, if: { type: :full }
     expose :squads, using: Squad::Entity, if: { type: :full }

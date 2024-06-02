@@ -1,23 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import {
-  Alert, AlertTitle,
-  Box,
-  Button,
-  Card,
-  Grid,
-  Typography
-} from "@mui/material";
+import React from 'react'
+import { Alert, AlertTitle, Box, Card, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { useDispatch, useSelector } from "react-redux";
-import { createBattle, selectBattleById } from "../lobbySlice";
-import { ErrorTypography } from "../../../components/ErrorTypography";
-import { selectIsAuthed, selectPlayer } from "../../player/playerSlice";
+import { useSelector } from "react-redux";
+import { selectBattleById } from "../lobbySlice";
+import { selectPlayer } from "../../player/playerSlice";
 import { BattleCardPlayer } from "./BattleCardPlayer";
 import { nanoid } from "@reduxjs/toolkit";
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
 import { GENERATING, INGAME } from "../../../constants/battles/states";
 import { Link } from "react-router-dom";
 import { DateTime } from "luxon";
+import { ChangeBattleSize } from "./ChangeBattleSize";
+import { AdminActions } from "./AdminActions";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
@@ -92,6 +86,10 @@ const useStyles = makeStyles(theme => ({
     borderColor: theme.palette.secondary.dark,
     borderWidth: '4px',
     borderStyle: 'solid'
+  },
+  adminWrapper: {
+    marginTop: "0.5rem",
+    maxWidth: "20rem"
   }
 }))
 
@@ -111,9 +109,8 @@ const addPlaceholders = (battlePlayers, size) => {
   return battlePlayersCopy
 }
 
-export const BattleCard = ({ id, rulesetId }) => {
+export const BattleCard = ({ id }) => {
   const classes = useStyles()
-  const isAuthed = useSelector(selectIsAuthed)
   const player = useSelector(selectPlayer)
   const battle = useSelector(state => selectBattleById(state, id))
   const size = battle.size
@@ -176,14 +173,14 @@ export const BattleCard = ({ id, rulesetId }) => {
   let optimumBalance = false;
   const k = axisPlayers.reduce((accumulator, currentValue) => accumulator + currentValue.teamBalance, 0)
   if (k === size || k === size * 2) {
-    optimumBalance = false;
+    optimumBalance = true;
   }
 
   const calculatedBalanceState = balanceState(battle.eloDifference)
 
   let optimumBalanceContent
   let eloDiffContent
-  if (!optimumBalance && isFull) {
+  if (!optimumBalance && Math.abs(battle.eloDifference) > 50 && isFull) {
     optimumBalanceContent = (
       <Box className={classes.balanceAlertContainer}>
         <Alert severity="warning" className={classes.balanceAlert}>
@@ -221,14 +218,14 @@ export const BattleCard = ({ id, rulesetId }) => {
       <Box className={classes.row} sx={{ paddingBottom: "1rem" }}>
         <Box className={classes.battleTimes}>
           <Box>
-            <Typography variant="caption" color="text.secondary">Last Update: </Typography>
-            <Typography variant="caption" className={classes.time}
-                        color="text.secondary">{updatedAtTime.toLocaleString(DateTime.DATETIME_MED)}</Typography>
-          </Box>
-          <Box>
             <Typography variant="caption" color="text.secondary">Created: </Typography>
             <Typography variant="caption" className={classes.time}
                         color="text.secondary">{createdAtTime.toLocaleString(DateTime.DATETIME_MED)}</Typography>
+          </Box>
+          <Box>
+            <Typography variant="caption" color="text.secondary">Last Update: </Typography>
+            <Typography variant="caption" className={classes.time}
+                        color="text.secondary">{updatedAtTime.toLocaleString(DateTime.DATETIME_MED)}</Typography>
           </Box>
         </Box>
         <Box className={classes.balanceAlertWrapper}>
@@ -272,6 +269,9 @@ export const BattleCard = ({ id, rulesetId }) => {
                                                   isFull={isFull}
           />)}
         </Box>
+      </Box>
+      <Box className={classes.adminWrapper}>
+        <AdminActions battleId={id} />
       </Box>
     </Card>
   )

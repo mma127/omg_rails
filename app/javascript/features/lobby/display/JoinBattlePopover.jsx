@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllCompanies } from "../../companies/companiesSlice";
-import { ALLIED_SIDE, doctrineImgMapping } from "../../../constants/doctrines";
-import { Alert, Box, Tooltip, Typography } from "@mui/material";
+import { doctrineImgMapping } from "../../../constants/doctrines";
+import { Box, Tooltip, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { joinBattle } from "../lobbySlice";
 import { CompanySelectTooltip } from "../creation/CompanySelectTooltip";

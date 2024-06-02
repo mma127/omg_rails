@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
+ActiveRecord::Schema[7.0].define(version: 2024_05_18_003558) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -269,6 +270,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.index ["doctrine_unlock_id"], name: "index_company_unlocks_on_doctrine_unlock_id"
   end
 
+  create_table "data_migrations", primary_key: "version", id: :string, force: :cascade do |t|
+  end
+
   create_table "doctrine_unlocks", comment: "Associates doctrines to unlocks", force: :cascade do |t|
     t.bigint "doctrine_id"
     t.bigint "unlock_id"
@@ -281,7 +285,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.boolean "disabled", default: false, null: false, comment: "Is this doctrine unlock disabled?"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["doctrine_id", "tree", "branch", "row"], name: "index_doctrine_unlocks_on_doctrine_tree", unique: true
+    t.index ["doctrine_id", "tree", "branch", "row", "ruleset_id"], name: "index_doctrine_unlocks_on_doctrine_tree", unique: true
     t.index ["doctrine_id", "unlock_id"], name: "index_doctrine_unlocks_on_doctrine_id_and_unlock_id", unique: true
     t.index ["doctrine_id"], name: "index_doctrine_unlocks_on_doctrine_id"
     t.index ["ruleset_id"], name: "index_doctrine_unlocks_on_ruleset_id"
@@ -349,6 +353,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["player_id"], name: "index_historical_player_ratings_on_player_id"
+    t.index ["player_name"], name: "index_historical_player_ratings_on_player_name", unique: true
   end
 
   create_table "offmaps", force: :cascade do |t|
@@ -368,6 +373,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "ruleset_id", null: false
+    t.index ["name", "ruleset_id"], name: "index_offmaps_on_name_and_ruleset_id", unique: true
     t.index ["ruleset_id"], name: "index_offmaps_on_ruleset_id"
   end
 
@@ -426,7 +432,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.integer "fuel", default: 0, null: false, comment: "Fuel change"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["resource"], name: "index_resource_bonuses_on_resource", unique: true
+    t.index ["resource", "ruleset_id"], name: "index_resource_bonuses_on_resource_and_ruleset_id", unique: true
     t.index ["ruleset_id"], name: "index_resource_bonuses_on_ruleset_id"
   end
 
@@ -583,6 +589,87 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.index ["uuid"], name: "index_squads_on_uuid", unique: true
   end
 
+  create_table "stats_abilities", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "reference", null: false, comment: "Attrib reference string, a unique identifier"
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "display_name"
+    t.index ["ruleset_id", "reference"], name: "index_stats_abilities_on_ruleset_id_and_reference", unique: true
+    t.index ["ruleset_id"], name: "index_stats_abilities_on_ruleset_id"
+  end
+
+  create_table "stats_doc_markers", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "const_name", null: false
+    t.string "reference", null: false
+    t.string "faction", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["ruleset_id", "reference"], name: "index_stats_doc_markers_on_ruleset_id_and_reference", unique: true
+    t.index ["ruleset_id"], name: "index_stats_doc_markers_on_ruleset_id"
+  end
+
+  create_table "stats_entities", comment: "Table for entity level stats, no const name but expect unique by reference", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "reference", null: false, comment: "Attrib reference string, a unique identifier"
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "display_name"
+    t.index ["ruleset_id", "reference"], name: "index_stats_entities_on_ruleset_id_and_reference", unique: true
+    t.index ["ruleset_id"], name: "index_stats_entities_on_ruleset_id"
+  end
+
+  create_table "stats_slot_items", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "reference", null: false, comment: "Attrib reference string, a unique identifier"
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "display_name"
+    t.index ["ruleset_id", "reference"], name: "index_stats_slot_items_on_ruleset_id_and_reference", unique: true
+    t.index ["ruleset_id"], name: "index_stats_slot_items_on_ruleset_id"
+  end
+
+  create_table "stats_units", comment: "Table for squad level stats, allows duplicate references as multiple const_names may refer to the same reference", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "reference", null: false, comment: "Attrib reference string"
+    t.string "const_name", null: false, comment: "SCAR const string, a unique identifier"
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "display_name"
+    t.index ["ruleset_id", "const_name"], name: "index_stats_units_on_ruleset_id_and_const_name", unique: true
+    t.index ["ruleset_id", "reference"], name: "index_stats_units_on_ruleset_id_and_reference"
+    t.index ["ruleset_id"], name: "index_stats_units_on_ruleset_id"
+  end
+
+  create_table "stats_upgrades", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "reference", null: false, comment: "Attrib reference string, a unique identifier"
+    t.string "const_name", comment: "SCAR const string, optional"
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "display_name"
+    t.index ["ruleset_id", "const_name"], name: "index_stats_upgrades_on_ruleset_id_and_const_name", unique: true, where: "(const_name IS NOT NULL)"
+    t.index ["ruleset_id", "reference", "const_name"], name: "index_stats_upgrades_on_ruleset_id_and_reference_and_const_name", unique: true
+    t.index ["ruleset_id"], name: "index_stats_upgrades_on_ruleset_id"
+  end
+
+  create_table "stats_weapons", comment: "Table for entity level stats, expect unique by reference", force: :cascade do |t|
+    t.bigint "ruleset_id", null: false
+    t.string "reference", null: false, comment: "Attrib reference string, a unique identifier"
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "display_name"
+    t.index ["ruleset_id", "reference"], name: "index_stats_weapons_on_ruleset_id_and_reference", unique: true
+    t.index ["ruleset_id"], name: "index_stats_weapons_on_ruleset_id"
+  end
+
   create_table "transport_allowed_units", comment: "Association of transport units and the units they are allowed to transport", force: :cascade do |t|
     t.bigint "transport_id", null: false
     t.bigint "allowed_unit_id", null: false
@@ -665,7 +752,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "ruleset_id", null: false
-    t.index ["name"], name: "index_unlocks_on_name", unique: true
+    t.index ["name", "ruleset_id"], name: "index_unlocks_on_name_and_ruleset_id", unique: true
     t.index ["ruleset_id"], name: "index_unlocks_on_ruleset_id"
   end
 
@@ -703,6 +790,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
     t.string "type", null: false, comment: "Type of Upgrade"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_upgrades_on_name", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -762,6 +850,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_04_10_011448) do
   add_foreign_key "squad_upgrades", "squads"
   add_foreign_key "squads", "available_units"
   add_foreign_key "squads", "companies"
+  add_foreign_key "stats_abilities", "rulesets"
+  add_foreign_key "stats_doc_markers", "rulesets"
+  add_foreign_key "stats_entities", "rulesets"
+  add_foreign_key "stats_slot_items", "rulesets"
+  add_foreign_key "stats_units", "rulesets"
+  add_foreign_key "stats_upgrades", "rulesets"
+  add_foreign_key "stats_weapons", "rulesets"
   add_foreign_key "transport_allowed_units", "units", column: "allowed_unit_id"
   add_foreign_key "transport_allowed_units", "units", column: "transport_id"
   add_foreign_key "transported_squads", "squads", column: "embarked_squad_id"

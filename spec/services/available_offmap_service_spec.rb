@@ -55,6 +55,42 @@ RSpec.describe AvailableOffmapService do
         expect { subject }.to raise_error "Company #{company.id} has existing AvailableOffmaps"
       end
     end
+
+    context "when there is a previous ruleset" do
+      before do
+        old_ruleset = create :ruleset, is_active: false
+        old_offmap1 = create :offmap, ruleset: old_ruleset, name: offmap1.name
+        old_offmap2 = create :offmap, ruleset: old_ruleset, name: offmap2.name
+        old_offmap3 = create :offmap, ruleset: old_ruleset, name: offmap3.name
+        create :restriction_offmap, ruleset: old_ruleset, restriction: restriction_faction, offmap: old_offmap1, mun: 100, max: 1
+        create :restriction_offmap, ruleset: old_ruleset, restriction: restriction_faction2, offmap: old_offmap2, mun: 120, max: 2
+        create :restriction_offmap, ruleset: old_ruleset, restriction: restriction_doctrine, offmap: old_offmap3, mun: 150, max: 4
+      end
+
+      it "creates the correct number of AvailableOffmaps" do
+        subject
+
+        available_offmaps = company.reload.available_offmaps
+        expect(available_offmaps.size).to eq 2
+        expect(available_offmaps.pluck(:offmap_id)).to match_array [offmap1.id, offmap3.id]
+      end
+
+      it "creates the AvailableOffmap for offmap1" do
+        subject
+        ao = BaseAvailableOffmap.find_by(company: company, offmap: offmap1)
+        expect(ao.mun).to eq 100
+        expect(ao.max).to eq 1
+        expect(ao.available).to eq 1
+      end
+
+      it "creates the AvailableOffmap for offmap3" do
+        subject
+        ao = BaseAvailableOffmap.find_by(company: company, offmap: offmap3)
+        expect(ao.mun).to eq 150
+        expect(ao.max).to eq 4
+        expect(ao.available).to eq 4
+      end
+    end
   end
 
   context "#create_enabled_available_offmaps" do

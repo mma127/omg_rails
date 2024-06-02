@@ -22,16 +22,22 @@
     "axios": "^1",
     "axios-cache-interceptor": "^1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "chart.js": "^4.4.3",
     "date-fns": "^3.2.0",
+    "highcharts": "^11.4.3",
+    "highcharts-react-official": "^3.2.1",
     "lodash": "^4.17.21",
     "luxon": "^3.4.4",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^17.0.2",
     "react-drag-drop-container": "^6.1.1",
     "react-hook-form": "7.21.2",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.1.0",
+    "react-scripts": "^5.0.1",
+    "title-case": "^4.3.1",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12",
     "yup": "^0.32.11"
@@ -41,6 +47,6 @@
     "webpack-dev-server": "^3"
   },
   "engines": {
-    "node": "16.x"
+    "node": "16.14.2"
   }
 }

@@ -22,7 +22,8 @@
 #
 # Indexes
 #
-#  index_offmaps_on_ruleset_id  (ruleset_id)
+#  index_offmaps_on_name_and_ruleset_id  (name,ruleset_id) UNIQUE
+#  index_offmaps_on_ruleset_id           (ruleset_id)
 #
 # Foreign Keys
 #

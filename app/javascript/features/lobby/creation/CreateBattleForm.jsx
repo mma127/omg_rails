@@ -10,6 +10,7 @@ import { ErrorTypography } from "../../../components/ErrorTypography";
 import { selectAllCompanies } from "../../companies/companiesSlice";
 import { doctrineImgMapping } from "../../../constants/doctrines";
 import { CompanySelectTooltip } from "./CompanySelectTooltip";
+import { selectActiveRuleset } from "../../rulesets/rulesetsSlice";
 
 const useStyles = makeStyles(theme => ({
   textInput: {
@@ -66,12 +67,13 @@ const CompanyMenuItem = ({ company }) => {
   )
 }
 
-export const CreateBattleForm = ({ rulesetId, onCreateCallback }) => {
+export const CreateBattleForm = ({ onCreateCallback }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const companies = useSelector(selectAllCompanies)
   const sortedCompanies = companies.sort(nameSort);
   const isPending = useSelector(selectIsPending)
+  const activeRuleset = useSelector(selectActiveRuleset)
 
   const { reset, handleSubmit, setValue, control, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
@@ -82,7 +84,7 @@ export const CreateBattleForm = ({ rulesetId, onCreateCallback }) => {
       name = `${size}v${size}`
     }
     // Submit
-    dispatch(createBattle({ name, size, rulesetId, initialCompanyId }))
+    dispatch(createBattle({ name, size, rulesetId: activeRuleset.id, initialCompanyId }))
     onCreateCallback()
   }
 

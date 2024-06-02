@@ -1,17 +1,11 @@
-import React, { useEffect } from 'react'
-import { Box, Container, Typography, Accordion, AccordionSummary, AccordionDetails, Button } from "@mui/material";
+import React from 'react'
+import { Accordion, AccordionDetails, AccordionSummary, Button } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-import { ActionCableConsumer, ActionCableProvider } from '@thrash-industries/react-actioncable-provider';
 import { CreateBattleForm } from "./CreateBattleForm";
-import { fetchActiveBattles } from "../lobbySlice";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchActiveCompanies } from "../../companies/companiesSlice";
-import { selectIsAuthed, selectPlayer, selectPlayerCurrentBattleId } from "../../player/playerSlice";
+import { useSelector } from "react-redux";
+import { selectIsAuthed, selectPlayerCurrentBattleId } from "../../player/playerSlice";
 
-const rulesetId = 1
-
-export const CreateBattleAccordion = ({rulesetId}) => {
+export const CreateBattleAccordion = ({}) => {
   // Create battle accordion expansion control
   const [isExpanded, setIsExpanded] = React.useState(false);
   const isAuthed = useSelector(selectIsAuthed)
@@ -21,7 +15,6 @@ export const CreateBattleAccordion = ({rulesetId}) => {
 
   const handleAccordionChange = (event, isExpanded) => {
     setIsExpanded(isExpanded)
-    console.log(`Toggled accordion ${isExpanded ? 'open' : 'closed'}`)
   }
 
   const onCreateCallback = () => {
@@ -42,7 +35,7 @@ export const CreateBattleAccordion = ({rulesetId}) => {
         <Button variant="contained" color="secondary" disabled={isExpanded || isDisabled}>Create New Battle</Button>
       </AccordionSummary>
       <AccordionDetails>
-        <CreateBattleForm rulesetId={rulesetId} onCreateCallback={onCreateCallback} />
+        <CreateBattleForm onCreateCallback={onCreateCallback} />
       </AccordionDetails>
     </Accordion>
   )

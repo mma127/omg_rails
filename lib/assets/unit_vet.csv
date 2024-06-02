@@ -1,0 +1,233 @@
+CONSTNAME,Vet1,Vet2,Vet3,Vet4,Vet5
+ALLY.RIFLEMEN,10;10% received accuracy reduction,40;15% received damage reduction,"120;20% accuracy increase, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+ALLY.ENGINEERS,6;10% received accuracy reduction,24;15% received damage reduction,"72;Unit repair 33% faster, 25% received suppression reduction",180;Known Squad,270;Feared Squad
+ALLY.MG,10;10% accuracy increase,40;12.5% range increase,"120;15% increase to burst of fire length, 10% cooldown reduction",300;Known Crew,450;Feared Crew
+ALLY.MORTAR,14;10% received accuracy reduction,56;15% cooldown reduction,"168;30% less scatter, 10% damage increase",420;Known Crew,630;Feared Crew
+ALLY.SNIPER,14;33% detection radius increase,56;+5 LOS,"168;10% received damage reduction, 15% reload time decrease",420;Known Sniper,630;Feared Sniper
+ALLY.AT_GUN,14;10% accuracy increase,56;15% reload reduction,140;20% extra penetration,350;Known Crew,525;Feared Crew
+ALLY.SPOTTER,6;10% less received accuracy,24;+5 LOS,72;20% received damage reduction,180;Known Spotter,270;Feared Spotter (???)
+ALLY.AMBUSH,8;15% received accuracy reduction in cover,"32;15% received damage reduction, longer sticky bomb range","96;20% penetration bonus on first strike, 10% reload reduction",240;Known Squad,360;Feared Squad
+ALLY.RANGERS,18;10% less received accuracy,72;15% accuracy increase,216;15% reload decrease,540;Known Squad,810;Feared Squad
+ALLY.PARATROOPERS,16;10% received accuracy reduction,64;15% cooldown reduction,192;15% reload decrease,480;Known Squad,720;Feared Squad
+ALLY.PARA_AT_GUN,14;10% accuracy increase,56;15% reload reduction,140;20% extra penetration,350;Known Crew,525;Feared Crew
+ALLY.JEEP,6;10% speed/acceleration increase,"24;15% harder to hit while moving, +10% LOS","60;15% increase to speed, 10% received accuracy reduction",150;Known Vehicle,225;Feared Vehicle
+ALLY.GREYHOUND,10;10% received accuracy reduction,40;15% accuracy increase,"100;+5 LoS, 15% reload reduction",250;Known Vehicle,375;Feared Vehicle
+ALLY.HALFTRACK,7;10% speed/acceleration increase,28;15% received accuracy reduction,70;20% received damage reduction,175;Known Vehicle,263;Feared Vehicle
+ALLY.QUAD,10;10% accuracy increase,40;15% cooldown reduction,"100;50% burst length increase, 15% received damage reduction",250;Known Vehicle,375;Feared vehicle
+ALLY.SHERMAN,28;10% speed/acceleration increase,70;15% reload reduction,175;20% received damage reduction,350;Known Tank,525;Feared tank
+ALLY.CROC,27;10% speed/acceleration increase,"68;35% faster turret rotation, 10% received damage reduction",170;20% cooldown reduction,340;Known Tank,510;Feared Tank
+ALLY.CALLIOPE,25;10% speed/acceleration increase,100;15% cooldown reduction,250;20% received damage reduction,625;Known Tank,938;Feared Tank
+ALLY.PERSHING,48;10% speed/acceleration increase,"144;10% accuracy increase, +5 LoS","360;15% reload time reduction, +5 Range",540;Known Tank,810;Feared Tank
+ALLY.TANK_DESTROYER,25;10% reload reduction,63;15% penetration increase,"158;15% speed increase, +5 LoS",316;Known Tank,474;Feared Tank
+ALLY.EASY_EIGHTY,30;10% speed/acceleration increase,75;15% penetration increase,188;20% received damage reduction,376;Known Tank,564;Feared Tank
+ALLY.HOWITZER_SHERMAN,30;10% speed/acceleration increase,75;15% cooldown reduction,188;20% received damage reduction,376;Known Tank,564;Feared Tank
+ALLY.ASSAULT_ENGINEERS,12;10% accuracy increase,48;15% cooldown reduction,"144;20% accuracy increase, 25% received suppression reduction",360;Known Squad,540;Feared Squad
+ALLY.HOWITZER,20;10% scatter reduction,80;15% cooldown reduction,200;20% reload speed increase,500;Known Crew,750;Feared Crew
+ALLY.JUMBO,30;10% received damage reduction,"75;10% reload speed reduction, 35% faster turret rotation",188;20% accuracy increase,376;Known Tank,564;Feared tank
+ALLY.PARA_PATHFINDERS,10;10% received accuracy reduction,40;15% cooldown reduction,"120;+5 LoS, 20% received damage reduction",300;Known Squad,450;Feared Squad
+ALLY.PARA_SNIPER,14;Stealth Detection Radius + 33%,56;+5 LOS,"168;10% received damage reduction, 15% reload time decrease",420;Known Sniper,630;Feared Sniper
+ALLY.PARA_ASSAULT,18;10% received accuracy reduction,72;15% accuracy increase,"216;10% reload decrease, 10% cooldown reduction",540;Known Squad,810;Feared Squad
+ALLY.SUPER_PERSHING,70;VET.Placeholder,210;VET.Placeholder,588;VET.Placeholder,1176;VET.Placeholder,1764;VET.Placeholder
+AXIS.PIONEER,6;10% received accuracy reduction,24;15% received damage reduction,"72;Unit repair 33% faster, 20% cooldown reduction",180;Known unit,270;Feared Unit
+AXIS.VOLKS,10;10% received accuracy reduction,40;15% accuracy increase,"120;10% received damage reduction, 15% cooldown reduction",300;Known unit,450;Feared unit
+AXIS.GRENS,12;10% accuracy increase,48;15% received accuracy reduction,"144;15% received damage reduction,  25% received suppression reduction",360;Known Unit,540;Feared Unit
+AXIS.HMG,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% reload time reduction, 10% cooldown reduction",300;Known Team,450;Feared Team
+AXIS.MORTAR,15;10% received accuracy reduction,60;15% received damage reduction,"180;15% cooldown reduction, 10% scatter reduction",450;Known Team,675;Feared Team
+AXIS.SNIPER,14;33% detection radius increase,56;+5 LOS,"168;10% received damage reduction, 15% reload time decrease",420;Known Sniper,630;Feared Sniper
+AXIS.KCH,18;10% accuracy increase,72;15% received accuracy reduction,"216;10% reload reduction, 15% cooldown reduction",540;Known Unit,810;Feared Unit
+AXIS.OFFICER,15;10% received accuracy reduction,56;15% received damage reduction,168;+10 range on all abilities,420;Known Officer,630;Feared Officer
+AXIS.PAK,15;10% accuracy increase,60;15% reload reduction,"150;15% extra penetration, 10% received damage reduction",375;Known Crew,563;Feared Crew
+AXIS.MOTORCYCLE,6;10% speed/acceleration increase,"24;15% received accuracy reduction on the move, 10% LOS increase","60;15% increase to speed, 10% received accuracy reduction",150;Known Bike,225;Feared Bike
+AXIS.NEBEL,20;10% scatter reduction,80;15% cooldown reduction,200;20% reload decrease,500;Known Team,750;Feared Team
+AXIS.FLAK88,20;10% accuracy increase,80;15% reload reduction,"200;15% Faster Turn speed, 15% Less Received damage",500;Known Crew,750;Feared Crew
+AXIS.PUMA,12;10% accuracy increase,48;15% reload time reduction,120;20% received damage reduction,300;Known Vehicle,450;Feared Vehicle
+AXIS.AXIS_HT,7;10% speed/acceleration increase,28;15% received accuracy reduction,70;20% received damage reduction,175;Known Vehicle,263;Feared Vehicle
+AXIS.STUKA,25;10% less received accuracy,100;15% cooldown reduction,250;20% less received damage,625;Known Vehicle,938;Feared Vehicle
+AXIS.FLAMMEN,10;10% speed/acceleration increase,40;15% received damage reduction,100;20% cooldown reduction,250;Known Vehicle,375;Feared Vehicle
+AXIS.OSTWIND,27;10% accuracy increase,68;15% cooldown reduction,"170;50% burst length increase, 15% received damage reduction",340;Known Tank,510;Feared Tank
+AXIS.STUH,25;10% less received damage,63;15% less received penetration,"158;15% reload reduction, 25% suppression increase",316;Known Tank,474;Feared Tank
+AXIS.STUG,23;10% less received damage,58;15% less received penetration,"145;15% reload reduction, 15% penetration increase",290;Known Tank,435;Feared Tank
+AXIS.P4,28;10% speed/acceleration increase,70;15% reload reduction,"175;10% received damage reduction, 15% penetration increase",350;Known Tank,525;Feared Tank
+AXIS.PANTHER,48;10% speed/acceleration increase,144;15% accuracy incrase,"360;10% received damage reduction, 15% reload reduction",540;Known Tank,810;Feared Tank
+AXIS.TIGER,56;10% speed/acceleration increase,"168;35% turret rotation increase, 10% reload reduction","420;+5 Range, 10% received damage reduction",630;Known Tank,945;Feared Tank
+AXIS.KINGTIGER,64;10% accuracy increase,"192;10% speed/acceleration increase, 15% turret rotation speed increase","480;20% faster turret rotation, 20% reload reduction",720;Known Tank,1080;Feared Tank
+CMW.TOMMIES,11;10% received accuracy reduction,44;12% accuracy increase (18% without Lt),"132;15% received damage reduction,  25% received suppression reduction",330;Known Squad,495;Feared Squad
+CMW.RECON_TOMMIES,10;10% received accuracy reduction,"40;10% received damage reduction, +5 LoS","120;+5 detection radius,25% received suppression reduction",300;Known Squad,450;Feared Squad
+CMW.SAPPERS,10;10% received accuracy reduction,40;15% reload reduction,"120;Unit repair 33% faster, 15% received damage reduction",300;Known Squad,450;Feared Squad
+CMW.LT,"14;+20hp, +5% accuracy to aura","56;+25% burst duration, -20% cooldown, +10% accuracy (to LT), -10% reload to aura",168;health regen (46% WM officer rate),420;Known Officer,630;Feared Officer
+CMW.CAPTAIN,"14;+15 health to Cpt, unlocks sprint","56;+10 los, +15% maximum infantry health in Aura","168;25% Reduction to victor target cooldown, 1.92 hp/s health regen in Aura, Health regeneration (46% of WM Officer)",420;Known Officer,630;Feared Officer
+CMW.COMMANDOS,16;10% received accuracy reduction,64;15% accuracy increase,"192;15% reload decrease, 10% received damage reduction",480;Known Squad,720;Feared Squad
+CMW.MORTAR,14;10% received accuracy reduction,56;15% cooldown reduction,"168;30% less scatter, 10% damage increase",420;Known Team,630;Feared Team
+CMW.SEVENTEENPOUNDER,14;10% accuracy increase,56;15% reload time reduction,"140;heroic armour on crewmen, 10% damage increase",350;Known Crew,525;Feared Crew
+CMW.COMMANDO_HMG,12;10% accuracy increase,48;12.5% increase to range,"144;25% reduction on smoke cooldown, 20% increase to burst of fire length, 10% cooldown reduction",360;Known Crew,540;Feared Crew
+CMW.COMMANDO_MORTAR,15;10% received accuracy reduction,60;15% cooldown reduction,"180;25% reduction on smoke cooldown, 30% less scatter, 10% damage increase",450;Known Crew,675;Feared Crew
+CMW.PIAT_COMMANDO,10;10% received accuracy reduction,40;15% accuracy increase,"120;25% reduction on smoke cooldown, 15% reload decrease, 10% received damage reduction",300;Known Squad,450;Feared Crew
+CMW.UNIVERAL_CARRIER,6;10% speed/acceleration increase,24;15% received accuracy reduction,60;20% received damage reduction,150;Known Vehicle,225;Feared Vehicle
+CMW.BRENGUN,9;10% received penetration reduction,36;20% suppression increase,90;20% received damage reduction,225;Known Vehicle,338;Feared Vehicle
+CMW.CROMWELL,27;10% increased accuracy,68;15% increased accuracy,170;20% less received damage,340;Known Tank,510;Feared Tank
+CMW.COMMANDTANK,"23;+5 LoS, +5 LoS in Aura","58;10 range larger Command aura, 10% reload reduction on Aura","145;20% received damage reduction, +2.5 range in Aura",290;Known Tank,435;Feared Tank
+CMW.SHERMAN_FIREFLY,36;10% speed/acceleration increase,90;15% accuracy increase,"225;10% reload time decrease, 15% received damage reduction",450;Known Tank,675;Feared Tank
+CMW.STUART,10;10% received accuracy reduction,40;15% accuracy increase,"100;+5 LoS, 20% reload reduction",250;Known Tank,375;Feared Tank
+CMW.TETRARCH,12;10% received accuracy reduction,48;15% reload reduction,"120;15% damage increase, 10% speed/acceleration increase",300;Known Tank,450;Feared Tank
+CMW.CHURCHILL,23;10% received penetration reduction,58;20% accuracy increase,"145;25% cooldown reduction on tankshock,10% damage increase, 15% received damage reduction",290;Known Tank,435;Feared Tank
+CMW.AVRE,25;10% received penetration reduction,"63;35% turret rotation increase, 15% cooldown reduction","158;+3.5 range, 15% received damage reduction",316;Known Tank,474;Feared Tank
+CMW.CROC,40;10% received penetration reduction,"120;20% accuracy increase, 10% cooldown reduction (flamethrower)","300;25% cooldown reduction on tankshock,10% cooldown reduction (flamethrower), 15% received damage reduction",450;Known Tank,675;Feared Tank
+CMW.PRIEST,25;10% accuracy increase,100;15% cooldown reduction,250;20% less received damage,625;Known Vehicle,938;Feared Vehicle
+CMW.TWENTYFIVEPOUNDER,20;10% scatter reduction,80;15% cooldown reduction,200;20% reload speed increase,500;Known Crew,750;Feared Crew
+CMW.BOFORS,15;10% accuracy increase,60;25% burst duration increase,150;25% cooldown reduction,375;Known Crew,563;Feared Crew
+PE.PANZER_GRENS,"10;10% received accuracy reduction, -10s Sprint cooldown","40;15% accuracy increase, -10s Sprint cooldown","120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+PE.ASSAULT_GRENS,"13;10% received accuracy reduction, -10s Sprint cooldown","52;15% accuracy increase, -10s Sprint cooldown","156;15% received damage reduction, 15% cooldown reduction",390;Known Squad,585;Feared Squad
+PE.TANK_BUSTERS,"12;10% received accuracy reduction, -10s Sprint cooldown","48;15% accuracy increase, -10s Sprint cooldown","144;15% reload reduction, 15% received damage reduction",360;Known Squad,540;Feared Squad
+PE.LUFTWAFFE,"10;10% faster repair with advanced repair upgrade, 10% received accuracy reduction","40;10% faster repair (additive), 15% damage reduction",120;10% faster repair (additive),300;Known Squad,450;Feared Squad
+PE.FALLSHIRMJAGERS,15;10% received accuracy reduction,60;15% accuracy increase,"180;15% received damage reduction, 10% cooldown reduction",450;Known Squad,675;Feared Squad
+PE.KETTENRAD,4;10% speed/acceleration increase,"16;+5 LoS, 15% received accuracy reduction","40;20% speed increase, +5 LoS",100;Known vehicle,150;Feared Vehicle
+PE.SCOUTCAR,8;10% suppression increase,"32;15% accuracy increase, +5 LoS",80;20% received damage reduction,200;Known Vehicle,300;Feared Vehicle
+PE.ARMOREDCAR,10;10% received penetration reduction,40;15% cooldown reduction,"100;15% received damage reduction, 15% accuracy increase",250;Known Vehicle,375;Feared Vehicle
+PE.MUNITIONS_HT,8;10% speed/acceleration increase,"32;radius +50%, 15% received accuracy reduction",80;x2 Healing rate,200;Known vehicle,300;Feared vehicle
+PE.VAMPIRE,"8;+5 LoS, 10% speed/acceleration increase","32;+ 5 LoS, 15% received damage reduction","80;+5 LoS, +10 detection",200;Known Vehicle,300;Turns into a bat and flies around searching for victims
+PE.INFANTRY_HT,8;10% speed/acceleration increase,32;20% suppression increase,80;20% received damage reduction,200;Known Vehicle,300;Feared Vehicle
+PE.MORTAR_HT,16;10% speed/acceleration increase,64;15% cooldown reduction,"160;15% received damage reduction, 15% received penetration reduction",400;Known Vehicle,600;Feared Vehicle
+PE.AT_HT,"11;5% ability cooldown reduction, 10% speed/acceleration increase","44;5% ability cooldown reduction,15% accuracy increase","110;15% ability cooldown reduction, 20% received damage reduction",275;Known Vehicle,413;Feared Vehicle
+PE.FLAK,20;10% accuracy increase,80;15% reload reduction,"200;15% Faster Turn speed, 15% Less Received damage",500;Known Crew,750;Feared Crew
+PE.MARDER,34;10% speed/acceleration increase,"85;lockdown unlock 50% reduction, 15% reload reduction","213;15% received damage reduction, 15% penetration increase",426;Known Tank,639;Feared Tank
+PE.P4,28;10% speed/acceleration increase,"70;lockdown unlock 50% reduction, 15% accuracy increase","175;15% received penetration reduction, 10% received damage reduction",350;Known Tank,525;Feared Tank
+PE.BERGETIGER,8; 10% speed/acceleration increase,"32;10% faster repair, 10% received penetration reduction",80; 15% received damage reduction,200;Known Tank,300;Feared Tank
+PE.WIRBELWIND,27;10% accuracy increase,68;15% cooldown reduction,"170;50% burst length increase, 15% received damage reduction",340;Known Tank,510;Feared Tank
+PE.HUMMEL,25;10% scatter reduction,100;15% cooldown reduction on all barrage abilities,250;20% received damage reduction,625;Known Vehicle,938;Feared Vehicle
+PE.HETZER,26;10% received penetration reduction,65;20% reload reduction,"163;15% received damage reduction, 15% penetration increase",326;Known Tank,489;Feared Tank
+PE.JAGDPANTHER,72;10% speed/acceleration increase,216;15% accuracy increase,"540;15% reload time reduction, +5 LoS",810;Known Tank,1215;Feared Tank
+PE.PANTHER,48;10% speed/acceleration increase,144;15% accuracy increase,"360;10% received damage reduction, 15% reload time decrease",540;Known Tank,810;Feared Tank
+AXIS.STORM_TROOPERS,16;10% received accuracy reduction,64;15% accuracy increase,"192;15% reload decrease, 10% cooldown reduction",480;Known Squad,720;Feared Squad
+AXIS.COMMAND_BUNKER,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder
+AXIS.DEMOLITION_SPECIALISTS,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder
+,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder
+,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder
+,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder,0;VET.Placeholder
+CMW.TWOMAN_HMG,10;10% suppression increase,40;12.5% increase to range,"120;20% increase to burst of fire length, 10% cooldown reduction",300;Known Crew,450;Feared Crew
+PE.FLAKVIERLING,15;10% accuracy increase,60;25% burst duration increase,150;25% cooldown reduction,375;Known Crew,563;Feared Crew
+CMW.INF_GLIDER,9999;VET.Placeholder,9999;VET.Placeholder,9999;VET.Placeholder,9999;VET.Placeholder,9999;VET.Placeholder
+CMW.TET_GLIDER,9999;VET.Placeholder,9999;VET.Placeholder,9999;VET.Placeholder,9999;VET.Placeholder,9999;VET.Placeholder
+CMW.STAGHOUND,14;10% received accuracy reduction,56;15% accuracy increase,140;20% received damage reduction,325;Known vehicle,488;Feared vehicle
+CMW.KANGAROO,15;10% speed/acceleration increase,38;15% received accuracy reduction,95;20% received damage reduction,190;Known tank,285;Feared tank
+ALLY.T17,10;10% received accuracy reduction,40;15% accuracy increase,"100;+5 LoS, 15% received damage reduction",250;Known Vehicle,375;Feared Vehicle
+ALLY.M18,25;+5 LoS,63;15% more acceleration,158;20% penetration increase,316;Known Tank,474;Feared Tank
+AXIS.SCHWIMMWAGEN,6;10% speed/acceleration increase,"24;15% received accuracy reduction, 10% LOS increase",60;15% increase to speed 10% received accuracy reduction,150;Known vehicle,225;Feared vehicle
+AXIS.GESCHUTZWAGEN,34;10% speed/acceleration increase,"85;+5 LOS, 10% received damage reduction","213;15% accuracy increase, 10% penetration increase",426;Known tank,639;Feared tank
+PE.SCHWIMMWAGEN,4;10% speed/acceleration increase,"16;+5 LoS, 15% received accuracy reduction","40;20% speed increase, + 5 LoS",100;Known vehicle,150;Feared vehicle
+PE.HOTCHKISS,12;10% received accuracy reduction,"48;15% accuracy increase, 15% cooldown reduction",120;20% received damage reduction,300;Known vehicle,450;Feared vehicle
+CMW.TOMMIES_CANUK,11;10% received accuracy reduction,44;12% accuracy increase (18% without Lt),"132;15% received damage reduction,  25% received suppression reduction",330;Known Squad,495;Feared Squad
+AXIS.SABOTEURS,6;10% received accuracy reduction,24;15% cooldown reduction on abilities,"72;20% received damage reduction, 15% range increase on all abilities",180;Known unit,270;Feared unit
+AXIS.STURMPIONEERS,12;10% Less Received Accuracy,48;15% More Accuracy,"144;15% received damage reduction, 10% increased burst duration",360;Known unit,540;Feared unit
+AXIS.STUG_ACE,29;Rapid Fire Ability unlocked,73;White Phosphorous Stun Shot Ability unlocked,183;Ambush Cloak Ability unlocked,366;Known Tank,549;Feared Tank
+AXIS.PANTHER_ACE,60;Flank Speed Ability unlocked,180;Long Shot Ability unlocked,450;Lockdown Ability unlocked,675;Known Tank,1013;Feared Tank
+AXIS.P4_ACE,35;Suppressive Fire Ability unlocked,88;Lockdown Ability unlocked,220;Blitz Ability unlocked,440;Known Tank,660;Feared Tank
+AXIS.MEDIC,6;10% reduced received accuracy,24;Heroic Armor and Criticals,72;25% increase to ability heal rate,180;Known unit,270;Feared unit (wut?)
+AXIS.TIGER_ACE,70;Inspiring Aura Ability unlocked,210;Direct Fire Ability unlocked,525;Armour Assault Ability unlocked,788;Known Tank,1182;Feared Tank
+AXIS.TERROR_HOWI,20;10% scatter reduction,80;15% cooldown reduction,200;20% reload speed increase,500;Known Crew,750;Feared Crew
+PE.KETTENRAD_3POP,4;10% speed/acceleration increase,"16;+5 LoS, 15% received accuracy reduction","40;20% speed increase, +5 LoS",100;Known vehicle,150;Feared Vehicle
+PE.KETTENRAD,4;10% speed/acceleration increase,"16;+5 LoS, 15% received accuracy reduction","40;20% speed increase, +5 LoS",100;Known vehicle,150;Feared Vehicle
+PE.SCHWIMMWAGEN,4;10% speed/acceleration increase,"16;+5 LoS, 15% received accuracy reduction","40;20% speed increase, + 5 LoS",100;Known vehicle,150;Feared vehicle
+PE.SCHWIMMWAGEN,4;10% speed/acceleration increase,"16;+5 LoS, 15% received accuracy reduction","40;20% speed increase, + 5 LoS",100;Known vehicle,150;Feared vehicle
+PE.NASHORN,30;10% Increase to Speed and Acceleration,90;15% Increase to Accuracy,"225;15% Received accuracy reduction, 15% Faster Reload",338;Known Tank,507;Feared Tank
+PE.PANZER_ATG,14;10% reload reduction,56;15% accuracy increase,"360;10% received damage reduction, 15% reload time decrease",350;Known Crew,525;Feared Crew
+CMW.COMET,36;10% speed/acceleration increase,90;15% reload decrease,225;20% received damage reduction,450;Known Tank,675;Feared Tank
+CMW.SSF,"16;15% cooldown reduction, 10% moving accuracy increase","64;15% increased accuracy, -15% received accuracy in cover",192;-20% received damage,480;Known Squad,720;Feared Squad
+CMW.TWO_POUNDER,14;10% accuracy increase,56;15% reload reduction,140;20% extra penetration,350;Known Crew,525;Feared Crew
+CMW.STUART_CROC,10;10% received accuracy reduction,40;15% cooldown reduction,"100;+5 LoS, 35% turret rotation increase",250;Known Tank,375;Feared Tank
+CMW.HEAVY_CHURCHILL,999;wip,999;wip,999;wip,999;wip,999;wip
+PE.OST_GREN,15;10% received accuracy reduction,60;15% accuracy increase,"180;15% received damage reduction, 10% cooldown reduction",450;Known Squad,675;Feared Squad
+PE.LUFT_LMG,10;10% received accuracy reduction,40;Elite Criticals,"120;15% reload time reduction, 15% cooldown reduction",300;Known Squad,450;Feared Squad
+PE.STURM,999;WIP,999;WIP,999;WIP,999;WIP,999;WIP
+PE.FSJ_SCOUT,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+PE.STUP,"25;10% Less Recieved Damage, +10% Acceleration/Deceleration","63;15% Reduced Cooldown on ability, +10% Accuracy","158;20% Increase to Acceleration, 15% Reduced Cooldown, +2 main gun range",316;Known Tank,474;Feared Tank
+CMW.CHURCHILL_PRINCE,999;WIP,999;WIP,999;WIP,999;WIP,999;WIP
+AXIS.OFFICER_BLITZ,15;10% received accuracy reduction,56;15% received damage reduction,168;+10 range on all abilities,420;Known Officer,630;Feared Officer
+AXIS.OFFICER_TERROR,15;10% received accuracy reduction,56;15% received damage reduction,168;+10 range on all abilities,420;Known Officer,630;Feared Officer
+AXIS.LEIG,999;derp,999;derp,999;derp,9999;derp,9999;derp
+AXIS.HT_STUMMEL,7;10% speed/acceleration increase,28;15% reduced received accuracy,70;20% reduced received damage,9999;herp,9999;herp
+PE.LEIG_LUFT,999;derp,999;derp,999;derp,9999;hrep,9999;herp
+CMW.TWENTYFIVEPOUNDER_SUPER,999;derp,999;derp,999;derp,999;derp,999;derp
+AXIS.PENGU_PAK,15;10% accuracy increase,60;15% reload reduction,"150;15% extra penetration, 10% received damage reduction",375;Known Crew,563;Feared Crew
+CMW.RCA_UNIVERAL_CARRIER,6;10% speed/acceleration increase,24;15% received accuracy reduction,60;20% received damage reduction,150;Known Vehicle,225;Feared Vehicle
+CMW.RCA_BRENGUN,9;10% received penetration reduction,36;20% suppression increase,90;20% received damage reduction,225;Known Vehicle,338;Feared Vehicle
+ALLY.MECH_INFANTRY,12;10% Received Accuracy reduction,48;15% increase to accuracy,"144;15% reload time reduction, 15% cooldown reduction",360;Known Squad,540;Feared Squad
+CMW.COMBAT_ENGINEERS,18;10% received accuracy reduction,72;15% accuracy increase,216;20% reload time reduction,540;Known Squad,810;Feared Squad
+ALLY.JACKSON,48;10% speed and acceleration increase,144;15% reload time reduction,"360;10% received damage reduction, 15% penetration increase",540;Known Squad,810;Feared Squad
+CMW.SAS_JEEP,6;10% speed/acceleration increase		,24;15% received accuracy reduction,60;20% received damage reduction,999;derp,999;derp
+CMW.ACHILLES,30;+10% speed &amp; acceleration,75;+15% penetration,"200;-15% received accuracy, -10% reload",999;derp,999;derp
+PE.FLAME_HOTCH,12;10% received accuracy reduction,"48;15% accuracy increase, 15% cooldown reduction",120;20% received damage reduction,300;Known vehicle,450;Feared vehicle
+AXIS.TERROR_MORTAR,15;10% received accuracy reduction,60;15% received damage reduction,"180;15% cooldown reduction, 10% scatter reduction",450;Known Team,675;Feared Team
+ALLY.CHAFFEE,10;10% received accuracy reduction,40;15% accuracy increase,"100;+5 LoS, 15% reload reduction",250;Known Vehicle,375;Feared Vehicle
+ALLY.US_OFFICER,15;10% received accuracy reduction,56;15% received damage reduction,168;+10 range on all abilities,300;Known Squad,450;Feared Squad
+CMW.CHURCHILL_CCT,"23;+5 LoS, +5 LoS in Aura","58;10 range larger Command aura, 10% reload reduction on Aura","145;20% received damage reduction, +2.5 range in Aura",290;Known Tank,435;Feared Tank
+CMW.STUART_RECON,10;10% received accuracy reduction,40;15% accuracy increase,"100;+5 LoS, 20% reload reduction",250;Known Tank,375;Feared Tank
+CMW.POLES,11;10% received accuracy reduction,44;15% accuracy increase,"132;15% received damage reduction,  25% received suppression reduction",330;Known Squad,495;Feared Squad
+AXIS.GRENS,10;10% received accuracy reduction,40;15% accuracy increase,"120;10% received damage reduction, 15% cooldown reduction",300;Known unit,450;Feared unit
+AXIS.FLAMETRUPP,6;10% received accuracy reduction,24;15% received damage reduction,"72;Unit repair 33% faster, 20% cooldown reduction",180;Known unit,270;Feared Unit
+PE.FSJ_AT,"15;10% received accuracy reduction, 5% more moving accuracy","60;15% accuracy increase, 10% more moving accuracy(cumulative)","180;15% received damage reduction, 25% received suppression reduction, 15% more moving accuracy",450;Known Squad,675;Feared Squad
+PE.STUG_ACE,"29;10% less received damage, Rapid Fire Ability unlocked","73;15% less received penetration, White Phosphorous Stun Shot Ability unlocked","183;15% reload reduction, 15% penetration increase,Ambush Cloak Ability unlocked",366;Known Tank,549;Feared Tank
+AXIS.OFFMAP_PLACEHOLDER,999;derp,999;derp,999;derp,9999;herp,9999;herp
+ALLY.PARA_MORTAR,14;10% less received accuracy,56;50% cool down reduction,"168;30% less Scatter, 10% more Damage",420;Known Sniper,630;Feared Sniper
+ALLY.PARA_MG,10;10% increased accuracy,40;+5 Range,"120;20% increased burst duration, 10% cooldown reduction",420;Known Sniper,630;Feared Sniper
+CMW.CRUSADER,999;WIP,999;WIP,999;WIP,999;WIP,999;WIP
+CMW.SAPPERS_EXPERT,10;10% received accuracy reduction,40;15% reload reduction,"120;Unit repair 33% faster, 15% received damage reduction",300;Known Squad,450;Feared Squad
+CMW.COMMANDO_LT,"14;10% reload reduction, 10% cooldown reduction on Aura","56;15% received accuracy reduction, 2.5% damage increase on Aura","168;health regen (46% WM officer rate), 10% accuracy increase on Aura",420;Known Officer,630;Feared Officer
+SOV.CONSCRIPTS,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+SOV.STRELKY,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+SOV.GUARDS,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+SOV.HMG,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% reload time reduction, 10% cooldown reduction",300;Known Team,450;Feared Team
+SOV.MORTAR_LITE,14;10% received accuracy reduction,56;15% cooldown reduction,"168;30% less scatter, 10% damage increase",420;Known Crew,630;Feared Crew
+SOV.MORTAR_HEAVY,14;10% received accuracy reduction,56;15% cooldown reduction,"168;30% less scatter, 10% damage increase",420;Known Crew,630;Feared Crew
+SOV.SNIPER,14;33% detection radius increase,56;+5 LOS,"168;10% received damage reduction, 15% reload time decrease",420;Known Sniper,630;Feared Sniper
+SOV.COMMAND,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+SOV.NAVAL_INF,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+SOV.OBSERVER,14;33% detection radius increase,56;+5 LOS,"168;10% received damage reduction, 15% reload time decrease",420;Known Sniper,630;Feared Sniper
+SOV.SAPPERS,6;10% received accuracy reduction,24;15% received damage reduction,"72;Unit repair 33% faster, 25% received suppression reduction",180;Known Squad,270;Feared Squad
+SOV.BT7,10;10% received accuracy reduction,40;15% accuracy increase,"100;+5 LoS, 20% reload reduction",250;Known Tank,375;Feared Tank
+SOV.KATYUSHA,25;10% less received accuracy,100;15% cooldown reduction,250;20% less received damage,625;Known Vehicle,938;Feared Vehicle
+SOV.M3A1_SCOUTCAR,8;10% suppression increase,"32;15% accuracy increase, +5 LoS",80;20% received damage reduction,200;Known Vehicle,300;Feared Vehicle
+SOV.AT_GUN_LITE,14;10% accuracy increase,56;15% reload reduction,140;20% extra penetration,350;Known Crew,525;Feared Crew
+SOV.AT_GUN_HEAVY,14;10% accuracy increase,56;15% reload reduction,140;20% extra penetration,350;Known Crew,525;Feared Crew
+SOV.T60,10;10% received accuracy reduction,40;15% accuracy increase,"100;+5 LoS, 20% reload reduction",250;Known Tank,375;Feared Tank
+SOV.SU76,28;10% speed/acceleration increase,70;15% reload reduction,175;20% received damage reduction,350;Known Tank,525;Feared tank
+SOV.SU85,28;10% speed/acceleration increase,70;15% reload reduction,175;20% received damage reduction,350;Known Tank,525;Feared tank
+SOV.SU122,30;10% Increase to Speed and Acceleration,90;15% Increase to Accuracy,"225;15% Received accuracy reduction, 15% Faster Reload",338;Known Tank,507;Feared Tank
+SOV.T34,28;10% speed/acceleration increase,70;15% reload reduction,175;20% received damage reduction,350;Known Tank,525;Feared tank
+SOV.KV1,28;10% speed/acceleration increase,70;15% reload reduction,175;20% received damage reduction,350;Known Tank,525;Feared tank
+SOV.KV2,28;10% speed/acceleration increase,70;15% reload reduction,175;20% received damage reduction,350;Known Tank,525;Feared tank
+SOV.IS2,48;10% speed/acceleration increase,144;15% accuracy incrase,"360;10% received damage reduction, 15% reload reduction",540;Known Tank,810;Feared Tank
+SOV.ISU152,30;10% Increase to Speed and Acceleration,90;15% Increase to Accuracy,"225;15% Received accuracy reduction, 15% Faster Reload",338;Known Tank,507;Feared Tank
+SOV.MEDIC_TRUCK,8;10% speed/acceleration increase,"32;radius +50%, 15% received accuracy reduction",80;x2 Healing rate,200;Known vehicle,300;Feared vehicle
+SOV.HOWITZER_SOV,20;10% scatter reduction,80;15% cooldown reduction,200;20% reload speed increase,500;Known Crew,750;Feared Crew
+OH.LANDSER,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+OH.HMG_MG34,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% reload time reduction, 10% cooldown reduction",300;Known Team,450;Feared Team
+OH.SNIPER,14;33% detection radius increase,56;+5 LOS,"168;10% received damage reduction, 15% reload time decrease",420;Known Sniper,630;Feared Sniper
+OH.PANZERFUSILIERS,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+OH.HONVED,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+OH.STURMPIONEERS,6;10% received accuracy reduction,24;15% received damage reduction,"72;Unit repair 33% faster, 25% received suppression reduction",180;Known Squad,270;Feared Squad
+OH.BRANDENBURGER,"16;15% cooldown reduction, 10% moving accuracy increase","64;15% increased accuracy, -15% received accuracy in cover",192;-20% received damage,480;Known Squad,720;Feared Squad
+OH.KUBELWAGEN,6;10% speed/acceleration increase,"24;15% received accuracy reduction on the move, 10% LOS increase","60;15% increase to speed, 10% received accuracy reduction",150;Known Bike,225;Feared Bike
+OH.MORTAR_GUN_LITE,14;10% received accuracy reduction,56;15% cooldown reduction,"168;30% less scatter, 10% damage increase",420;Known Crew,630;Feared Crew
+OH.MORTAR_GUN_HEAVY,14;10% received accuracy reduction,56;15% cooldown reduction,"168;30% less scatter, 10% damage increase",420;Known Crew,630;Feared Crew
+OH.AT_GUN_LITE,14;10% accuracy increase,56;15% reload reduction,140;20% extra penetration,350;Known Crew,525;Feared Crew
+OH.AT_GUN_HEAVY,14;10% accuracy increase,56;15% reload reduction,140;20% extra penetration,350;Known Crew,525;Feared Crew
+OH.PANZERWERFER,25;10% less received accuracy,100;15% cooldown reduction,250;20% less received damage,625;Known Vehicle,938;Feared Vehicle
+OH.HALFTRACK,7;10% speed/acceleration increase,28;15% received accuracy reduction,70;20% received damage reduction,175;Known Vehicle,263;Feared Vehicle
+OH.ELEFANT,30;10% Increase to Speed and Acceleration,90;15% Increase to Accuracy,"225;15% Received accuracy reduction, 15% Faster Reload",338;Known Tank,507;Feared Tank
+OH.LUCH_PANZERII,8;10% suppression increase,"32;15% accuracy increase, +5 LoS",80;20% received damage reduction,200;Known Vehicle,300;Feared Vehicle
+OH.PANZER_III,28;10% speed/acceleration increase,70;15% reload reduction,175;20% received damage reduction,350;Known Tank,525;Feared tank
+OH.PANZER_IV,28;10% speed/acceleration increase,70;15% reload reduction,175;20% received damage reduction,350;Known Tank,525;Feared tank
+OH.PANTHER,48;10% speed/acceleration increase,144;15% accuracy incrase,"360;10% received damage reduction, 15% reload reduction",540;Known Tank,810;Feared Tank
+OH.STUG_III,23;10% less received damage,58;15% less received penetration,"145;15% reload reduction, 15% penetration increase",290;Known Tank,435;Feared Tank
+OH.ZRINYI_II,8;10% suppression increase,"32;15% accuracy increase, +5 LoS",80;20% received damage reduction,200;Known Vehicle,300;Feared Vehicle
+OH.TIGER,56;10% speed/acceleration increase,"168;35% turret rotation increase, 10% reload reduction","420;+5 Range, 10% received damage reduction",630;Known Tank,945;Feared Tank
+PE.OST_TRUPPEN,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",350;Known Tank,525;Feared Tank
+OH.HOWITZER_OST,20;10% scatter reduction,80;15% cooldown reduction,200;20% reload speed increase,500;Known Crew,750;Feared Crew
+OH.KRANKENWAGEN,8;10% speed/acceleration increase,"32;radius +50%, 15% received accuracy reduction",80;x2 Healing rate,200;Known vehicle,300;Feared vehicle
+SOV.PARTISANS,10;10% received accuracy reduction,40;15% accuracy increase,"120;15% received damage reduction, 25% received suppression reduction",300;Known Squad,450;Feared Squad
+SOV.85_MM_52k_AA_GUN,20;10% accuracy increase,80;15% reload reduction,"200;15% Faster Turn speed, 15% Less Received damage",500;Known Crew,750;Feared Crew
+SOV.BA-64D,8;10% suppression increase,"32;15% accuracy increase, +5 LoS",80;20% received damage reduction,200;Known Vehicle,300;Feared Vehicle
+PE.HMG_TEAM,10;10% received accuracy reduction,40;Elite Criticals,"120;15% reload time reduction, 15% cooldown reduction",350;Known Tank,525;Feared Tank
+PE.PAK40_LUFT,14;10% reload reduction,56;15% accuracy increase,"360;10% received damage reduction, 15% reload time decrease",180;Known Squad,270;Feared Squad
+PE.PAK40_SCORCH,14;10% reload reduction,56;15% accuracy increase,"360;10% received damage reduction, 15% reload time decrease",180;Known Squad,270;Feared Squad
+PE.PAK40_TANKHUNT,14;10% reload reduction,56;15% accuracy increase,"360;10% received damage reduction, 15% reload time decrease",180;Known Squad,270;Feared Squad

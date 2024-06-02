@@ -20,8 +20,10 @@ module OMG
         desc 'get unlocks for the doctrine'
         params do
           requires :id, type: Integer, desc: "Doctrine ID"
+          requires :rulesetId, type: Integer, desc: "Ruleset ID"
         end
         get 'unlocks' do
+          declared_params = declared(params)
           present DoctrineUnlock
                     .includes(restriction:
                                 { enabled_units: :unit,
@@ -39,7 +41,7 @@ module OMG
                                     enabled_callin_modifiers: {
                                       callin_modifier: [:callin_modifier_required_units,
                                                         :callin_modifier_allowed_units] } } })
-                    .where(doctrine_id: params[:id]), type: :full
+                    .where(doctrine_id: declared_params[:id], ruleset_id: declared_params[:rulesetId]), type: :full
         end
       end
     end

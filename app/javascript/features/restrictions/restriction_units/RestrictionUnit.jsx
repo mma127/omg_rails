@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
-import { Box, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
+import { Box, Link, TableCell, TableRow, Tooltip, Typography } from "@mui/material";
 import { selectFactionById } from "../../factions/factionsSlice";
 import { selectDoctrineById } from "../../doctrines/doctrinesSlice";
 import { FactionIcon } from "../../factions/FactionIcon";
@@ -12,6 +12,7 @@ import { StaticUnitIcon } from "../../companies/manage/unlocks/StaticUnitIcon";
 import { BorderlessCell } from "../../../components/BorderlessCell";
 import { nanoid } from "@reduxjs/toolkit";
 import { UnitVet } from "./UnitVet";
+import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   headerRow: {
@@ -94,14 +95,19 @@ const EnabledUnit = ({ enabledUnit, isActive, currentFactionId }) => {
         {isActive ? <StaticUnitIcon name={unit.name} height={36}/> : null}
       </TableCell>
       <BorderlessCell>
-        {isActive ? <Typography>{unit.displayName}</Typography> : null}
+        {isActive ?
+          <Link component={RouterLink} to={`/restrictions/unit/${unit.id}`}
+                underline="none" color="inherit" target="_blank">
+            <Typography variant="h6" color="secondary">{unit.displayName}</Typography>
+          </Link>
+          : null}
       </BorderlessCell>
       <BorderlessCell>
         <Restriction restrictionName={restriction.name} type={enabledUnit.type}
                      factionId={restriction.factionId} doctrineId={restriction.doctrineId}/>
       </BorderlessCell>
       <BorderlessCell>
-        {isActive ? <UnitVet vet={unit.vet} side={faction.side} /> : null}
+        {isActive ? <UnitVet vet={unit.vet} side={faction.side}/> : null}
       </BorderlessCell>
       <BorderlessCell>
         <ResourceQuantity resource={MAN} quantity={enabledUnit.man}/>
@@ -177,10 +183,12 @@ export const RestrictionUnit = ({ entity, showDisabled, currentFactionId }) => {
 
   let content = []
   if (activeRU.type === "EnabledUnit") {
-    content.push(<EnabledUnit enabledUnit={activeRU} isActive={true} currentFactionId={currentFactionId} key={activeRU.id}/>)
+    content.push(<EnabledUnit enabledUnit={activeRU} isActive={true} currentFactionId={currentFactionId}
+                              key={activeRU.id}/>)
   } else if (activeRU.type === "DisabledUnit") {
     if (showDisabled) {
-      content.push(<DisabledUnit disabledUnit={activeRU} isActive={true} currentFactionId={currentFactionId} key={activeRU.id}/>)
+      content.push(<DisabledUnit disabledUnit={activeRU} isActive={true} currentFactionId={currentFactionId}
+                                 key={activeRU.id}/>)
     } else {
       return null
     }
@@ -193,7 +201,8 @@ export const RestrictionUnit = ({ entity, showDisabled, currentFactionId }) => {
       if (oru.type === "EnabledUnit") {
         content.push(<EnabledUnit enabledUnit={oru} isActive={false} currentFactionId={currentFactionId} key={oru.id}/>)
       } else if (oru.type === "DisabledUnit") {
-        content.push(<DisabledUnit disabledUnit={oru} isActive={false} currentFactionId={currentFactionId} key={oru.id}/>)
+        content.push(<DisabledUnit disabledUnit={oru} isActive={false} currentFactionId={currentFactionId}
+                                   key={oru.id}/>)
       }
     })
   }

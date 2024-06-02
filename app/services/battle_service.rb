@@ -15,6 +15,7 @@ class BattleService
   PLAYER_ABANDONED = "player_abandoned".freeze
   PLAYERS_ALL_ABANDONED = "players_all_abandoned".freeze
   ELO_UPDATED = "elo_updated".freeze
+  SIZE_UPDATED = "size_updated".freeze
 
   def initialize(player)
     @player = player
@@ -300,6 +301,30 @@ class BattleService
     broadcast_cable(battle_message)
   end
 
+  def change_battle_size(battle_id, new_size)
+    return unless @player.admin?
+
+    raise BattleValidationError.new "Invalid new battle size #{new_size}" unless Battle::BATTLE_SIZES.include? new_size
+
+    battle = validate_battle(battle_id)
+
+    # If there are more players than new size, remove players in order from most recently joined (BattlePlayer created)
+    ActiveRecord::Base.transaction do
+      if battle.size < new_size
+        increase_battle_size(battle, new_size)
+      elsif battle.size > new_size
+        decrease_battle_size(battle, new_size)
+      else
+        # if same size, somehow, do nothing
+      end
+    end
+
+    message_hash = { type: SIZE_UPDATED, battle: battle }
+    # Broadcast battle update
+    battle_message = Entities::BattleMessage.represent message_hash, type: :include_players
+    broadcast_cable(battle_message)
+  end
+
   private
 
   def broadcast_cable(message)
@@ -410,5 +435,48 @@ class BattleService
     return unless battle.reload.any_players_ready?
 
     BattlePlayer.where(battle: battle, ready: true).update_all(ready: false)
+  end
+
+  def increase_battle_size(battle, new_size)
+    # check if battle was previously ready, unready players if so
+    unready_all_players(battle)
+    # Check if battle was previously full, change state to open if so
+    if battle.full?
+      battle.not_full!
+    end
+    battle.size = new_size
+    battle.save!
+  end
+
+  def decrease_battle_size(battle, new_size)
+    # it's ok if battle was full and we decrease size, don't change player ready state or battle full state
+
+    # Remove newest joined players on each side that exceed new size per side
+    current_allied_count = battle.allied_battle_players.count
+    current_axis_count = battle.axis_battle_players.count
+    if current_allied_count > new_size
+      allied_count_to_remove = current_allied_count - new_size
+      remove_n_players_from_battle(battle, BattlePlayer.sides[:allied], allied_count_to_remove)
+    end
+    if current_axis_count > new_size
+      axis_count_to_remove = current_axis_count - new_size
+      remove_n_players_from_battle(battle, BattlePlayer.sides[:axis], axis_count_to_remove)
+    end
+    battle.update!(size: new_size)
+
+    # if new set of players are all ready, generate battlefile
+    if battle.reload.players_full?
+      update_battle_elo(battle)
+      battle.full!
+      BattleNotificationService.new(battle.id).notify_battle_full
+      if battle.all_players_ready?
+        battle.ready!
+        BattlefileGenerationJob.perform_async(battle_id)
+      end
+    end
+  end
+
+  def remove_n_players_from_battle(battle, side, number)
+    battle.battle_players.where(side: side).order(created_at: :desc).limit(number).destroy_all
   end
 end

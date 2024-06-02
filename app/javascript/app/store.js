@@ -19,6 +19,10 @@ import companyLeaderboardSlice from "../features/leaderboards/company_leaderboar
 import snapshotCompanySlice from "../features/companies/snapshotCompaniesSlice";
 import warLogSlice from "../features/leaderboards/war_log/warLogSlice";
 import warStatsSlice from "../features/leaderboards/war_stats/warStatsSlice";
+import rulesetsSlice from "../features/rulesets/rulesetsSlice";
+import statsUnitsSlice from "../features/stats/units/statsUnitsSlice";
+import statsEntitiesSlice from "../features/stats/entities/statsEntitiesSlice";
+import statsWeaponsSlice from "../features/stats/weapons/statsWeaponsSlice";
 
 export default configureStore({
   reducer: {
@@ -41,6 +45,10 @@ export default configureStore({
     companyLeaderboard: companyLeaderboardSlice,
     snapshotCompanies: snapshotCompanySlice,
     warLog: warLogSlice,
-    warStats: warStatsSlice
+    warStats: warStatsSlice,
+    rulesets: rulesetsSlice,
+    statsUnits: statsUnitsSlice,
+    statsEntities: statsEntitiesSlice,
+    statsWeapons: statsWeaponsSlice,
   },
 })

@@ -7,18 +7,15 @@
 #  const_name(Upgrade const name used by the battlefile)                              :string
 #  description(Upgrade description)                                                   :string
 #  display_name(Display upgrade name)                                                 :string           not null
-#  fuel(Fuel cost)                                                                    :integer
-#  man(Manpower cost)                                                                 :integer
 #  model_count(How many model entities this unit replacement consists of)             :integer
-#  mun(Munition cost)                                                                 :integer
 #  name(Unique upgrade name)                                                          :string           not null
-#  pop(Population cost)                                                               :integer
 #  type(Type of Upgrade)                                                              :string           not null
-#  unitwide_upgrade_slots(Upgrade slot cost for unit wide upgrades)                   :integer
-#  upgrade_slots(Upgrade slot cost for per model upgrades)                            :integer
-#  uses(Number of uses this upgrade provides)                                         :integer
 #  created_at                                                                         :datetime         not null
 #  updated_at                                                                         :datetime         not null
+#
+# Indexes
+#
+#  index_upgrades_on_name  (name) UNIQUE
 #
 class Upgrade < ApplicationRecord
   CONST_PREFIX = "OMGUPG"
@@ -26,6 +23,10 @@ class Upgrade < ApplicationRecord
   has_many :available_upgrades, inverse_of: :upgrade
 
   validates :model_count, presence: false
+
+  def weapon_related?
+    %w[Upgrades::Consumable Upgrades::SingleWeapon Upgrades::SquadWeapon].include? self.type
+  end
 
   # Used for battle file
   def formatted_const_name
@@ -40,6 +41,7 @@ class Upgrade < ApplicationRecord
     expose :id
     expose :name
     expose :display_name, as: :displayName
+    expose :const_name, as: :constName
     expose :description
     expose :type
     expose :model_count, as: :modelCount

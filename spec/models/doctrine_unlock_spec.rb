@@ -19,7 +19,7 @@
 #
 #  index_doctrine_unlocks_on_doctrine_id                (doctrine_id)
 #  index_doctrine_unlocks_on_doctrine_id_and_unlock_id  (doctrine_id,unlock_id) UNIQUE
-#  index_doctrine_unlocks_on_doctrine_tree              (doctrine_id,tree,branch,row) UNIQUE
+#  index_doctrine_unlocks_on_doctrine_tree              (doctrine_id,tree,branch,row,ruleset_id) UNIQUE
 #  index_doctrine_unlocks_on_ruleset_id                 (ruleset_id)
 #  index_doctrine_unlocks_on_unlock_id                  (unlock_id)
 #
