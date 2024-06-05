@@ -13,16 +13,17 @@ export const Navbar = () => {
     <AppBar position="static">
       <Toolbar>
         <Box>
-          <img src={logo} alt="Operation Market Garden mod" />
+          <img src={logo} alt="Operation Market Garden mod"/>
         </Box>
         <Tabs value={currentRoot} sx={{ marginTop: 'auto' }}>
-          <Tab label="Lobby" value="/" component={Link} to="/" />
-          <Tab label="Companies" value="/companies" component={Link} to="/companies" />
-          <Tab label="Restrictions" value="/restrictions" component={Link} to="/restrictions" />
-          <Tab label="Leaderboards" value="/leaderboards" component={Link} to="/leaderboards" />
-          <Tab label="Download" href="https://data.omgmod.net/OMG_Updater_v2.1.0.0.zip" download />
+          <Tab label="Lobby" value="/" component={Link} to="/"/>
+          <Tab label="Companies" value="/companies" component={Link} to="/companies"/>
+          <Tab label="Restrictions" value="/restrictions" component={Link} to="/restrictions"/>
+          <Tab label="Leaderboards" value="/leaderboards" component={Link} to="/leaderboards"/>
+          <Tab label="Download" href="https://data.omgmod.net/OMG_Updater_v2.1.0.0.zip" download/>
+          <Tab label="Admin" to="/admin" target="_blank" rel="noopener noreferrer" component={Link}/>
         </Tabs>
-        <PlayerAuthStatus />
+        <PlayerAuthStatus/>
       </Toolbar>
     </AppBar>
 

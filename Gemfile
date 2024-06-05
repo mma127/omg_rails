@@ -132,3 +132,4 @@ gem "turbo-rails", "~> 2.0"
 gem "net-http", "~> 0.4.1"
 
 gem "rexml" # Seems needed for heroku to build
+gem "simple_form", "~> 5.3"

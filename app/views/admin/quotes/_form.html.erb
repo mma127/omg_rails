@@ -1,0 +1,19 @@
+<%= simple_form_for [:admin, quote], html: { class: "quote form" } do |f| %>
+  <% if quote.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <%= quote.errors.full_messages.to_sentence.capitalize %>
+    </div>
+  <% end %>
+
+  <div class="row">
+    <div class="col-8">
+      <%= f.input :name, input_html: { autofocus: true } %>
+    </div>
+    <div class="col">
+      <%= link_to "Cancel", admin_quotes_path, class: "btn btn-light" %>
+    </div>
+    <div class="col">
+      <%= f.submit class: "btn btn-secondary" %>
+    </div>
+  </div>
+<% end %>

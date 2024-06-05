@@ -3,9 +3,22 @@ require 'sidekiq/web'
 Rails.application.routes.draw do
   devise_for :players, controllers: { omniauth_callbacks: 'authentication' }
 
-  devise_scope :user do
+  devise_scope :player do
     mount Sidekiq::Web => "/sidekiq" # TODO protect view to only admins https://github.com/mperham/sidekiq/wiki/Monitoring#devise
     delete 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
+
+    namespace :admin do
+      authenticated :player do
+        constraints(AdminConstraint) do
+          resources :quotes
+
+          root to: "base#index"
+        end
+      end
+
+      # Default to base#index, which for non authenticated users will redirect to /
+      get "*path", to: redirect("/")
+    end
   end
 
   mount OMG::API => '/'

@@ -1,0 +1,27 @@
+<main class="container">
+  <div class="header row">
+    <div class="col">
+      <h1>Quotes</h1>
+    </div>
+    <div class="col">
+      <%= link_to "New quote",
+                  new_admin_quote_path,
+                  data: { turbo_frame: dom_id(Quote.new) },
+                  class: "btn btn-primary float-end" %>
+    </div>
+  </div>
+
+  <%= turbo_frame_tag Quote.new do %>
+    <%# if @quotes.none? %>
+      <%#= render "admin/quotes/empty_state" %>
+    <%# end %>
+  <% end %>
+
+  <%= turbo_frame_tag "quotes" do %>
+    <%= render "admin/quotes/empty_state" %>
+    <%= render @quotes %>
+  <% end %>
+
+  <%# Generates a custom element to subscribe to the channel name %>
+  <%= turbo_stream_from "quotes" %>
+</main>

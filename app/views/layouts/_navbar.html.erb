@@ -1,0 +1,16 @@
+<header class="navbar">
+  <% if player_signed_in? %>
+    <div class="navbar-brand">
+      OMG Admin
+    </div>
+    <div class="navbar-name">
+      <%= current_player.name %>
+    </div>
+    <%= button_to "Sign Out",
+                  destroy_user_session_path,
+                  method: :delete,
+                  class: "btn btn-dark" %>
+  <% else %>
+    <%= link_to "Return to App", to: "/", class: "btn btn-dark navbar-right" %>
+  <% end %>
+</header>

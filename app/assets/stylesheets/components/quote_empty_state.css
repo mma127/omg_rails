@@ -1,0 +1,7 @@
+.empty-state--only-child {
+    display: none;
+}
+
+.empty-state--only-child:only-child {
+    display: revert;
+}

@@ -1,0 +1,13 @@
+<%# prepend the created quote to the dom node with id "quotes" %>
+<%= turbo_stream.prepend "quotes", @quote %>
+
+<!--same thing as above line-->
+<%#= turbo_stream.prepend "quotes" do %>
+  <%#= render partial: "admin/quotes/quote", locals: { quote: @quote } %>
+<%# end %>
+
+<%# empty the contents of the dom node with id "new_quote" %>
+<%= turbo_stream.update Quote.new, "" %>
+
+<%# prepend the contents of the flash message to the dom node with id "flash" %>
+<%= render_turbo_stream_flash_messages %>
