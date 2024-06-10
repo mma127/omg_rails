@@ -1,0 +1,25 @@
+<%= turbo_frame_tag player do %>
+  <div class="player row">
+    <div class="col">
+<!--      No player show page yet-->
+      <%#= link_to player.name, admin_player_path(player), data: { turbo_frame: "_top"} %>
+      <%= player.name %>
+    </div>
+    <div class="col">
+      <%= player.current_sign_in_at %>
+    </div>
+    <div class="col">
+      <%= player.discord_id || "" %>
+    </div>
+    <div class="col">
+      <%= player.player_rating.elo_override %>
+    </div>
+    <div class="col-1">
+      <div class="row">
+        <div class="col">
+          <%= link_to "Edit", edit_admin_player_path(player), class: "btn btn-light btn-sm" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
