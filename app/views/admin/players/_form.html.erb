@@ -1,0 +1,31 @@
+<div class="player row">
+  <%= simple_form_for [:admin, player], html: { class: "form", novalidate: true } do |f| %>
+    <% if player.errors.any? %>
+      <div class="alert alert-danger" role="alert">
+        <%= quote.errors.full_messages.to_sentence.capitalize %>
+      </div>
+    <% end %>
+
+    <div class="row">
+      <div class="col">
+        <%= player.name %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <%= f.input :discord_id, label: "Discord ID", required: false %>
+      </div>
+      <div class="col">
+        <%= simple_fields_for :player_rating do |o| %>
+          <%= o.input :elo_override, as: :integer, input_html: { value: player.player_rating.elo_override }, label: "Override Elo", required: false %>
+        <% end %>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <%= f.submit class: "btn btn-secondary btn-sm submit float-end" %>
+        <%= link_to "Cancel", admin_players_path, class: "btn btn-light btn-sm float-end" %>
+      </div>
+    </div>
+  <% end %>
+</div>

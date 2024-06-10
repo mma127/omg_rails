@@ -1,0 +1,25 @@
+<main class="container">
+  <div class="header row">
+    <div class="col">
+      <h1>Players</h1>
+    </div>
+    <div class="col">
+      Last Sign In
+    </div>
+    <div class="col">
+      Discord ID
+    </div>
+    <div class="col">
+      Elo Override
+    </div>
+    <div class="col-1">
+
+    </div>
+  </div>
+
+  <%= turbo_frame_tag "players" do %>
+    <%= render @players %>
+  <% end %>
+
+  <%= turbo_stream_from "players" %>
+</main>

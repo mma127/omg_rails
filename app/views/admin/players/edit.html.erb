@@ -1,0 +1,11 @@
+<main class="container">
+  <%= link_to sanitize("&larr; Back to player"), admin_player_path(@player) %>
+
+  <div class="header">
+    <h1>Edit Player</h1>
+  </div>
+
+  <%= turbo_frame_tag @player do %>
+    <%= render "form", player: @player %>
+  <% end %>
+</main>

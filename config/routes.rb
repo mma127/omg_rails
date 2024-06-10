@@ -12,6 +12,8 @@ Rails.application.routes.draw do
         constraints(AdminConstraint) do
           resources :quotes
 
+          resources :players
+
           root to: "base#index"
         end
       end

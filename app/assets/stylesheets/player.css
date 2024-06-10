@@ -1,0 +1,18 @@
+.player {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+    border: rgba(214, 130, 6, 0.93) 1px solid;
+    border-radius: 4px;
+}
+
+.player.row > .col {
+    display: flex;
+    align-items: center;
+}
+
+.player .form .submit {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
