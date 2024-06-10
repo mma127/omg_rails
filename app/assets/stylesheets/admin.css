@@ -14,8 +14,12 @@
  *= require_self
  */
 
-.container .header {
+.container .header.row {
     padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: end;
 }
 
 .quote.row {
