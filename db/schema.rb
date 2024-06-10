@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_05_18_003558) do
+ActiveRecord::Schema[7.0].define(version: 2024_06_10_002843) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -974,7 +974,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_05_18_003558) do
       cs.streak_4v4,
       (((cs.streak_1v1 + cs.streak_2v2) + cs.streak_3v3) + cs.streak_4v4) AS total_streak
      FROM (((((company_stats cs
-       JOIN companies c ON ((cs.company_id = c.id)))
+       JOIN companies c ON (((cs.company_id = c.id) AND ((c.type)::text = 'ActiveCompany'::text))))
        JOIN company_exps ce ON ((ce.company_id = cs.company_id)))
        JOIN players p ON ((c.player_id = p.id)))
        JOIN factions f ON ((f.id = c.faction_id)))
