@@ -91,6 +91,6 @@ export const selectDoctrinesByFactionId = (state, factionId) =>{
   return docs.filter(doctrine => doctrine.factionId === factionId)
 }
 
-export const selectDoctrineUnlockRowsByDoctrineId = (state, doctrineId) => state.doctrines.entities[doctrineId].unlocksByRow
+export const selectDoctrineUnlockRowsByDoctrineId = (state, doctrineId) => state.doctrines.entities[doctrineId]?.unlocksByRow
 
 
