@@ -38,6 +38,9 @@ class AvailableUpgrade < ApplicationRecord
 
   has_many :squad_upgrades, dependent: :destroy
 
+  scope :unit_active, -> { joins(:unit).where(units: { disabled: false }) }
+  scope :upgrade_active, -> { joins(:upgrade).where(upgrades: { disabled: false }) }
+
   def upgrade_name
     upgrade.name
   end

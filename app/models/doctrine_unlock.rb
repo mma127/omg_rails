@@ -39,6 +39,8 @@ class DoctrineUnlock < ApplicationRecord
   has_many :restriction_upgrades, through: :restriction
   has_many :restriction_offmaps, through: :restriction
 
+  scope :active, -> { where(disabled: false) }
+
   before_save :generate_internal_description
 
   def unlock_restriction

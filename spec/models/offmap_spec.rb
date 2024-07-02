@@ -38,4 +38,18 @@ RSpec.describe Offmap, type: :model do
   describe 'associations' do
     it { should have_many(:available_offmaps) }
   end
+
+  describe "scopes" do
+    describe "active" do
+      subject { Offmap.active }
+
+      it { should include offmap }
+
+      context "when offmap is disabled" do
+        let(:offmap) { create :offmap, disabled: true }
+
+        it { should_not include offmap }
+      end
+    end
+  end
 end

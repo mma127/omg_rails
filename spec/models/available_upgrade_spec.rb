@@ -42,4 +42,36 @@ RSpec.describe AvailableUpgrade, type: :model do
     it { should belong_to(:unit) }
     it { should have_many(:squad_upgrades) }
   end
+
+  describe 'scopes' do
+    describe 'unit_active' do
+      let(:unit) { create :unit }
+      let(:available_upgrade) { create :available_upgrade, unit: unit }
+
+      subject { described_class.unit_active }
+
+      it { should include available_upgrade }
+
+      context "when the unit is disabled" do
+        let(:unit) { create :unit, disabled: true }
+
+        it { should_not include available_upgrade }
+      end
+    end
+
+    describe 'upgrade_active' do
+      let(:upgrade) { create :upgrade }
+      let(:available_upgrade) { create :available_upgrade, upgrade: upgrade }
+
+      subject { described_class.upgrade_active }
+
+      it { should include available_upgrade }
+
+      context "when the upgrade is disabled" do
+        let(:upgrade) { create :upgrade, disabled: true }
+
+        it { should_not include available_upgrade }
+      end
+    end
+  end
 end

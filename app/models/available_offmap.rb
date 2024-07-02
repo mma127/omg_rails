@@ -26,6 +26,8 @@ class AvailableOffmap < ApplicationRecord
   belongs_to :offmap
   has_many :company_offmaps, dependent: :destroy
 
+  scope :offmap_active, -> { joins(:offmap).where(offmaps: { disabled: false }) }
+
   validates :max, numericality: { greater_than_or_equal_to: 0 }
   validates :available, numericality: { greater_than_or_equal_to: 0 }
 

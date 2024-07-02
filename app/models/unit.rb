@@ -29,6 +29,8 @@ class Unit < ApplicationRecord
   has_one :unit_vet, inverse_of: :unit
   has_many :transport_allowed_units, foreign_key: "transport_id"
 
+  scope :active, -> { where(disabled: false) }
+
   validates_presence_of :name
   validates_presence_of :const_name
   validates_presence_of :display_name

@@ -27,7 +27,7 @@
 require "rails_helper"
 
 RSpec.describe Unit, type: :model do
-  let!(:unit) { create :unit}
+  let!(:unit) { create :unit }
 
   describe 'associations' do
     it { should have_many(:restriction_units) }
@@ -40,6 +40,20 @@ RSpec.describe Unit, type: :model do
     it { should validate_uniqueness_of(:name) }
     it { should validate_numericality_of(:unitwide_upgrade_slots) }
     it { should validate_numericality_of(:upgrade_slots) }
+  end
+
+  describe "scopes" do
+    describe "active" do
+      subject { Unit.active }
+
+      it { should include unit }
+
+      context "when unit is disabled" do
+        let(:unit) { create :unit, disabled: true }
+
+        it { should_not include unit }
+      end
+    end
   end
 end
 

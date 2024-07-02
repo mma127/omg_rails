@@ -35,4 +35,22 @@ RSpec.describe AvailableOffmap, type: :model do
     it { should validate_numericality_of(:available).is_greater_than_or_equal_to(0) }
     it { should validate_numericality_of(:max).is_greater_than_or_equal_to(0) }
   end
+
+  describe 'scopes' do
+    describe 'offmap_active' do
+      let(:ruleset) { create :ruleset }
+      let(:offmap) { create :offmap, ruleset: ruleset }
+      let(:available_offmap) { create :available_offmap, offmap: offmap, ruleset: ruleset }
+
+      subject { described_class.offmap_active }
+
+      it { should include available_offmap }
+
+      context "when the offmap is disabled" do
+        let(:offmap) { create :offmap, ruleset: ruleset, disabled: true }
+
+        it { should_not include available_offmap }
+      end
+    end
+  end
 end

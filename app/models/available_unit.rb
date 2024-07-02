@@ -35,6 +35,8 @@ class AvailableUnit < ApplicationRecord
   has_many :squads, dependent: :destroy
   delegate :ruleset, to: :company
 
+  scope :unit_active, -> { joins(:unit).where(units: { disabled: false }) }
+
   validates_presence_of :company
   validates_presence_of :unit
   validates_presence_of :available

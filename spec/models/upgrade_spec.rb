@@ -18,37 +18,26 @@
 #
 #  index_upgrades_on_name  (name) UNIQUE
 #
-class Upgrade < ApplicationRecord
-  CONST_PREFIX = "OMGUPG"
+require "rails_helper"
 
-  has_many :available_upgrades, inverse_of: :upgrade
+RSpec.describe Upgrade, type: :model do
+  let!(:upgrade) { create :upgrade }
 
-  scope :active, -> { where(disabled: false) }
-
-  validates :model_count, presence: false
-
-  def weapon_related?
-    %w[Upgrades::Consumable Upgrades::SingleWeapon Upgrades::SquadWeapon].include? self.type
+  describe 'associations' do
+    it { should have_many(:available_upgrades) }
   end
 
-  # Used for battle file
-  def formatted_const_name
-    "#{CONST_PREFIX}.#{const_name}"
-  end
+  describe "scopes" do
+    describe "active" do
+      subject { Upgrade.active }
 
-  def entity
-    Entity.new(self)
-  end
+      it { should include upgrade }
 
-  class Entity < Grape::Entity
-    expose :id
-    expose :name
-    expose :display_name, as: :displayName
-    expose :const_name, as: :constName
-    expose :description
-    expose :type
-    expose :model_count, as: :modelCount
-    expose :additional_model_count, as: :additionalModelCount
+      context "when upgrade is disabled" do
+        let(:upgrade) { create :upgrade, disabled: true }
+
+        it { should_not include upgrade }
+      end
+    end
   end
 end
-

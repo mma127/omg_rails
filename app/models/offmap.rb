@@ -34,6 +34,8 @@ class Offmap < ApplicationRecord
   belongs_to :ruleset
   has_many :available_offmaps
 
+  scope :active, -> { where(disabled: false) }
+
   validates :name, uniqueness: { scope: :ruleset_id }
 
   def entity

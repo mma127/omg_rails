@@ -44,6 +44,19 @@ RSpec.describe DoctrineUnlock, type: :model do
     it { should have_many(:restriction_offmaps) }
   end
 
+  describe "scopes" do
+    describe "active" do
+      subject { described_class.active }
+
+      it { should include doctrine_unlock }
+
+      context "when doctrine_unlock is disabled" do
+        let(:doctrine_unlock) { create :doctrine_unlock, disabled: true }
+
+        it { should_not include doctrine_unlock }
+      end
+    end
+  end
 
   it "should construct a internal_description" do
     expect(doctrine_unlock.internal_description)
