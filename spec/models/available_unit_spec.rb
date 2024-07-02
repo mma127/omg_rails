@@ -63,6 +63,23 @@ RSpec.describe AvailableUnit, type: :model do
     it { should validate_numericality_of(:callin_modifier).is_greater_than_or_equal_to(0) }
   end
 
+  describe 'scopes' do
+    describe 'unit_active' do
+      let(:unit) { create :unit }
+      let(:available_unit) { create :available_unit, unit: unit }
+
+      subject { described_class.unit_active }
+
+      it { should include available_unit }
+
+      context "when the unit is disabled" do
+        let(:unit) { create :unit, disabled: true }
+
+        it { should_not include available_unit }
+      end
+    end
+  end
+
   it "gets the correct unit name" do
     unit = create :unit, name: "riflemen"
     au = create :available_unit, unit: unit, ruleset: available_unit.company.ruleset
