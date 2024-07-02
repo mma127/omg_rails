@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_06_10_002843) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_02_031543) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -373,6 +373,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_10_002843) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "ruleset_id", null: false
+    t.boolean "disabled", default: false, null: false, comment: "override that disables the offmap from being purchased or used"
     t.index ["name", "ruleset_id"], name: "index_offmaps_on_name_and_ruleset_id", unique: true
     t.index ["ruleset_id"], name: "index_offmaps_on_ruleset_id"
   end
@@ -740,6 +741,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_10_002843) do
     t.string "retreat_name", comment: "Name for retreating unit"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "disabled", default: false, null: false, comment: "override that disables the unit from being purchased or used"
     t.index ["name"], name: "index_units_on_name", unique: true
   end
 
@@ -790,6 +792,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_06_10_002843) do
     t.string "type", null: false, comment: "Type of Upgrade"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "disabled", default: false, null: false, comment: "override that disables the upgrade from being purchased or used"
     t.index ["name"], name: "index_upgrades_on_name", unique: true
   end
 
