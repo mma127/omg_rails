@@ -44,6 +44,10 @@ class Company < ApplicationRecord
   has_many :available_offmaps, dependent: :destroy
   has_many :available_upgrades, dependent: :destroy
 
+  has_many :active_units, -> { unit_active },  class_name: "AvailableUnit"
+  has_many :active_offmaps, -> { offmap_active }, class_name: "AvailableOffmap"
+  has_many :active_upgrades, -> { unit_active.upgrade_active }, class_name: "AvailableUpgrade"
+
   has_many :squads, dependent: :destroy
   has_many :squad_upgrades, through: :squads
   has_many :company_unlocks, dependent: :destroy

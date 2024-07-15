@@ -6,7 +6,7 @@ import { fetchCompanyById, selectCompanyById, resetNeedsRefresh } from "../../co
 import { useParams, useLocation } from "react-router-dom";
 import { makeStyles } from "@mui/styles";
 import { fetchCompanySquads, resetSquadState } from "../units/squadsSlice";
-import { fetchCompanyAvailability, resetAvailableUnitState } from "../available_units/availableUnitsSlice";
+import { resetAvailableUnitState } from "../available_units/availableUnitsSlice";
 import {
   fetchDoctrineUnlocksByDoctrineId,
   selectDoctrineUnlockRowsByDoctrineId,

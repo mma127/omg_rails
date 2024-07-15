@@ -47,6 +47,11 @@ RSpec.describe Company, type: :model do
 
     it { should have_many(:available_units) }
     it { should have_many(:available_offmaps) }
+    it { should have_many(:available_upgrades) }
+
+    it { should have_many(:active_units) }
+    it { should have_many(:active_offmaps) }
+    it { should have_many(:active_upgrades) }
 
     it { should have_many(:squads) }
     it { should have_many(:company_unlocks) }

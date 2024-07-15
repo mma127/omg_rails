@@ -51,23 +51,6 @@ module OMG
           present company, type: :with_active_battle
         end
 
-        # might not need this, combine with retrieve squads
-        desc "get all available units, offmaps for the given company"
-        params do
-          requires :id, type: Integer, desc: "Company ID"
-        end
-        get 'availability' do
-          company = ActiveCompany.includes(available_units: :unit, available_offmaps: :offmap).find_by(id: params[:id], player: current_player)
-          if company.blank?
-            error! "Could not find company #{params[:id]} for the current player", 404
-          end
-          availability = {
-            available_units: company.available_units,
-            available_offmaps: company.available_offmaps
-          }
-          present availability, with: Entities::Availability, type: :include_unit
-        end
-
         desc 'Retrieve all squads, company offmaps, available units, available offmaps for the company'
         params do
           requires :id, type: Integer, desc: "Company ID"
@@ -81,12 +64,12 @@ module OMG
 
           squads_response = {
             squads: company.squads,
-            available_units: company.available_units,
+            available_units: company.active_units,
+            available_offmaps: company.active_offmaps,
+            available_upgrades: company.active_upgrades,
             company_offmaps: company.company_offmaps,
-            available_offmaps: company.available_offmaps,
             callin_modifiers: company.callin_modifiers,
             squad_upgrades: company.squad_upgrades,
-            available_upgrades: company.available_upgrades,
             upgrades: company.upgrades
           }
           present squads_response, with: Entities::SquadsResponse, type: :include_unit

@@ -5,14 +5,18 @@ module OMG
 
       def load_company(id, current_player)
         ActiveCompany.includes(:ruleset,
-                         { squads: [:embarked_transport, :squads_in_transport, available_unit: { unit: :transport_allowed_units }],
-                           available_units: { unit: [:transport_allowed_units, :unit_vet] },
-                           available_offmaps: :offmap,
-                           company_offmaps: :offmap,
-                           company_callin_modifiers: :callin_modifier,
-                           squad_upgrades: :squad,
-                           available_upgrades: :upgrade })
-               .find_by(id: id, player: current_player)
+                               :callin_modifiers,
+                               :upgrades,
+                               {
+                                 squads: [:embarked_transport, :squads_in_transport, available_unit: { unit: :transport_allowed_units }],
+                                 active_units: { unit: [:transport_allowed_units, :unit_vet] },
+                                 active_offmaps: :offmap,
+                                 company_offmaps: :offmap,
+                                 company_callin_modifiers: :callin_modifier,
+                                 squad_upgrades: :squad,
+                                 active_upgrades: :upgrade
+                               })
+                     .find_by(id: id, player: current_player)
       end
 
       def load_snapshot_company(uuid)
