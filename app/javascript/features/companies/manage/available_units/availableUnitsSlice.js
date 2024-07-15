@@ -47,15 +47,6 @@ const setStateForUnitTypes = (availableUnits, state) => {
   })
 }
 
-export const fetchCompanyAvailability = createAsyncThunk("availableUnits/fetchCompanyAvailability", async ({ companyId }, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`/companies/${companyId}/availability`)
-    return response.data
-  } catch (err) {
-    return rejectWithValue(err.response.data)
-  }
-})
-
 const availableUnitsSlice = createSlice({
   name: "availableUnits",
   initialState,

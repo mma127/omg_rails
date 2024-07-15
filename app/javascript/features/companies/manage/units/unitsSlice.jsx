@@ -1,6 +1,5 @@
 import { createAsyncThunk, createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import axios from "axios"
-import { fetchCompanyAvailability } from "../available_units/availableUnitsSlice";
 import { fetchCompanySquads, fetchSnapshotCompanySquads } from "./squadsSlice";
 
 const unitsAdapter = createEntityAdapter()
