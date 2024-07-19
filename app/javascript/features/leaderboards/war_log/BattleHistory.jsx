@@ -29,6 +29,11 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center",
     display: "flex"
   },
+  links: {
+    textAlign: "center",
+    display: "flex",
+    flexDirection: "column"
+  },
   datetime: {
     flex: 1,
     display: "flex",
@@ -100,16 +105,14 @@ export const BattleHistory = ({ battle }) => {
           <Box className={classes.battleName}>
             <Typography variant="h6" pl="9px" gutterBottom color="text.secondary">{battle.map}</Typography>
           </Box>
-          <Box className={classes.battleId}>
+          <Box className={classes.links}>
             <Link to={`/api/battles/${battle.id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link>
-          </Box>
-          {
-            isAdmin ?
-              <Box className={classes.battleId}>
+            {
+              isAdmin ?
                 <Link to={`/api/battles/${battle.id}/battlefiles/report`} target="_blank" download>Download Battle Report</Link>
-              </Box>
-              : null
-          }
+                : null
+            }
+          </Box>
         </Box>
         <Box className={classes.row}>
           <Box className={`${classes.alliedPlayers} ${alliedWinner ? 'winner' : ''}`}>

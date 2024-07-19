@@ -39,7 +39,7 @@ module OMG
           desc 'download battle report file'
           get :report do
             service = BattlefileService.new(declared_params[:battle_id])
-            redirect service.get_ucs_file_download_url
+            redirect service.get_report_file_download_url
           end
         end
       end
