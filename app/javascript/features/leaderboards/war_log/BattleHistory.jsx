@@ -4,6 +4,8 @@ import { Box, Card, Typography } from "@mui/material";
 import { ALLIED_SIDE, AXIS_SIDE } from "../../../constants/doctrines";
 import { Link } from "react-router-dom";
 import { DateTime } from "luxon";
+import { useSelector } from "react-redux";
+import { selectPlayer } from "../../player/playerSlice";
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -69,6 +71,10 @@ const useStyles = makeStyles(theme => ({
 
 export const BattleHistory = ({ battle }) => {
   const classes = useStyles()
+
+  const player = useSelector(selectPlayer)
+  const isAdmin = player ? player.role === "admin" : false
+
   const allied = battle.battlePlayers.filter(bp => bp.side === ALLIED_SIDE)
   const axis = battle.battlePlayers.filter(bp => bp.side === AXIS_SIDE)
   const alliedWinner = battle.winner === ALLIED_SIDE
@@ -97,6 +103,13 @@ export const BattleHistory = ({ battle }) => {
           <Box className={classes.battleId}>
             <Link to={`/api/battles/${battle.id}/battlefiles/zip`} target="_blank" download>Download Battlefile</Link>
           </Box>
+          {
+            isAdmin ?
+              <Box className={classes.battleId}>
+                <Link to={`/api/battles/${battle.id}/battlefiles/report`} target="_blank" download>Download Battle Report</Link>
+              </Box>
+              : null
+          }
         </Box>
         <Box className={classes.row}>
           <Box className={`${classes.alliedPlayers} ${alliedWinner ? 'winner' : ''}`}>

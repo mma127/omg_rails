@@ -50,6 +50,12 @@ class BattlefileService
     Rails.application.routes.url_helpers.rails_blob_url(@battle.ucs_file)
   end
 
+  def get_report_file_download_url
+    validate_battle_exists
+    validate_battle_report_attached
+    Rails.application.routes.url_helpers.rails_blob_url(@battle.report_file)
+  end
+
   private
 
   def build_scar_ucs_contents
@@ -481,6 +487,10 @@ end
 
   def validate_battlefile_ucs_attached
     raise BattlefileGenerationValidationError.new "Battle #{@battle.id} does not have a battlefile ucs attached" if @battle.ucs_file.blank?
+  end
+
+  def validate_battle_report_attached
+    raise BattlefileGenerationValidationError.new "Battle #{@battle.id} does not have a battle report file attached" if @battle.report_file.blank?
   end
 
   def format_squad_list(list)
