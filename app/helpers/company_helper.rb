@@ -1,13 +1,14 @@
 module CompanyHelper
   # For a given company, return a table of squads arranged by tab_categories > category_position
-  # Tab_categories from Squad.tab_categories
+  # Tab_categories from Squad.tab_categories, but EXCLUDING holding
   # Category_positions are 0..7
   def self.get_platoon_table(company)
     table = Hash.new
 
     company.squads.each do |squad|
-      tab_category = squad.tab_category
+      next if squad.holding? # squads in holding cannot be spawned
 
+      tab_category = squad.tab_category
       if table.has_key?(tab_category)
         tab = table[tab_category]
       else
