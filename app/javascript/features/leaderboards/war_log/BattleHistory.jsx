@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     overflowWrap: "normal"
   },
   battleId: {
-    textAlign: "center",
+    textAlign: "right",
     display: "flex"
   },
   links: {

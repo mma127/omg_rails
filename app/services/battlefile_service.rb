@@ -183,6 +183,8 @@ end
 
     result = ""
     platoons_table.each do |tab_category, platoons|
+      next if tab_category == Squad.tab_categories[:holding]
+
       platoons.each do |category_position, platoon|
         result << build_platoon_block(platoon, team_index, player_index, callin_modifiers)
       end
