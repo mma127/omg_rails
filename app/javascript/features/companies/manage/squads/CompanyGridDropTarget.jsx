@@ -15,7 +15,7 @@ import { GLIDER } from "../../../../constants/units/types";
 import { AlertSnackbar } from "../../AlertSnackbar";
 import { CallinModifierIcon } from "../callin_modifiers/CallinModifierIcon";
 import _ from "lodash";
-import { MIN_PLATOON_POP } from "../../../../constants/company";
+import { HOLDING, MIN_PLATOON_POP } from "../../../../constants/company";
 
 const useStyles = makeStyles(theme => ({
   placementBox: {
@@ -168,7 +168,7 @@ export const CompanyGridDropTarget = ({
     }
   }
 
-  const validGridPop = gridPop === 0 || gridPop >= MIN_PLATOON_POP
+  const validGridPop = gridPop === 0 || gridPop >= MIN_PLATOON_POP || currentTab === HOLDING
 
   let callinModifierContent
   if (!_.isNil(callinModifiers) && callinModifiers.length > 0) {
