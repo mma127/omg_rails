@@ -420,6 +420,17 @@ RSpec.describe BattleReportService do
         expect(available_unit1.reload.available).to eq 5
       end
     end
+
+    context "when a unit is disabled" do
+      before do
+        unit2.update!(disabled: true)
+      end
+
+      it "does not change the available value for the disabled unit" do
+        instance.send(:add_company_availability, company2)
+        expect(available_unit2.reload.available).to eq 80
+      end
+    end
   end
 
   describe "#autorebuild_dead_squads" do

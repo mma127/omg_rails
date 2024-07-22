@@ -1029,6 +1029,44 @@ RSpec.describe CompanyUnlockService do
         expect(au2.reload.available).to eq default_available
         expect(au3.reload.available).to eq 2
       end
+
+      context "when the old unit is disabled" do
+        before do
+          unit1.update!(disabled: true)
+        end
+
+        it "does not change the existing squads" do
+          instance.send(:swap_squad_units, [squad3, squad4], [unit_swap])
+          expect(squad3.reload.available_unit).to eq au2
+          expect(squad4.reload.available_unit).to eq au2
+        end
+
+        it "does not change the new unit's available value" do
+          instance.send(:swap_squad_units, [squad3, squad4], [unit_swap])
+          expect(au1.reload.available).to eq default_available
+          expect(au2.reload.available).to eq default_available
+          expect(au3.reload.available).to eq new_unit_available
+        end
+      end
+
+      context "when the new unit is disabled" do
+        before do
+          unit2.update!(disabled: true)
+        end
+
+        it "does not change the existing squads" do
+          instance.send(:swap_squad_units, [squad3, squad4], [unit_swap])
+          expect(squad3.reload.available_unit).to eq au2
+          expect(squad4.reload.available_unit).to eq au2
+        end
+
+        it "does not change the new unit's available value" do
+          instance.send(:swap_squad_units, [squad3, squad4], [unit_swap])
+          expect(au1.reload.available).to eq default_available
+          expect(au2.reload.available).to eq default_available
+          expect(au3.reload.available).to eq new_unit_available
+        end
+      end
     end
 
     context "when there are no squads containing old units" do
@@ -1085,6 +1123,44 @@ RSpec.describe CompanyUnlockService do
           expect(au1.reload.available).to eq default_available - 2
           expect(au2.reload.available).to eq default_available
           expect(au3.reload.available).to eq new_unit_available
+        end
+
+        context "when the old unit is disabled" do
+          before do
+            unit1.update!(disabled: true)
+          end
+
+          it "does not change the existing squads" do
+            instance.send(:swap_squad_units, [squad3, squad4], [unit_swap])
+            expect(squad3.reload.available_unit).to eq au2
+            expect(squad4.reload.available_unit).to eq au2
+          end
+
+          it "does not change the new unit's available value" do
+            instance.send(:swap_squad_units, [squad3, squad4], [unit_swap])
+            expect(au1.reload.available).to eq default_available
+            expect(au2.reload.available).to eq default_available
+            expect(au3.reload.available).to eq new_unit_available
+          end
+        end
+
+        context "when the new unit is disabled" do
+          before do
+            unit2.update!(disabled: true)
+          end
+
+          it "does not change the existing squads" do
+            instance.send(:swap_squad_units, [squad3, squad4], [unit_swap])
+            expect(squad3.reload.available_unit).to eq au2
+            expect(squad4.reload.available_unit).to eq au2
+          end
+
+          it "does not change the new unit's available value" do
+            instance.send(:swap_squad_units, [squad3, squad4], [unit_swap])
+            expect(au1.reload.available).to eq default_available
+            expect(au2.reload.available).to eq default_available
+            expect(au3.reload.available).to eq new_unit_available
+          end
         end
       end
 

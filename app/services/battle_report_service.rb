@@ -9,7 +9,7 @@ class BattleReportService < ApplicationService
   NOT_FINAL = 0.freeze
 
   def initialize(battle_id)
-    @battle = Battle.includes(:ruleset, players: :companies, companies: [:squads, :available_units, company_resource_bonuses: :resource_bonus]).find_by!(id: battle_id)
+    @battle = Battle.includes(:ruleset, players: :companies, companies: [:squads, available_units: :unit, company_resource_bonuses: :resource_bonus]).find_by!(id: battle_id)
     @ruleset = @battle.ruleset
   end
 
@@ -167,6 +167,8 @@ class BattleReportService < ApplicationService
     info_logger("Adding available_unit resupply for company #{company.id}")
     available_units_update = []
     company.available_units.each do |au|
+      next if au.unit.disabled?
+
       new_availability = [au.available + au.resupply, au.resupply_max].min
       if new_availability != au.available
         au.available = new_availability

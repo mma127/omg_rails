@@ -235,17 +235,21 @@ class CompanyUnlockService
     unit_id_to_available_unit = BaseAvailableUnit.where(company: @company).index_by(&:unit_id)
 
     squads.each do |squad|
-      if old_units.include? squad.unit
+      # Do not perform unit swaps for disabled units
+      if old_units.include?(squad.unit) && !squad.unit.disabled?
         # Found a squad with an old unit, replace with new unit
         # Rails.logger.info("Found old unit #{squad.unit_id} in squad #{squad.id}")
         unit_swap = old_unit_to_unit_swap[squad.unit]
 
         if reverse
-          replacement_unit_id = unit_swap.old_unit_id
+          replacement_unit = unit_swap.old_unit
         else
-          replacement_unit_id = unit_swap.new_unit_id
+          replacement_unit = unit_swap.new_unit
         end
-        au = unit_id_to_available_unit[replacement_unit_id]
+
+        next if replacement_unit.disabled? # Also do not perform unit swap if the replacement unit is disabled
+
+        au = unit_id_to_available_unit[replacement_unit.id]
 
         if au.blank?
           # Rails.logger.info("AvailableUnit for new unit id #{replacement_unit_id} does not exist for the company, skipping swap")

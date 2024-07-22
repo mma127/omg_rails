@@ -1,6 +1,6 @@
 module Admin
   class AdminService < ApplicationService
-    def initialize
+    def initialize(*args)
       @errors = []
     end
 
