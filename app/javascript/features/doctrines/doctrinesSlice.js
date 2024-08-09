@@ -20,8 +20,8 @@ export const fetchDoctrineUnlocksByDoctrineId = createAsyncThunk(
     condition: ({ doctrineId }, { getState, extra }) => {
       /** Skip fetching if already fetched */
       const { doctrines } = getState();
-      const doctrine = doctrines.entities[doctrineId]
-      return !doctrine.hasOwnProperty("unlocks")
+      const doctrine = _.get(doctrines.entities, doctrineId)
+      return doctrine && !doctrine.hasOwnProperty("unlocks")
     }
   }
 )
