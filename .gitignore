@@ -15,6 +15,9 @@
 /db/*.sqlite3
 /db/*.sqlite3-*
 
+# Ignore Redis persistency dump
+dump.rdb
+
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
@@ -46,6 +49,7 @@ yarn-debug.log*
 # Ignore IDE configs
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+.idea
 
 # User-specific stuff
 .idea/**/workspace.xml
