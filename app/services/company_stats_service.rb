@@ -72,6 +72,6 @@ class CompanyStatsService < ApplicationService
   end
 
   def get_top_exp_squads
-    Squad.joins(company: [:player, :faction, :doctrine], available_unit: { unit: :unit_vet }).order(vet: :desc).limit(@limit)
+    Squad.includes(company: [:player, :faction, :doctrine], available_unit: { unit: :unit_vet }).joins(:company).where(company: { type: "ActiveCompany" }).order(vet: :desc).limit(@limit)
   end
 end
