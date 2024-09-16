@@ -33,7 +33,7 @@ class StatsUpgrade < ApplicationRecord
   end
 
   def added_slot_items_refs
-    data["actions"].filter { |a| a["reference"] == "slot_item_add" }.map { |a| a["slot_item"] }.compact
+    data["actions"].filter { |a| a["reference"] == "slot_item_add" }.map { |a| a["slot_item"]&.downcase }.compact
   end
 
   def entity

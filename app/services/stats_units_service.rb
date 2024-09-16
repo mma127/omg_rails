@@ -157,14 +157,14 @@ class StatsUnitsService < ApplicationService
   def weapon_upgrade_slot_items_by_reference
     @_weapon_upgrade_slot_items_by_reference ||=
       begin
-        slot_item_refs = weapon_upgrade_slot_item_refs_by_upgrade_const.values.flatten.compact.uniq
+        slot_item_refs = weapon_upgrade_slot_item_refs_by_upgrade_const.values.flatten.compact.uniq.map(&:downcase)
         stats_slot_items = StatsSlotItem.where(ruleset_id: ruleset_id, reference: slot_item_refs)
         stats_slot_items.map { |si| [si.reference, si] }.to_h
       end
   end
 
   def dig_slot_item_weapon(slot_item)
-    slot_item.data.dig("weapon", "weapon")
+    slot_item.data.dig("weapon", "weapon")&.downcase
   end
 
   def loadout
