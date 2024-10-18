@@ -78,7 +78,6 @@ const availableUnitsSlice = createSlice({
         const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
         availableUnitEntity.available -= 1
         availableUnitTable.available -= 1
-        console.log(`${availableUnitEntity.unitName} availability reduced by 1 to ${availableUnitEntity.available}`)
       })
       .addCase(addTransportedSquad, (state, action) => {
         const { newSquad: { availableUnitId }, _ } = action.payload
@@ -86,7 +85,6 @@ const availableUnitsSlice = createSlice({
         const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
         availableUnitEntity.available -= 1
         availableUnitTable.available -= 1
-        console.log(`${availableUnitEntity.unitName} availability reduced by 1 to ${availableUnitEntity.available}`)
       })
       .addCase(copySquad, (state, action) => {
         const { squad: { availableUnitId } } = action.payload
@@ -94,7 +92,6 @@ const availableUnitsSlice = createSlice({
         const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
         availableUnitEntity.available -= 1
         availableUnitTable.available -= 1
-        console.log(`${availableUnitEntity.unitName} availability reduced by 1 to ${availableUnitEntity.available}`)
       })
       .addCase(removeSquad, (state, action) => {
         const { availableUnitId } = action.payload
@@ -102,7 +99,6 @@ const availableUnitsSlice = createSlice({
         const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === availableUnitId)
         availableUnitEntity.available += 1
         availableUnitTable.available += 1
-        console.log(`${availableUnitEntity.unitName} availability increased by 1 to ${availableUnitEntity.available}`)
       })
       .addCase(removeTransportedSquad, (state, action) => {
         const { squad } = action.payload
@@ -110,7 +106,6 @@ const availableUnitsSlice = createSlice({
         const availableUnitTable = state[availableUnitEntity.unitType].find(e => e.id === squad.availableUnitId)
         availableUnitEntity.available += 1
         availableUnitTable.available += 1
-        console.log(`${availableUnitEntity.unitName} availability increased by 1 to ${availableUnitEntity.available}`)
       })
 
       .addCase(upsertSquads.fulfilled, (state, action) => {

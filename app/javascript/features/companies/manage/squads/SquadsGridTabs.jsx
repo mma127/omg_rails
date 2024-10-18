@@ -5,7 +5,7 @@ import { CORE, DISPLAY_CATEGORIES } from "../../../../constants/company";
 export const SquadsGridTabs = ({ selectedTab, changeCallback }) => {
 
   const onChange = (e, index) => {
-    console.log(`Squads grid tab changed to: ${index}`)
+    // console.log(`Squads grid tab changed to: ${index}`)
     changeCallback(index)
   }
 

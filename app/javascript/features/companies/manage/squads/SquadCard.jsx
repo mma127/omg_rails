@@ -149,32 +149,32 @@ export const SquadCard = (
   const cost = formatResourceCost({ man: squad.man, mun: squad.mun, fuel: squad.fuel })
 
   const unitCreateOnHit = (e) => {
-    console.log("transport on hit")
+    // console.log("transport on hit")
     if (!enabled) {
-      console.log("Drop target is not enabled")
+      // console.log("Drop target is not enabled")
       return
     }
 
     const dragData = e.dragData
     const dragUnit = dragData.unit
-    console.log(`${dragUnit.name} dropped into transport target ${uuid}`)
+    // console.log(`${dragUnit.name} dropped into transport target ${uuid}`)
 
     // Check if the dropped squad is allowed to be transported
     const dropUnitId = dragUnit.id // TODO does this work for moving existing squads
     if (!_.includes(unit.transportableUnitIds, dropUnitId)) {
-      console.log(`${unit.name} cannot transport squad with unit ${dragUnit.name}`)
+      // console.log(`${unit.name} cannot transport squad with unit ${dragUnit.name}`)
       return
     }
 
     // Check if the transport has sufficient squad and model slots to fit the dropped squad
     const squadSlotsDiff = (unit.transportSquadSlots - squad.usedSquadSlots) - 1
     if (squadSlotsDiff < 0) {
-      console.log(`Cannot transport ${dragUnit.name}, insufficient squad slots ${squadSlotsDiff}`)
+      // console.log(`Cannot transport ${dragUnit.name}, insufficient squad slots ${squadSlotsDiff}`)
       return
     }
     const modelSlotsDiff = (unit.transportModelSlots - squad.usedModelSlots) - dragUnit.modelCount
     if (modelSlotsDiff < 0) {
-      console.log(`Cannot transport ${dragUnit.name}, insufficient model slots ${modelSlotsDiff}`)
+      // console.log(`Cannot transport ${dragUnit.name}, insufficient model slots ${modelSlotsDiff}`)
       return
     }
     onTransportedSquadCreate(dragData.availableUnit, dragData.unit, index, tab, uuid)
@@ -184,12 +184,11 @@ export const SquadCard = (
 
   const squadMoveOnHit = (e) => {
     if (!enabled) {
-      console.log("Drop target is not enabled")
       return
     }
 
     const dragData = e.dragData
-    console.log(`${dragData.unit.name} squad dropped into transport target ${index} ${uuid}`)
+    // console.log(`${dragData.unit.name} squad dropped into transport target ${index} ${uuid}`)
 
     const dragSquad = dragData.squad,
       dragUnit = dragData.unit
@@ -197,19 +196,19 @@ export const SquadCard = (
     // Check if the dropped squad is allowed to be transported
     const dropUnitId = dragUnit.id
     if (!_.includes(unit.transportableUnitIds, dropUnitId)) {
-      console.log(`${unit.name} cannot transport squad with unit ${dragUnit.name}`)
+      // console.log(`${unit.name} cannot transport squad with unit ${dragUnit.name}`)
       return
     }
 
     // Check if the transport has sufficient squad and model slots to fit the dropped squad
     const squadSlotsDiff = (unit.transportSquadSlots - squad.usedSquadSlots) - 1
     if (squadSlotsDiff < 0) {
-      console.log(`Cannot transport ${dragUnit.name}, insufficient squad slots ${squadSlotsDiff}`)
+      // console.log(`Cannot transport ${dragUnit.name}, insufficient squad slots ${squadSlotsDiff}`)
       return
     }
     const modelSlotsDiff = (unit.transportModelSlots - squad.usedModelSlots) - dragUnit.modelCount
     if (modelSlotsDiff < 0) {
-      console.log(`Cannot transport ${dragUnit.name}, insufficient model slots ${modelSlotsDiff}`)
+      // console.log(`Cannot transport ${dragUnit.name}, insufficient model slots ${modelSlotsDiff}`)
       return
     }
     onSquadMove(dragSquad, dragUnit, index, tab, uuid)
