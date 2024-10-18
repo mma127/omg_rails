@@ -38,7 +38,6 @@ const useStyles = makeStyles(theme => ({
 
 export const EntityStatsCard = ({statsEntity, count}) => {
   const styles = useStyles()
-  console.log(statsEntity)
 
   const data = statsEntity.data
   const moving = data?.moving
