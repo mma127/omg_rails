@@ -51,7 +51,6 @@ export const WeaponStats = ({ reference }) => {
   const classes = useStyles()
   const weapon = useSelector(state => selectStatsWeaponByReference(state, reference))
   const data = weapon.data
-  console.log(data)
 
   return (
     <Box className={classes.contentContainer}>

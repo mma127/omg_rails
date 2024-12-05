@@ -118,7 +118,6 @@ export const CompanyManager = () => {
 
   const [currentTab, setCurrentTab] = useState(tab)
   const onTabChange = (event, newTab) => {
-    console.log(`Manager changed to new tab ${newTab}`)
     setCurrentTab(newTab)
   }
 
@@ -129,7 +128,6 @@ export const CompanyManager = () => {
   const company = useSelector(state => selectCompanyById(state, companyId))
   useEffect(() => {
     if (!company) {
-      console.log("dispatching company fetch from CompanyManager for null company")
       dispatch(fetchCompanyById({ companyId, current: true }))
     }
   },[])
@@ -141,7 +139,6 @@ export const CompanyManager = () => {
   const isCompanyBonusesChanged = useSelector(selectIsCompanyBonusesChanged)
 
   useEffect(() => {
-    console.log("dispatching company fetch from CompanyManager")
     dispatch(fetchCompanyById({ companyId, current: true }))
   }, [companyId, isCompanyBonusesChanged])
 

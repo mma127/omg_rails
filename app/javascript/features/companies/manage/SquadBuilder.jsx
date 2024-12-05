@@ -79,7 +79,6 @@ const useStyles = makeStyles(theme => ({
 
 const defaultTab = CORE
 export const SquadBuilder = ({}) => {
-  console.log("SquadBuilder render")
   const dispatch = useDispatch()
   const [currentTab, setCurrentTab] = useState(defaultTab)
 
@@ -119,11 +118,9 @@ export const SquadBuilder = ({}) => {
   const [transportOfSquadToDelete, setTransportOfSquadToDelete] = React.useState(null)
 
   useEffect(() => {
-    console.log("dispatching squad and available_unit fetch from SquadBuilder")
     dispatch(fetchCompanySquads({ companyId }))
 
     return () => {
-      console.log("dispatching resetSquadState resetAvailableUnitState")
       dispatch(resetSquadState())
       dispatch(resetAvailableUnitState())
       dispatch(resetSnapshotState())

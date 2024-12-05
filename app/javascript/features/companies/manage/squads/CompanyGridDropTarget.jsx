@@ -72,7 +72,6 @@ export const CompanyGridDropTarget = ({
                                       }) => {
   const classes = useStyles({ height: height, compactHeight: compactHeight })
 
-  console.log(`Rendering tab ${currentTab} and index ${gridIndex}`)
   const squadsStatus = useSelector(selectSquadsLoadingStatus)
   const squads = useSelector(state => selectSquadsInTabIndex(state, currentTab, gridIndex))
 
@@ -93,11 +92,11 @@ export const CompanyGridDropTarget = ({
   /** Moved an availableUnit into this drop target for squad creation */
   const onUnitHit = (e) => {
     if (!enabled) {
-      console.log("Drop target is not enabled")
+      // console.log("Drop target is not enabled")
       return
     }
     const dragData = e.dragData
-    console.log(`${dragData.availableUnit.unitName} new unit dropped into target ${gridIndex}`)
+    // console.log(`${dragData.availableUnit.unitName} new unit dropped into target ${gridIndex}`)
 
     // Check if glider and no other gliders
     if (dragData.unit.type === GLIDER) {
@@ -117,11 +116,11 @@ export const CompanyGridDropTarget = ({
   /** Moved an existing squad into this drop target */
   const onSquadMoveHit = (e) => {
     if (!enabled) {
-      console.log("Drop target is not enabled")
+      // console.log("Drop target is not enabled")
       return
     }
     const dragData = e.dragData
-    console.log(`${dragData.unit.name} squad dropped into target ${gridIndex}`)
+    // console.log(`${dragData.unit.name} squad dropped into target ${gridIndex}`)
 
     const { squad, unit, } = dragData
     onSquadMove(squad, unit, gridIndex, currentTab)

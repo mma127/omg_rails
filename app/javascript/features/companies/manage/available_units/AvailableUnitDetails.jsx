@@ -27,7 +27,6 @@ const useStyles = makeStyles(theme => ({
 
 export const AvailableUnitDetails = ({ onAvailableUpgradeClick }) => {
   const availableUnitId = useSelector(selectSelectedAvailableUnitId)
-  console.log(`AvailableUnitId Details - ${availableUnitId}`)
   const classes = useStyles()
   const dispatch = useDispatch()
 
