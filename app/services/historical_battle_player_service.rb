@@ -6,7 +6,7 @@ class HistoricalBattlePlayerService
   end
 
   def create_historical_battle_players_for_battle
-    info_logger("Begin Create HistoricalBattlePlayers for battle #{@battle.id}")
+    # info_logger("Begin Create HistoricalBattlePlayers for battle #{@battle.id}")
     validate_battle_final
 
     date_played = DateTime.now.to_date
@@ -19,7 +19,7 @@ class HistoricalBattlePlayerService
     # info_logger("Importing HistoricalBattlePlayers")
     HistoricalBattlePlayer.import!(hbp)
 
-    info_logger("[#{self.class.name}] Finished creating HistoricalBattlePlayers for battle #{@battle.id}")
+    # info_logger("[#{self.class.name}] Finished creating HistoricalBattlePlayers for battle #{@battle.id}")
   end
 
   private

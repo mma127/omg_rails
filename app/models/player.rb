@@ -45,11 +45,11 @@ class Player < ApplicationRecord
       # try to match nickname to historical player rating with nil player_id
       hpr = HistoricalPlayerRating.find_by(player_name: player.name.upcase, player_id: nil)
       if hpr.present?
-        Rails.logger.info("Found historical player rating for player #{player.name}")
+        # Rails.logger.info("Found historical player rating for player #{player.name}")
         PlayerRating.create!(player: player, elo: hpr.elo, mu: hpr.mu, sigma: hpr.sigma, last_played: hpr.last_played)
         hpr.update!(player_id: player.id)
       else
-        Rails.logger.info("Created default PlayerRating for player #{player.name}")
+        # Rails.logger.info("Created default PlayerRating for player #{player.name}")
         PlayerRating.for_new_player(player)
       end
     end
